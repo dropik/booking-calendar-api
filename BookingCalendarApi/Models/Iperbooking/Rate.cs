@@ -2,7 +2,7 @@
 {
     public class Rate
     {
-        public uint Minoccupancy { get; set; }
-        public uint Maxoccupancy { get; set; }
+        public uint MinOccupancy { get; set; }
+        public uint MaxOccupancy { get; set; }
     }
 }

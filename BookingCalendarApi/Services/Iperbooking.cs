@@ -24,7 +24,10 @@ namespace BookingCalendarApi.Services
                 var data = await content.ReadAsStringAsync();
                 if (data != null)
                 {
-                    var poco = JsonSerializer.Deserialize<ICollection<Room>>(data);
+                    var poco = JsonSerializer.Deserialize<ICollection<Room>>(data, new JsonSerializerOptions()
+                    {
+                        PropertyNameCaseInsensitive = true
+                    });
                     if (poco != null)
                     {
                         return poco;

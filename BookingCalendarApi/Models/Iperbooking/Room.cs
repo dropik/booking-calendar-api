@@ -1,8 +1,10 @@
-﻿namespace BookingCalendarApi.Models.Iperbooking
+﻿using System.Text.Json.Serialization;
+
+namespace BookingCalendarApi.Models.Iperbooking
 {
     public class Room
     {
-        public string Roomname { get; set; } = "";
-        public ICollection<Rategroup> Rategroups { get; set; } = new HashSet<Rategroup>();
+        public string RoomName { get; set; } = "";
+        public ICollection<RateGroup> RateGroups { get; set; } = new HashSet<RateGroup>();
     }
 }
