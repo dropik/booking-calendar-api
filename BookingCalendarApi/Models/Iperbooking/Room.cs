@@ -1,6 +1,4 @@
-﻿using System.Text.Json.Serialization;
-
-namespace BookingCalendarApi.Models.Iperbooking
+﻿namespace BookingCalendarApi.Models.Iperbooking
 {
     public class Room
     {
