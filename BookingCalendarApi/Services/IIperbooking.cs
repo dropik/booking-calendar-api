@@ -1,9 +1,9 @@
-﻿using BookingCalendarApi.Models;
+﻿using BookingCalendarApi.Models.Iperbooking;
 
 namespace BookingCalendarApi.Services
 {
     public interface IIperbooking
     {
-        public ICollection<Room> GetRoomRates();
+        public Task<ICollection<Room>> GetRoomRates();
     }
 }
