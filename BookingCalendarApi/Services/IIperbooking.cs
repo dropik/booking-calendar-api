@@ -2,7 +2,7 @@
 
 namespace BookingCalendarApi.Services
 {
-    public interface IIperbookingService
+    public interface IIperbooking
     {
         public ICollection<Room> GetRoomRates();
     }
