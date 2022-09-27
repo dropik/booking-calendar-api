@@ -23,31 +23,26 @@ namespace BookingCalendarApi.Controllers
             {
                 var roomName = roomRate.RoomName;
                 var acceptedOccupations = new HashSet<uint>();
-                try
-                {
-                    if (roomRate.RateGroups.Count > 0)
-                    {
-                        var rateGroup = roomRate.RateGroups.ElementAt(0);
-                        if (rateGroup.Rates.Count > 0)
-                        {
-                            var rate = rateGroup.Rates.ElementAt(0);
-                            var minOccupancy = rate.MinOccupancy;
-                            var maxOccupancy = rate.MaxOccupancy;
 
-                            for (var i = minOccupancy; i <= maxOccupancy; i++)
-                            {
-                                acceptedOccupations.Add(i);
-                            }
-                        } else
-                        {
-                            throw new Exception();
-                        }
-                    }
-                    else
+                if (roomRate.RateGroups.Count > 0)
+                {
+                    var rateGroup = roomRate.RateGroups.ElementAt(0);
+                    if (rateGroup.Rates.Count > 0)
                     {
-                        throw new Exception();
+                        var rate = rateGroup.Rates.ElementAt(0);
+                        var minOccupancy = rate.MinOccupancy;
+                        var maxOccupancy = rate.MaxOccupancy;
+
+                        for (var i = minOccupancy; i <= maxOccupancy; i++)
+                        {
+                            acceptedOccupations.Add(i);
+                        }
+                    } else
+                    {
+                        continue;
                     }
-                } catch (Exception)
+                }
+                else
                 {
                     continue;
                 }
