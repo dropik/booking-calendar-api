@@ -1,6 +1,7 @@
 ﻿using BookingCalendarApi.Models;
 using BookingCalendarApi.Services;
 using Microsoft.AspNetCore.Mvc;
+using RoomRate = BookingCalendarApi.Models.Iperbooking.Room;
 
 namespace BookingCalendarApi.Controllers
 {
@@ -18,8 +19,12 @@ namespace BookingCalendarApi.Controllers
         [HttpGet]
         public async Task<IEnumerable<RoomType>> GetAsync()
         {
-            var roomTypes = new HashSet<RoomType>();
             var roomRates = await iperbooking.GetRoomRates();
+            return ConvertRoomRatesToRoomTypes(roomRates);
+        }
+
+        private IEnumerable<RoomType> ConvertRoomRatesToRoomTypes(ICollection<RoomRate> roomRates)
+        {
             foreach (var roomRate in roomRates)
             {
                 var newType = new RoomType()
@@ -46,9 +51,8 @@ namespace BookingCalendarApi.Controllers
                     continue;
                 }
 
-                roomTypes.Add(newType);
+                yield return newType;
             }
-            return roomTypes;
         }
     }
 }
