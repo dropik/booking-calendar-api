@@ -1,4 +1,5 @@
-﻿using BookingCalendarApi.Services;
+﻿using BookingCalendarApi.Models;
+using BookingCalendarApi.Services;
 using Microsoft.AspNetCore.Mvc;
 
 namespace BookingCalendarApi.Controllers
@@ -15,14 +16,16 @@ namespace BookingCalendarApi.Controllers
         }
 
         [HttpGet]
-        public async Task<IEnumerable<KeyValuePair<string, IEnumerable<uint>>>> GetAsync()
+        public async Task<IEnumerable<RoomType>> GetAsync()
         {
-            var roomTypes = new Dictionary<string, IEnumerable<uint>>();
+            var roomTypes = new HashSet<RoomType>();
             var roomRates = await iperbooking.GetRoomRates();
             foreach (var roomRate in roomRates)
             {
-                var roomName = roomRate.RoomName;
-                var acceptedOccupations = new HashSet<uint>();
+                var newType = new RoomType()
+                {
+                    Name = roomRate.RoomName
+                };
 
                 if (roomRate.RateGroups.Count > 0)
                 {
@@ -30,14 +33,10 @@ namespace BookingCalendarApi.Controllers
                     if (rateGroup.Rates.Count > 0)
                     {
                         var rate = rateGroup.Rates.ElementAt(0);
-                        var minOccupancy = rate.MinOccupancy;
-                        var maxOccupancy = rate.MaxOccupancy;
-
-                        for (var i = minOccupancy; i <= maxOccupancy; i++)
-                        {
-                            acceptedOccupations.Add(i);
-                        }
-                    } else
+                        newType.MinOccupancy = rate.MinOccupancy;
+                        newType.MaxOccupancy = rate.MaxOccupancy;
+                    }
+                    else
                     {
                         continue;
                     }
@@ -47,7 +46,7 @@ namespace BookingCalendarApi.Controllers
                     continue;
                 }
 
-                roomTypes.Add(roomName, acceptedOccupations);
+                roomTypes.Add(newType);
             }
             return roomTypes;
         }
