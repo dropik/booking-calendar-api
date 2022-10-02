@@ -18,6 +18,10 @@ namespace BookingCalendarApi.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Floor>>> GetFloorsAsync()
         {
+            await _context.Floors
+                .Include(floor => floor.Rooms
+                    .OrderBy(room => room.Id))
+                .ToListAsync();
             return await _context.Floors.ToListAsync();
         }
 

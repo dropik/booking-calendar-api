@@ -19,10 +19,6 @@ namespace BookingCalendarApi
                 .HasPrincipalKey(r => r.Id)
                 .IsRequired()
                 .OnDelete(DeleteBehavior.Cascade);
-
-            builder.Entity<Floor>()
-                .Navigation(f => f.Rooms)
-                .AutoInclude();
         }
     }
 }
