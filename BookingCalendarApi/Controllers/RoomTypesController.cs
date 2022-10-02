@@ -19,7 +19,7 @@ namespace BookingCalendarApi.Controllers
         [HttpGet]
         public async Task<IEnumerable<RoomType>> GetAsync()
         {
-            var roomRates = await iperbooking.GetRoomRates();
+            var roomRates = await iperbooking.GetRoomRatesAsync();
             return ConvertRoomRatesToRoomTypes(roomRates);
         }
 
