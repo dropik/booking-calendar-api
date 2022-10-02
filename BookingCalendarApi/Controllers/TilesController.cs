@@ -31,14 +31,14 @@ namespace BookingCalendarApi.Controllers
 
                 var bookings = await _iperbooking.GetBookingsAsync(arrivalFrom, arrivalTo);
 
-                return GetTilesFromBookings(bookings).ToList();
+                return GetTilesFromBookings(bookings, fromDate).ToList();
             } catch (Exception ex)
             {
                 return BadRequest(ex.Message);
             }
         }
 
-        private IEnumerable<Tile> GetTilesFromBookings(ICollection<BookingCalendarApi.Models.Iperbooking.Bookings.Booking> bookings)
+        private IEnumerable<Tile> GetTilesFromBookings(ICollection<Models.Iperbooking.Bookings.Booking> bookings, DateTime fromDate)
         {
             string[] dateFormat = new[] { "yyyyMMdd" };
             var random = new Random();
@@ -47,7 +47,7 @@ namespace BookingCalendarApi.Controllers
             {
                 foreach (var room in booking.Rooms)
                 {
-                    Tile newTile = new Tile
+                    Tile newTile = new()
                     {
                         Id = room.StayId.ToString(),
                         BookingId = booking.BookingNumber.ToString(),
@@ -63,6 +63,12 @@ namespace BookingCalendarApi.Controllers
                         newTile.From = arrivalDate.ToString("yyyy-MM-dd");
 
                         var departureDate = DateTime.ParseExact(room.Departure, dateFormat, null);
+
+                        if ((departureDate - fromDate).Days < 0)
+                        {
+                            continue;
+                        }
+
                         newTile.Nights = Convert.ToUInt32((departureDate - arrivalDate).Days);
 
                         newTile.Color = $"booking{(random.Next() % 8) + 1}";
