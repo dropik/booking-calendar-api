@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BookingCalendarApi.Migrations
 {
     [DbContext(typeof(BookingCalendarContext))]
-    [Migration("20221001171517_InitialCreate")]
+    [Migration("20221001235410_InitialCreate")]
     partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -22,8 +22,9 @@ namespace BookingCalendarApi.Migrations
 
             modelBuilder.Entity("BookingCalendarApi.Models.Floor", b =>
                 {
-                    b.Property<string>("Id")
-                        .HasColumnType("varchar(255)");
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint");
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -36,12 +37,12 @@ namespace BookingCalendarApi.Migrations
 
             modelBuilder.Entity("BookingCalendarApi.Models.Room", b =>
                 {
-                    b.Property<string>("Id")
-                        .HasColumnType("varchar(255)");
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint");
 
-                    b.Property<string>("FloorId")
-                        .IsRequired()
-                        .HasColumnType("varchar(255)");
+                    b.Property<long>("FloorId")
+                        .HasColumnType("bigint");
 
                     b.Property<string>("Number")
                         .IsRequired()
@@ -60,13 +61,11 @@ namespace BookingCalendarApi.Migrations
 
             modelBuilder.Entity("BookingCalendarApi.Models.Room", b =>
                 {
-                    b.HasOne("BookingCalendarApi.Models.Floor", "Floor")
+                    b.HasOne("BookingCalendarApi.Models.Floor", null)
                         .WithMany("Rooms")
                         .HasForeignKey("FloorId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.Navigation("Floor");
                 });
 
             modelBuilder.Entity("BookingCalendarApi.Models.Floor", b =>
