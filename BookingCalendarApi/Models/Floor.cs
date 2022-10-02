@@ -1,8 +1,18 @@
-﻿namespace BookingCalendarApi.Models
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace BookingCalendarApi.Models
 {
     public class Floor
     {
-        public string Name { get; set; } = "";
-        public ICollection<Room> Rooms { get; set; } = new HashSet<Room>();
+        public Floor(long id)
+        {
+            Id = id;
+        }
+
+        public long Id { get; private set; }
+        [Required]
+        public string Name { get; set; }
+
+        public virtual ICollection<Room> Rooms { get; set; } = new List<Room>();
     }
 }

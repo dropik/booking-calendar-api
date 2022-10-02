@@ -1,4 +1,6 @@
+using BookingCalendarApi;
 using BookingCalendarApi.Services;
+using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -8,6 +10,13 @@ builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+
+builder.Services.AddDbContext<BookingCalendarContext>((options) =>
+    options.UseMySql(
+        builder.Configuration.GetSection("DB:ConnectionString").Value,
+        new MySqlServerVersion(new Version(8, 0, 29))
+    )
+);
 
 builder.Services.AddSingleton<IIperbooking, Iperbooking>();
 
