@@ -1,4 +1,5 @@
 ﻿using BookingCalendarApi.Models.Iperbooking;
+using BookingCalendarApi.Models.Iperbooking.RoomRates;
 using System.Text.Json;
 
 namespace BookingCalendarApi.Services

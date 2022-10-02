@@ -1,7 +1,7 @@
 ﻿using BookingCalendarApi.Models;
 using BookingCalendarApi.Services;
 using Microsoft.AspNetCore.Mvc;
-using RoomRate = BookingCalendarApi.Models.Iperbooking.Room;
+using RoomRate = BookingCalendarApi.Models.Iperbooking.RoomRates.Room;
 
 namespace BookingCalendarApi.Controllers
 {

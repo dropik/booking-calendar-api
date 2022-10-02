@@ -1,4 +1,4 @@
-﻿namespace BookingCalendarApi.Models.Iperbooking
+﻿namespace BookingCalendarApi.Models.Iperbooking.RoomRates
 {
     public class Room
     {
