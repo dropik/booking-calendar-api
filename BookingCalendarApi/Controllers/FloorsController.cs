@@ -16,13 +16,13 @@ namespace BookingCalendarApi.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Floor>>> GetFloors()
+        public async Task<ActionResult<IEnumerable<Floor>>> GetFloorsAsync()
         {
             return await _context.Floors.ToListAsync();
         }
 
         [HttpGet("{id}")]
-        public async Task<ActionResult<Floor>> GetFloor(long id)
+        public async Task<ActionResult<Floor>> GetFloorAsync(long id)
         {
             var floor = await _context.Floors.FindAsync(id);
 
@@ -35,7 +35,7 @@ namespace BookingCalendarApi.Controllers
         }
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutFloor(long id, Floor floor)
+        public async Task<IActionResult> PutFloorAsync(long id, Floor floor)
         {
             if (id != floor.Id)
             {
@@ -64,7 +64,7 @@ namespace BookingCalendarApi.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult<Floor>> PostFloor(Floor floor)
+        public async Task<ActionResult<Floor>> PostFloorAsync(Floor floor)
         {
             _context.Floors.Add(floor);
             await _context.SaveChangesAsync();
@@ -73,7 +73,7 @@ namespace BookingCalendarApi.Controllers
         }
 
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteFloor(long id)
+        public async Task<IActionResult> DeleteFloorAsync(long id)
         {
             var floor = await _context.Floors.FindAsync(id);
             if (floor == null)
