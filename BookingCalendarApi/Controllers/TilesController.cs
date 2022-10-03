@@ -22,9 +22,8 @@ namespace BookingCalendarApi.Controllers
         {
             try
             {
-                string[] dateFormats = new[] { "yyyy-MM-dd" };
-                var fromDate = DateTime.ParseExact(from, dateFormats, null);
-                var toDate = DateTime.ParseExact(to, dateFormats, null);
+                var fromDate = DateTime.ParseExact(from, "yyyy-MM-dd", null);
+                var toDate = DateTime.ParseExact(to, "yyyy-MM-dd", null);
 
                 var arrivalFromDate = fromDate.AddDays(-30);
 
@@ -34,7 +33,8 @@ namespace BookingCalendarApi.Controllers
                 var bookings = await _iperbooking.GetBookingsAsync(arrivalFrom, arrivalTo);
 
                 var guid = sessionId != null ? Guid.Parse(sessionId) : Guid.NewGuid();
-                var tiles = GetTilesFromBookings(bookings, fromDate)
+                var tiles = GetTilesFromBookings(bookings)
+                    .Where(tile => (DateTime.ParseExact(tile.From, "yyyy-MM-dd", null) - fromDate).Days >= -tile.Nights)
                     .Where(tile => !_context.Sessions.Contains(new Session { Id = guid, TileId = tile.Id }))
                     .ToList();
                 foreach (var tile in tiles)
@@ -54,9 +54,8 @@ namespace BookingCalendarApi.Controllers
             }
         }
 
-        private IEnumerable<Tile> GetTilesFromBookings(ICollection<Models.Iperbooking.Bookings.Booking> bookings, DateTime fromDate)
+        private IEnumerable<Tile> GetTilesFromBookings(ICollection<Models.Iperbooking.Bookings.Booking> bookings)
         {
-            string[] dateFormat = new[] { "yyyyMMdd" };
             var random = new Random();
 
             foreach (var booking in bookings)
@@ -75,16 +74,10 @@ namespace BookingCalendarApi.Controllers
 
                     try
                     {
-                        var arrivalDate = DateTime.ParseExact(room.Arrival, dateFormat, null);
+                        var arrivalDate = DateTime.ParseExact(room.Arrival, "yyyyMMdd", null);
                         newTile.From = arrivalDate.ToString("yyyy-MM-dd");
 
-                        var departureDate = DateTime.ParseExact(room.Departure, dateFormat, null);
-
-                        if ((departureDate - fromDate).Days < 0)
-                        {
-                            continue;
-                        }
-
+                        var departureDate = DateTime.ParseExact(room.Departure, "yyyyMMdd", null);
                         newTile.Nights = Convert.ToUInt32((departureDate - arrivalDate).Days);
 
                         newTile.Color = $"booking{(random.Next() % 8) + 1}";
