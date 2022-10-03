@@ -9,14 +9,16 @@ namespace BookingCalendarApi.Controllers
     public class TilesController : ControllerBase
     {
         private readonly IIperbooking _iperbooking;
+        private readonly BookingCalendarContext _context;
 
-        public TilesController(IIperbooking iperbooking)
+        public TilesController(IIperbooking iperbooking, BookingCalendarContext context)
         {
             _iperbooking = iperbooking;
+            _context = context;
         }
 
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Tile>>> GetAsync(string from, string to)
+        public async Task<ActionResult<TileResponse>> GetAsync(string from, string to, string? sessionId)
         {
             try
             {
@@ -31,7 +33,21 @@ namespace BookingCalendarApi.Controllers
 
                 var bookings = await _iperbooking.GetBookingsAsync(arrivalFrom, arrivalTo);
 
-                return GetTilesFromBookings(bookings, fromDate).ToList();
+                var guid = sessionId != null ? Guid.Parse(sessionId) : Guid.NewGuid();
+                var tiles = GetTilesFromBookings(bookings, fromDate)
+                    .Where(tile => !_context.Sessions.Contains(new Session { Id = guid, TileId = tile.Id }))
+                    .ToList();
+                foreach (var tile in tiles)
+                {
+                    _context.Sessions.Add(new Session { Id = guid, TileId = tile.Id });
+                }
+                await _context.SaveChangesAsync();
+
+                return new TileResponse
+                {
+                    Tiles = tiles,
+                    SessionId = guid.ToString()
+                };
             } catch (Exception ex)
             {
                 return BadRequest(ex.Message);
@@ -72,7 +88,6 @@ namespace BookingCalendarApi.Controllers
                         newTile.Nights = Convert.ToUInt32((departureDate - arrivalDate).Days);
 
                         newTile.Color = $"booking{(random.Next() % 8) + 1}";
-
                     } catch (Exception)
                     {
                         continue;

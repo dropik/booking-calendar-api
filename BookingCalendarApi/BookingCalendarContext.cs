@@ -9,6 +9,7 @@ namespace BookingCalendarApi
 
         public DbSet<Floor> Floors { get; set; }
         public DbSet<Room> Rooms { get; set; }
+        public DbSet<Session> Sessions { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
@@ -19,6 +20,9 @@ namespace BookingCalendarApi
                 .HasPrincipalKey(r => r.Id)
                 .IsRequired()
                 .OnDelete(DeleteBehavior.Cascade);
+
+            builder.Entity<Session>()
+                .HasKey(nameof(Session.Id), nameof(Session.TileId));
         }
     }
 }
