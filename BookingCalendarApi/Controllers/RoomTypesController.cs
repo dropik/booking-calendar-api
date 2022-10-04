@@ -27,10 +27,7 @@ namespace BookingCalendarApi.Controllers
         {
             foreach (var roomRate in roomRates)
             {
-                var newType = new RoomType()
-                {
-                    Name = roomRate.RoomName
-                };
+                uint minOccupancy, maxOccupancy;
 
                 if (roomRate.RateGroups.Count > 0)
                 {
@@ -38,8 +35,8 @@ namespace BookingCalendarApi.Controllers
                     if (rateGroup.Rates.Count > 0)
                     {
                         var rate = rateGroup.Rates.ElementAt(0);
-                        newType.MinOccupancy = rate.MinOccupancy;
-                        newType.MaxOccupancy = rate.MaxOccupancy;
+                        minOccupancy = rate.MinOccupancy;
+                        maxOccupancy = rate.MaxOccupancy;
                     }
                     else
                     {
@@ -51,7 +48,7 @@ namespace BookingCalendarApi.Controllers
                     continue;
                 }
 
-                yield return newType;
+                yield return new RoomType(roomRate.RoomName, minOccupancy, maxOccupancy);
             }
         }
     }

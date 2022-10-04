@@ -2,6 +2,6 @@
 {
     public class RateGroup
     {
-        public ICollection<Rate> Rates { get; set; } = new HashSet<Rate>();
+        public ICollection<Rate> Rates { get; set; } = new List<Rate>();
     }
 }

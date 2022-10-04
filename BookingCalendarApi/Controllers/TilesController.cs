@@ -45,7 +45,7 @@ namespace BookingCalendarApi.Controllers
                             From = DateTime.ParseExact(room.Arrival, "yyyyMMdd", null),
                             To = DateTime.ParseExact(room.Departure, "yyyyMMdd", null)
                         })
-                    .Where(roomData => !_context.Sessions.Contains(new Session { Id = guid, TileId = roomData.Id }))
+                    .Where(roomData => !_context.Sessions.Contains(new Session(guid, roomData.Id)))
                     .Where(roomData => (roomData.To - fromDate).Days >= 0)
                     .GroupJoin(
                         _context.TileAssignments,
@@ -55,16 +55,18 @@ namespace BookingCalendarApi.Controllers
                     )
                     .SelectMany(
                         x => x.assignments,
-                        (join, assignment) => new Tile {
-                            Id = join.roomData.Id,
-                            BookingId = join.roomData.booking.BookingNumber.ToString(),
-                            Name = $"{join.roomData.booking.FirstName} {join.roomData.booking.LastName}",
-                            From = join.roomData.From.ToString("yyyy-MM-dd"),
-                            Nights = Convert.ToUInt32((join.roomData.To - join.roomData.From).Days),
-                            RoomType = join.roomData.room.RoomName,
-                            Entity = join.roomData.room.RoomName,
-                            Persons = Convert.ToUInt32(join.roomData.room.Guests.Count()),
-                            Color = assignment?.Color ?? $"booking{(random.Next() % 8) + 1}",
+                        (join, assignment) => new Tile(
+                            id:         join.roomData.Id,
+                            bookingId:  join.roomData.booking.BookingNumber.ToString(),
+                            name:       $"{join.roomData.booking.FirstName} {join.roomData.booking.LastName}",
+                            from:       join.roomData.From.ToString("yyyy-MM-dd"),
+                            nights:     Convert.ToUInt32((join.roomData.To - join.roomData.From).Days),
+                            roomType:   join.roomData.room.RoomName,
+                            entity:     join.roomData.room.RoomName,
+                            persons:    Convert.ToUInt32(join.roomData.room.Guests.Count()),
+                            color:      assignment?.Color ?? $"booking{(random.Next() % 8) + 1}"
+                        )
+                        {
                             RoomId = assignment?.RoomId ?? null
                         }
                     )
@@ -72,19 +74,18 @@ namespace BookingCalendarApi.Controllers
 
                 foreach (var tile in tiles)
                 {
-                    _context.Sessions.Add(new Session { Id = guid, TileId = tile.Id });
+                    _context.Sessions.Add(new Session(guid, tile.Id));
                     if (!_context.TileAssignments.Any(a => a.Id.Equals(tile.Id)))
                     {
-                        _context.TileAssignments.Add(new TileAssignment(tile.Id) { Color = tile.Color, RoomId = tile.RoomId });
+                        _context.TileAssignments.Add(new TileAssignment(tile.Id, tile.Color) { RoomId = tile.RoomId });
                     }
                 }
 
                 await _context.SaveChangesAsync();
 
-                return new TileResponse
+                return new TileResponse(guid.ToString())
                 {
-                    Tiles = tiles,
-                    SessionId = guid.ToString()
+                    Tiles = tiles
                 };
             } catch (Exception ex)
             {
