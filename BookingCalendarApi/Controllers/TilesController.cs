@@ -1,6 +1,8 @@
+using System.Diagnostics;
 using BookingCalendarApi.Models;
 using BookingCalendarApi.Services;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace BookingCalendarApi.Controllers
 {
@@ -34,21 +36,37 @@ namespace BookingCalendarApi.Controllers
 
                 var guid = sessionId != null ? Guid.Parse(sessionId) : Guid.NewGuid();
 
-                var bookings = await _iperbooking.GetBookingsAsync(arrivalFrom, arrivalTo);
+                IEnumerable<Session> sessions = new List<Session>();
+                IEnumerable<TileAssignment> tileAssignments = new List<TileAssignment>();
+                var contextBoundTasks = async () => {
+                    sessions = await _context.Sessions.Where(session => session.Id.Equals(guid)).ToListAsync();
+                    tileAssignments = await _context.TileAssignments.ToListAsync();
+                };
+
+                var loadBookingsTask = _iperbooking.GetBookingsAsync(arrivalFrom, arrivalTo);
+
+                await Task.WhenAll(
+                    contextBoundTasks(),
+                    loadBookingsTask
+                );
+                
+                var bookings = loadBookingsTask.Result;
+
                 var tiles = bookings
                     .SelectMany(
                         booking => booking.Rooms,
-                        (booking, room) => new {
+                        (booking, room) => new
+                        {
                             booking,
                             room,
                             Id = room.StayId.ToString(),
                             From = DateTime.ParseExact(room.Arrival, "yyyyMMdd", null),
                             To = DateTime.ParseExact(room.Departure, "yyyyMMdd", null)
                         })
-                    .Where(roomData => !_context.Sessions.Contains(new Session(guid, roomData.Id)))
+                    .Where(roomData => !sessions.Any(session => session.Id.Equals(guid) && session.TileId.Equals(roomData.Id)))
                     .Where(roomData => (roomData.To - fromDate).Days >= 0)
                     .GroupJoin(
-                        _context.TileAssignments,
+                        tileAssignments,
                         roomData => roomData.Id,
                         assignment => assignment.Id,
                         (roomData, assignments) => new { roomData, assignments }
@@ -75,7 +93,7 @@ namespace BookingCalendarApi.Controllers
                 foreach (var tile in tiles)
                 {
                     _context.Sessions.Add(new Session(guid, tile.Id));
-                    if (!_context.TileAssignments.Any(a => a.Id.Equals(tile.Id)))
+                    if (!tileAssignments.Any(a => a.Id.Equals(tile.Id)))
                     {
                         _context.TileAssignments.Add(new TileAssignment(tile.Id, tile.Color) { RoomId = tile.RoomId });
                     }
