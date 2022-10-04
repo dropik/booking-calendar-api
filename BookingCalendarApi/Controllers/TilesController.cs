@@ -32,15 +32,42 @@ namespace BookingCalendarApi.Controllers
 
                 var bookings = await _iperbooking.GetBookingsAsync(arrivalFrom, arrivalTo);
 
+                var random = new Random();
+
                 var guid = sessionId != null ? Guid.Parse(sessionId) : Guid.NewGuid();
                 var tiles = GetTilesFromBookings(bookings)
                     .Where(tile => (DateTime.ParseExact(tile.From, "yyyy-MM-dd", null) - fromDate).Days >= -tile.Nights)
                     .Where(tile => !_context.Sessions.Contains(new Session { Id = guid, TileId = tile.Id }))
+                    .GroupJoin(
+                        _context.TileAssignments,
+                        tile => tile.Id,
+                        assignment => assignment.Id,
+                        (tile, assignments) => new { tile, assignments }
+                    )
+                    .SelectMany(
+                        x => x.assignments,
+                        (tileJoin, assignment) => new Tile {
+                            Id = tileJoin.tile.Id,
+                            BookingId = tileJoin.tile.BookingId,
+                            Name = tileJoin.tile.Name,
+                            From = tileJoin.tile.From,
+                            Nights = tileJoin.tile.Nights,
+                            RoomType = tileJoin.tile.RoomType,
+                            Entity = tileJoin.tile.Entity,
+                            Persons = tileJoin.tile.Persons,
+                            Color = assignment?.Color ?? $"booking{(random.Next() % 8) + 1}",
+                            RoomId = assignment?.RoomId ?? null
+                        }
+                    )
                     .ToList();
 
                 foreach (var tile in tiles)
                 {
                     _context.Sessions.Add(new Session { Id = guid, TileId = tile.Id });
+                    if (!_context.TileAssignments.Any(a => a.Id.Equals(tile.Id)))
+                    {
+                        _context.TileAssignments.Add(new TileAssignment(tile.Id) { Color = tile.Color, RoomId = tile.RoomId });
+                    }
                 }
 
                 await _context.SaveChangesAsync();
@@ -81,24 +108,6 @@ namespace BookingCalendarApi.Controllers
 
                         var departureDate = DateTime.ParseExact(room.Departure, "yyyyMMdd", null);
                         newTile.Nights = Convert.ToUInt32((departureDate - arrivalDate).Days);
-
-                        var previouslyAssignedQuery = _context.TileAssignments.Where(a => a.Id.Equals(newTile.Id));
-                        string color;
-                        long? roomId;
-                        if (previouslyAssignedQuery.Any())
-                        {
-                            var previouslyAssigned = previouslyAssignedQuery.First();
-                            color = previouslyAssigned.Color;
-                            roomId = previouslyAssigned.RoomId;
-                        } else
-                        {
-                            color = $"booking{(random.Next() % 8) + 1}";
-                            roomId = null;
-                            newTile.Color = color;
-                            _context.TileAssignments.Add(new TileAssignment(newTile.Id) { Color = color });
-                        }
-                        newTile.Color = color;
-                        newTile.RoomId = roomId;
                     } catch (Exception ex)
                     {
                         Console.WriteLine(ex.Message);
