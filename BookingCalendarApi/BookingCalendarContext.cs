@@ -10,6 +10,7 @@ namespace BookingCalendarApi
         public DbSet<Floor> Floors { get; set; }
         public DbSet<Room> Rooms { get; set; }
         public DbSet<Session> Sessions { get; set; }
+        public DbSet<TileAssignment> TileAssignments { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {

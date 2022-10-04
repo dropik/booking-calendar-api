@@ -1,3 +1,5 @@
+using Newtonsoft.Json;
+
 namespace BookingCalendarApi.Models
 {
     public class Tile

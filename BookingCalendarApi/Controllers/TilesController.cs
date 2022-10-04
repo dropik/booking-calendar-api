@@ -37,10 +37,12 @@ namespace BookingCalendarApi.Controllers
                     .Where(tile => (DateTime.ParseExact(tile.From, "yyyy-MM-dd", null) - fromDate).Days >= -tile.Nights)
                     .Where(tile => !_context.Sessions.Contains(new Session { Id = guid, TileId = tile.Id }))
                     .ToList();
+
                 foreach (var tile in tiles)
                 {
                     _context.Sessions.Add(new Session { Id = guid, TileId = tile.Id });
                 }
+
                 await _context.SaveChangesAsync();
 
                 return new TileResponse
@@ -80,9 +82,26 @@ namespace BookingCalendarApi.Controllers
                         var departureDate = DateTime.ParseExact(room.Departure, "yyyyMMdd", null);
                         newTile.Nights = Convert.ToUInt32((departureDate - arrivalDate).Days);
 
-                        newTile.Color = $"booking{(random.Next() % 8) + 1}";
-                    } catch (Exception)
+                        var previouslyAssignedQuery = _context.TileAssignments.Where(a => a.Id.Equals(newTile.Id));
+                        string color;
+                        long? roomId;
+                        if (previouslyAssignedQuery.Any())
+                        {
+                            var previouslyAssigned = previouslyAssignedQuery.First();
+                            color = previouslyAssigned.Color;
+                            roomId = previouslyAssigned.RoomId;
+                        } else
+                        {
+                            color = $"booking{(random.Next() % 8) + 1}";
+                            roomId = null;
+                            newTile.Color = color;
+                            _context.TileAssignments.Add(new TileAssignment(newTile.Id) { Color = color });
+                        }
+                        newTile.Color = color;
+                        newTile.RoomId = roomId;
+                    } catch (Exception ex)
                     {
+                        Console.WriteLine(ex.Message);
                         continue;
                     }
                     
