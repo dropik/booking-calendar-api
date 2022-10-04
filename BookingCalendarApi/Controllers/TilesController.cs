@@ -54,7 +54,7 @@ namespace BookingCalendarApi.Controllers
                         (roomData, assignments) => new { roomData, assignments }
                     )
                     .SelectMany(
-                        x => x.assignments,
+                        x => x.assignments.DefaultIfEmpty(),
                         (join, assignment) => new Tile(
                             id:         join.roomData.Id,
                             bookingId:  join.roomData.booking.BookingNumber.ToString(),
