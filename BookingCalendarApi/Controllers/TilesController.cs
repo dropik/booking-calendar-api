@@ -52,7 +52,7 @@ namespace BookingCalendarApi.Controllers
                 
                 var bookings = loadBookingsTask.Result;
 
-                var tiles = bookings
+                var inRangeTiles = bookings
                     .SelectMany(
                         booking => booking.Rooms,
                         (booking, room) => new
@@ -64,7 +64,36 @@ namespace BookingCalendarApi.Controllers
                             To = DateTime.ParseExact(room.Departure, "yyyyMMdd", null)
                         })
                     .Where(roomData => !sessions.Any(session => session.Id.Equals(guid) && session.TileId.Equals(roomData.Id)))
-                    .Where(roomData => (roomData.To - fromDate).Days >= 0)
+                    .Where(roomData => (roomData.To - fromDate).Days >= 0);
+
+                // extending search range to fetch all tiles that might possibly collide with
+                // tiles that fall in the range, to ensure correct collision detection in front-end
+                if (inRangeTiles.Any())
+                {
+                    var firstArrival = inRangeTiles.OrderBy(tile => tile.From).First();
+                    var lastDeparture = inRangeTiles.OrderBy(tile => tile.To).Last();
+                    fromDate = firstArrival.From;
+                    toDate = lastDeparture.To.AddDays(-1);
+                    arrivalFrom = fromDate.AddDays(-30).ToString("yyyyMMdd");
+                    arrivalTo = toDate.ToString("yyyyMMdd");
+
+                    bookings = await _iperbooking.GetBookingsAsync(arrivalFrom, arrivalTo);
+                    inRangeTiles = bookings
+                        .SelectMany(
+                            booking => booking.Rooms,
+                            (booking, room) => new
+                            {
+                                booking,
+                                room,
+                                Id = room.StayId.ToString(),
+                                From = DateTime.ParseExact(room.Arrival, "yyyyMMdd", null),
+                                To = DateTime.ParseExact(room.Departure, "yyyyMMdd", null)
+                            })
+                        .Where(roomData => !sessions.Any(session => session.Id.Equals(guid) && session.TileId.Equals(roomData.Id)))
+                        .Where(roomData => (roomData.To - fromDate).Days >= 0);
+                }
+
+                var tiles = inRangeTiles
                     .GroupJoin(
                         tileAssignments,
                         roomData => roomData.Id,
