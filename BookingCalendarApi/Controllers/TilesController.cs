@@ -114,6 +114,7 @@ namespace BookingCalendarApi.Controllers
                             color:      assignment?.Color ?? $"booking{(random.Next() % 8) + 1}"
                         )
                         {
+                            Status = join.roomData.booking.Status,
                             RoomId = assignment?.RoomId ?? null
                         }
                     )

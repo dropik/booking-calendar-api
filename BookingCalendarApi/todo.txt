@@ -1,5 +1,4 @@
 tiles fetch:
-- send tiles status
 - resend tile if was modified
 - pretty it
 - optimize it
