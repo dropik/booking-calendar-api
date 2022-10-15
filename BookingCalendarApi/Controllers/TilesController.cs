@@ -29,18 +29,9 @@ namespace BookingCalendarApi.Controllers
                 var sessions = await _context.Sessions.Where(session => session.Id.Equals(guid)).ToListAsync();
                 var tileAssignments = await _context.TileAssignments.ToListAsync();                
 
-                var (fromDate, toDate) = GetInitialRange(from, to);
-                var inRangeTiles = await GetFlattenedRoomsAsync(fromDate, toDate);
+                var inRangeRooms = await AccumulateAllRoomsAsync(from, to);
 
-                // extending search range to fetch all tiles that might possibly collide with
-                // tiles that fall in the range, to ensure correct collision detection in front-end
-                if (inRangeTiles.Any())
-                {
-                    (fromDate, toDate) = GetExtendedRange(inRangeTiles);
-                    inRangeTiles = await GetFlattenedRoomsAsync(fromDate, toDate);
-                }
-
-                var tiles = inRangeTiles
+                var tiles = inRangeRooms
                     .Where(roomData => !sessions.Any(session => session.Equals(new Session(guid, roomData.Id, roomData.Booking.LastModified))))
                     .GroupJoin(
                         tileAssignments,
@@ -96,6 +87,22 @@ namespace BookingCalendarApi.Controllers
             {
                 return BadRequest(ex.Message);
             }
+        }
+
+        private async Task<IEnumerable<FlattenedRoom>> AccumulateAllRoomsAsync(string from, string to)
+        {
+            var (fromDate, toDate) = GetInitialRange(from, to);
+            var inRangeRooms = await GetFlattenedRoomsAsync(fromDate, toDate);
+
+            // extending search range to fetch all tiles that might possibly collide with
+            // tiles that fall in the range, to ensure correct collision detection in front-end
+            if (inRangeRooms.Any())
+            {
+                (fromDate, toDate) = GetExtendedRange(inRangeRooms);
+                inRangeRooms = await GetFlattenedRoomsAsync(fromDate, toDate);
+            }
+
+            return inRangeRooms;
         }
 
         private (DateTime fromDate, DateTime toDate) GetInitialRange(string from, string to)
