@@ -31,8 +31,9 @@ namespace BookingCalendarApi.Controllers
 
                 var inRangeRooms = await _roomsProvider.AccumulateAllRoomsAsync(from, to);
 
-                var tiles = inRangeRooms
-                    .Where(roomData => !sessions.Any(session => session.Equals(new Session(guid, roomData.Id, roomData.Booking.LastModified))))
+                var sessionTiles = ExcludeRoomsBySession(inRangeRooms, sessions, guid);
+
+                var tiles = sessionTiles
                     .GroupJoin(
                         tileAssignments,
                         roomData => roomData.Id,
@@ -62,15 +63,6 @@ namespace BookingCalendarApi.Controllers
 
                 foreach (var tile in tiles)
                 {
-                    var newSession = new Session(guid, tile.Id, tile.LastModified);
-                    if (!sessions.Any(session => session.Equals(newSession)))
-                    {
-                        _context.Sessions.Add(newSession);
-                    } else
-                    {
-                        _context.Entry(newSession).State = EntityState.Modified;
-                    }
-
                     if (!tileAssignments.Any(a => a.Id.Equals(tile.Id)))
                     {
                         _context.TileAssignments.Add(new TileAssignment(tile.Id, tile.Color) { RoomId = tile.RoomId });
@@ -86,6 +78,29 @@ namespace BookingCalendarApi.Controllers
             } catch (Exception ex)
             {
                 return BadRequest(ex.Message);
+            }
+        }
+
+        private IEnumerable<FlattenedRoom> ExcludeRoomsBySession(IEnumerable<FlattenedRoom> rooms, IEnumerable<Session> sessions, Guid guid)
+        {
+            foreach (var room in rooms)
+            {
+                var newSession = new Session(guid, room.Id, room.Booking.LastModified);
+                var sessionItemQuery = sessions.Where(session => session.Id.Equals(guid) && session.TileId == room.Id);
+                if (sessionItemQuery.Any())
+                {
+                    var sessionItem = sessionItemQuery.First();
+                    if (sessionItem.LastModified == room.Booking.LastModified)
+                    {
+                        continue;
+                    }
+                    _context.Entry(newSession).State = EntityState.Modified;
+                } else
+                {
+                    _context.Sessions.Add(newSession);
+                }
+
+                yield return room;
             }
         }
     }
