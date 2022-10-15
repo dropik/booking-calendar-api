@@ -12,13 +12,21 @@ namespace BookingCalendarApi.Controllers
         private readonly IRoomsProvider _roomsProvider;
         private readonly Func<Services.ISession> _sessionProvider;
         private readonly Func<ITileComposer> _tileComposerProvider;
+        private readonly Func<Func<Task>, Func<Task>, IAsyncScheduler> _asyncSchedulerProvider;
 
-        public TilesController(BookingCalendarContext context, IRoomsProvider roomsProvider, Func<Services.ISession> sessionProvider, Func<ITileComposer> tileComposerProvider)
+        public TilesController(
+            BookingCalendarContext context,
+            IRoomsProvider roomsProvider,
+            Func<Services.ISession> sessionProvider,
+            Func<ITileComposer> tileComposerProvider,
+            Func<Func<Task>, Func<Task>, IAsyncScheduler> asyncSchedulerProvider
+        )
         {
             _context = context;
             _roomsProvider = roomsProvider;
             _sessionProvider = sessionProvider;
             _tileComposerProvider = tileComposerProvider;
+            _asyncSchedulerProvider = asyncSchedulerProvider;
         }
 
         [HttpGet]
@@ -27,15 +35,20 @@ namespace BookingCalendarApi.Controllers
             try
             {
                 var session = _sessionProvider();
-                await session.OpenAsync(sessionId);
-
                 var tileComposer = _tileComposerProvider();
-                await tileComposer.OpenAsync();
 
-                await _roomsProvider.AccumulateAllRoomsAsync(from, to);
-                var rooms = _roomsProvider.Rooms;
+                var scheduler = _asyncSchedulerProvider(
+                    async () =>
+                    {
+                        await session.OpenAsync(sessionId);
+                        await tileComposer.OpenAsync();
+                    },
+                    async () => await _roomsProvider.AccumulateAllRoomsAsync(from, to)
+                );
 
-                var tiles = rooms
+                await scheduler.Execute();
+
+                var tiles = _roomsProvider.Rooms
                     .ExcludeBySession(session)
                     .UseComposer(tileComposer)
                     .ToList();
