@@ -1,4 +1,7 @@
 tiles fetch:
-- resend tile if was modified
+- resend tile if was modified:
+  - store last modified date into sessions table
+  - if current last modified is different - include in response
+  - update last data
 - pretty it
 - optimize it
