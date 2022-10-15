@@ -9,7 +9,7 @@ namespace BookingCalendarApi
 
         public DbSet<Floor> Floors => Set<Floor>();
         public DbSet<Room> Rooms => Set<Room>();
-        public DbSet<SessionItem> SessionMap => Set<SessionItem>();
+        public DbSet<SessionEntry> Sessions => Set<SessionEntry>();
         public DbSet<TileAssignment> TileAssignments => Set<TileAssignment>();
 
         protected override void OnModelCreating(ModelBuilder builder)
@@ -21,9 +21,6 @@ namespace BookingCalendarApi
                 .HasPrincipalKey(r => r.Id)
                 .IsRequired()
                 .OnDelete(DeleteBehavior.Cascade);
-
-            builder.Entity<SessionItem>()
-                .HasKey(nameof(SessionItem.Id), nameof(SessionItem.TileId));
         }
     }
 }

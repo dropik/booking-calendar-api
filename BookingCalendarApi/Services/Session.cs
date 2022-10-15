@@ -1,5 +1,6 @@
 using BookingCalendarApi.Models;
 using Microsoft.EntityFrameworkCore;
+using System.Formats.Cbor;
 
 namespace BookingCalendarApi.Services
 {
@@ -8,7 +9,8 @@ namespace BookingCalendarApi.Services
         private readonly BookingCalendarContext _context;
 
         public Guid Id { get; private set; }
-        private IEnumerable<SessionItem> SessionItems { get; set; } = new List<SessionItem>();
+        private List<SessionTile> Tiles { get; set; } = new List<SessionTile>();
+        private SessionEntry? Entry { get; set; }
 
         public Session(BookingCalendarContext context)
         {
@@ -18,7 +20,20 @@ namespace BookingCalendarApi.Services
         public async Task OpenAsync(string? sessionId)
         {
             Id = GetGuid(sessionId);
-            SessionItems = await _context.SessionMap.Where(session => session.Id.Equals(Id)).ToListAsync();
+            Tiles = new List<SessionTile>();
+            Entry = await _context.Sessions.SingleOrDefaultAsync(session => session.Id.Equals(Id));
+            if (Entry != null && !Entry.Id.Equals(Guid.Empty))
+            {
+                var data = Entry.Data;
+                var reader = new CborReader(data);
+                reader.ReadStartArray();
+                while (reader.PeekState() != CborReaderState.EndArray)
+                {
+                    var tileId = reader.ReadTextString();
+                    var lastModified = reader.ReadTextString();
+                    Tiles.Add(new SessionTile(tileId, lastModified));
+                }
+            }
         }
 
         private Guid GetGuid(string? sessionId)
@@ -36,22 +51,43 @@ namespace BookingCalendarApi.Services
         {
             foreach (var room in rooms)
             {
-                var newSession = new SessionItem(Id, room.Id, room.Booking.LastModified);
-                var sessionItemQuery = SessionItems.Where(session => session.Id.Equals(Id) && session.TileId == room.Id);
-                if (sessionItemQuery.Any())
+                var query = Tiles.Where(session => session.TileId == room.Id);
+                if (query.Any())
                 {
-                    var sessionItem = sessionItemQuery.First();
-                    if (sessionItem.LastModified == room.Booking.LastModified)
+                    var tile = query.First();
+                    if (tile.LastModified == room.Booking.LastModified)
                     {
                         continue;
                     }
-                    _context.Entry(newSession).State = EntityState.Modified;
+                    tile.LastModified = room.Booking.LastModified;
                 } else
                 {
-                    _context.SessionMap.Add(newSession);
+                    Tiles.Add(new SessionTile(room.Id, room.Booking.LastModified));
                 }
 
                 yield return room;
+            }
+        }
+
+        public void Close()
+        {
+            var writer = new CborWriter();
+            writer.WriteStartArray(Tiles.Count * 2);
+            foreach (var tile in Tiles)
+            {
+                writer.WriteTextString(tile.TileId);
+                writer.WriteTextString(tile.LastModified);
+            }
+            writer.WriteEndArray();
+            var data = writer.Encode();
+
+            if (Entry != null && !Entry.Id.Equals(Guid.Empty))
+            {
+                Entry.Data = data;
+            }
+            else
+            {
+                _context.Sessions.Add(new SessionEntry(Id) { Data = data });
             }
         }
     }
