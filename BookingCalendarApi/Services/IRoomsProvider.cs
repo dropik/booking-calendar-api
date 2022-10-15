@@ -2,6 +2,7 @@ namespace BookingCalendarApi.Services
 {
     public interface IRoomsProvider
     {
-        public Task<IEnumerable<FlattenedRoom>> AccumulateAllRoomsAsync(string from, string to);
+        public Task AccumulateAllRoomsAsync(string from, string to);
+        public IEnumerable<FlattenedRoom> Rooms { get; }
     }
 }

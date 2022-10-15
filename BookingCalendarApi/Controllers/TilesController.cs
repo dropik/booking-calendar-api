@@ -32,7 +32,8 @@ namespace BookingCalendarApi.Controllers
                 var tileComposer = _tileComposerProvider();
                 await tileComposer.OpenAsync();
 
-                var rooms = await _roomsProvider.AccumulateAllRoomsAsync(from, to);
+                await _roomsProvider.AccumulateAllRoomsAsync(from, to);
+                var rooms = _roomsProvider.Rooms;
 
                 var tiles = rooms
                     .ExcludeBySession(session)

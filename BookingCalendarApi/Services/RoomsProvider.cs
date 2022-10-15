@@ -8,21 +8,23 @@ namespace BookingCalendarApi.Services
         {
             _iperbooking = iperbooking;
         }
+
+        public IEnumerable<FlattenedRoom> Rooms { get; private set; } = new List<FlattenedRoom>();
         
-        public async Task<IEnumerable<FlattenedRoom>> AccumulateAllRoomsAsync(string from, string to)
+        public async Task AccumulateAllRoomsAsync(string from, string to)
         {
             var (fromDate, toDate) = GetInitialRange(from, to);
-            var inRangeRooms = await GetFlattenedRoomsAsync(fromDate, toDate);
+            var rooms = await GetFlattenedRoomsAsync(fromDate, toDate);
 
             // extending search range to fetch all tiles that might possibly collide with
             // tiles that fall in the range, to ensure correct collision detection in front-end
-            if (inRangeRooms.Any())
+            if (rooms.Any())
             {
-                (fromDate, toDate) = GetExtendedRange(inRangeRooms);
-                inRangeRooms = await GetFlattenedRoomsAsync(fromDate, toDate);
+                (fromDate, toDate) = GetExtendedRange(rooms);
+                rooms = await GetFlattenedRoomsAsync(fromDate, toDate);
             }
 
-            return inRangeRooms;
+            Rooms = rooms;
         }
 
         private (DateTime fromDate, DateTime toDate) GetInitialRange(string from, string to)
