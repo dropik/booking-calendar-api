@@ -9,13 +9,13 @@ namespace BookingCalendarApi.Controllers
     [ApiController]
     public class TilesController : ControllerBase
     {
-        private readonly IIperbooking _iperbooking;
         private readonly BookingCalendarContext _context;
+        private readonly IRoomsProvider _roomsProvider;
 
-        public TilesController(IIperbooking iperbooking, BookingCalendarContext context)
+        public TilesController(BookingCalendarContext context, IRoomsProvider roomsProvider)
         {
-            _iperbooking = iperbooking;
             _context = context;
+            _roomsProvider = roomsProvider;
         }
 
         [HttpGet]
@@ -29,7 +29,7 @@ namespace BookingCalendarApi.Controllers
                 var sessions = await _context.Sessions.Where(session => session.Id.Equals(guid)).ToListAsync();
                 var tileAssignments = await _context.TileAssignments.ToListAsync();                
 
-                var inRangeRooms = await AccumulateAllRoomsAsync(from, to);
+                var inRangeRooms = await _roomsProvider.AccumulateAllRoomsAsync(from, to);
 
                 var tiles = inRangeRooms
                     .Where(roomData => !sessions.Any(session => session.Equals(new Session(guid, roomData.Id, roomData.Booking.LastModified))))
@@ -88,86 +88,5 @@ namespace BookingCalendarApi.Controllers
                 return BadRequest(ex.Message);
             }
         }
-
-        private async Task<IEnumerable<FlattenedRoom>> AccumulateAllRoomsAsync(string from, string to)
-        {
-            var (fromDate, toDate) = GetInitialRange(from, to);
-            var inRangeRooms = await GetFlattenedRoomsAsync(fromDate, toDate);
-
-            // extending search range to fetch all tiles that might possibly collide with
-            // tiles that fall in the range, to ensure correct collision detection in front-end
-            if (inRangeRooms.Any())
-            {
-                (fromDate, toDate) = GetExtendedRange(inRangeRooms);
-                inRangeRooms = await GetFlattenedRoomsAsync(fromDate, toDate);
-            }
-
-            return inRangeRooms;
-        }
-
-        private (DateTime fromDate, DateTime toDate) GetInitialRange(string from, string to)
-        {
-            return
-            (
-                DateTime.ParseExact(from, "yyyy-MM-dd", null),
-                DateTime.ParseExact(to, "yyyy-MM-dd", null)
-            );
-        }
-
-        private (DateTime fromDate, DateTime toDate) GetExtendedRange(IEnumerable<FlattenedRoom> rooms)
-        {
-            var firstArrival = rooms.OrderBy(tile => tile.From).First();
-            var lastDeparture = rooms.OrderBy(tile => tile.To).Last();
-
-            return
-            (
-                firstArrival.From,
-                lastDeparture.To.AddDays(-1)
-            );
-        }
-
-        private async Task<IEnumerable<FlattenedRoom>> GetFlattenedRoomsAsync(DateTime fromDate, DateTime toDate)
-        {
-            var arrivalFrom = fromDate.AddDays(-30).ToString("yyyyMMdd");
-            var arrivalTo = toDate.ToString("yyyyMMdd");
-
-            var bookings = await _iperbooking.GetBookingsAsync(arrivalFrom, arrivalTo);
-
-            return bookings
-                .SelectMany(
-                    booking => booking.Rooms,
-                    (booking, room) => new FlattenedRoom(
-                        room.StayId.ToString(),
-                        DateTime.ParseExact(room.Arrival, "yyyyMMdd", null),
-                        DateTime.ParseExact(room.Departure, "yyyyMMdd", null),
-                        booking,
-                        room
-                    ))
-                .Where(roomData => (roomData.To - fromDate).Days >= 0);
-        }
-    }
-
-    class FlattenedRoom
-    {
-        public FlattenedRoom(
-            string id,
-            DateTime from,
-            DateTime to,
-            Models.Iperbooking.Bookings.Booking booking,
-            Models.Iperbooking.Bookings.Room room
-        )
-        {
-            Id = id;
-            From = from;
-            To = to;
-            Booking = booking;
-            Room = room;
-        }
-
-        public string Id { get; set; }
-        public DateTime From { get; set; }
-        public DateTime To { get; set; }
-        public Models.Iperbooking.Bookings.Booking Booking { get; set; }
-        public Models.Iperbooking.Bookings.Room Room { get; set; }
     }
 }
