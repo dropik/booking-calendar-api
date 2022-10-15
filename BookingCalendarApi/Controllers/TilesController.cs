@@ -25,8 +25,6 @@ namespace BookingCalendarApi.Controllers
         {
             try
             {
-                var random = new Random();
-
                 var session = _sessionProvider();
                 await session.OpenAsync(sessionId);
 
@@ -34,42 +32,8 @@ namespace BookingCalendarApi.Controllers
 
                 var inRangeRooms = await _roomsProvider.AccumulateAllRoomsAsync(from, to);
 
-                var tiles = inRangeRooms
-                    .ExcludeBySession(session)
-                    .GroupJoin(
-                        tileAssignments,
-                        roomData => roomData.Id,
-                        assignment => assignment.Id,
-                        (roomData, assignments) => new { roomData, assignments }
-                    )
-                    .SelectMany(
-                        x => x.assignments.DefaultIfEmpty(),
-                        (join, assignment) => new Tile(
-                            id:             join.roomData.Id,
-                            bookingId:      join.roomData.Booking.BookingNumber.ToString(),
-                            name:           $"{join.roomData.Booking.FirstName} {join.roomData.Booking.LastName}",
-                            lastModified:   join.roomData.Booking.LastModified,
-                            from:           join.roomData.From.ToString("yyyy-MM-dd"),
-                            nights:         Convert.ToUInt32((join.roomData.To - join.roomData.From).Days),
-                            roomType:       join.roomData.Room.RoomName,
-                            entity:         join.roomData.Room.RoomName,
-                            persons:        Convert.ToUInt32(join.roomData.Room.Guests.Count()),
-                            color:          assignment?.Color ?? $"booking{(random.Next() % 8) + 1}"
-                        )
-                        {
-                            Status = join.roomData.Booking.Status,
-                            RoomId = assignment?.RoomId ?? null
-                        }
-                    )
-                    .ToList();
-
-                foreach (var tile in tiles)
-                {
-                    if (!tileAssignments.Any(a => a.Id.Equals(tile.Id)))
-                    {
-                        _context.TileAssignments.Add(new TileAssignment(tile.Id, tile.Color) { RoomId = tile.RoomId });
-                    }
-                }
+                var newTilesForSession = inRangeRooms.ExcludeBySession(session);
+                var tiles = ComposeWithAssignment(newTilesForSession, tileAssignments).ToList();
 
                 await session.CloseAsync();
                 await _context.SaveChangesAsync();
@@ -81,6 +45,56 @@ namespace BookingCalendarApi.Controllers
             } catch (Exception ex)
             {
                 return BadRequest(ex.Message);
+            }
+        }
+
+        private IEnumerable<Tile> ComposeWithAssignment(IEnumerable<FlattenedRoom> rooms, IEnumerable<TileAssignment> tileAssignments)
+        {
+            var random = new Random();
+
+            var tiles = rooms
+                .GroupJoin(
+                    tileAssignments,
+                    room => room.Id,
+                    assignment => assignment.Id,
+                    (room, assignments) => new { room, assignments }
+                )
+                .SelectMany(
+                    x => x.assignments.DefaultIfEmpty(),
+                    (join, assignment) => new { join.room, assignment }
+                );
+
+            foreach (var tile in tiles)
+            {
+                string color;
+                long? roomId;
+                if (tile.assignment == null)
+                {
+                    color = $"booking{(random.Next() % 8) + 1}";
+                    roomId = null;
+                    _context.TileAssignments.Add(new TileAssignment(tile.room.Id, color));
+                } else
+                {
+                    color = tile.assignment.Color;
+                    roomId = tile.assignment.RoomId;
+                }
+
+                yield return new Tile(
+                    id:             tile.room.Id,
+                    bookingId:      tile.room.Booking.BookingNumber.ToString(),
+                    name:           $"{tile.room.Booking.FirstName} {tile.room.Booking.LastName}",
+                    lastModified:   tile.room.Booking.LastModified,
+                    from:           tile.room.From.ToString("yyyy-MM-dd"),
+                    nights:         Convert.ToUInt32((tile.room.To - tile.room.From).Days),
+                    roomType:       tile.room.Room.RoomName,
+                    entity:         tile.room.Room.RoomName,
+                    persons:        Convert.ToUInt32(tile.room.Room.Guests.Count()),
+                    color:          color
+                )
+                {
+                    Status = tile.room.Booking.Status,
+                    RoomId = roomId
+                };
             }
         }
     }
