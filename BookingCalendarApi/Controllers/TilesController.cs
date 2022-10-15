@@ -29,21 +29,15 @@ namespace BookingCalendarApi.Controllers
                 var sessions = await _context.Sessions.Where(session => session.Id.Equals(guid)).ToListAsync();
                 var tileAssignments = await _context.TileAssignments.ToListAsync();                
 
-                var fromDate = DateTime.ParseExact(from, "yyyy-MM-dd", null);
-                var toDate = DateTime.ParseExact(to, "yyyy-MM-dd", null);
-
-                var inRangeTiles = await GetFlattenedRoomsAsync(fromDate, toDate, guid);
+                var (fromDate, toDate) = GetInitialRange(from, to);
+                var inRangeTiles = await GetFlattenedRoomsAsync(fromDate, toDate);
 
                 // extending search range to fetch all tiles that might possibly collide with
                 // tiles that fall in the range, to ensure correct collision detection in front-end
                 if (inRangeTiles.Any())
                 {
-                    var firstArrival = inRangeTiles.OrderBy(tile => tile.From).First();
-                    var lastDeparture = inRangeTiles.OrderBy(tile => tile.To).Last();
-                    fromDate = firstArrival.From;
-                    toDate = lastDeparture.To.AddDays(-1);
-                    
-                    inRangeTiles = await GetFlattenedRoomsAsync(fromDate, toDate, guid);
+                    (fromDate, toDate) = GetExtendedRange(inRangeTiles);
+                    inRangeTiles = await GetFlattenedRoomsAsync(fromDate, toDate);
                 }
 
                 var tiles = inRangeTiles
@@ -104,7 +98,28 @@ namespace BookingCalendarApi.Controllers
             }
         }
 
-        private async Task<IEnumerable<FlattenedRoom>> GetFlattenedRoomsAsync(DateTime fromDate, DateTime toDate, Guid guid)
+        private (DateTime fromDate, DateTime toDate) GetInitialRange(string from, string to)
+        {
+            return
+            (
+                DateTime.ParseExact(from, "yyyy-MM-dd", null),
+                DateTime.ParseExact(to, "yyyy-MM-dd", null)
+            );
+        }
+
+        private (DateTime fromDate, DateTime toDate) GetExtendedRange(IEnumerable<FlattenedRoom> rooms)
+        {
+            var firstArrival = rooms.OrderBy(tile => tile.From).First();
+            var lastDeparture = rooms.OrderBy(tile => tile.To).Last();
+
+            return
+            (
+                firstArrival.From,
+                lastDeparture.To.AddDays(-1)
+            );
+        }
+
+        private async Task<IEnumerable<FlattenedRoom>> GetFlattenedRoomsAsync(DateTime fromDate, DateTime toDate)
         {
             var arrivalFrom = fromDate.AddDays(-30).ToString("yyyyMMdd");
             var arrivalTo = toDate.ToString("yyyyMMdd");
