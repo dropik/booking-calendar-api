@@ -11,11 +11,13 @@ namespace BookingCalendarApi.Controllers
     {
         private readonly BookingCalendarContext _context;
         private readonly IRoomsProvider _roomsProvider;
+        private readonly Func<Services.ISession> _sessionProvider;
 
-        public TilesController(BookingCalendarContext context, IRoomsProvider roomsProvider)
+        public TilesController(BookingCalendarContext context, IRoomsProvider roomsProvider, Func<Services.ISession> sessionProvider)
         {
             _context = context;
             _roomsProvider = roomsProvider;
+            _sessionProvider = sessionProvider;
         }
 
         [HttpGet]
@@ -24,16 +26,16 @@ namespace BookingCalendarApi.Controllers
             try
             {
                 var random = new Random();
-                var guid = sessionId != null ? Guid.Parse(sessionId) : Guid.NewGuid();
 
-                var sessions = await _context.Sessions.Where(session => session.Id.Equals(guid)).ToListAsync();
+                var session = _sessionProvider();
+                await session.OpenAsync(sessionId);
+
                 var tileAssignments = await _context.TileAssignments.ToListAsync();                
 
                 var inRangeRooms = await _roomsProvider.AccumulateAllRoomsAsync(from, to);
 
-                var sessionTiles = ExcludeRoomsBySession(inRangeRooms, sessions, guid);
-
-                var tiles = sessionTiles
+                var tiles = inRangeRooms
+                    .ExcludeBySession(session)
                     .GroupJoin(
                         tileAssignments,
                         roomData => roomData.Id,
@@ -69,38 +71,16 @@ namespace BookingCalendarApi.Controllers
                     }
                 }
 
+                await session.CloseAsync();
                 await _context.SaveChangesAsync();
 
-                return new TileResponse(guid.ToString())
+                return new TileResponse(session.Id.ToString())
                 {
                     Tiles = tiles
                 };
             } catch (Exception ex)
             {
                 return BadRequest(ex.Message);
-            }
-        }
-
-        private IEnumerable<FlattenedRoom> ExcludeRoomsBySession(IEnumerable<FlattenedRoom> rooms, IEnumerable<Session> sessions, Guid guid)
-        {
-            foreach (var room in rooms)
-            {
-                var newSession = new Session(guid, room.Id, room.Booking.LastModified);
-                var sessionItemQuery = sessions.Where(session => session.Id.Equals(guid) && session.TileId == room.Id);
-                if (sessionItemQuery.Any())
-                {
-                    var sessionItem = sessionItemQuery.First();
-                    if (sessionItem.LastModified == room.Booking.LastModified)
-                    {
-                        continue;
-                    }
-                    _context.Entry(newSession).State = EntityState.Modified;
-                } else
-                {
-                    _context.Sessions.Add(newSession);
-                }
-
-                yield return room;
             }
         }
     }

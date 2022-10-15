@@ -2,9 +2,9 @@
 
 namespace BookingCalendarApi.Models
 {
-    public class Session
+    public class SessionItem
     {
-        public Session(Guid id, string tileId, string lastModified)
+        public SessionItem(Guid id, string tileId, string lastModified)
         {
             Id = id;
             TileId = tileId;
@@ -19,7 +19,7 @@ namespace BookingCalendarApi.Models
 
         public override bool Equals(object? obj)
         {
-            return obj is Session session &&
+            return obj is SessionItem session &&
                    Id.Equals(session.Id) &&
                    TileId == session.TileId &&
                    LastModified == session.LastModified;

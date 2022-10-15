@@ -21,6 +21,12 @@ builder.Services.AddDbContext<BookingCalendarContext>((options) =>
 
 builder.Services.AddSingleton<IIperbooking, Iperbooking>();
 builder.Services.AddTransient<IRoomsProvider, RoomsProvider>();
+builder.Services.AddTransient<BookingCalendarApi.Services.ISession, Session>();
+
+#nullable disable
+builder.Services.AddTransient<Func<BookingCalendarApi.Services.ISession>>(
+    serviceProvider => () => serviceProvider.GetService<BookingCalendarApi.Services.ISession>());
+#nullable enable
 
 var app = builder.Build();
 

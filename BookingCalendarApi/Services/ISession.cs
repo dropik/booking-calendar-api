@@ -2,7 +2,8 @@ namespace BookingCalendarApi.Services
 {
     public interface ISession
     {
-        public Task OpenAsync();
+        public Guid Id { get; }
+        public Task OpenAsync(string? sessionId);
         public IEnumerable<FlattenedRoom> ExcludeRooms(IEnumerable<FlattenedRoom> rooms);
         public Task CloseAsync();
     }
