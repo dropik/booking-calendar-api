@@ -32,7 +32,7 @@ namespace BookingCalendarApi.Controllers
                 var fromDate = DateTime.ParseExact(from, "yyyy-MM-dd", null);
                 var toDate = DateTime.ParseExact(to, "yyyy-MM-dd", null);
 
-                var inRangeTiles = await GetFlattenedRoomsAsync(fromDate, toDate, sessions, guid);
+                var inRangeTiles = await GetFlattenedRoomsAsync(fromDate, toDate, guid);
 
                 // extending search range to fetch all tiles that might possibly collide with
                 // tiles that fall in the range, to ensure correct collision detection in front-end
@@ -43,10 +43,11 @@ namespace BookingCalendarApi.Controllers
                     fromDate = firstArrival.From;
                     toDate = lastDeparture.To.AddDays(-1);
                     
-                    inRangeTiles = await GetFlattenedRoomsAsync(fromDate, toDate, sessions, guid);
+                    inRangeTiles = await GetFlattenedRoomsAsync(fromDate, toDate, guid);
                 }
 
                 var tiles = inRangeTiles
+                    .Where(roomData => !sessions.Any(session => session.Equals(new Session(guid, roomData.Id, roomData.Booking.LastModified))))
                     .GroupJoin(
                         tileAssignments,
                         roomData => roomData.Id,
@@ -84,7 +85,7 @@ namespace BookingCalendarApi.Controllers
                     {
                         _context.Entry(newSession).State = EntityState.Modified;
                     }
-                    
+
                     if (!tileAssignments.Any(a => a.Id.Equals(tile.Id)))
                     {
                         _context.TileAssignments.Add(new TileAssignment(tile.Id, tile.Color) { RoomId = tile.RoomId });
@@ -103,7 +104,7 @@ namespace BookingCalendarApi.Controllers
             }
         }
 
-        private async Task<IEnumerable<FlattenedRoom>> GetFlattenedRoomsAsync(DateTime fromDate, DateTime toDate, IEnumerable<Session> sessions, Guid guid)
+        private async Task<IEnumerable<FlattenedRoom>> GetFlattenedRoomsAsync(DateTime fromDate, DateTime toDate, Guid guid)
         {
             var arrivalFrom = fromDate.AddDays(-30).ToString("yyyyMMdd");
             var arrivalTo = toDate.ToString("yyyyMMdd");
@@ -120,7 +121,6 @@ namespace BookingCalendarApi.Controllers
                         booking,
                         room
                     ))
-                .Where(roomData => !sessions.Any(session => session.Equals(new Session(guid, roomData.Id, roomData.Booking.LastModified))))
                 .Where(roomData => (roomData.To - fromDate).Days >= 0);
         }
     }
