@@ -16,5 +16,18 @@ namespace BookingCalendarApi.Models
         public string TileId { get; set; }
         [Required]
         public string LastModified { get; set; }
+
+        public override bool Equals(object? obj)
+        {
+            return obj is Session session &&
+                   Id.Equals(session.Id) &&
+                   TileId == session.TileId &&
+                   LastModified == session.LastModified;
+        }
+
+        public override int GetHashCode()
+        {
+            return HashCode.Combine(Id, TileId, LastModified);
+        }
     }
 }

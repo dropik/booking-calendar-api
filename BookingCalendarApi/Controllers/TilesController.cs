@@ -63,7 +63,7 @@ namespace BookingCalendarApi.Controllers
                             From = DateTime.ParseExact(room.Arrival, "yyyyMMdd", null),
                             To = DateTime.ParseExact(room.Departure, "yyyyMMdd", null)
                         })
-                    .Where(roomData => !sessions.Any(session => session.Id.Equals(guid) && session.TileId.Equals(roomData.Id)))
+                    .Where(roomData => !sessions.Any(session => session.Equals(new Session(guid, roomData.Id, roomData.booking.LastModified))))
                     .Where(roomData => (roomData.To - fromDate).Days >= 0);
 
                 // extending search range to fetch all tiles that might possibly collide with
@@ -89,7 +89,7 @@ namespace BookingCalendarApi.Controllers
                                 From = DateTime.ParseExact(room.Arrival, "yyyyMMdd", null),
                                 To = DateTime.ParseExact(room.Departure, "yyyyMMdd", null)
                             })
-                        .Where(roomData => !sessions.Any(session => session.Id.Equals(guid) && session.TileId.Equals(roomData.Id)))
+                        .Where(roomData => !sessions.Any(session => session.Equals(new Session(guid, roomData.Id, roomData.booking.LastModified))))
                         .Where(roomData => (roomData.To - fromDate).Days >= 0);
                 }
 
@@ -123,7 +123,14 @@ namespace BookingCalendarApi.Controllers
 
                 foreach (var tile in tiles)
                 {
-                    _context.Sessions.Add(new Session(guid, tile.Id, tile.LastModified));
+                    var newSession = new Session(guid, tile.Id, tile.LastModified);
+                    if (!sessions.Any(session => session.Equals(newSession)))
+                    {
+                        _context.Sessions.Add(newSession);
+                    } else
+                    {
+                        _context.Entry(newSession).State = EntityState.Modified;
+                    }
                     if (!tileAssignments.Any(a => a.Id.Equals(tile.Id)))
                     {
                         _context.TileAssignments.Add(new TileAssignment(tile.Id, tile.Color) { RoomId = tile.RoomId });

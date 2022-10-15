@@ -1,6 +1,3 @@
 tiles fetch:
-- resend tile if was modified:
-  - if current last modified is different - include in response
-  - update last data
 - pretty it
 - optimize it
