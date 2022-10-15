@@ -54,10 +54,5 @@ namespace BookingCalendarApi.Services
                 yield return room;
             }
         }
-
-        public async Task CloseAsync()
-        {
-            await _context.SaveChangesAsync();
-        }
     }
 }

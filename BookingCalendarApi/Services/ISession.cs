@@ -5,6 +5,5 @@ namespace BookingCalendarApi.Services
         public Guid Id { get; }
         public Task OpenAsync(string? sessionId);
         public IEnumerable<FlattenedRoom> ExcludeRooms(IEnumerable<FlattenedRoom> rooms);
-        public Task CloseAsync();
     }
 }
