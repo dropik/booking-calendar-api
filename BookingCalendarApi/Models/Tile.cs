@@ -9,6 +9,7 @@ namespace BookingCalendarApi.Models
             string id,
             string bookingId,
             string name,
+            string lastModified,
             string from,
             uint nights,
             string roomType,
@@ -20,6 +21,7 @@ namespace BookingCalendarApi.Models
             Id = id;
             BookingId = bookingId;
             Name = name;
+            LastModified = lastModified;
             From = from;
             Nights = nights;
             RoomType = roomType;
@@ -33,6 +35,7 @@ namespace BookingCalendarApi.Models
         [JsonConverter(typeof(LowerCaseEnumConverter))]
         public Status Status { get; set; } = Status.New;
         public string Name { get; set; }
+        public string LastModified { get; set; }
         public string From { get; set; }
         public uint Nights { get; set; }
         public string RoomType { get; set; }

@@ -103,15 +103,16 @@ namespace BookingCalendarApi.Controllers
                     .SelectMany(
                         x => x.assignments.DefaultIfEmpty(),
                         (join, assignment) => new Tile(
-                            id:         join.roomData.Id,
-                            bookingId:  join.roomData.booking.BookingNumber.ToString(),
-                            name:       $"{join.roomData.booking.FirstName} {join.roomData.booking.LastName}",
-                            from:       join.roomData.From.ToString("yyyy-MM-dd"),
-                            nights:     Convert.ToUInt32((join.roomData.To - join.roomData.From).Days),
-                            roomType:   join.roomData.room.RoomName,
-                            entity:     join.roomData.room.RoomName,
-                            persons:    Convert.ToUInt32(join.roomData.room.Guests.Count()),
-                            color:      assignment?.Color ?? $"booking{(random.Next() % 8) + 1}"
+                            id:             join.roomData.Id,
+                            bookingId:      join.roomData.booking.BookingNumber.ToString(),
+                            name:           $"{join.roomData.booking.FirstName} {join.roomData.booking.LastName}",
+                            lastModified:   join.roomData.booking.LastModified,
+                            from:           join.roomData.From.ToString("yyyy-MM-dd"),
+                            nights:         Convert.ToUInt32((join.roomData.To - join.roomData.From).Days),
+                            roomType:       join.roomData.room.RoomName,
+                            entity:         join.roomData.room.RoomName,
+                            persons:        Convert.ToUInt32(join.roomData.room.Guests.Count()),
+                            color:          assignment?.Color ?? $"booking{(random.Next() % 8) + 1}"
                         )
                         {
                             Status = join.roomData.booking.Status,
@@ -122,7 +123,7 @@ namespace BookingCalendarApi.Controllers
 
                 foreach (var tile in tiles)
                 {
-                    _context.Sessions.Add(new Session(guid, tile.Id));
+                    _context.Sessions.Add(new Session(guid, tile.Id, tile.LastModified));
                     if (!tileAssignments.Any(a => a.Id.Equals(tile.Id)))
                     {
                         _context.TileAssignments.Add(new TileAssignment(tile.Id, tile.Color) { RoomId = tile.RoomId });
