@@ -4,12 +4,14 @@ namespace BookingCalendarApi.Services
 {
     public class ColorizedBooking : Booking
     {
-        public ColorizedBooking(long bookingNumber, string firstName, string lastName, string lastModified, string color) :
-            base(bookingNumber, firstName, lastName, lastModified)
+        public ColorizedBooking(Booking booking, string? color) :
+            base(booking.BookingNumber, booking.FirstName, booking.LastName, booking.LastModified)
         {
+            Status = booking.Status;
+            Rooms = booking.Rooms;
             Color = color;
         }
 
-        public string Color { get; set; }
+        public string? Color { get; set; }
     }
 }

@@ -4,7 +4,7 @@ namespace BookingCalendarApi.Services
 {
     public static class BookingsExtensions
     {        
-        public static IEnumerable<FlattenedRoom> SelectInRangeRooms(this IEnumerable<Booking> bookings, string from, string to)
+        public static IEnumerable<FlattenedRoom> SelectInRangeRooms(this IEnumerable<ColorizedBooking> bookings, string from, string to)
         {
             var (fromDate, toDate) = GetInitialRange(from, to);
             var rooms = bookings.Flatten().ExcludeByRange(fromDate, toDate);
@@ -20,7 +20,7 @@ namespace BookingCalendarApi.Services
             return rooms;
         }
 
-        private static IEnumerable<FlattenedRoom> Flatten(this IEnumerable<Booking> bookings)
+        public static IEnumerable<FlattenedRoom> Flatten(this IEnumerable<ColorizedBooking> bookings)
         {
             return bookings
                .SelectMany(

@@ -10,20 +10,23 @@ namespace BookingCalendarApi.Controllers
     {
         private readonly BookingCalendarContext _context;
         private readonly IBookingsProvider _bookingsProvider;
+        private readonly IBookingColorizer _bookingColorizer;
         private readonly Func<Services.ISession> _sessionProvider;
-        private readonly Func<ITileComposer> _tileComposerProvider;
+        private readonly ITileComposer _tileComposer;
 
         public TilesController(
             BookingCalendarContext context,
             IBookingsProvider bookingsProvider,
+            IBookingColorizer bookingColorizer,
             Func<Services.ISession> sessionProvider,
-            Func<ITileComposer> tileComposerProvider
+            ITileComposer tileComposer
         )
         {
             _context = context;
             _bookingsProvider = bookingsProvider;
+            _bookingColorizer = bookingColorizer;
             _sessionProvider = sessionProvider;
-            _tileComposerProvider = tileComposerProvider;
+            _tileComposer = tileComposer;
         }
 
         [HttpGet]
@@ -32,7 +35,6 @@ namespace BookingCalendarApi.Controllers
             try
             {
                 var session = _sessionProvider();
-                var tileComposer = _tileComposerProvider();
 
                 await Task.WhenAll(
                     session.OpenAsync(sessionId),
@@ -40,9 +42,10 @@ namespace BookingCalendarApi.Controllers
                 );
 
                 var tiles = _bookingsProvider.Bookings
+                    .UseColorizer(_bookingColorizer)
                     .SelectInRangeRooms(from, to)
                     .ExcludeBySession(session)
-                    .UseComposer(tileComposer)
+                    .UseComposer(_tileComposer)
                     .ToList();
 
                 return new TileResponse(session.Id.ToString())

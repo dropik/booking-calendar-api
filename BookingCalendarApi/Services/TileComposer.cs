@@ -37,7 +37,7 @@ namespace BookingCalendarApi.Services
                     )
                     {
                         Status = join.room.Booking.Status,
-                        Color = assignment?.Color ?? null,
+                        Color = join.room.Booking.Color,
                         RoomId = assignment?.RoomId ?? null
                     }
                 );

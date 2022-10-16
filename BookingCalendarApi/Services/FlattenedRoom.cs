@@ -6,7 +6,7 @@ namespace BookingCalendarApi.Services
             string id,
             DateTime from,
             DateTime to,
-            Models.Iperbooking.Bookings.Booking booking,
+            ColorizedBooking booking,
             Models.Iperbooking.Bookings.Room room
         )
         {
@@ -20,7 +20,7 @@ namespace BookingCalendarApi.Services
         public string Id { get; set; }
         public DateTime From { get; set; }
         public DateTime To { get; set; }
-        public Models.Iperbooking.Bookings.Booking Booking { get; set; }
+        public ColorizedBooking Booking { get; set; }
         public Models.Iperbooking.Bookings.Room Room { get; set; }
     }
 }

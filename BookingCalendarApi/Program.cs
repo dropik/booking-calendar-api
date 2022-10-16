@@ -21,14 +21,13 @@ builder.Services.AddDbContext<BookingCalendarContext>((options) =>
 
 builder.Services.AddSingleton<IIperbooking, Iperbooking>();
 builder.Services.AddTransient<IBookingsProvider, BookingsProvider>();
+builder.Services.AddTransient<IBookingColorizer, BookingColorizer>();
 builder.Services.AddTransient<BookingCalendarApi.Services.ISession, Session>();
 builder.Services.AddTransient<ITileComposer, TileComposer>();
 
 #nullable disable
 builder.Services.AddTransient<Func<BookingCalendarApi.Services.ISession>>(
     serviceProvider => () => serviceProvider.GetService<BookingCalendarApi.Services.ISession>());
-builder.Services.AddTransient<Func<ITileComposer>>(
-    serviceProvider => () => serviceProvider.GetService<ITileComposer>());
 #nullable enable
 
 var app = builder.Build();
