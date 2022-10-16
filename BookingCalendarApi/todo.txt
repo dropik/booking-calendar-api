@@ -1,2 +1,0 @@
-tiles fetch:
-- handle repeating stay ids

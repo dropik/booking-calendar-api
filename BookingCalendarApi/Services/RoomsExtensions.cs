@@ -10,7 +10,7 @@ namespace BookingCalendarApi.Services
                .SelectMany(
                    booking => booking.Rooms,
                    (booking, room) => new FlattenedRoom(
-                       room.StayId.ToString(),
+                       $"{room.StayId}-{room.Arrival}-{room.Departure}",
                        DateTime.ParseExact(room.Arrival, "yyyyMMdd", null),
                        DateTime.ParseExact(room.Departure, "yyyyMMdd", null),
                        booking,
