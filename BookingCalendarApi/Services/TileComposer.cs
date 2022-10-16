@@ -13,16 +13,11 @@ namespace BookingCalendarApi.Services
             _context = context;
         }
 
-        public async Task OpenAsync()
-        {
-            TileAssignments = await _context.TileAssignments.ToListAsync();
-        }
-
         public IEnumerable<Tile> Compose(IEnumerable<FlattenedRoom> rooms)
         {
             return rooms
                 .GroupJoin(
-                    TileAssignments,
+                    _context.TileAssignments,
                     room => room.Id,
                     assignment => assignment.Id,
                     (room, assignments) => new { room, assignments }

@@ -29,8 +29,6 @@ builder.Services.AddTransient<Func<BookingCalendarApi.Services.ISession>>(
     serviceProvider => () => serviceProvider.GetService<BookingCalendarApi.Services.ISession>());
 builder.Services.AddTransient<Func<ITileComposer>>(
     serviceProvider => () => serviceProvider.GetService<ITileComposer>());
-builder.Services.AddTransient<Func<Func<Task>, Func<Task>, IAsyncScheduler>>(
-    serviceProvider => (Func<Task> contextBoundAction, Func<Task> nonContextAction) => new ContextBoundAsyncSplitter(contextBoundAction, nonContextAction));
 #nullable enable
 
 var app = builder.Build();

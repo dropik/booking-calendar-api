@@ -12,21 +12,18 @@ namespace BookingCalendarApi.Controllers
         private readonly IRoomsProvider _roomsProvider;
         private readonly Func<Services.ISession> _sessionProvider;
         private readonly Func<ITileComposer> _tileComposerProvider;
-        private readonly Func<Func<Task>, Func<Task>, IAsyncScheduler> _asyncSchedulerProvider;
 
         public TilesController(
             BookingCalendarContext context,
             IRoomsProvider roomsProvider,
             Func<Services.ISession> sessionProvider,
-            Func<ITileComposer> tileComposerProvider,
-            Func<Func<Task>, Func<Task>, IAsyncScheduler> asyncSchedulerProvider
+            Func<ITileComposer> tileComposerProvider
         )
         {
             _context = context;
             _roomsProvider = roomsProvider;
             _sessionProvider = sessionProvider;
             _tileComposerProvider = tileComposerProvider;
-            _asyncSchedulerProvider = asyncSchedulerProvider;
         }
 
         [HttpGet]
@@ -37,16 +34,10 @@ namespace BookingCalendarApi.Controllers
                 var session = _sessionProvider();
                 var tileComposer = _tileComposerProvider();
 
-                var scheduler = _asyncSchedulerProvider(
-                    async () =>
-                    {
-                        await session.OpenAsync(sessionId);
-                        await tileComposer.OpenAsync();
-                    },
-                    async () => await _roomsProvider.AccumulateAllRoomsAsync(from, to)
+                await Task.WhenAll(
+                    session.OpenAsync(sessionId),
+                    _roomsProvider.AccumulateAllRoomsAsync(from, to)
                 );
-
-                await scheduler.Execute();
 
                 var tiles = _roomsProvider.Rooms
                     .ExcludeBySession(session)
