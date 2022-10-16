@@ -4,13 +4,13 @@ using Microsoft.EntityFrameworkCore;
 
 namespace BookingCalendarApi.Controllers
 {
-    [Route("api/v1/[controller]")]
+    [Route("api/v1/[color-assignments]")]
     [ApiController]
-    public class ColorsController : ControllerBase
+    public class ColorAssignmentsController : ControllerBase
     {
         private readonly BookingCalendarContext _context;
 
-        public ColorsController(BookingCalendarContext context)
+        public ColorAssignmentsController(BookingCalendarContext context)
         {
             _context = context;
         }
@@ -27,7 +27,7 @@ namespace BookingCalendarApi.Controllers
             {
                 foreach (var (bookingId, color) in colors)
                 {
-                    await StoreColorAsync(bookingId, color);
+                    await StoreAssignmentAsync(bookingId, color);
                 }
 
                 await _context.SaveChangesAsync();
@@ -39,7 +39,7 @@ namespace BookingCalendarApi.Controllers
             }
         }
 
-        private async Task StoreColorAsync(string bookingId, string color)
+        private async Task StoreAssignmentAsync(string bookingId, string color)
         {
             var assignment = await _context.ColorAssignments.SingleOrDefaultAsync(a => a.BookingId == bookingId);
             if (assignment != null && assignment.BookingId == bookingId)
