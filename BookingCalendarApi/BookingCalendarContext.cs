@@ -10,7 +10,7 @@ namespace BookingCalendarApi
         public DbSet<Floor> Floors => Set<Floor>();
         public DbSet<Room> Rooms => Set<Room>();
         public DbSet<SessionEntry> Sessions => Set<SessionEntry>();
-        public DbSet<TileAssignment> TileAssignments => Set<TileAssignment>();
+        public DbSet<RoomAssignment> RoomAssignments => Set<RoomAssignment>();
         public DbSet<ColorAssignment> ColorAssignments => Set<ColorAssignment>();
 
         protected override void OnModelCreating(ModelBuilder builder)
@@ -23,11 +23,11 @@ namespace BookingCalendarApi
                 .IsRequired()
                 .OnDelete(DeleteBehavior.Cascade);
 
-            builder.Entity<TileAssignment>()
+            builder.Entity<RoomAssignment>()
                 .HasOne<Room>()
                 .WithMany()
                 .HasForeignKey(a => a.RoomId)
-                .OnDelete(DeleteBehavior.Cascade);
+                .OnDelete(DeleteBehavior.SetNull);
         }
     }
 }

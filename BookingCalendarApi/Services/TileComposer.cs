@@ -1,12 +1,10 @@
 ﻿using BookingCalendarApi.Models;
-using Microsoft.EntityFrameworkCore;
 
 namespace BookingCalendarApi.Services
 {
     public class TileComposer : ITileComposer
     {
         private readonly BookingCalendarContext _context;
-        private IEnumerable<TileAssignment> TileAssignments { get; set; } = new List<TileAssignment>();
 
         public TileComposer(BookingCalendarContext context)
         {
@@ -17,7 +15,7 @@ namespace BookingCalendarApi.Services
         {
             return rooms
                 .GroupJoin(
-                    _context.TileAssignments,
+                    _context.RoomAssignments,
                     room => room.Id,
                     assignment => assignment.Id,
                     (room, assignments) => new { room, assignments }
