@@ -6,31 +6,25 @@ namespace BookingCalendarApi.Controllers
 {
     [Route("api/v1/[controller]")]
     [ApiController]
-    public class TilesController : ControllerBase
+    public class BookingsController : ControllerBase
     {
-        private readonly BookingCalendarContext _context;
         private readonly IBookingsProvider _bookingsProvider;
-        private readonly IBookingColorizer _bookingColorizer;
+        private readonly IBookingComposer _bookingComposer;
         private readonly Func<Services.ISession> _sessionProvider;
-        private readonly ITileComposer _tileComposer;
 
-        public TilesController(
-            BookingCalendarContext context,
+        public BookingsController(
             IBookingsProvider bookingsProvider,
-            IBookingColorizer bookingColorizer,
-            Func<Services.ISession> sessionProvider,
-            ITileComposer tileComposer
+            IBookingComposer bookingColorizer,
+            Func<Services.ISession> sessionProvider
         )
         {
-            _context = context;
             _bookingsProvider = bookingsProvider;
-            _bookingColorizer = bookingColorizer;
+            _bookingComposer = bookingColorizer;
             _sessionProvider = sessionProvider;
-            _tileComposer = tileComposer;
         }
 
         [HttpGet]
-        public async Task<ActionResult<TileResponse>> GetAsync(string from, string to, string? sessionId)
+        public async Task<ActionResult<BookingsControllerResponse>> GetAsync(string from, string to, string? sessionId)
         {
             try
             {
@@ -41,16 +35,15 @@ namespace BookingCalendarApi.Controllers
                     _bookingsProvider.FetchBookingsAsync(from, to)
                 );
 
-                var tiles = _bookingsProvider.Bookings
-                    .UseColorizer(_bookingColorizer)
-                    .SelectInRangeRooms(from, to)
+                var bookings = _bookingsProvider.Bookings
+                    .SelectInRangeBookings(from, to)
                     .ExcludeBySession(session)
-                    .UseComposer(_tileComposer)
+                    .UseComposer(_bookingComposer)
                     .ToList();
 
-                return new TileResponse(session.Id.ToString())
+                return new BookingsControllerResponse(session.Id.ToString())
                 {
-                    Tiles = tiles
+                    Bookings = bookings
                 };
             } catch (Exception ex)
             {

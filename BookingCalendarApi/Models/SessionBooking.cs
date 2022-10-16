@@ -1,26 +1,26 @@
 ﻿namespace BookingCalendarApi.Models
 {
-    public class SessionTile
+    public class SessionBooking
     {
-        public SessionTile(string tileId, string lastModified)
+        public SessionBooking(string bookingId, string lastModified)
         {
-            TileId = tileId;
+            BookingId = bookingId;
             LastModified = lastModified;
         }
 
-        public string TileId { get; set; }
+        public string BookingId { get; set; }
         public string LastModified { get; set; }
 
         public override bool Equals(object? obj)
         {
-            return obj is SessionTile tile &&
-                   TileId == tile.TileId &&
+            return obj is SessionBooking tile &&
+                   BookingId == tile.BookingId &&
                    LastModified == tile.LastModified;
         }
 
         public override int GetHashCode()
         {
-            return HashCode.Combine(TileId, LastModified);
+            return HashCode.Combine(BookingId, LastModified);
         }
     }
 }

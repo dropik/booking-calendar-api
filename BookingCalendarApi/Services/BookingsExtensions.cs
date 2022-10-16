@@ -4,39 +4,30 @@ namespace BookingCalendarApi.Services
 {
     public static class BookingsExtensions
     {        
-        public static IEnumerable<FlattenedRoom> SelectInRangeRooms(this IEnumerable<ColorizedBooking> bookings, string from, string to)
+        public static IEnumerable<Booking> SelectInRangeBookings(this IEnumerable<Booking> bookings, string from, string to)
         {
             var (fromDate, toDate) = GetInitialRange(from, to);
-            var rooms = bookings.Flatten().ExcludeByRange(fromDate, toDate);
+            var rooms = bookings.ExcludeByRange(fromDate, toDate);
 
             // extending search range to fetch all tiles that might possibly collide with
             // tiles that fall in the range, to ensure correct collision detection in front-end
             if (rooms.Any())
             {
                 (fromDate, toDate) = GetExtendedRange(rooms);
-                rooms = bookings.Flatten().ExcludeByRange(fromDate, toDate);
+                rooms = bookings.ExcludeByRange(fromDate, toDate);
             }
 
             return rooms;
         }
 
-        public static IEnumerable<FlattenedRoom> Flatten(this IEnumerable<ColorizedBooking> bookings)
+        private static IEnumerable<Booking> ExcludeByRange(this IEnumerable<Booking> bookings, DateTime fromDate, DateTime toDate)
         {
             return bookings
-               .SelectMany(
-                   booking => booking.Rooms,
-                   (booking, room) => new FlattenedRoom(
-                       $"{room.StayId}-{room.Arrival}-{room.Departure}",
-                       DateTime.ParseExact(room.Arrival, "yyyyMMdd", null),
-                       DateTime.ParseExact(room.Departure, "yyyyMMdd", null),
-                       booking,
-                       room
-                   ));
-        }
-
-        private static IEnumerable<FlattenedRoom> ExcludeByRange(this IEnumerable<FlattenedRoom> rooms, DateTime fromDate, DateTime toDate)
-        {
-            return rooms.Where(room => (room.To - fromDate).Days >= 0 && (toDate - room.From).Days >= 0);
+                .Where(booking => booking.Rooms
+                    .Where(room =>
+                        (DateTime.ParseExact(room.Departure, "yyyyMMdd", null) - fromDate).Days >= 0 &&
+                        (toDate - DateTime.ParseExact(room.Arrival, "yyyyMMdd", null)).Days >= 0)
+                    .Any());
         }
 
         private static (DateTime fromDate, DateTime toDate) GetInitialRange(string from, string to)
@@ -48,15 +39,16 @@ namespace BookingCalendarApi.Services
             );
         }
 
-        private static (DateTime fromDate, DateTime toDate) GetExtendedRange(IEnumerable<FlattenedRoom> rooms)
+        private static (DateTime fromDate, DateTime toDate) GetExtendedRange(IEnumerable<Booking> bookings)
         {
-            var firstArrival = rooms.OrderBy(tile => tile.From).First();
-            var lastDeparture = rooms.OrderBy(tile => tile.To).Last();
+            var rooms = bookings.SelectMany(booking => booking.Rooms, (booking, room) => room);
+            var firstArrival = rooms.OrderBy(tile => tile.Arrival).First();
+            var lastDeparture = rooms.OrderBy(tile => tile.Departure).Last();
 
             return
             (
-                firstArrival.From.AddDays(1),
-                lastDeparture.To.AddDays(-1)
+                DateTime.ParseExact(firstArrival.Arrival, "yyyyMMdd", null).AddDays(1),
+                DateTime.ParseExact(lastDeparture.Departure, "yyyyMMdd", null).AddDays(-1)
             );
         }
     }

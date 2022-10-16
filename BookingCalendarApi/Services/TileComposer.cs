@@ -1,4 +1,5 @@
-﻿using BookingCalendarApi.Models;
+﻿using BookingCalendarApi.Controllers.Internal;
+using BookingCalendarApi.Models.Iperbooking.Bookings;
 
 namespace BookingCalendarApi.Services
 {
@@ -11,31 +12,26 @@ namespace BookingCalendarApi.Services
             _context = context;
         }
 
-        public IEnumerable<Tile> Compose(IEnumerable<FlattenedRoom> rooms)
+        public IEnumerable<Tile> Compose(IEnumerable<Room> rooms)
         {
             return rooms
                 .GroupJoin(
                     _context.RoomAssignments,
-                    room => room.Id,
+                    room => $"{room.StayId}-{room.Arrival}-{room.Departure}",
                     assignment => assignment.Id,
                     (room, assignments) => new { room, assignments }
                 )
                 .SelectMany(
                     x => x.assignments.DefaultIfEmpty(),
                     (join, assignment) => new Tile(
-                        id: join.room.Id,
-                        bookingId: join.room.Booking.BookingNumber.ToString(),
-                        name: $"{join.room.Booking.FirstName} {join.room.Booking.LastName}",
-                        lastModified: join.room.Booking.LastModified,
-                        from: join.room.From.ToString("yyyy-MM-dd"),
-                        nights: Convert.ToUInt32((join.room.To - join.room.From).Days),
-                        roomType: join.room.Room.RoomName,
-                        entity: join.room.Room.RoomName,
-                        persons: Convert.ToUInt32(join.room.Room.Guests.Count())
+                        id: $"{join.room.StayId}-{join.room.Arrival}-{join.room.Departure}",
+                        from: DateTime.ParseExact(join.room.Arrival, "yyyyMMdd", null).ToString("yyyy-MM-dd"),
+                        nights: Convert.ToUInt32((DateTime.ParseExact(join.room.Departure, "yyyyMMdd", null) - DateTime.ParseExact(join.room.Arrival, "yyyyMMdd", null)).Days),
+                        roomType: join.room.RoomName,
+                        entity: join.room.RoomName,
+                        persons: Convert.ToUInt32(join.room.Guests.Count)
                     )
                     {
-                        Status = join.room.Booking.Status,
-                        Color = join.room.Booking.Color,
                         RoomId = assignment?.RoomId ?? null
                     }
                 );
