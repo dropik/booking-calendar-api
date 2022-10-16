@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using BookingCalendarApi.Models;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace BookingCalendarApi.Controllers
 {
@@ -6,10 +8,50 @@ namespace BookingCalendarApi.Controllers
     [ApiController]
     public class ChangesController : ControllerBase
     {
+        private readonly BookingCalendarContext _context;
+
+        public ChangesController(BookingCalendarContext context)
+        {
+            _context = context;
+        }
+
         [HttpPost]
         public async Task<IActionResult> PostAsync(IDictionary<string, ChangeDesc> changes)
         {
-            return Ok();
+            if (changes == null)
+            {
+                return Ok();
+            }
+
+            try
+            {
+                foreach (var (tileId, change) in changes)
+                {
+                    var assignment = await _context.TileAssignments.SingleOrDefaultAsync(a => a.Id == tileId);
+                    if (assignment != null && assignment.Id != string.Empty)
+                    {
+                        if (change.NewColor != null)
+                        {
+                            assignment.Color = change.NewColor;
+                        }
+                    }
+                    else
+                    {
+                        if (change.NewColor != null)
+                        {
+                            _context.TileAssignments.Add(new TileAssignment(tileId, change.NewColor));
+                        }
+                    }
+                }
+
+                await _context.SaveChangesAsync();
+
+                return Ok();
+            }
+            catch (Exception)
+            {
+                return BadRequest();
+            }
         }
     }
 }
