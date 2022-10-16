@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace BookingCalendarApi.Controllers
 {
-    [Route("api/v1/[color-assignments]")]
+    [Route("api/v1/color-assignments")]
     [ApiController]
     public class ColorAssignmentsController : ControllerBase
     {
