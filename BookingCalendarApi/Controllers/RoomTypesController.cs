@@ -1,7 +1,6 @@
 ﻿using BookingCalendarApi.Models;
 using BookingCalendarApi.Services;
 using Microsoft.AspNetCore.Mvc;
-using RoomRate = BookingCalendarApi.Models.Iperbooking.Room;
 
 namespace BookingCalendarApi.Controllers
 {
@@ -17,42 +16,26 @@ namespace BookingCalendarApi.Controllers
         }
 
         [HttpGet]
-        public async Task<IEnumerable<RoomType>> GetAsync()
+        public async Task<ActionResult<IEnumerable<RoomType>>> GetAsync()
         {
-            var roomRates = await iperbooking.GetRoomRates();
-            return ConvertRoomRatesToRoomTypes(roomRates);
+            var roomRates = await iperbooking.GetRoomRatesAsync();
+            return roomRates.SelectRoomTypes().ToList();
         }
+    }
 
-        private IEnumerable<RoomType> ConvertRoomRatesToRoomTypes(ICollection<RoomRate> roomRates)
+    static class Extensions
+    {
+        public static IEnumerable<RoomType> SelectRoomTypes(this IEnumerable<Models.Iperbooking.RoomRates.Room> roomRates)
         {
-            foreach (var roomRate in roomRates)
-            {
-                var newType = new RoomType()
-                {
-                    Name = roomRate.RoomName
-                };
-
-                if (roomRate.RateGroups.Count > 0)
-                {
-                    var rateGroup = roomRate.RateGroups.ElementAt(0);
-                    if (rateGroup.Rates.Count > 0)
-                    {
-                        var rate = rateGroup.Rates.ElementAt(0);
-                        newType.MinOccupancy = rate.MinOccupancy;
-                        newType.MaxOccupancy = rate.MaxOccupancy;
-                    }
-                    else
-                    {
-                        continue;
-                    }
-                }
-                else
-                {
-                    continue;
-                }
-
-                yield return newType;
-            }
+            return roomRates
+                .SelectMany(
+                    roomRate => roomRate.RateGroups.Take(1),
+                    (roomRate, rateGroup) => new { name = roomRate.RoomName, rateGroup }
+                )
+                .SelectMany(
+                    roomRate => roomRate.rateGroup.Rates.Take(1),
+                    (roomRate, rate) => new RoomType(roomRate.name, rate.MinOccupancy, rate.MaxOccupancy)
+                );
         }
     }
 }

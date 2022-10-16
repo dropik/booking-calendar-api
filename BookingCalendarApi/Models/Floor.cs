@@ -4,9 +4,10 @@ namespace BookingCalendarApi.Models
 {
     public class Floor
     {
-        public Floor(long id)
+        public Floor(long id, string name)
         {
             Id = id;
+            Name = name;
         }
 
         public long Id { get; private set; }

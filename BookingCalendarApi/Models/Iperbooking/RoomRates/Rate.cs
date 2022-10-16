@@ -1,15 +1,13 @@
-﻿namespace BookingCalendarApi.Models
+﻿namespace BookingCalendarApi.Models.Iperbooking.RoomRates
 {
-    public class RoomType
+    public class Rate
     {
-        public RoomType(string name, uint minOccupancy, uint maxOccupancy)
+        public Rate(uint minOccupancy, uint maxOccupancy)
         {
-            Name = name;
             MinOccupancy = minOccupancy;
             MaxOccupancy = maxOccupancy;
         }
         
-        public string Name { get; set; }
         public uint MinOccupancy { get; set; }
         public uint MaxOccupancy { get; set; }
     }

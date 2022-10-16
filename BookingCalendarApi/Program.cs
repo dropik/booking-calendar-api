@@ -6,7 +6,8 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 
-builder.Services.AddControllers();
+builder.Services.AddControllers().AddJsonOptions(options =>
+    options.JsonSerializerOptions.DefaultIgnoreCondition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingNull);
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
@@ -19,6 +20,18 @@ builder.Services.AddDbContext<BookingCalendarContext>((options) =>
 );
 
 builder.Services.AddSingleton<IIperbooking, Iperbooking>();
+builder.Services.AddTransient<IRoomsProvider, RoomsProvider>();
+builder.Services.AddTransient<BookingCalendarApi.Services.ISession, Session>();
+builder.Services.AddTransient<ITileComposer, TileComposer>();
+
+#nullable disable
+builder.Services.AddTransient<Func<BookingCalendarApi.Services.ISession>>(
+    serviceProvider => () => serviceProvider.GetService<BookingCalendarApi.Services.ISession>());
+builder.Services.AddTransient<Func<ITileComposer>>(
+    serviceProvider => () => serviceProvider.GetService<ITileComposer>());
+builder.Services.AddTransient<Func<Func<Task>, Func<Task>, IAsyncScheduler>>(
+    serviceProvider => (Func<Task> contextBoundAction, Func<Task> nonContextAction) => new ContextBoundAsyncSplitter(contextBoundAction, nonContextAction));
+#nullable enable
 
 var app = builder.Build();
 

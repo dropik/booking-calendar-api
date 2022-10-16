@@ -107,7 +107,7 @@ namespace BookingCalendarApi.Controllers
 
         private async Task<bool> RoomTypeExistsAsync(string roomType)
         {
-            var roomRates = await _iperbooking.GetRoomRates();
+            var roomRates = await _iperbooking.GetRoomRatesAsync();
             var matchedTypes = roomRates.Where(r => r.RoomName == roomType);
 
             return matchedTypes.Any();

@@ -3,6 +3,7 @@ using System;
 using BookingCalendarApi;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,9 +11,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BookingCalendarApi.Migrations
 {
     [DbContext(typeof(BookingCalendarContext))]
-    partial class BookingCalendarContextModelSnapshot : ModelSnapshot
+    [Migration("20221015164642_RenameSessionsMap")]
+    partial class RenameSessionsMap
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -58,19 +60,21 @@ namespace BookingCalendarApi.Migrations
                     b.ToTable("Rooms");
                 });
 
-            modelBuilder.Entity("BookingCalendarApi.Models.SessionEntry", b =>
+            modelBuilder.Entity("BookingCalendarApi.Models.SessionItem", b =>
                 {
                     b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("char(36)");
 
-                    b.Property<byte[]>("Data")
+                    b.Property<string>("TileId")
+                        .HasColumnType("varchar(255)");
+
+                    b.Property<string>("LastModified")
                         .IsRequired()
-                        .HasColumnType("longblob");
+                        .HasColumnType("longtext");
 
-                    b.HasKey("Id");
+                    b.HasKey("Id", "TileId");
 
-                    b.ToTable("Sessions");
+                    b.ToTable("SessionMap");
                 });
 
             modelBuilder.Entity("BookingCalendarApi.Models.TileAssignment", b =>

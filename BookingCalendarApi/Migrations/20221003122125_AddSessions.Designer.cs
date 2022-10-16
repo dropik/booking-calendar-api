@@ -3,6 +3,7 @@ using System;
 using BookingCalendarApi;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,9 +11,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BookingCalendarApi.Migrations
 {
     [DbContext(typeof(BookingCalendarContext))]
-    partial class BookingCalendarContextModelSnapshot : ModelSnapshot
+    [Migration("20221003122125_AddSessions")]
+    partial class AddSessions
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -58,36 +60,17 @@ namespace BookingCalendarApi.Migrations
                     b.ToTable("Rooms");
                 });
 
-            modelBuilder.Entity("BookingCalendarApi.Models.SessionEntry", b =>
+            modelBuilder.Entity("BookingCalendarApi.Models.Session", b =>
                 {
                     b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("char(36)");
 
-                    b.Property<byte[]>("Data")
-                        .IsRequired()
-                        .HasColumnType("longblob");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Sessions");
-                });
-
-            modelBuilder.Entity("BookingCalendarApi.Models.TileAssignment", b =>
-                {
-                    b.Property<string>("Id")
+                    b.Property<string>("TileId")
                         .HasColumnType("varchar(255)");
 
-                    b.Property<string>("Color")
-                        .IsRequired()
-                        .HasColumnType("longtext");
+                    b.HasKey("Id", "TileId");
 
-                    b.Property<long?>("RoomId")
-                        .HasColumnType("bigint");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("TileAssignments");
+                    b.ToTable("Sessions");
                 });
 
             modelBuilder.Entity("BookingCalendarApi.Models.Room", b =>

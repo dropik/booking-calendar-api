@@ -7,8 +7,10 @@ namespace BookingCalendarApi
     {
         public BookingCalendarContext(DbContextOptions<BookingCalendarContext> options) : base(options) { }
 
-        public DbSet<Floor> Floors { get; set; }
-        public DbSet<Room> Rooms { get; set; }
+        public DbSet<Floor> Floors => Set<Floor>();
+        public DbSet<Room> Rooms => Set<Room>();
+        public DbSet<SessionEntry> Sessions => Set<SessionEntry>();
+        public DbSet<TileAssignment> TileAssignments => Set<TileAssignment>();
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
