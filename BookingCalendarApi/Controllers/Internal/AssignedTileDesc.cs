@@ -1,4 +1,4 @@
-﻿namespace BookingCalendarApi.Controllers
+﻿namespace BookingCalendarApi.Controllers.Internal
 {
     public class AssignedTileDesc
     {
