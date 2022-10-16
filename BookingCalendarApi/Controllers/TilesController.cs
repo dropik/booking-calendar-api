@@ -53,9 +53,6 @@ namespace BookingCalendarApi.Controllers
                     .UseComposer(tileComposer)
                     .ToList();
 
-                session.Close();
-                await _context.SaveChangesAsync();
-
                 return new TileResponse(session.Id.ToString())
                 {
                     Tiles = tiles

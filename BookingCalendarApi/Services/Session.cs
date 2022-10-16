@@ -49,46 +49,10 @@ namespace BookingCalendarApi.Services
         
         public IEnumerable<FlattenedRoom> ExcludeRooms(IEnumerable<FlattenedRoom> rooms)
         {
-            foreach (var room in rooms)
-            {
-                var query = Tiles.Where(session => session.TileId == room.Id);
-                if (query.Any())
-                {
-                    var tile = query.First();
-                    if (tile.LastModified == room.Booking.LastModified)
-                    {
-                        continue;
-                    }
-                    tile.LastModified = room.Booking.LastModified;
-                } else
-                {
-                    Tiles.Add(new SessionTile(room.Id, room.Booking.LastModified));
-                }
-
-                yield return room;
-            }
-        }
-
-        public void Close()
-        {
-            var writer = new CborWriter();
-            writer.WriteStartArray(Tiles.Count * 2);
-            foreach (var tile in Tiles)
-            {
-                writer.WriteTextString(tile.TileId);
-                writer.WriteTextString(tile.LastModified);
-            }
-            writer.WriteEndArray();
-            var data = writer.Encode();
-
-            if (Entry != null && !Entry.Id.Equals(Guid.Empty))
-            {
-                Entry.Data = data;
-            }
-            else
-            {
-                _context.Sessions.Add(new SessionEntry(Id) { Data = data });
-            }
+            return rooms
+                .Where(room => !Tiles
+                    .Where(tile => tile.Equals(new SessionTile(room.Id, room.Booking.LastModified)))
+                    .Any());
         }
     }
 }
