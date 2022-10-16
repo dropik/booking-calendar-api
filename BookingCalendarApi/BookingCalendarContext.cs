@@ -21,6 +21,12 @@ namespace BookingCalendarApi
                 .HasPrincipalKey(r => r.Id)
                 .IsRequired()
                 .OnDelete(DeleteBehavior.Cascade);
+
+            builder.Entity<TileAssignment>()
+                .HasOne<Room>()
+                .WithMany()
+                .HasForeignKey(a => a.RoomId)
+                .OnDelete(DeleteBehavior.Cascade);
         }
     }
 }
