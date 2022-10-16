@@ -1,2 +1,2 @@
 tiles fetch:
-- optimize it
+- handle repeating stay ids

@@ -14,14 +14,19 @@ namespace BookingCalendarApi.Services
         public async Task AccumulateAllRoomsAsync(string from, string to)
         {
             var (fromDate, toDate) = GetInitialRange(from, to);
-            var rooms = await GetFlattenedRoomsAsync(fromDate, toDate);
+
+            var arrivalFrom = fromDate.AddDays(-30).ToString("yyyyMMdd");
+            var arrivalTo = toDate.AddDays(30).ToString("yyyyMMdd");
+
+            var bookings = await _iperbooking.GetBookingsAsync(arrivalFrom, arrivalTo);
+            var rooms = bookings.Flatten().ExcludeByRange(fromDate, toDate);
 
             // extending search range to fetch all tiles that might possibly collide with
             // tiles that fall in the range, to ensure correct collision detection in front-end
             if (rooms.Any())
             {
                 (fromDate, toDate) = GetExtendedRange(rooms);
-                rooms = await GetFlattenedRoomsAsync(fromDate, toDate);
+                rooms = bookings.Flatten().ExcludeByRange(fromDate, toDate);
             }
 
             Rooms = rooms;
@@ -43,29 +48,9 @@ namespace BookingCalendarApi.Services
 
             return
             (
-                firstArrival.From,
+                firstArrival.From.AddDays(1),
                 lastDeparture.To.AddDays(-1)
             );
-        }
-
-        private async Task<IEnumerable<FlattenedRoom>> GetFlattenedRoomsAsync(DateTime fromDate, DateTime toDate)
-        {
-            var arrivalFrom = fromDate.AddDays(-30).ToString("yyyyMMdd");
-            var arrivalTo = toDate.ToString("yyyyMMdd");
-
-            var bookings = await _iperbooking.GetBookingsAsync(arrivalFrom, arrivalTo);
-
-            return bookings
-                .SelectMany(
-                    booking => booking.Rooms,
-                    (booking, room) => new FlattenedRoom(
-                        room.StayId.ToString(),
-                        DateTime.ParseExact(room.Arrival, "yyyyMMdd", null),
-                        DateTime.ParseExact(room.Departure, "yyyyMMdd", null),
-                        booking,
-                        room
-                    ))
-                .Where(roomData => (roomData.To - fromDate).Days >= 0);
         }
     }
 }
