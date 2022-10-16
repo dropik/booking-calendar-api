@@ -33,6 +33,46 @@ namespace BookingCalendarApi.Controllers
                 var random = new Random();
                 Dictionary<string, AssignedTileDesc> assignedTiles = new();
 
+                var assignmentPeriods = assignments.Select(assignment =>
+                {
+                    var tileIdSplit = assignment.Key.Split("-");
+                    return new
+                    {
+                        From = tileIdSplit[1],
+                        To = tileIdSplit[2]
+                    };
+                });
+                var firstArrival = assignmentPeriods.OrderBy(p => p.From).First().From;
+                var lastDeparture = assignmentPeriods.OrderBy(p => p.To).Last().To;
+
+                var arrivalFrom = DateTime.ParseExact(firstArrival, "yyyyMMdd", null).AddDays(-20).ToString("yyyyMMdd");
+                var arrivalTo = DateTime.ParseExact(lastDeparture, "yyyyMMdd", null).AddDays(20).ToString("yyyyMMdd");
+                var bookings = await _iperbooking.GetBookingsAsync(arrivalFrom, arrivalTo);
+                var flattenedBookings = bookings.SelectMany(booking => booking.Rooms, (booking, room) => new { booking, room });
+
+                foreach (var flattenedBooking in flattenedBookings)
+                {
+                    var id = $"{flattenedBooking.room.StayId}-{flattenedBooking.room.Arrival}-{flattenedBooking.room.Departure}";
+
+                    if (!assignedTiles.ContainsKey(id))
+                    {
+                        var assignmentForRoom = await _context.RoomAssignments.SingleOrDefaultAsync(a => a.Id == id);
+                        if (
+                            assignmentForRoom != null &&
+                            assignmentForRoom.Id == id &&
+                            assignmentForRoom.RoomId != null &&
+                            flattenedBooking.booking.Status != BookingStatus.Cancelled
+                        )
+                        {
+                            assignedTiles.Add(id, new AssignedTileDesc(
+                                DateTime.ParseExact(flattenedBooking.room.Arrival, "yyyyMMdd", null),
+                                DateTime.ParseExact(flattenedBooking.room.Departure, "yyyyMMdd", null),
+                                (long)assignmentForRoom.RoomId)
+                            );
+                        }
+                    }
+                }
+
                 foreach (var (tileId, proposedNewRoomId) in assignments)
                 {
                     var assignmentForTile = await _context.RoomAssignments.SingleOrDefaultAsync(a => a.Id == tileId);
@@ -40,33 +80,6 @@ namespace BookingCalendarApi.Controllers
                     var tileIdSplit = tileId.Split("-");
                     var fromDate = DateTime.ParseExact(tileIdSplit[1], "yyyyMMdd", null);
                     var toDate = DateTime.ParseExact(tileIdSplit[2], "yyyyMMdd", null);
-                    var arrivalFrom = fromDate.AddDays(-30).ToString("yyyyMMdd");
-                    var arrivalTo = toDate.AddDays(30).ToString("yyyyMMdd");
-                    var bookings = await _iperbooking.GetBookingsAsync(arrivalFrom, arrivalTo);
-                    var flattenedBookings = bookings.SelectMany(booking => booking.Rooms, (booking, room) => new { booking, room });
-
-                    foreach (var flattenedBooking in flattenedBookings)
-                    {
-                        var id = $"{flattenedBooking.room.StayId}-{flattenedBooking.room.Arrival}-{flattenedBooking.room.Departure}";
-
-                        if (!assignedTiles.ContainsKey(id))
-                        {
-                            var assignmentForRoom = await _context.RoomAssignments.SingleOrDefaultAsync(a => a.Id == id);
-                            if (
-                                assignmentForRoom != null &&
-                                assignmentForRoom.Id == id &&
-                                assignmentForRoom.RoomId != null &&
-                                flattenedBooking.booking.Status != BookingStatus.Cancelled
-                            )
-                            {
-                                assignedTiles.Add(id, new AssignedTileDesc(
-                                    DateTime.ParseExact(flattenedBooking.room.Arrival, "yyyyMMdd", null),
-                                    DateTime.ParseExact(flattenedBooking.room.Departure, "yyyyMMdd", null),
-                                    (long)assignmentForRoom.RoomId)
-                                );
-                            }
-                        }
-                    }
 
                     var bookingStatusOfAssignment = flattenedBookings
                         .Where(booking => booking.room.StayId.ToString() == tileIdSplit[0])
