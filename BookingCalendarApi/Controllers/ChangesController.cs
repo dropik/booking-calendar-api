@@ -66,27 +66,6 @@ namespace BookingCalendarApi.Controllers
             }
             catch (Exception)
             {
-                // rolling back changes on error
-                var changedEntries = _context.ChangeTracker.Entries()
-                    .Where(e => e.State != EntityState.Unchanged).ToList();
-
-                foreach (var entry in changedEntries)
-                {
-                    switch (entry.State)
-                    {
-                        case EntityState.Modified:
-                            entry.CurrentValues.SetValues(entry.OriginalValues);
-                            entry.State = EntityState.Unchanged;
-                            break;
-                        case EntityState.Added:
-                            entry.State = EntityState.Detached;
-                            break;
-                        case EntityState.Deleted:
-                            entry.State = EntityState.Unchanged;
-                            break;
-                    }
-                }
-
                 return BadRequest();
             }
         }
