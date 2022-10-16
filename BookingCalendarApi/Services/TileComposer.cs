@@ -47,7 +47,7 @@ namespace BookingCalendarApi.Services
                 else
                 {
                     color = tile.assignment.Color;
-                    if (tile.room.Booking.Status == Models.Iperbooking.Bookings.Status.Cancelled)
+                    if (tile.room.Booking.Status == Models.Iperbooking.Bookings.BookingStatus.Cancelled)
                     {
                         roomId = null;
                         tile.assignment.RoomId = null;

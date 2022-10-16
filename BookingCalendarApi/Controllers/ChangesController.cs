@@ -1,4 +1,5 @@
 ﻿using BookingCalendarApi.Models;
+using BookingCalendarApi.Models.Iperbooking.Bookings;
 using BookingCalendarApi.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -28,35 +29,75 @@ namespace BookingCalendarApi.Controllers
 
             try
             {
+                var random = new Random();
+                Dictionary<string, AssignedTileDesc> assignedTiles = new();
+
                 foreach (var (tileId, change) in changes)
                 {
-                    var assignment = await _context.TileAssignments.SingleOrDefaultAsync(a => a.Id == tileId);
+                    var assignmentForChange = await _context.TileAssignments.SingleOrDefaultAsync(a => a.Id == tileId);
 
                     var fromDate = DateTime.ParseExact(change.From, "yyyy-MM-dd", null);
+                    var toDate = DateTime.ParseExact(change.To, "yyyy-MM-dd", null);
                     var arrivalFrom = fromDate.AddDays(-30).ToString("yyyyMMdd");
-                    var arrivalTo = fromDate.AddDays(30).ToString("yyyyMMdd");
+                    var arrivalTo = toDate.AddDays(30).ToString("yyyyMMdd");
                     var bookings = await _iperbooking.GetBookingsAsync(arrivalFrom, arrivalTo);
                     var rooms = bookings.Flatten();
 
-                    if (change.RoomChanged && change.NewRoom != null && rooms.Any())
+                    foreach (var room in rooms)
                     {
-                        var hasCollision = false;
-                        // todo: collision check
+                        if (!assignedTiles.ContainsKey(room.Id))
+                        {
+                            var assignmentForRoom = await _context.TileAssignments.SingleOrDefaultAsync(a => a.Id == room.Id);
+                            if (
+                                assignmentForRoom != null &&
+                                assignmentForRoom.Id == room.Id &&
+                                assignmentForRoom.RoomId != null &&
+                                room.Booking.Status != BookingStatus.Cancelled
+                            )
+                            {
+                                assignedTiles.Add(room.Id, new AssignedTileDesc(room.From, room.To, (long)assignmentForRoom.RoomId));
+                            }
+                        }
                     }
 
-                    if (assignment != null && assignment.Id != string.Empty)
+                    if (change.RoomChanged && change.NewRoom != null)
+                    {
+                        foreach (var (assignedTileId, assignedTile) in assignedTiles)
+                        {
+                            if (change.NewRoom == assignedTile.RoomId &&
+                                (((assignedTile.Arrival - fromDate).Days >= 0 && (assignedTile.Arrival - toDate).Days < 0) ||
+                                ((assignedTile.Departure - fromDate).Days > 0 && (assignedTile.Departure - toDate).Days <= 0)))
+                            {
+                                throw new Exception($"Collision between tiles {tileId} and {assignedTileId} detected on room id {assignedTile.RoomId}. Reverting...");
+                            }
+                        }
+                        if (!assignedTiles.ContainsKey(tileId))
+                        {
+                            assignedTiles.Add(tileId, new AssignedTileDesc(fromDate, toDate, (long)change.NewRoom));
+                        }
+                        else
+                        {
+                            assignedTiles[tileId].RoomId = (long)change.NewRoom;
+                        }
+                    }
+
+                    if (change.NewRoom == null)
+                    {
+                        assignedTiles.Remove(tileId);
+                    }
+
+                    if (assignmentForChange != null && assignmentForChange.Id != string.Empty)
                     {
                         if (change.NewColor != null)
                         {
-                            assignment.Color = change.NewColor;
+                            assignmentForChange.Color = change.NewColor;
                         }
+                        assignmentForChange.RoomId = change.NewRoom;
                     }
                     else
                     {
-                        if (change.NewColor != null)
-                        {
-                            _context.TileAssignments.Add(new TileAssignment(tileId, change.NewColor));
-                        }
+                        var color = change.NewColor ?? $"booking{(random.Next() % 8) + 1}";
+                        _context.TileAssignments.Add(new TileAssignment(tileId, color) { RoomId = change.NewRoom });
                     }
                 }
 
@@ -64,9 +105,9 @@ namespace BookingCalendarApi.Controllers
 
                 return Ok();
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                return BadRequest();
+                return BadRequest(ex.Message);
             }
         }
     }

@@ -1,3 +1,2 @@
-- changes:
-	- check for collisions
-	- update room assigned
+- assignments:
+	- preserve one color for one booking

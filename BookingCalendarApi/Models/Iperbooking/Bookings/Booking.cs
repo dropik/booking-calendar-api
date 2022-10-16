@@ -14,7 +14,7 @@ namespace BookingCalendarApi.Models.Iperbooking.Bookings
 
         public long BookingNumber { get; set; }
         [JsonConverter(typeof(JsonStringEnumConverter))]
-        public Status Status { get; set; } = Status.New;
+        public BookingStatus Status { get; set; } = BookingStatus.New;
         public string FirstName { get; set; }
         public string LastName { get; set; }
         public string LastModified { get; set; }
@@ -22,7 +22,7 @@ namespace BookingCalendarApi.Models.Iperbooking.Bookings
         public ICollection<Room> Rooms { get; set; } = new List<Room>();
     }
 
-    public enum Status {
+    public enum BookingStatus {
         New,
         Modified,
         Cancelled
