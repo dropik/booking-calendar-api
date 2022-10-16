@@ -14,8 +14,7 @@ namespace BookingCalendarApi.Models
             uint nights,
             string roomType,
             string entity,
-            uint persons,
-            string color
+            uint persons
         )
         {
             Id = id;
@@ -27,7 +26,6 @@ namespace BookingCalendarApi.Models
             RoomType = roomType;
             Entity = entity;
             Persons = persons;
-            Color = color;
         }
 
         public string Id { get; set; }
@@ -41,7 +39,7 @@ namespace BookingCalendarApi.Models
         public string RoomType { get; set; }
         public string Entity { get; set; }
         public uint Persons { get; set; }
-        public string Color { get; set; }
+        public string? Color { get; set; }
         public long? RoomId { get; set; }
     }
 
