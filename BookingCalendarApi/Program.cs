@@ -20,7 +20,7 @@ builder.Services.AddDbContext<BookingCalendarContext>((options) =>
 );
 
 builder.Services.AddSingleton<IIperbooking, Iperbooking>();
-builder.Services.AddTransient<IRoomsProvider, RoomsProvider>();
+builder.Services.AddTransient<IBookingsProvider, BookingsProvider>();
 builder.Services.AddTransient<BookingCalendarApi.Services.ISession, Session>();
 builder.Services.AddTransient<ITileComposer, TileComposer>();
 
