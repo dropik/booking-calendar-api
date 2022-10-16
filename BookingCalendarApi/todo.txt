@@ -1,0 +1,5 @@
+- changes:
+	- add changes controller
+	- update color for assignment
+	- check for collisions
+	- update room assigned
