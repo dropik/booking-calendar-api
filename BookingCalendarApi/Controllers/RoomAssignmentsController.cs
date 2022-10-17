@@ -4,6 +4,7 @@ using BookingCalendarApi.Models.Iperbooking.Bookings;
 using BookingCalendarApi.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Room = BookingCalendarApi.Models.Iperbooking.Bookings.Room;
 
 namespace BookingCalendarApi.Controllers
 {
@@ -30,45 +31,8 @@ namespace BookingCalendarApi.Controllers
 
             try
             {
-                var random = new Random();
-                Dictionary<string, AssignedTileDesc> assignedTiles = new();
-
-                var assignmentPeriods = assignmentRequests.Select(assignmentRequest =>
-                {
-                    var tileIdSplit = assignmentRequest.Key.Split("-");
-                    return new
-                    {
-                        From = tileIdSplit[1],
-                        To = tileIdSplit[2]
-                    };
-                });
-                var firstArrival = assignmentPeriods.OrderBy(p => p.From).First().From;
-                var lastDeparture = assignmentPeriods.OrderBy(p => p.To).Last().To;
-
-                var arrivalFrom = DateTime.ParseExact(firstArrival, "yyyyMMdd", null).AddDays(-20).ToString("yyyyMMdd");
-                var arrivalTo = DateTime.ParseExact(lastDeparture, "yyyyMMdd", null).AddDays(20).ToString("yyyyMMdd");
-                var bookings = await _iperbooking.GetBookingsAsync(arrivalFrom, arrivalTo);
-                var flattenedBookings = bookings.SelectMany(booking => booking.Rooms, (booking, room) => new { booking, room });
-
-                foreach (var flattenedBooking in flattenedBookings)
-                {
-                    var id = $"{flattenedBooking.room.StayId}-{flattenedBooking.room.Arrival}-{flattenedBooking.room.Departure}";
-
-                    var assignment = await _context.RoomAssignments.SingleOrDefaultAsync(a => a.Id == id);
-                    if (
-                        assignment != null &&
-                        assignment.Id == id &&
-                        assignment.RoomId != null &&
-                        flattenedBooking.booking.Status != BookingStatus.Cancelled
-                    )
-                    {
-                        assignedTiles.Add(id, new AssignedTileDesc(
-                            DateTime.ParseExact(flattenedBooking.room.Arrival, "yyyyMMdd", null),
-                            DateTime.ParseExact(flattenedBooking.room.Departure, "yyyyMMdd", null),
-                            (long)assignment.RoomId)
-                        );
-                    }
-                }
+                var bookings = await GetBookingsAsync(assignmentRequests);
+                var assignedTiles = await CreateAssignedTilesCacheAsync(bookings);
 
                 foreach (var (tileId, proposedNewRoomId) in assignmentRequests)
                 {
@@ -78,9 +42,9 @@ namespace BookingCalendarApi.Controllers
                     var fromDate = DateTime.ParseExact(tileIdSplit[1], "yyyyMMdd", null);
                     var toDate = DateTime.ParseExact(tileIdSplit[2], "yyyyMMdd", null);
 
-                    var bookingStatusOfAssignment = flattenedBookings
-                        .Where(booking => booking.room.StayId.ToString() == tileIdSplit[0])
-                        .First().booking.Status;
+                    var bookingStatusOfAssignment = bookings
+                        .Where(booking => booking.Rooms.Any(room => room.StayId.ToString() == tileIdSplit[0]))
+                        .First().Status;
 
                     var newRoomId = (bookingStatusOfAssignment == BookingStatus.Cancelled) ? null : proposedNewRoomId;
 
@@ -128,6 +92,52 @@ namespace BookingCalendarApi.Controllers
             {
                 return BadRequest(ex.Message);
             }
+        }
+
+        private async Task<IEnumerable<Booking>> GetBookingsAsync(IDictionary<string, long?> assignmentRequests)
+        {
+            var assignmentPeriods = assignmentRequests.Select(assignmentRequest =>
+            {
+                var tileIdSplit = assignmentRequest.Key.Split("-");
+                return new
+                {
+                    From = tileIdSplit[1],
+                    To = tileIdSplit[2]
+                };
+            });
+            var firstArrival = assignmentPeriods.OrderBy(p => p.From).First().From;
+            var lastDeparture = assignmentPeriods.OrderBy(p => p.To).Last().To;
+
+            var arrivalFrom = DateTime.ParseExact(firstArrival, "yyyyMMdd", null).AddDays(-20).ToString("yyyyMMdd");
+            var arrivalTo = DateTime.ParseExact(lastDeparture, "yyyyMMdd", null).AddDays(20).ToString("yyyyMMdd");
+            return await _iperbooking.GetBookingsAsync(arrivalFrom, arrivalTo);
+        }
+
+        private async Task<IDictionary<string, AssignedTileDesc>> CreateAssignedTilesCacheAsync(IEnumerable<Booking> bookings)
+        {
+            Dictionary<string, AssignedTileDesc> assignedTiles = new();
+
+            foreach (var booking in bookings.SelectMany(booking => booking.Rooms, (booking, room) => new { booking, room }))
+            {
+                var id = $"{booking.room.StayId}-{booking.room.Arrival}-{booking.room.Departure}";
+
+                var assignment = await _context.RoomAssignments.SingleOrDefaultAsync(a => a.Id == id);
+                if (
+                    assignment != null &&
+                    assignment.Id == id &&
+                    assignment.RoomId != null &&
+                    booking.booking.Status != BookingStatus.Cancelled
+                )
+                {
+                    assignedTiles.Add(id, new AssignedTileDesc(
+                        DateTime.ParseExact(booking.room.Arrival, "yyyyMMdd", null),
+                        DateTime.ParseExact(booking.room.Departure, "yyyyMMdd", null),
+                        (long)assignment.RoomId)
+                    );
+                }
+            }
+
+            return assignedTiles;
         }
     }
 }
