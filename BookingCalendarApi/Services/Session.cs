@@ -1,4 +1,5 @@
 using BookingCalendarApi.Models;
+using BookingCalendarApi.Models.Iperbooking.Bookings;
 using Microsoft.EntityFrameworkCore;
 using System.Formats.Cbor;
 
@@ -9,7 +10,7 @@ namespace BookingCalendarApi.Services
         private readonly BookingCalendarContext _context;
 
         public Guid Id { get; private set; }
-        private List<SessionTile> Tiles { get; set; } = new List<SessionTile>();
+        private List<SessionBooking> SessionBookings { get; set; } = new List<SessionBooking>();
         private SessionEntry? Entry { get; set; }
 
         public Session(BookingCalendarContext context)
@@ -20,7 +21,7 @@ namespace BookingCalendarApi.Services
         public async Task OpenAsync(string? sessionId)
         {
             Id = GetGuid(sessionId);
-            Tiles = new List<SessionTile>();
+            SessionBookings = new List<SessionBooking>();
             Entry = await _context.Sessions.SingleOrDefaultAsync(session => session.Id.Equals(Id));
             if (Entry != null && !Entry.Id.Equals(Guid.Empty))
             {
@@ -29,9 +30,9 @@ namespace BookingCalendarApi.Services
                 reader.ReadStartArray();
                 while (reader.PeekState() != CborReaderState.EndArray)
                 {
-                    var tileId = reader.ReadTextString();
+                    var bookingId = reader.ReadTextString();
                     var lastModified = reader.ReadTextString();
-                    Tiles.Add(new SessionTile(tileId, lastModified));
+                    SessionBookings.Add(new SessionBooking(bookingId, lastModified));
                 }
             }
         }
@@ -47,41 +48,36 @@ namespace BookingCalendarApi.Services
             }
         }
         
-        public IEnumerable<FlattenedRoom> ExcludeRooms(IEnumerable<FlattenedRoom> rooms)
+        public IEnumerable<Booking> ExcludeRooms(IEnumerable<Booking> bookings)
         {
-            foreach (var room in rooms)
-            {
-                var query = Tiles.Where(session => session.TileId == room.Id);
-                if (query.Any())
-                {
-                    var tile = query.First();
-                    if (tile.LastModified == room.Booking.LastModified)
-                    {
-                        continue;
-                    }
-                    tile.LastModified = room.Booking.LastModified;
-                } else
-                {
-                    Tiles.Add(new SessionTile(room.Id, room.Booking.LastModified));
-                }
-
-                yield return room;
-            }
+            return bookings
+                .Where(booking => !SessionBookings
+                    .Where(sessionBooking => sessionBooking.Equals(new SessionBooking(booking.BookingNumber.ToString(), booking.LastModified)))
+                    .Any());
         }
 
-        public void Close()
+        public void WriteNewData(IEnumerable<SessionBooking> bookings)
         {
-            var writer = new CborWriter();
-            writer.WriteStartArray(Tiles.Count * 2);
-            foreach (var tile in Tiles)
+            foreach (var booking in bookings)
             {
-                writer.WriteTextString(tile.TileId);
-                writer.WriteTextString(tile.LastModified);
+                if (!SessionBookings.Contains(booking))
+                {
+                    SessionBookings.Add(booking);
+                }
+            }
+
+            var writer = new CborWriter();
+            writer.WriteStartArray(SessionBookings.Count * 2);
+            foreach (var booking in SessionBookings)
+            {
+                writer.WriteTextString(booking.BookingId);
+                writer.WriteTextString(booking.LastModified);
             }
             writer.WriteEndArray();
+
             var data = writer.Encode();
 
-            if (Entry != null && !Entry.Id.Equals(Guid.Empty))
+            if (Entry != null)
             {
                 Entry.Data = data;
             }

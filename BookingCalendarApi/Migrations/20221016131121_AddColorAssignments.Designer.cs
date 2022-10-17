@@ -3,6 +3,7 @@ using System;
 using BookingCalendarApi;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,9 +11,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BookingCalendarApi.Migrations
 {
     [DbContext(typeof(BookingCalendarContext))]
-    partial class BookingCalendarContextModelSnapshot : ModelSnapshot
+    [Migration("20221016131121_AddColorAssignments")]
+    partial class AddColorAssignments
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -72,21 +74,6 @@ namespace BookingCalendarApi.Migrations
                     b.ToTable("Rooms");
                 });
 
-            modelBuilder.Entity("BookingCalendarApi.Models.RoomAssignment", b =>
-                {
-                    b.Property<string>("Id")
-                        .HasColumnType("varchar(255)");
-
-                    b.Property<long?>("RoomId")
-                        .HasColumnType("bigint");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("RoomId");
-
-                    b.ToTable("RoomAssignments");
-                });
-
             modelBuilder.Entity("BookingCalendarApi.Models.SessionEntry", b =>
                 {
                     b.Property<Guid>("Id")
@@ -102,6 +89,25 @@ namespace BookingCalendarApi.Migrations
                     b.ToTable("Sessions");
                 });
 
+            modelBuilder.Entity("BookingCalendarApi.Models.TileAssignment", b =>
+                {
+                    b.Property<string>("Id")
+                        .HasColumnType("varchar(255)");
+
+                    b.Property<string>("Color")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<long?>("RoomId")
+                        .HasColumnType("bigint");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("RoomId");
+
+                    b.ToTable("TileAssignments");
+                });
+
             modelBuilder.Entity("BookingCalendarApi.Models.Room", b =>
                 {
                     b.HasOne("BookingCalendarApi.Models.Floor", null)
@@ -111,12 +117,12 @@ namespace BookingCalendarApi.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("BookingCalendarApi.Models.RoomAssignment", b =>
+            modelBuilder.Entity("BookingCalendarApi.Models.TileAssignment", b =>
                 {
                     b.HasOne("BookingCalendarApi.Models.Room", null)
                         .WithMany()
                         .HasForeignKey("RoomId")
-                        .OnDelete(DeleteBehavior.SetNull);
+                        .OnDelete(DeleteBehavior.Cascade);
                 });
 
             modelBuilder.Entity("BookingCalendarApi.Models.Floor", b =>

@@ -1,10 +1,12 @@
+using BookingCalendarApi.Models.Iperbooking.Bookings;
+
 namespace BookingCalendarApi.Services
 {
     public static class SessionExtensions
     {
-        public static IEnumerable<FlattenedRoom> ExcludeBySession(this IEnumerable<FlattenedRoom> rooms, ISession session)
+        public static IEnumerable<Booking> ExcludeBySession(this IEnumerable<Booking> bookings, ISession session)
         {
-            return session.ExcludeRooms(rooms);
+            return session.ExcludeRooms(bookings);
         }
     }
 }

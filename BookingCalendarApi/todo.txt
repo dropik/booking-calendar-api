@@ -1,0 +1,2 @@
+- assignments:
+	- preserve one color for one booking

@@ -20,17 +20,14 @@ builder.Services.AddDbContext<BookingCalendarContext>((options) =>
 );
 
 builder.Services.AddSingleton<IIperbooking, Iperbooking>();
-builder.Services.AddTransient<IRoomsProvider, RoomsProvider>();
+builder.Services.AddTransient<IBookingsProvider, BookingsProvider>();
+builder.Services.AddTransient<IBookingComposer, BookingComposer>();
 builder.Services.AddTransient<BookingCalendarApi.Services.ISession, Session>();
 builder.Services.AddTransient<ITileComposer, TileComposer>();
 
 #nullable disable
 builder.Services.AddTransient<Func<BookingCalendarApi.Services.ISession>>(
     serviceProvider => () => serviceProvider.GetService<BookingCalendarApi.Services.ISession>());
-builder.Services.AddTransient<Func<ITileComposer>>(
-    serviceProvider => () => serviceProvider.GetService<ITileComposer>());
-builder.Services.AddTransient<Func<Func<Task>, Func<Task>, IAsyncScheduler>>(
-    serviceProvider => (Func<Task> contextBoundAction, Func<Task> nonContextAction) => new ContextBoundAsyncSplitter(contextBoundAction, nonContextAction));
 #nullable enable
 
 var app = builder.Build();

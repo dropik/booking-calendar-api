@@ -2,17 +2,17 @@
 
 namespace BookingCalendarApi.Models
 {
-    public class TileAssignment
+    public class ColorAssignment
     {
-        public TileAssignment(string id, string color)
+        public ColorAssignment(string bookingId, string color)
         {
-            Id = id;
+            BookingId = bookingId;
             Color = color;
         }
 
-        public string Id { get; private set; }
+        [Key]
+        public string BookingId { get; set; }
         [Required]
         public string Color { get; set; }
-        public long? RoomId { get; set; }
     }
 }
