@@ -1,3 +1,4 @@
+using BookingCalendarApi.Models;
 using BookingCalendarApi.Models.Iperbooking.Bookings;
 
 namespace BookingCalendarApi.Services
@@ -7,5 +8,6 @@ namespace BookingCalendarApi.Services
         public Guid Id { get; }
         public Task OpenAsync(string? sessionId);
         public IEnumerable<Booking> ExcludeRooms(IEnumerable<Booking> bookings);
+        public void WriteNewData(IEnumerable<SessionBooking> bookings);
     }
 }

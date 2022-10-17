@@ -55,5 +55,36 @@ namespace BookingCalendarApi.Services
                     .Where(sessionBooking => sessionBooking.Equals(new SessionBooking(booking.BookingNumber.ToString(), booking.LastModified)))
                     .Any());
         }
+
+        public void WriteNewData(IEnumerable<SessionBooking> bookings)
+        {
+            foreach (var booking in bookings)
+            {
+                if (!SessionBookings.Contains(booking))
+                {
+                    SessionBookings.Add(booking);
+                }
+            }
+
+            var writer = new CborWriter();
+            writer.WriteStartArray(SessionBookings.Count * 2);
+            foreach (var booking in SessionBookings)
+            {
+                writer.WriteTextString(booking.BookingId);
+                writer.WriteTextString(booking.LastModified);
+            }
+            writer.WriteEndArray();
+
+            var data = writer.Encode();
+
+            if (Entry != null)
+            {
+                Entry.Data = data;
+            }
+            else
+            {
+                _context.Sessions.Add(new SessionEntry(Id) { Data = data });
+            }
+        }
     }
 }
