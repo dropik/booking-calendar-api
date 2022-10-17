@@ -4,7 +4,6 @@ using BookingCalendarApi.Models.Iperbooking.Bookings;
 using BookingCalendarApi.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using Room = BookingCalendarApi.Models.Iperbooking.Bookings.Room;
 
 namespace BookingCalendarApi.Controllers
 {
@@ -36,52 +35,7 @@ namespace BookingCalendarApi.Controllers
 
                 foreach (var (tileId, proposedNewRoomId) in assignmentRequests)
                 {
-                    var assignment = await _context.RoomAssignments.SingleOrDefaultAsync(a => a.Id == tileId);
-
-                    var tileIdSplit = tileId.Split("-");
-                    var fromDate = DateTime.ParseExact(tileIdSplit[1], "yyyyMMdd", null);
-                    var toDate = DateTime.ParseExact(tileIdSplit[2], "yyyyMMdd", null);
-
-                    var bookingStatusOfAssignment = bookings
-                        .Where(booking => booking.Rooms.Any(room => room.StayId.ToString() == tileIdSplit[0]))
-                        .First().Status;
-
-                    var newRoomId = (bookingStatusOfAssignment == BookingStatus.Cancelled) ? null : proposedNewRoomId;
-
-                    if (newRoomId != null)
-                    {
-                        foreach (var (assignedTileId, assignedTile) in assignedTiles)
-                        {
-                            if (assignedTileId != tileId &&
-                                newRoomId == assignedTile.RoomId &&
-                                (((assignedTile.Arrival - fromDate).Days >= 0 && (assignedTile.Arrival - toDate).Days < 0) ||
-                                ((assignedTile.Departure - fromDate).Days > 0 && (assignedTile.Departure - toDate).Days <= 0)))
-                            {
-                                throw new Exception($"Collision between tiles {tileId} and {assignedTileId} detected on room id {assignedTile.RoomId}. Reverting...");
-                            }
-                        }
-                        if (!assignedTiles.ContainsKey(tileId))
-                        {
-                            assignedTiles.Add(tileId, new AssignedTileDesc(fromDate, toDate, (long)newRoomId));
-                        }
-                        else
-                        {
-                            assignedTiles[tileId].RoomId = (long)newRoomId;
-                        }
-                    }
-                    else
-                    {
-                        assignedTiles.Remove(tileId);
-                    }
-
-                    if (assignment != null && assignment.Id != string.Empty)
-                    {
-                        assignment.RoomId = newRoomId;
-                    }
-                    else
-                    {
-                        _context.RoomAssignments.Add(new RoomAssignment(tileId) { RoomId = newRoomId });
-                    }
+                    await StoreAssignmentAsync(tileId, proposedNewRoomId, bookings, assignedTiles);
                 }
 
                 await _context.SaveChangesAsync();
@@ -138,6 +92,56 @@ namespace BookingCalendarApi.Controllers
             }
 
             return assignedTiles;
+        }
+
+        private async Task StoreAssignmentAsync(string tileId, long? proposedNewRoomId, IEnumerable<Booking> bookings, IDictionary<string, AssignedTileDesc> assignedTiles)
+        {
+            var assignment = await _context.RoomAssignments.SingleOrDefaultAsync(a => a.Id == tileId);
+
+            var tileIdSplit = tileId.Split("-");
+            var fromDate = DateTime.ParseExact(tileIdSplit[1], "yyyyMMdd", null);
+            var toDate = DateTime.ParseExact(tileIdSplit[2], "yyyyMMdd", null);
+
+            var bookingStatusOfAssignment = bookings
+                .Where(booking => booking.Rooms.Any(room => room.StayId.ToString() == tileIdSplit[0]))
+                .First().Status;
+
+            var newRoomId = (bookingStatusOfAssignment == BookingStatus.Cancelled) ? null : proposedNewRoomId;
+
+            if (newRoomId != null)
+            {
+                foreach (var (assignedTileId, assignedTile) in assignedTiles)
+                {
+                    if (assignedTileId != tileId &&
+                        newRoomId == assignedTile.RoomId &&
+                        (((assignedTile.Arrival - fromDate).Days >= 0 && (assignedTile.Arrival - toDate).Days < 0) ||
+                        ((assignedTile.Departure - fromDate).Days > 0 && (assignedTile.Departure - toDate).Days <= 0)))
+                    {
+                        throw new Exception($"Collision between tiles {tileId} and {assignedTileId} detected on room id {assignedTile.RoomId}. Reverting...");
+                    }
+                }
+                if (!assignedTiles.ContainsKey(tileId))
+                {
+                    assignedTiles.Add(tileId, new AssignedTileDesc(fromDate, toDate, (long)newRoomId));
+                }
+                else
+                {
+                    assignedTiles[tileId].RoomId = (long)newRoomId;
+                }
+            }
+            else
+            {
+                assignedTiles.Remove(tileId);
+            }
+
+            if (assignment != null && assignment.Id != string.Empty)
+            {
+                assignment.RoomId = newRoomId;
+            }
+            else
+            {
+                _context.RoomAssignments.Add(new RoomAssignment(tileId) { RoomId = newRoomId });
+            }
         }
     }
 }
