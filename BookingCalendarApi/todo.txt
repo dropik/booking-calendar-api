@@ -1,2 +1,4 @@
-- assignments:
-	- preserve one color for one booking
+- bookings:
+	- get by id
+	- get short booking by id
+	- get list by name, from and to
