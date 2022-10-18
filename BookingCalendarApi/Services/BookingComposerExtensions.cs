@@ -5,7 +5,7 @@ namespace BookingCalendarApi.Services
 {
     public static class BookingComposerExtensions
     {
-        public static IEnumerable<ResponseBooking> UseComposer(this IEnumerable<Booking> bookings, IBookingComposer composer)
+        public static IEnumerable<TOut> UseComposer<TOut>(this IEnumerable<Booking> bookings, IComposer<Booking, TOut> composer)
         {
             return composer.Compose(bookings);
         }

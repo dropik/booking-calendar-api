@@ -23,7 +23,7 @@ namespace BookingCalendarApi.Services
         public static IEnumerable<Booking> SelectByName(this IEnumerable<Booking> bookings, string name)
         {
             return bookings
-                .Where(booking => $"{booking.FirstName} {booking.LastName}".Contains(name));
+                .Where(booking => $"{booking.FirstName} {booking.LastName}".Contains(name, StringComparison.OrdinalIgnoreCase));
         }
 
         private static IEnumerable<Booking> ExcludeByRange(this IEnumerable<Booking> bookings, DateTime fromDate, DateTime toDate)

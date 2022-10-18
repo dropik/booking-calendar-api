@@ -4,22 +4,22 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace BookingCalendarApi.Controllers
 {
-    [Route("api/v1/[controller]")]
+    [Route("api/v1/bookings-by-session")]
     [ApiController]
-    public class BookingsController : ControllerBase
+    public class BookingsBySessionController : ControllerBase
     {
         private readonly IBookingsProvider _bookingsProvider;
         private readonly IBookingComposer _bookingComposer;
         private readonly Func<Services.ISession> _sessionProvider;
 
-        public BookingsController(
+        public BookingsBySessionController(
             IBookingsProvider bookingsProvider,
-            IBookingComposer bookingColorizer,
+            IBookingComposer bookingComposer,
             Func<Services.ISession> sessionProvider
         )
         {
             _bookingsProvider = bookingsProvider;
-            _bookingComposer = bookingColorizer;
+            _bookingComposer = bookingComposer;
             _sessionProvider = sessionProvider;
         }
 
@@ -46,25 +46,6 @@ namespace BookingCalendarApi.Controllers
                     Bookings = bookings
                 };
             } catch (Exception ex)
-            {
-                return BadRequest(ex.Message);
-            }
-        }
-
-        [HttpGet]
-        public async Task<ActionResult<IEnumerable<BookingShort>>> GetByNameAsync(string name, string from, string to)
-        {
-            try
-            {
-                await _bookingsProvider.FetchBookingsAsync(from, to);
-
-                var bookings = _bookingsProvider.Bookings
-                    .SelectInRangeBookings(from, to)
-                    .SelectByName(name)
-                    .ToList();
-
-            }
-            catch (Exception ex)
             {
                 return BadRequest(ex.Message);
             }
