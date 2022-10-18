@@ -4,20 +4,32 @@ namespace BookingCalendarApi.Services
 {
     public static class BookingsExtensions
     {        
-        public static IEnumerable<Booking> SelectInRangeBookings(this IEnumerable<Booking> bookings, string from, string to)
+        public static IEnumerable<Booking> SelectInRange(this IEnumerable<Booking> bookings, string from, string to, bool autoExtend = false)
         {
             var (fromDate, toDate) = GetInitialRange(from, to);
             var rooms = bookings.ExcludeByRange(fromDate, toDate);
 
             // extending search range to fetch all tiles that might possibly collide with
             // tiles that fall in the range, to ensure correct collision detection in front-end
-            if (rooms.Any())
+            if (autoExtend && rooms.Any())
             {
                 (fromDate, toDate) = GetExtendedRange(rooms);
                 rooms = bookings.ExcludeByRange(fromDate, toDate);
             }
 
             return rooms;
+        }
+
+        public static IEnumerable<Booking> SelectByName(this IEnumerable<Booking> bookings, string name)
+        {
+            return bookings
+                .Where(booking => $"{booking.FirstName} {booking.LastName}".Contains(name, StringComparison.OrdinalIgnoreCase));
+        }
+
+        public static IEnumerable<Booking> SelectById(this IEnumerable<Booking> bookings, string id)
+        {
+            return bookings
+                .Where(booking => booking.BookingNumber.ToString() == id);
         }
 
         private static IEnumerable<Booking> ExcludeByRange(this IEnumerable<Booking> bookings, DateTime fromDate, DateTime toDate)

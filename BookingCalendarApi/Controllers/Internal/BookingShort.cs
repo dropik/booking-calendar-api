@@ -3,15 +3,16 @@ using System.Text.Json.Serialization;
 
 namespace BookingCalendarApi.Controllers.Internal
 {
-    public class ResponseBooking
+    public class BookingShort
     {
-        public ResponseBooking(string id, string name, string lastModified, string from, string to)
+        public BookingShort(string id, string name, string lastModified, string from, string to, uint occupations)
         {
             Id = id;
             Name = name;
             LastModified = lastModified;
             From = from;
             To = to;
+            Occupations = occupations;
         }
 
         public string Id { get; set; }
@@ -22,7 +23,6 @@ namespace BookingCalendarApi.Controllers.Internal
         public string From { get; set; }
         public string To { get; set; }
         public string? Color { get; set; }
-
-        public IEnumerable<Tile> Tiles { get; set; } = new List<Tile>();
+        public uint Occupations { get; set; }
     }
 }
