@@ -26,9 +26,11 @@ namespace BookingCalendarApi.Services
                 .SelectMany(
                     x => x.assignments.DefaultIfEmpty(),
                     (join, assignment) => new ResponseBooking(
-                        id: join.booking.BookingNumber.ToString(),
-                        name: $"{join.booking.FirstName} {join.booking.LastName}",
-                        lastModified: join.booking.LastModified
+                        id:             join.booking.BookingNumber.ToString(),
+                        name:           $"{join.booking.FirstName} {join.booking.LastName}",
+                        lastModified:   join.booking.LastModified,
+                        from:           DateTime.ParseExact(join.booking.Rooms.OrderBy(room => room.Arrival).First().Arrival, "yyyyMMdd", null).ToString("yyyy-MM-dd"),
+                        to:             DateTime.ParseExact(join.booking.Rooms.OrderBy(room => room.Departure).Last().Departure, "yyyyMMdd", null).ToString("yyyy-MM-dd")
                     )
                     {
                         Status = join.booking.Status,
