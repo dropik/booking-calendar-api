@@ -24,7 +24,7 @@ namespace BookingCalendarApi.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<BookingsControllerResponse>> GetAsync(string from, string to, string? sessionId)
+        public async Task<ActionResult<BookingsControllerResponse>> GetBySessionAsync(string from, string to, string? sessionId)
         {
             try
             {
@@ -36,7 +36,7 @@ namespace BookingCalendarApi.Controllers
                 );
 
                 var bookings = _bookingsProvider.Bookings
-                    .SelectInRangeBookings(from, to)
+                    .SelectInRangeBookings(from, to, true)
                     .ExcludeBySession(session)
                     .UseComposer(_bookingComposer)
                     .ToList();
@@ -46,6 +46,25 @@ namespace BookingCalendarApi.Controllers
                     Bookings = bookings
                 };
             } catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+        [HttpGet]
+        public async Task<ActionResult<IEnumerable<BookingShort>>> GetByNameAsync(string name, string from, string to)
+        {
+            try
+            {
+                await _bookingsProvider.FetchBookingsAsync(from, to);
+
+                var bookings = _bookingsProvider.Bookings
+                    .SelectInRangeBookings(from, to)
+                    .SelectByName(name)
+                    .ToList();
+
+            }
+            catch (Exception ex)
             {
                 return BadRequest(ex.Message);
             }
