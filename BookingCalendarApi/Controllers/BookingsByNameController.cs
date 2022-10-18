@@ -27,7 +27,7 @@ namespace BookingCalendarApi.Controllers
                 var definedName = name ?? "";
 
                 var bookings = _bookingsProvider.Bookings
-                    .SelectInRangeBookings(from, to)
+                    .SelectInRange(from, to)
                     .SelectByName(definedName)
                     .UseComposer(_bookingShortComposer)
                     .ToList();

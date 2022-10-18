@@ -36,7 +36,7 @@ namespace BookingCalendarApi.Controllers
                 );
 
                 var bookings = _bookingsProvider.Bookings
-                    .SelectInRangeBookings(from, to, true)
+                    .SelectInRange(from, to, true)
                     .ExcludeBySession(session)
                     .UseComposer(_bookingComposer)
                     .ToList();
