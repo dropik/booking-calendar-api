@@ -12,7 +12,7 @@ namespace BookingCalendarApi.Services
             auth = configuration.GetSection("Iperbooking").Get<Auth>();
         }
 
-        public async Task<ICollection<Models.Iperbooking.RoomRates.Room>> GetRoomRatesAsync()
+        public async Task<IEnumerable<Models.Iperbooking.RoomRates.Room>> GetRoomRatesAsync()
         {
             var url = $"https://api.iperbooking.net/v1/GetRoomRates.cfm?idhotel={auth.IdHotel}&username={auth.Username}&password={auth.Password}&format=json";
             try
@@ -47,7 +47,7 @@ namespace BookingCalendarApi.Services
             return new HashSet<Models.Iperbooking.RoomRates.Room>();
         }
 
-        public async Task<ICollection<Models.Iperbooking.Bookings.Booking>> GetBookingsAsync(string arrivalFrom, string arrivalTo)
+        public async Task<IEnumerable<Models.Iperbooking.Bookings.Booking>> GetBookingsAsync(string arrivalFrom, string arrivalTo)
         {
             var url = $"https://api.iperbooking.net/v1/GetBookings.cfm?idhotel={auth.IdHotel}&username={auth.Username}&password={auth.Password}&format=json&arrivalfrom={arrivalFrom}&arrivalto={arrivalTo}";
             try
