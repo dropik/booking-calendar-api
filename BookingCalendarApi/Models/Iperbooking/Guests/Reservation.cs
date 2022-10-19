@@ -2,9 +2,9 @@ namespace BookingCalendarApi.Models.Iperbooking.Guests
 {
     public class Reservation
     {
-        public Reservation(int id)
+        public Reservation(int reservationId)
         {
-            ReservationId = id;
+            ReservationId = reservationId;
         }
 
         public int ReservationId { get; set; }

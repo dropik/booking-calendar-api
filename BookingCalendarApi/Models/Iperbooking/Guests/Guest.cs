@@ -2,16 +2,16 @@ namespace BookingCalendarApi.Models.Iperbooking.Guests
 {
     public class Guest
     {
-        public Guest(int id, int reservationRoomId, string firstName, string lastName, string birthDate)
+        public Guest(string guestId, int reservationRoomId, string firstName, string lastName, string birthDate)
         {
-            GuestId = id;
+            GuestId = guestId;
             ReservationRoomId = reservationRoomId;
             FirstName = firstName;
             LastName = lastName;
             BirthDate = birthDate;
         }
 
-        public int GuestId { get; set; }
+        public string GuestId { get; set; }
         public int ReservationRoomId { get; set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }

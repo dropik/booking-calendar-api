@@ -83,25 +83,25 @@ namespace BookingCalendarApi.Services
             return new List<Models.Iperbooking.Bookings.Booking>();
         }
 
-        public async Task<IEnumerable<Models.Iperbooking.Guests.GuestsResponse>> GetGuestsAsync(string reservationId)
+        public async Task<Models.Iperbooking.Guests.GuestsResponse> GetGuestsAsync(string reservationId)
         {
             try
             {
                 var requestData = new Models.Iperbooking.Guests.GuestsRequest(int.Parse(_auth.IdHotel), _auth.Username, _auth.Password, reservationId);
+                var json = JsonSerializer.Serialize(requestData);
+                var body = new StringContent(json, Encoding.UTF8, "application/json");
                 var url = "https://api.iperbooking.net/v1/GetGuests.cfm";
                 
                 using HttpClient client = new();
-                using var response = await client.PostAsJsonAsync(url, requestData, new JsonSerializerOptions()
-                {
-                    PropertyNamingPolicy = JsonNamingPolicy.CamelCase
-                });
+                using var response = await client.PostAsync(url, body);
                 using var content = response.Content;
                 var data = await content.ReadAsStringAsync();
                 if (data != null)
                 {
-                    var poco = JsonSerializer.Deserialize<ICollection<Models.Iperbooking.Guests.GuestsResponse>>(data, new JsonSerializerOptions()
+                    var poco = JsonSerializer.Deserialize<Models.Iperbooking.Guests.GuestsResponse>(data, new JsonSerializerOptions()
                     {
-                        PropertyNameCaseInsensitive = true
+                        PropertyNameCaseInsensitive = true,
+                        NumberHandling = System.Text.Json.Serialization.JsonNumberHandling.AllowReadingFromString
                     });
                     if (poco != null)
                     {
@@ -122,7 +122,7 @@ namespace BookingCalendarApi.Services
                 Console.WriteLine(exception.Message);
             }
 
-            return new List<Models.Iperbooking.Guests.GuestsResponse>();
+            return new Models.Iperbooking.Guests.GuestsResponse();
         }
     }
 }
