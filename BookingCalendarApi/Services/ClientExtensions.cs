@@ -15,6 +15,19 @@ namespace BookingCalendarApi.Services
                 });
         }
 
+        public static IEnumerable<Reservation> SelectByQuery(this IEnumerable<Reservation> reservations, string query)
+        {
+            return reservations
+                .Select(reservation => new Reservation(reservation.ReservationId)
+                {
+                    Guests = reservation.Guests
+                        .Where(guest =>
+                            guest.FirstName != string.Empty &&
+                            $"{guest.FirstName} {guest.LastName}".Contains(query, StringComparison.OrdinalIgnoreCase)
+                        )
+                });
+        }
+
         public static IEnumerable<ResponseClient> ComposeResponse(this IEnumerable<Reservation> reservations)
         {
             return reservations

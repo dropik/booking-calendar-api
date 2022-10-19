@@ -1,6 +1,7 @@
 ﻿using BookingCalendarApi.Models.Iperbooking;
 using System.Text;
 using System.Text.Json;
+using System.Text.Json.Serialization;
 
 namespace BookingCalendarApi.Services
 {
@@ -100,8 +101,7 @@ namespace BookingCalendarApi.Services
                 {
                     var poco = JsonSerializer.Deserialize<Models.Iperbooking.Guests.GuestsResponse>(data, new JsonSerializerOptions()
                     {
-                        PropertyNameCaseInsensitive = true,
-                        NumberHandling = System.Text.Json.Serialization.JsonNumberHandling.AllowReadingFromString
+                        PropertyNameCaseInsensitive = true
                     });
                     if (poco != null)
                     {

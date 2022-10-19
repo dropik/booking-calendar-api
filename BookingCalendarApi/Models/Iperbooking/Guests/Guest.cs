@@ -1,3 +1,6 @@
+using BookingCalendarApi.Controllers.Internal;
+using System.Text.Json.Serialization;
+
 namespace BookingCalendarApi.Models.Iperbooking.Guests
 {
     public class Guest
@@ -11,6 +14,7 @@ namespace BookingCalendarApi.Models.Iperbooking.Guests
             BirthDate = birthDate;
         }
 
+        [JsonConverter(typeof(GuestIdConverter))]
         public string GuestId { get; set; }
         public int ReservationRoomId { get; set; }
         public string FirstName { get; set; }
