@@ -13,13 +13,19 @@ namespace BookingCalendarApi.Services
 
         public IEnumerable<Booking> Bookings { get; private set; } = new List<Booking>();
 
-        public async Task FetchBookingsAsync(string from, string to)
+        public async Task FetchBookingsAsync(string from, string to, bool exactPeriod = false)
         {
             var fromDate = DateTime.ParseExact(from, "yyyy-MM-dd", null);
             var toDate = DateTime.ParseExact(to, "yyyy-MM-dd", null);
 
-            var arrivalFrom = fromDate.AddDays(-30).ToString("yyyyMMdd");
-            var arrivalTo = toDate.AddDays(30).ToString("yyyyMMdd");
+            if (!exactPeriod)
+            {
+                fromDate = fromDate.AddDays(-30);
+                toDate = toDate.AddDays(30);
+            }
+
+            var arrivalFrom = fromDate.ToString("yyyyMMdd");
+            var arrivalTo = toDate.ToString("yyyyMMdd");
 
             Bookings = await _iperbooking.GetBookingsAsync(arrivalFrom, arrivalTo);
         }
