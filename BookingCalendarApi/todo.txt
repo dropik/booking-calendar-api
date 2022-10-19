@@ -1,4 +1,2 @@
 - bookings:
-	- get by id
-	- get short booking by id
-	- get list by name, from and to
+	- When fetching concrete booking by id do not use that wide range of arrivals. Use just the concrete provided in the request.
