@@ -1,2 +1,0 @@
-- bookings:
-	- When fetching concrete booking by id do not use that wide range of arrivals. Use just the concrete provided in the request.
