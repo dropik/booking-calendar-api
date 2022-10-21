@@ -1,5 +1,5 @@
-﻿using BookingCalendarApi.Controllers.Internal;
-using BookingCalendarApi.Models.Iperbooking.Bookings;
+﻿using BookingCalendarApi.Models;
+using Room = BookingCalendarApi.Models.Iperbooking.Bookings.Room;
 
 namespace BookingCalendarApi.Services
 {

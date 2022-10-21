@@ -1,9 +1,10 @@
-﻿using BookingCalendarApi.Controllers.Internal;
-using BookingCalendarApi.Models;
+﻿using BookingCalendarApi.Models;
+using BookingCalendarApi.Models.Internal;
 using BookingCalendarApi.Models.Iperbooking.Bookings;
 using BookingCalendarApi.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Booking = BookingCalendarApi.Models.Iperbooking.Bookings.Booking;
 
 namespace BookingCalendarApi.Controllers
 {
@@ -67,9 +68,9 @@ namespace BookingCalendarApi.Controllers
             return await _iperbooking.GetBookingsAsync(arrivalFrom, arrivalTo);
         }
 
-        private async Task<IDictionary<string, AssignedTileDesc>> CreateAssignedTilesCacheAsync(IEnumerable<Booking> bookings)
+        private async Task<IDictionary<string, AssignedTile>> CreateAssignedTilesCacheAsync(IEnumerable<Booking> bookings)
         {
-            Dictionary<string, AssignedTileDesc> assignedTiles = new();
+            Dictionary<string, AssignedTile> assignedTiles = new();
 
             foreach (var booking in bookings.SelectMany(booking => booking.Rooms, (booking, room) => new { booking, room }))
             {
@@ -83,7 +84,7 @@ namespace BookingCalendarApi.Controllers
                     booking.booking.Status != BookingStatus.Cancelled
                 )
                 {
-                    assignedTiles.Add(id, new AssignedTileDesc(
+                    assignedTiles.Add(id, new AssignedTile(
                         DateTime.ParseExact(booking.room.Arrival, "yyyyMMdd", null),
                         DateTime.ParseExact(booking.room.Departure, "yyyyMMdd", null),
                         (long)assignment.RoomId)
@@ -94,7 +95,7 @@ namespace BookingCalendarApi.Controllers
             return assignedTiles;
         }
 
-        private async Task StoreAssignmentAsync(string tileId, long? proposedNewRoomId, IEnumerable<Booking> bookings, IDictionary<string, AssignedTileDesc> assignedTiles)
+        private async Task StoreAssignmentAsync(string tileId, long? proposedNewRoomId, IEnumerable<Booking> bookings, IDictionary<string, AssignedTile> assignedTiles)
         {
             var assignment = await _context.RoomAssignments.SingleOrDefaultAsync(a => a.Id == tileId);
 
@@ -122,7 +123,7 @@ namespace BookingCalendarApi.Controllers
                 }
                 if (!assignedTiles.ContainsKey(tileId))
                 {
-                    assignedTiles.Add(tileId, new AssignedTileDesc(fromDate, toDate, (long)newRoomId));
+                    assignedTiles.Add(tileId, new AssignedTile(fromDate, toDate, (long)newRoomId));
                 }
                 else
                 {

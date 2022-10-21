@@ -1,4 +1,4 @@
-using BookingCalendarApi.Controllers.Internal;
+using BookingCalendarApi.Models;
 using BookingCalendarApi.Services;
 using Microsoft.AspNetCore.Mvc;
 
@@ -18,7 +18,7 @@ namespace BookingCalendarApi.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<BookingShort>> GetAsync(string id, string from)
+        public async Task<ActionResult<ShortBooking>> GetAsync(string id, string from)
         {
             try
             {

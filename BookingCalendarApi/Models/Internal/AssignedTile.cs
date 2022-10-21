@@ -1,8 +1,8 @@
-﻿namespace BookingCalendarApi.Controllers.Internal
+﻿namespace BookingCalendarApi.Models.Internal
 {
-    public class AssignedTileDesc
+    internal class AssignedTile
     {
-        public AssignedTileDesc(DateTime arrival, DateTime departure, long roomId)
+        public AssignedTile(DateTime arrival, DateTime departure, long roomId)
         {
             Arrival = arrival;
             Departure = departure;

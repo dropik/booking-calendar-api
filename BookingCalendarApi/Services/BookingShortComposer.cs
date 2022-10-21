@@ -1,5 +1,4 @@
-﻿using BookingCalendarApi.Controllers.Internal;
-using BookingCalendarApi.Models.Iperbooking.Bookings;
+﻿using BookingCalendarApi.Models;
 
 namespace BookingCalendarApi.Services
 {
@@ -12,7 +11,7 @@ namespace BookingCalendarApi.Services
             _context = context;
         }
 
-        public IEnumerable<BookingShort> Compose(IEnumerable<Booking> bookings)
+        public IEnumerable<ShortBooking> Compose(IEnumerable<Models.Iperbooking.Bookings.Booking> bookings)
         {
             return bookings
                 .GroupJoin(
@@ -23,7 +22,7 @@ namespace BookingCalendarApi.Services
                 )
                 .SelectMany(
                     x => x.assignments.DefaultIfEmpty(),
-                    (join, assignment) => new BookingShort(
+                    (join, assignment) => new ShortBooking(
                         id:             join.booking.BookingNumber.ToString(),
                         name:           $"{join.booking.FirstName} {join.booking.LastName}",
                         lastModified:   join.booking.LastModified,

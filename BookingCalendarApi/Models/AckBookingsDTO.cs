@@ -1,6 +1,4 @@
-﻿using BookingCalendarApi.Models;
-
-namespace BookingCalendarApi.Controllers.Internal
+﻿namespace BookingCalendarApi.Models
 {
     public class AckBookingsDTO
     {

@@ -1,4 +1,4 @@
-using BookingCalendarApi.Controllers.Internal;
+using BookingCalendarApi.Models;
 using BookingCalendarApi.Services;
 using Microsoft.AspNetCore.Mvc;
 
@@ -16,7 +16,7 @@ namespace BookingCalendarApi.Controllers
         }
         
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<ResponseClient>>> GetAsync(string bookingId, string tileId)
+        public async Task<ActionResult<IEnumerable<Client>>> GetAsync(string bookingId, string tileId)
         {
             try
             {

@@ -1,8 +1,8 @@
 ﻿using System.Text.Json.Serialization;
 
-namespace BookingCalendarApi.Controllers.Internal
+namespace BookingCalendarApi.Models.Internal
 {
-    public class LowerCaseEnumConverter : JsonStringEnumConverter
+    internal class LowerCaseEnumConverter : JsonStringEnumConverter
     {
         public LowerCaseEnumConverter() : base(System.Text.Json.JsonNamingPolicy.CamelCase, false) { }
     }
