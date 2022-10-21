@@ -1,4 +1,5 @@
 using BookingCalendarApi;
+using BookingCalendarApi.Models.Iperbooking.Guests;
 using BookingCalendarApi.Services;
 using Microsoft.EntityFrameworkCore;
 
@@ -30,14 +31,17 @@ builder.Services.AddTransient<IStayComposer, StayComposer>();
 #nullable disable
 builder.Services.AddTransient<Func<BookingCalendarApi.Services.ISession>>(
     serviceProvider => () => serviceProvider.GetService<BookingCalendarApi.Services.ISession>());
-builder.Services.AddTransient<Func<string, string, ICityTaxCalculator>>(
+builder.Services.AddTransient<Func<string, string, IEnumerable<Reservation>, ICityTaxCalculator>>(
     serviceProvider =>
-        (from, to) =>
-            new CityTaxPeriodTrimmer(
-                from, to,
-                new SimpleCityTaxCalculator()
+        (from, to, reservations) =>
+            new CityTaxGuestRegistriesFilter(
+                reservations,
+                new CityTaxPeriodTrimmer(
+                    from, to,
+                    new SimpleCityTaxCalculator()
+                )
             )
-    );
+);
 #nullable enable
 
 var app = builder.Build();

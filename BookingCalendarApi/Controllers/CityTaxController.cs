@@ -1,4 +1,5 @@
 ﻿using BookingCalendarApi.Models;
+using BookingCalendarApi.Models.Iperbooking.Guests;
 using BookingCalendarApi.Services;
 using Microsoft.AspNetCore.Mvc;
 
@@ -10,16 +11,19 @@ namespace BookingCalendarApi.Controllers
     {
         private readonly IBookingsProvider _bookingsProvider;
         private readonly IStayComposer _stayComposer;
-        private readonly Func<string, string, ICityTaxCalculator> _calculatorProvider;
+        private readonly IIperbooking _iperbooking;
+        private readonly Func<string, string, IEnumerable<Reservation>, ICityTaxCalculator> _calculatorProvider;
 
         public CityTaxController(
             IBookingsProvider bookingsProvider,
             IStayComposer stayComposer,
-            Func<string, string, ICityTaxCalculator> calculatorProvider
+            IIperbooking iperbooking,
+            Func<string, string, IEnumerable<Reservation>, ICityTaxCalculator> calculatorProvider
         )
         {
             _bookingsProvider = bookingsProvider;
             _stayComposer = stayComposer;
+            _iperbooking = iperbooking;
             _calculatorProvider = calculatorProvider;
         }
 
@@ -29,11 +33,21 @@ namespace BookingCalendarApi.Controllers
             try
             {
                 await _bookingsProvider.FetchBookingsAsync(from, to);
-                var calculator = _calculatorProvider(from, to);
-
-                return _bookingsProvider.Bookings
+                var bookings = _bookingsProvider.Bookings
                     .ExcludeCancelled()
-                    .SelectInRange(from, to)
+                    .SelectInRange(from, to);
+
+                var bookingIds = "";
+                foreach (var booking in bookings)
+                {
+                    bookingIds += $"{booking.BookingNumber},";
+                }
+
+                var guestResponse = await _iperbooking.GetGuestsAsync(bookingIds);
+
+                var calculator = _calculatorProvider(from, to, guestResponse.Reservations);
+
+                return bookings
                     .UseComposer(_stayComposer)
                     .ExcludeNotAssigned()
                     .UseCalculator(calculator);
