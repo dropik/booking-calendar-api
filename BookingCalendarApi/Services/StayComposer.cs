@@ -18,7 +18,7 @@ namespace BookingCalendarApi.Services
                     booking => new
                     {
                         Booking = booking,
-                        RoomContainers = booking.Rooms
+                        Rooms = booking.Rooms
                             .GroupJoin(
                                 _context.RoomAssignments,
                                 room => $"{room.StayId}-{room.Arrival}-{room.Departure}",
@@ -29,19 +29,28 @@ namespace BookingCalendarApi.Services
                                 join => join.Assignments.DefaultIfEmpty(),
                                 (join, assignment) => new { join.Room, assignment?.RoomId }
                             )
+                            .GroupBy(roomContainer => roomContainer.Room.StayId)
+                            .Select(roomContainerGroup => new
+                            {
+                                StayId = roomContainerGroup.Key,
+                                roomContainerGroup.OrderBy(roomContainer => roomContainer.Room.Arrival).First().Room.Arrival,
+                                roomContainerGroup.OrderBy(roomContainer => roomContainer.Room.Departure).Last().Room.Departure,
+                                roomContainerGroup.First().Room.Guests,
+                                roomContainerGroup.First().RoomId
+                            })
                     }
                 )
                 .SelectMany(
-                    bookingContainer => bookingContainer.RoomContainers,
-                    (bookingContainer, roomContainer) => new Stay(
-                        stayId: roomContainer.Room.StayId,
+                    bookingContainer => bookingContainer.Rooms,
+                    (bookingContainer, room) => new Stay(
+                        stayId: room.StayId,
                         bookingNumber: bookingContainer.Booking.BookingNumber,
-                        arrival: roomContainer.Room.Arrival,
-                        departure: roomContainer.Room.Departure
+                        arrival: room.Arrival,
+                        departure: room.Departure
                     )
                     {
-                        Guests = roomContainer.Room.Guests,
-                        RoomId = roomContainer.RoomId
+                        Guests = room.Guests,
+                        RoomId = room.RoomId
                     }
                 );
         }
