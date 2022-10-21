@@ -24,6 +24,7 @@ namespace BookingCalendarApi.Controllers
                 await _bookingsProvider.FetchBookingsAsync(from, to);
 
                 return _bookingsProvider.Bookings
+                    .ExcludeCancelled()
                     .SelectInRange(from, to)
                     .UseComposer(_cityTaxComposer)
                     .GroupBy(x => 1)
