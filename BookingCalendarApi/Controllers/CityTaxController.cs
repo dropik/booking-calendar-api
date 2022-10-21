@@ -30,6 +30,7 @@ namespace BookingCalendarApi.Controllers
                     .ExcludeCancelled()
                     .SelectInRange(from, to)
                     .UseComposer(_stayComposer)
+                    .ExcludeNotAssigned()
                     .UseComposer(_cityTaxComposer)
                     .FirstOrDefault(x => true, new CityTax());
                     
