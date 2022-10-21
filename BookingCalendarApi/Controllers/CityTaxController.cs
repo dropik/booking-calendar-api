@@ -10,13 +10,17 @@ namespace BookingCalendarApi.Controllers
     {
         private readonly IBookingsProvider _bookingsProvider;
         private readonly IStayComposer _stayComposer;
-        private readonly ICityTaxComposer _cityTaxComposer;
+        private readonly Func<ICityTaxCalculator> _calculatorProvider;
 
-        public CityTaxController(IBookingsProvider bookingsProvider, IStayComposer stayComposer, ICityTaxComposer cityTaxComposer)
+        public CityTaxController(
+            IBookingsProvider bookingsProvider,
+            IStayComposer stayComposer,
+            Func<ICityTaxCalculator> calculatorProvider
+        )
         {
             _bookingsProvider = bookingsProvider;
             _stayComposer = stayComposer;
-            _cityTaxComposer = cityTaxComposer;
+            _calculatorProvider = calculatorProvider;
         }
 
         [HttpGet]
@@ -25,14 +29,14 @@ namespace BookingCalendarApi.Controllers
             try
             {
                 await _bookingsProvider.FetchBookingsAsync(from, to);
+                var calculator = _calculatorProvider();
 
                 return _bookingsProvider.Bookings
                     .ExcludeCancelled()
                     .SelectInRange(from, to)
                     .UseComposer(_stayComposer)
                     .ExcludeNotAssigned()
-                    .UseComposer(_cityTaxComposer)
-                    .FirstOrDefault(x => true, new CityTax());
+                    .UseCalculator(calculator);
                     
             }
             catch (Exception exception)

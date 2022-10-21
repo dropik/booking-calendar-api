@@ -3,5 +3,8 @@ using BookingCalendarApi.Models.Iperbooking.Bookings;
 
 namespace BookingCalendarApi.Services
 {
-    public interface ICityTaxComposer : IComposer<Stay, CityTax> { }
+    public interface ICityTaxCalculator
+    {
+        public CityTax Calculate(Stay stay);
+    }
 }

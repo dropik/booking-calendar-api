@@ -25,12 +25,14 @@ builder.Services.AddTransient<IBookingComposer, BookingComposer>();
 builder.Services.AddTransient<IBookingShortComposer, BookingShortComposer>();
 builder.Services.AddTransient<BookingCalendarApi.Services.ISession, Session>();
 builder.Services.AddTransient<ITileComposer, TileComposer>();
-builder.Services.AddTransient<ICityTaxComposer, CityTaxComposer>();
 builder.Services.AddTransient<IStayComposer, StayComposer>();
+builder.Services.AddTransient<ICityTaxCalculator, SimpleCityTaxCalculator>();
 
 #nullable disable
 builder.Services.AddTransient<Func<BookingCalendarApi.Services.ISession>>(
     serviceProvider => () => serviceProvider.GetService<BookingCalendarApi.Services.ISession>());
+builder.Services.AddTransient<Func<ICityTaxCalculator>>(
+    serviceProvider => () => serviceProvider.GetService<ICityTaxCalculator>());
 #nullable enable
 
 var app = builder.Build();
