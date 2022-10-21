@@ -10,12 +10,12 @@ namespace BookingCalendarApi.Controllers
     {
         private readonly IBookingsProvider _bookingsProvider;
         private readonly IStayComposer _stayComposer;
-        private readonly Func<ICityTaxCalculator> _calculatorProvider;
+        private readonly Func<string, string, ICityTaxCalculator> _calculatorProvider;
 
         public CityTaxController(
             IBookingsProvider bookingsProvider,
             IStayComposer stayComposer,
-            Func<ICityTaxCalculator> calculatorProvider
+            Func<string, string, ICityTaxCalculator> calculatorProvider
         )
         {
             _bookingsProvider = bookingsProvider;
@@ -29,7 +29,7 @@ namespace BookingCalendarApi.Controllers
             try
             {
                 await _bookingsProvider.FetchBookingsAsync(from, to);
-                var calculator = _calculatorProvider();
+                var calculator = _calculatorProvider(from, to);
 
                 return _bookingsProvider.Bookings
                     .ExcludeCancelled()

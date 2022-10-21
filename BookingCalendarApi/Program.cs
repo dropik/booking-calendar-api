@@ -26,13 +26,18 @@ builder.Services.AddTransient<IBookingShortComposer, BookingShortComposer>();
 builder.Services.AddTransient<BookingCalendarApi.Services.ISession, Session>();
 builder.Services.AddTransient<ITileComposer, TileComposer>();
 builder.Services.AddTransient<IStayComposer, StayComposer>();
-builder.Services.AddTransient<ICityTaxCalculator, SimpleCityTaxCalculator>();
 
 #nullable disable
 builder.Services.AddTransient<Func<BookingCalendarApi.Services.ISession>>(
     serviceProvider => () => serviceProvider.GetService<BookingCalendarApi.Services.ISession>());
-builder.Services.AddTransient<Func<ICityTaxCalculator>>(
-    serviceProvider => () => serviceProvider.GetService<ICityTaxCalculator>());
+builder.Services.AddTransient<Func<string, string, ICityTaxCalculator>>(
+    serviceProvider =>
+        (from, to) =>
+            new CityTaxPeriodTrimmer(
+                from, to,
+                new SimpleCityTaxCalculator()
+            )
+    );
 #nullable enable
 
 var app = builder.Build();
