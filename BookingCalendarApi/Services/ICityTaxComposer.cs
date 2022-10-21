@@ -1,7 +1,7 @@
 ﻿using BookingCalendarApi.Models;
-using Booking = BookingCalendarApi.Models.Iperbooking.Bookings.Booking;
+using BookingCalendarApi.Models.Iperbooking.Bookings;
 
 namespace BookingCalendarApi.Services
 {
-    public interface ICityTaxComposer : IComposer<Booking, CityTax> { }
+    public interface ICityTaxComposer : IComposer<Stay, CityTax> { }
 }

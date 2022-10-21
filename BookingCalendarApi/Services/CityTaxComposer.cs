@@ -1,22 +1,26 @@
 ﻿using BookingCalendarApi.Models;
+using BookingCalendarApi.Models.Iperbooking.Bookings;
 
 namespace BookingCalendarApi.Services
 {
     public class CityTaxComposer : ICityTaxComposer
     {
-        public IEnumerable<CityTax> Compose(IEnumerable<Models.Iperbooking.Bookings.Booking> source)
+        public IEnumerable<CityTax> Compose(IEnumerable<Stay> source)
         {
             return source
-                .SelectMany(
-                    booking => booking.Rooms,
-                    (booking, room) => new CityTax()
+                .Select(stay => new CityTax()
                     {
                         Standard = Convert.ToUInt32(
-                            room.Guests.Count *
-                            (DateTime.ParseExact(room.Departure, "yyyyMMdd", null) - DateTime.ParseExact(room.Arrival, "yyyyMMdd", null)).Days
+                            stay.Guests.Count() *
+                            (DateTime.ParseExact(stay.Departure, "yyyyMMdd", null) - DateTime.ParseExact(stay.Arrival, "yyyyMMdd", null)).Days
                         )
                     }
-                );
+                )
+                .GroupBy(x => 1)
+                .Select(cityTaxes => new CityTax()
+                {
+                    Standard = Convert.ToUInt32(cityTaxes.Sum(t => t.Standard))
+                });
         }
     }
 }

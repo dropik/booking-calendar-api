@@ -5,14 +5,17 @@ using Microsoft.AspNetCore.Mvc;
 namespace BookingCalendarApi.Controllers
 {
     [Route("api/v1/city-tax")]
+    [ApiController]
     public class CityTaxController : ControllerBase
     {
         private readonly IBookingsProvider _bookingsProvider;
+        private readonly IStayComposer _stayComposer;
         private readonly ICityTaxComposer _cityTaxComposer;
 
-        public CityTaxController(IBookingsProvider bookingsProvider, ICityTaxComposer cityTaxComposer)
+        public CityTaxController(IBookingsProvider bookingsProvider, IStayComposer stayComposer, ICityTaxComposer cityTaxComposer)
         {
             _bookingsProvider = bookingsProvider;
+            _stayComposer = stayComposer;
             _cityTaxComposer = cityTaxComposer;
         }
 
@@ -26,12 +29,8 @@ namespace BookingCalendarApi.Controllers
                 return _bookingsProvider.Bookings
                     .ExcludeCancelled()
                     .SelectInRange(from, to)
+                    .UseComposer(_stayComposer)
                     .UseComposer(_cityTaxComposer)
-                    .GroupBy(x => 1)
-                    .Select(cityTaxes => new CityTax()
-                    {
-                        Standard = Convert.ToUInt32(cityTaxes.Sum(t => t.Standard))
-                    })
                     .FirstOrDefault(x => true, new CityTax());
                     
             }

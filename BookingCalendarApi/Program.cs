@@ -26,6 +26,7 @@ builder.Services.AddTransient<IBookingShortComposer, BookingShortComposer>();
 builder.Services.AddTransient<BookingCalendarApi.Services.ISession, Session>();
 builder.Services.AddTransient<ITileComposer, TileComposer>();
 builder.Services.AddTransient<ICityTaxComposer, CityTaxComposer>();
+builder.Services.AddTransient<IStayComposer, StayComposer>();
 
 #nullable disable
 builder.Services.AddTransient<Func<BookingCalendarApi.Services.ISession>>(
