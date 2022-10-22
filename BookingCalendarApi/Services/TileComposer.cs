@@ -28,7 +28,6 @@ namespace BookingCalendarApi.Services
                         from: DateTime.ParseExact(join.room.Arrival, "yyyyMMdd", null).ToString("yyyy-MM-dd"),
                         nights: Convert.ToUInt32((DateTime.ParseExact(join.room.Departure, "yyyyMMdd", null) - DateTime.ParseExact(join.room.Arrival, "yyyyMMdd", null)).Days),
                         roomType: join.room.RoomName,
-                        entity: join.room.RoomName,
                         persons: Convert.ToUInt32(join.room.Guests.Count)
                     )
                     {
