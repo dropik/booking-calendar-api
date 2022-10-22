@@ -1,5 +1,5 @@
 using BookingCalendarApi.Models;
-using BookingCalendarApi.Models.Iperbooking.Bookings;
+using Booking = BookingCalendarApi.Models.Iperbooking.Bookings.Booking;
 
 namespace BookingCalendarApi.Services
 {

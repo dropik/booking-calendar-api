@@ -32,6 +32,12 @@ namespace BookingCalendarApi.Services
                 .Where(booking => booking.BookingNumber.ToString() == id);
         }
 
+        public static IEnumerable<Booking> ExcludeCancelled(this IEnumerable<Booking> bookings)
+        {
+            return bookings
+                .Where(booking => booking.Status != BookingStatus.Cancelled);
+        }
+
         private static IEnumerable<Booking> ExcludeByRange(this IEnumerable<Booking> bookings, DateTime fromDate, DateTime toDate)
         {
             return bookings

@@ -1,4 +1,4 @@
-using BookingCalendarApi.Controllers.Internal;
+using BookingCalendarApi.Models;
 using BookingCalendarApi.Services;
 using Microsoft.AspNetCore.Mvc;
 
@@ -24,7 +24,7 @@ namespace BookingCalendarApi.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<BookingsControllerResponse>> GetBySessionAsync(string from, string to, string? sessionId)
+        public async Task<ActionResult<BookingsBySession>> GetBySessionAsync(string from, string to, string? sessionId)
         {
             try
             {
@@ -41,7 +41,7 @@ namespace BookingCalendarApi.Controllers
                     .UseComposer(_bookingComposer)
                     .ToList();
 
-                return new BookingsControllerResponse(session.Id.ToString())
+                return new BookingsBySession(session.Id.ToString())
                 {
                     Bookings = bookings
                 };

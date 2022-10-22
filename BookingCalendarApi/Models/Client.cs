@@ -1,8 +1,8 @@
-namespace BookingCalendarApi.Controllers.Internal
+namespace BookingCalendarApi.Models
 {
-    public class ResponseClient
+    public class Client
     {
-        public ResponseClient(string id, string bookingId, string name, string surname, string dateOfBirth)
+        public Client(string id, string bookingId, string name, string surname, string dateOfBirth)
         {
             Id = id;
             BookingId = bookingId;
@@ -12,7 +12,7 @@ namespace BookingCalendarApi.Controllers.Internal
         }
 
         public string Id { get; set; }
-        public string BookingId { get; set;}
+        public string BookingId { get; set; }
         public string Name { get; set; }
         public string Surname { get; set; }
         public string DateOfBirth { get; set; }

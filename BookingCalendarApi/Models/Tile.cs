@@ -1,4 +1,4 @@
-namespace BookingCalendarApi.Controllers.Internal
+namespace BookingCalendarApi.Models
 {
     public class Tile
     {

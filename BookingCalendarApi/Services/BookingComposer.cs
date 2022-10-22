@@ -1,4 +1,4 @@
-using BookingCalendarApi.Controllers.Internal;
+using BookingCalendarApi.Models;
 using BookingCalendarApi.Models.Iperbooking.Bookings;
 
 namespace BookingCalendarApi.Services
@@ -14,7 +14,7 @@ namespace BookingCalendarApi.Services
             _tileComposer = tileComposer;
         }
 
-        public IEnumerable<ResponseBooking> Compose(IEnumerable<Booking> bookings)
+        public IEnumerable<Models.Booking> Compose(IEnumerable<Models.Iperbooking.Bookings.Booking> bookings)
         {
             return bookings
                 .GroupJoin(
@@ -25,12 +25,12 @@ namespace BookingCalendarApi.Services
                 )
                 .SelectMany(
                     x => x.assignments.DefaultIfEmpty(),
-                    (join, assignment) => new ResponseBooking(
+                    (join, assignment) => new Models.Booking(
                         id:             join.booking.BookingNumber.ToString(),
                         name:           $"{join.booking.FirstName} {join.booking.LastName}",
                         lastModified:   join.booking.LastModified,
-                        from:           DateTime.ParseExact(join.booking.Rooms.OrderBy(room => room.Arrival).First().Arrival, "yyyyMMdd", null).ToString("yyyy-MM-dd"),
-                        to:             DateTime.ParseExact(join.booking.Rooms.OrderBy(room => room.Departure).Last().Departure, "yyyyMMdd", null).ToString("yyyy-MM-dd")
+                        from: DateTime.ParseExact(join.booking.Rooms.OrderBy(room => room.Arrival).First().Arrival, "yyyyMMdd", null).ToString("yyyy-MM-dd"),
+                        to: DateTime.ParseExact(join.booking.Rooms.OrderBy(room => room.Departure).Last().Departure, "yyyyMMdd", null).ToString("yyyy-MM-dd")
                     )
                     {
                         Status = join.booking.Status,

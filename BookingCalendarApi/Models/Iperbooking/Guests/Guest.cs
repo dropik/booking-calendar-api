@@ -1,4 +1,4 @@
-using BookingCalendarApi.Controllers.Internal;
+using BookingCalendarApi.Models.Internal;
 using System.Text.Json.Serialization;
 
 namespace BookingCalendarApi.Models.Iperbooking.Guests

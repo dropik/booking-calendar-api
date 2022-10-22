@@ -1,5 +1,4 @@
-﻿using BookingCalendarApi.Controllers.Internal;
-using BookingCalendarApi.Models;
+﻿using BookingCalendarApi.Models;
 using Microsoft.AspNetCore.Mvc;
 
 namespace BookingCalendarApi.Controllers

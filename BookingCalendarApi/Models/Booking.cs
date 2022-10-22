@@ -1,11 +1,12 @@
-﻿using BookingCalendarApi.Models.Iperbooking.Bookings;
+﻿using BookingCalendarApi.Models.Internal;
+using BookingCalendarApi.Models.Iperbooking.Bookings;
 using System.Text.Json.Serialization;
 
-namespace BookingCalendarApi.Controllers.Internal
+namespace BookingCalendarApi.Models
 {
-    public class ResponseBooking
+    public class Booking
     {
-        public ResponseBooking(string id, string name, string lastModified, string from, string to)
+        public Booking(string id, string name, string lastModified, string from, string to)
         {
             Id = id;
             Name = name;
