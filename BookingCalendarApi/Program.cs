@@ -1,3 +1,4 @@
+using AlloggiatiService;
 using BookingCalendarApi;
 using BookingCalendarApi.Models.Iperbooking.Guests;
 using BookingCalendarApi.Services;
@@ -27,6 +28,9 @@ builder.Services.AddTransient<IBookingShortComposer, BookingShortComposer>();
 builder.Services.AddTransient<BookingCalendarApi.Services.ISession, Session>();
 builder.Services.AddTransient<ITileComposer, TileComposer>();
 builder.Services.AddTransient<IStayComposer, StayComposer>();
+builder.Services.AddTransient<IEndpointConfigurationProvider, EndpointConfigurationProvider>();
+builder.Services.AddTransient<IRemoteAddressProvider, RemoteAddressProvider>();
+builder.Services.AddTransient<IServiceSoap, ServiceSoapClient>();
 
 #nullable disable
 builder.Services.AddTransient<Func<BookingCalendarApi.Services.ISession>>(

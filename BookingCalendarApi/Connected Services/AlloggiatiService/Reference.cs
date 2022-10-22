@@ -10,8 +10,8 @@
 namespace AlloggiatiService
 {
     using System.Runtime.Serialization;
-    
-    
+    using static AlloggiatiService.ServiceSoapClient;
+
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.0.3")]
     [System.Runtime.Serialization.DataContractAttribute(Name="EsitoOperazione", Namespace="AlloggiatiService")]
@@ -206,7 +206,7 @@ namespace AlloggiatiService
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.0.3")]
     [System.ServiceModel.ServiceContractAttribute(Namespace="AlloggiatiService", ConfigurationName="AlloggiatiService.ServiceSoap")]
-    public interface ServiceSoap
+    public interface IServiceSoap
     {
         
         [System.ServiceModel.OperationContractAttribute(Action="AlloggiatiService/GenerateToken", ReplyAction="*")]
@@ -1343,13 +1343,13 @@ namespace AlloggiatiService
     }
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.0.3")]
-    public interface ServiceSoapChannel : AlloggiatiService.ServiceSoap, System.ServiceModel.IClientChannel
+    public interface IServiceSoapChannel : AlloggiatiService.IServiceSoap, System.ServiceModel.IClientChannel
     {
     }
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.0.3")]
-    public partial class ServiceSoapClient : System.ServiceModel.ClientBase<AlloggiatiService.ServiceSoap>, AlloggiatiService.ServiceSoap
+    public partial class ServiceSoapClient : System.ServiceModel.ClientBase<AlloggiatiService.IServiceSoap>, AlloggiatiService.IServiceSoap
     {
         
         /// <summary>
@@ -1358,6 +1358,10 @@ namespace AlloggiatiService
         /// <param name="serviceEndpoint">Endpoint da configurare</param>
         /// <param name="clientCredentials">Credenziali del client</param>
         static partial void ConfigureEndpoint(System.ServiceModel.Description.ServiceEndpoint serviceEndpoint, System.ServiceModel.Description.ClientCredentials clientCredentials);
+
+        public ServiceSoapClient(IEndpointConfigurationProvider endpointConfigurationProvider, IRemoteAddressProvider remoteAddressProvider) :
+            this(endpointConfigurationProvider.EndpointConfiguration, remoteAddressProvider.RemoteAddress)
+        { }
         
         public ServiceSoapClient(EndpointConfiguration endpointConfiguration) : 
                 base(ServiceSoapClient.GetBindingForEndpoint(endpointConfiguration), ServiceSoapClient.GetEndpointAddress(endpointConfiguration))
@@ -1503,5 +1507,25 @@ namespace AlloggiatiService
             
             ServiceSoap12,
         }
+    }
+
+    public interface IEndpointConfigurationProvider
+    {
+        public EndpointConfiguration EndpointConfiguration { get; }
+    }
+
+    public class EndpointConfigurationProvider : IEndpointConfigurationProvider
+    {
+        public EndpointConfiguration EndpointConfiguration => EndpointConfiguration.ServiceSoap12;
+    }
+
+    public interface IRemoteAddressProvider
+    {
+        public string RemoteAddress { get; }
+    }
+
+    public class RemoteAddressProvider : IRemoteAddressProvider
+    {
+        public string RemoteAddress => "https://alloggiatiweb.poliziadistato.it/service";
     }
 }
