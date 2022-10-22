@@ -24,6 +24,7 @@ namespace BookingCalendarApi.Services
             // storing in a signed int to protect from underflow during calculations
             int standard = (int)value.Standard;
             int children = (int)value.Children;
+            int over10Days = (int)value.Over10Days;
 
             var daysBeforeFrom = (_from - arrival).Days;
             if (daysBeforeFrom > 0)
@@ -37,12 +38,23 @@ namespace BookingCalendarApi.Services
             if (daysAfterTo > 0)
             {
                 var diff = guests * daysAfterTo;
-                standard -= diff;
+                over10Days -= diff;
                 children -= diff;
             }
 
+            if (standard < 0)
+            {
+                over10Days += standard;
+            }
+
+            if (over10Days < 0)
+            {
+                standard += over10Days;
+            }    
+
             value.Standard = Convert.ToUInt32(standard >= 0 ? standard : 0);
             value.Children = Convert.ToUInt32(children >= 0 ? children : 0);
+            value.Over10Days = Convert.ToUInt32(over10Days >= 0 ? over10Days : 0);
 
             return value;
         }
