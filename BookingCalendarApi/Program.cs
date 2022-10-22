@@ -36,9 +36,11 @@ builder.Services.AddTransient<Func<string, string, IEnumerable<Reservation>, ICi
         (from, to, reservations) =>
             new CityTaxPeriodTrimmer(
                 from, to,
-                new CityTaxGuestRegistriesFilter(
-                    reservations,
-                    new SimpleCityTaxCalculator()
+                new CityTaxOver10Days(
+                    new CityTaxGuestRegistriesFilter(
+                        reservations,
+                        new SimpleCityTaxCalculator()
+                    )
                 )
             )
 );
