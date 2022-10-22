@@ -34,10 +34,10 @@ builder.Services.AddTransient<Func<BookingCalendarApi.Services.ISession>>(
 builder.Services.AddTransient<Func<string, string, IEnumerable<Reservation>, ICityTaxCalculator>>(
     serviceProvider =>
         (from, to, reservations) =>
-            new CityTaxGuestRegistriesFilter(
-                reservations,
-                new CityTaxPeriodTrimmer(
-                    from, to,
+            new CityTaxPeriodTrimmer(
+                from, to,
+                new CityTaxGuestRegistriesFilter(
+                    reservations,
                     new SimpleCityTaxCalculator()
                 )
             )
