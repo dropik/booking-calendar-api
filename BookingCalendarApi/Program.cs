@@ -31,6 +31,7 @@ builder.Services.AddTransient<IStayComposer, StayComposer>();
 builder.Services.AddTransient<IEndpointConfigurationProvider, EndpointConfigurationProvider>();
 builder.Services.AddTransient<IRemoteAddressProvider, RemoteAddressProvider>();
 builder.Services.AddTransient<IServiceSoap, ServiceSoapClient>();
+builder.Services.AddTransient<IAlloggiatiServiceSession, AlloggiatiServiceSession>();
 
 #nullable disable
 builder.Services.AddTransient<Func<BookingCalendarApi.Services.ISession>>(
