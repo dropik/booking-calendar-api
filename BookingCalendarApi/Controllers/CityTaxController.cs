@@ -10,18 +10,21 @@ namespace BookingCalendarApi.Controllers
     public class CityTaxController : ControllerBase
     {
         private readonly IBookingsProvider _bookingsProvider;
+        private readonly IAssignedBookingComposer _assignedBookingComposer;
         private readonly IStayComposer _stayComposer;
         private readonly IIperbooking _iperbooking;
         private readonly Func<string, string, IEnumerable<Reservation>, ICityTaxCalculator> _calculatorProvider;
 
         public CityTaxController(
             IBookingsProvider bookingsProvider,
+            IAssignedBookingComposer assignedBookingComposer,
             IStayComposer stayComposer,
             IIperbooking iperbooking,
             Func<string, string, IEnumerable<Reservation>, ICityTaxCalculator> calculatorProvider
         )
         {
             _bookingsProvider = bookingsProvider;
+            _assignedBookingComposer = assignedBookingComposer;
             _stayComposer = stayComposer;
             _iperbooking = iperbooking;
             _calculatorProvider = calculatorProvider;
@@ -48,6 +51,7 @@ namespace BookingCalendarApi.Controllers
                 var calculator = _calculatorProvider(from, to, guestResponse.Reservations);
 
                 return bookings
+                    .UseComposer(_assignedBookingComposer)
                     .UseComposer(_stayComposer)
                     .ExcludeNotAssigned()
                     .UseCalculator(calculator);
