@@ -28,8 +28,6 @@ builder.Services.AddTransient<IBookingShortComposer, BookingShortComposer>();
 builder.Services.AddTransient<BookingCalendarApi.Services.ISession, Session>();
 builder.Services.AddTransient<ITileComposer, TileComposer>();
 builder.Services.AddTransient<IStayComposer, StayComposer>();
-builder.Services.AddTransient<IEndpointConfigurationProvider, EndpointConfigurationProvider>();
-builder.Services.AddTransient<IRemoteAddressProvider, RemoteAddressProvider>();
 builder.Services.AddTransient<IServiceSoap, ServiceSoapClient>();
 builder.Services.AddTransient<IAlloggiatiServiceSession, AlloggiatiServiceSession>();
 builder.Services.AddTransient<IAlloggiatiTableReader, AlloggiatiTableReader>();

@@ -1359,12 +1359,11 @@ namespace AlloggiatiService
         /// <param name="clientCredentials">Credenziali del client</param>
         static partial void ConfigureEndpoint(System.ServiceModel.Description.ServiceEndpoint serviceEndpoint, System.ServiceModel.Description.ClientCredentials clientCredentials);
 
-        public ServiceSoapClient(IEndpointConfigurationProvider endpointConfigurationProvider, IRemoteAddressProvider remoteAddressProvider) :
-            this(endpointConfigurationProvider.EndpointConfiguration, remoteAddressProvider.RemoteAddress)
+        public ServiceSoapClient() : this(EndpointConfiguration.ServiceSoap12)
         { }
         
         public ServiceSoapClient(EndpointConfiguration endpointConfiguration) : 
-                base(ServiceSoapClient.GetBindingForEndpoint(endpointConfiguration), ServiceSoapClient.GetEndpointAddress(endpointConfiguration))
+                base(ServiceSoapClient.GetBindingForEndpoint(endpointConfiguration), ServiceSoapClient.GetEndpointAddress())
         {
             this.Endpoint.Name = endpointConfiguration.ToString();
             ConfigureEndpoint(this.Endpoint, this.ClientCredentials);
@@ -1487,17 +1486,9 @@ namespace AlloggiatiService
             throw new System.InvalidOperationException(string.Format("L\'endpoint denominato \'{0}\' non è stato trovato.", endpointConfiguration));
         }
         
-        private static System.ServiceModel.EndpointAddress GetEndpointAddress(EndpointConfiguration endpointConfiguration)
+        private static System.ServiceModel.EndpointAddress GetEndpointAddress()
         {
-            if ((endpointConfiguration == EndpointConfiguration.ServiceSoap))
-            {
-                return new System.ServiceModel.EndpointAddress("https://alloggiatiweb.poliziadistato.it/service/service.asmx");
-            }
-            if ((endpointConfiguration == EndpointConfiguration.ServiceSoap12))
-            {
-                return new System.ServiceModel.EndpointAddress("https://alloggiatiweb.poliziadistato.it/service/service.asmx");
-            }
-            throw new System.InvalidOperationException(string.Format("L\'endpoint denominato \'{0}\' non è stato trovato.", endpointConfiguration));
+            return new System.ServiceModel.EndpointAddress("https://alloggiatiweb.poliziadistato.it/service/service.asmx");
         }
         
         public enum EndpointConfiguration
@@ -1507,25 +1498,5 @@ namespace AlloggiatiService
             
             ServiceSoap12,
         }
-    }
-
-    public interface IEndpointConfigurationProvider
-    {
-        public EndpointConfiguration EndpointConfiguration { get; }
-    }
-
-    public class EndpointConfigurationProvider : IEndpointConfigurationProvider
-    {
-        public EndpointConfiguration EndpointConfiguration => EndpointConfiguration.ServiceSoap12;
-    }
-
-    public interface IRemoteAddressProvider
-    {
-        public string RemoteAddress { get; }
-    }
-
-    public class RemoteAddressProvider : IRemoteAddressProvider
-    {
-        public string RemoteAddress => "https://alloggiatiweb.poliziadistato.it/service";
     }
 }
