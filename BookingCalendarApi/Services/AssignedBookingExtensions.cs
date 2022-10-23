@@ -2,7 +2,7 @@
 
 namespace BookingCalendarApi.Services
 {
-    public static class AssignedBookingComposerExtensions
+    public static class AssignedBookingExtensions
     {
         public static IEnumerable<AssignedBooking<Guest>> ExcludeNotAssigned(this IEnumerable<AssignedBooking<Guest>> bookings) =>
             bookings

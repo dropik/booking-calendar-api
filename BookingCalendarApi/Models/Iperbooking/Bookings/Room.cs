@@ -15,6 +15,6 @@ namespace BookingCalendarApi.Models.Iperbooking.Bookings
         public string Arrival { get; set; }
         public string Departure { get; set; }
         
-        public ICollection<TGuest> Guests { get; set; } = new List<TGuest>();
+        public IEnumerable<TGuest> Guests { get; set; } = new List<TGuest>();
     }
 }
