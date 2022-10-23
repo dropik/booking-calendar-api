@@ -3,5 +3,5 @@ using Booking = BookingCalendarApi.Models.Iperbooking.Bookings.Booking;
 
 namespace BookingCalendarApi.Services
 {
-    public interface IAssignedBookingComposer : IComposer<Booking, AssignedBooking> { }
+    public interface IAssignedBookingComposer : IComposer<Booking, AssignedBooking<Guest>> { }
 }

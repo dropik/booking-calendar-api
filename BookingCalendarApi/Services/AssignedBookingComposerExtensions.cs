@@ -4,9 +4,9 @@ namespace BookingCalendarApi.Services
 {
     public static class AssignedBookingComposerExtensions
     {
-        public static IEnumerable<AssignedBooking> ExcludeNotAssigned(this IEnumerable<AssignedBooking> bookings) =>
+        public static IEnumerable<AssignedBooking<Guest>> ExcludeNotAssigned(this IEnumerable<AssignedBooking<Guest>> bookings) =>
             bookings
-            .Select(booking => new AssignedBooking(booking.Booking)
+            .Select(booking => new AssignedBooking<Guest>(booking.Booking)
             {
                 Rooms = booking.Rooms
                     .Where(room => room.RoomId != null)

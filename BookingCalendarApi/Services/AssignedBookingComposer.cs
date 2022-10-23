@@ -11,10 +11,10 @@ namespace BookingCalendarApi.Services
             _context = context;
         }
 
-        public IEnumerable<AssignedBooking> Compose(IEnumerable<Booking> source) =>
+        public IEnumerable<AssignedBooking<Guest>> Compose(IEnumerable<Booking> source) =>
             source
             .Select(
-                booking => new AssignedBooking(booking)
+                booking => new AssignedBooking<Guest>(booking)
                 {
                     Rooms = booking.Rooms
                         .GroupJoin(
