@@ -28,7 +28,7 @@ namespace BookingCalendarApi.Services
                             (join, assignment) => new { join.Room, assignment?.RoomId }
                         )
                         .GroupBy(roomContainer => roomContainer.Room.StayId)
-                        .Select(roomContainerGroup => new AssignedRoom(
+                        .Select(roomContainerGroup => new AssignedRoom<Guest>(
                             stayId: roomContainerGroup.Key,
                             roomName: roomContainerGroup.First().Room.RoomName,
                             arrival: roomContainerGroup.OrderBy(roomContainer => roomContainer.Room.Arrival).First().Room.Arrival,
