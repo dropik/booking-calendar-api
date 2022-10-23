@@ -7,5 +7,6 @@ namespace BookingCalendarApi.Services
         public Task OpenAsync();
         public Task<string> GetTableAsync(TipoTabella tipoTabella);
         public Task SendDataAsync(IList<string> data, bool test);
+        public Task<byte[]> GetRicevutaAsync(DateTime date);
     }
 }

@@ -80,5 +80,21 @@ namespace BookingCalendarApi.Services
                 }
             }
         }
+
+        public async Task<byte[]> GetRicevutaAsync(DateTime date)
+        {
+            var request = new RicevutaRequest(new RicevutaRequestBody()
+            {
+                Utente = _credentials.Utente,
+                token = Token,
+                Data = date
+            });
+            var response = await _service.RicevutaAsync(request);
+            if (!response.Body.RicevutaResult.esito)
+            {
+                throw new Exception(response.Body.RicevutaResult.ErroreDettaglio);
+            }
+            return response.Body.PDF;
+        }
     }
 }
