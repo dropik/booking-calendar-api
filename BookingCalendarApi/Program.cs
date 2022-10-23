@@ -32,6 +32,8 @@ builder.Services.AddTransient<IEndpointConfigurationProvider, EndpointConfigurat
 builder.Services.AddTransient<IRemoteAddressProvider, RemoteAddressProvider>();
 builder.Services.AddTransient<IServiceSoap, ServiceSoapClient>();
 builder.Services.AddTransient<IAlloggiatiServiceSession, AlloggiatiServiceSession>();
+builder.Services.AddTransient<IAlloggiatiTableReader, AlloggiatiTableReader>();
+builder.Services.AddTransient<ITrackedRecordSerializer, TrackedRecordSerializer>();
 
 #nullable disable
 builder.Services.AddTransient<Func<BookingCalendarApi.Services.ISession>>(
