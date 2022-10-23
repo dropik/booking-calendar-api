@@ -1,6 +1,6 @@
 namespace BookingCalendarApi.Models.Iperbooking.Bookings
 {
-    public class Room
+    public class Room<TGuest>
     {
         public Room(long stayId, string roomName, string arrival, string departure)
         {
@@ -15,6 +15,6 @@ namespace BookingCalendarApi.Models.Iperbooking.Bookings
         public string Arrival { get; set; }
         public string Departure { get; set; }
         
-        public ICollection<Guest> Guests { get; set; } = new List<Guest>();
+        public ICollection<TGuest> Guests { get; set; } = new List<TGuest>();
     }
 }

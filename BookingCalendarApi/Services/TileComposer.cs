@@ -1,5 +1,5 @@
 ﻿using BookingCalendarApi.Models;
-using Room = BookingCalendarApi.Models.Iperbooking.Bookings.Room;
+using BookingCalendarApi.Models.Iperbooking.Bookings;
 
 namespace BookingCalendarApi.Services
 {
@@ -12,7 +12,7 @@ namespace BookingCalendarApi.Services
             _context = context;
         }
 
-        public IEnumerable<Tile> Compose(IEnumerable<Room> rooms)
+        public IEnumerable<Tile> Compose(IEnumerable<Room<Guest>> rooms)
         {
             return rooms
                 .GroupJoin(
