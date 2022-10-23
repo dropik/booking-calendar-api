@@ -6,6 +6,5 @@ namespace BookingCalendarApi.Services
     {
         public List<Place> ReadAsPlaces(string data);
         public List<DocumentType> ReadAsDocumentTypes(string data);
-        public List<AccomodatedType> ReadAsAccomodatedTypes(string data);
     }
 }
