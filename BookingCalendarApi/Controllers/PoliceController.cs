@@ -80,6 +80,22 @@ namespace BookingCalendarApi.Controllers
             }
         }
 
+        [HttpPost]
+        public async Task<IActionResult> SendAsync(SendRequest request)
+        {
+            try
+            {
+                var records = await ComposeRecordsAsync(request.Date);
+                await _session.SendDataAsync(records, true);        // test it first
+                await _session.SendDataAsync(records, false);       // if no exception occured - send
+                return Ok();
+            }
+            catch (Exception exception)
+            {
+                return BadRequest(exception.Message);
+            }
+        }
+
         private async Task<List<string>> ComposeRecordsAsync(string date)
         {
             var to = DateTime.ParseExact(date, "yyyy-MM-dd", null).AddDays(1).ToString("yyyy-MM-dd");
