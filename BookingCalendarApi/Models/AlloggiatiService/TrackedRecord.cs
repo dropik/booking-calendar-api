@@ -5,7 +5,6 @@
         private ushort _nights;
         private string _surname = "";
         private string _name = "";
-        private string? _provinceOfBirth;
         private DocumentType? _documentType;
         private string? _documentNumber;
         private ulong? _documentIssuer;
@@ -38,18 +37,7 @@
         public Gender Sex { get; set; }
         public DateTime BirthDate { get; set; }
         public ulong? PlaceOfBirth { get; set; }
-        public string? ProvinceOfBirth
-        {
-            get => _provinceOfBirth;
-            set
-            {
-                if (value != null && value.Length != 2)
-                {
-                    throw new Exception("Incorrect province value");
-                }
-                _provinceOfBirth = value;
-            }
-        }
+        public string? ProvinceOfBirth { get; set; }
         public ulong StateOfBirth { get; set; }
         public ulong Citizenship { get; set; }
         public DocumentType? DocType

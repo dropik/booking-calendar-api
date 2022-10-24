@@ -14,7 +14,7 @@ namespace BookingCalendarApi.Services
             $"{SerializeGender(record.Sex)}" +
             $"{record.BirthDate:dd/MM/yyyy}" +
             $"{(record.PlaceOfBirth != null ? record.PlaceOfBirth.ToString() : new string(' ', 9))}" +
-            $"{(record.ProvinceOfBirth != null ? record.PlaceOfBirth.ToString() : new string(' ', 2))}" +
+            $"{record.ProvinceOfBirth ?? new string(' ', 2)}" +
             $"{record.StateOfBirth}" +
             $"{record.Citizenship}" +
             $"{(record.DocType != null ? record.DocType.ToString()?.ToUpper() : new string(' ', 5))}" +

@@ -1,11 +1,10 @@
 ﻿using BookingCalendarApi.Models.AlloggiatiService;
-using BookingCalendarApi.Models.Iperbooking.Bookings;
 
 namespace BookingCalendarApi.Services
 {
     public class AccomodatedTypeSolver : IAccomodatedTypeSolver
     {
-        public void Solve(TrackedRecord recordToSolve, IEnumerable<TrackedRecord> recordsBlock, AssignedBooking<Models.Iperbooking.Guests.Guest> booking)
+        public void Solve(TrackedRecord recordToSolve, IEnumerable<TrackedRecord> recordsBlock)
         {
             if (recordsBlock.Count() == 1)
             {
