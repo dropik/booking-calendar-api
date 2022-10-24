@@ -1,6 +1,7 @@
 using AlloggiatiService;
 using BookingCalendarApi;
 using BookingCalendarApi.Models;
+using BookingCalendarApi.Models.AlloggiatiService;
 using BookingCalendarApi.Models.Iperbooking.Guests;
 using BookingCalendarApi.Services;
 using Microsoft.EntityFrameworkCore;
@@ -52,7 +53,9 @@ builder.Services.AddTransient<Func<string, string, IEnumerable<Reservation>, ICi
             )
 );
 builder.Services.AddTransient<Func<IEnumerable<PoliceNationCode>, INationConverter>>(
-    ServiceProvider => (nationCodes) => new NationConverter(nationCodes));
+    serviceProvider => (nationCodes) => new NationConverter(nationCodes));
+builder.Services.AddTransient<Func<IEnumerable<Place>, IPlaceConverter>>(
+    serviceProvider => (places) => new PlaceConverter(places));
 #nullable enable
 
 var app = builder.Build();
