@@ -59,6 +59,8 @@ builder.Services.AddTransient<Func<IEnumerable<PoliceNationCode>, INationConvert
     serviceProvider => (nationCodes) => new NationConverter(nationCodes));
 builder.Services.AddTransient<Func<IEnumerable<Place>, IPlaceConverter>>(
     serviceProvider => (places) => new PlaceConverter(places));
+builder.Services.AddTransient<Func<INationConverter, IPlaceConverter, ITrackedRecordsComposer>>(
+    serviceProvider => (nationConverter, placeConverter) => new TrackedRecordsComposer(nationConverter, placeConverter, serviceProvider.GetService<IAccomodatedTypeSolver>()));
 #nullable enable
 
 var app = builder.Build();

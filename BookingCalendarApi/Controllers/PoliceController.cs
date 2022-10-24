@@ -20,7 +20,7 @@ namespace BookingCalendarApi.Controllers
         private readonly IAlloggiatiTableReader _tableReader;
         private readonly Func<IEnumerable<Place>, IPlaceConverter> _placeConverterProvider;
         private readonly Func<IEnumerable<PoliceNationCode>, INationConverter> _nationConverterProvider;
-        private readonly IAccomodatedTypeSolver _accomodatedTypeSolver;
+        private readonly Func<INationConverter, IPlaceConverter, ITrackedRecordsComposer> _trackedRecordsComposerProvider;
         private readonly ITrackedRecordSerializer _trackedRecordSerializer;
 
         public PoliceController(
@@ -33,7 +33,7 @@ namespace BookingCalendarApi.Controllers
             IAlloggiatiTableReader tableReader,
             Func<IEnumerable<Place>, IPlaceConverter> placeConverterProvider,
             Func<IEnumerable<PoliceNationCode>, INationConverter> nationConverterProvider,
-            IAccomodatedTypeSolver accomodatedTypeSolver,
+            Func<INationConverter, IPlaceConverter, ITrackedRecordsComposer> trackedRecordsComposerProvider,
             ITrackedRecordSerializer trackedRecordSerializer
         )
         {
@@ -46,7 +46,7 @@ namespace BookingCalendarApi.Controllers
             _tableReader = tableReader;
             _placeConverterProvider = placeConverterProvider;
             _nationConverterProvider = nationConverterProvider;
-            _accomodatedTypeSolver = accomodatedTypeSolver;
+            _trackedRecordsComposerProvider = trackedRecordsComposerProvider;
             _trackedRecordSerializer = trackedRecordSerializer;
         }
 
@@ -127,68 +127,8 @@ namespace BookingCalendarApi.Controllers
 
             var bookingsWithGuests = assignedBookings.UseComposer(bookingWithGuestsComposer);
 
-            // composing tracked records
-            var trackedRecordsBlocks = bookingsWithGuests
-                .Select(booking => booking.Rooms
-                    .SelectMany(
-                        room => room.Guests,
-                        (room, guest) => new TrackedRecord()
-                        {
-                            Arrival = DateTime.ParseExact(room.Arrival, "yyyyMMdd", null),
-                            Nights = (ushort)(DateTime.ParseExact(room.Departure, "yyyyMMdd", null) - DateTime.ParseExact(room.Arrival, "yyyyMMdd", null)).Days,
-                            Surname = guest.LastName,
-                            Name = guest.FirstName,
-                            Sex = guest.Gender switch
-                            {
-                                Guest.Sex.M => TrackedRecord.Gender.Male,
-                                Guest.Sex.F => TrackedRecord.Gender.Female,
-                                _ => throw new Exception("Gender was not found")
-                            },
-                            BirthDate = DateTime.ParseExact(guest.BirthDate, "yyyyMMdd", null),
-                            PlaceOfBirth = guest.BirthCountry != null && guest.BirthCountry == "IT" && guest.BirthCity != null ? placeConverter.GetPlaceCodeByDescription(guest.BirthCity) : null,
-                            ProvinceOfBirth = guest.BirthCounty,
-                            StateOfBirth = nationConverter.GetCodeByIso(guest.BirthCountry ?? "IT"),
-                            Citizenship = nationConverter.GetCodeByIso(guest.Citizenship ?? "IT"),
-                            DocType = guest.DocType switch
-                            {
-                                Guest.DocumentType.ID => TrackedRecord.DocumentType.Ident,
-                                Guest.DocumentType.PP => TrackedRecord.DocumentType.Pasor,
-                                Guest.DocumentType.DL => TrackedRecord.DocumentType.Paten,
-                                _ => null
-                            },
-                            DocNumber = guest.DocNumber,
-                            DocIssuer = guest.DocCity != null
-                                ? placeConverter.GetPlaceCodeByDescription(guest.DocCity) ?? (guest.DocCountry != null ? nationConverter.GetCodeByIso(guest.DocCountry) : null)
-                                : guest.DocCountry != null ? nationConverter.GetCodeByIso(guest.DocCountry) : null
-                        }));
-
-            var recordBlocksWithCorrectPlaceOfBirth = trackedRecordsBlocks
-                .Select(trackedRecords => trackedRecords
-                    .Where(record => record.StateOfBirth != 100000100 || record.PlaceOfBirth != null && record.ProvinceOfBirth?.Length == 2)
-                    .ToList())
-                .ToList();
-
-            foreach (var block in recordBlocksWithCorrectPlaceOfBirth)
-            {
-                foreach (var record in block)
-                {
-                    _accomodatedTypeSolver.Solve(record, block);
-                }
-            }
-
-            var correctRecords = recordBlocksWithCorrectPlaceOfBirth
-                .Where(block => block
-                    .Where(record =>
-                        record.Type == TrackedRecord.AccomodatedType.SingleGuest && block.Count == 1 ||
-                        record.Type == TrackedRecord.AccomodatedType.FamilyHead ||
-                        record.Type == TrackedRecord.AccomodatedType.GroupHead
-                     )
-                    .Any()
-                )
-                .SelectMany(
-                    block => block,
-                    (block, record) => record
-                 );
+            var recordsComposer = _trackedRecordsComposerProvider(nationConverter, placeConverter);
+            var correctRecords = bookingsWithGuests.UseComposer(recordsComposer);
 
             return correctRecords
                 .Select(record => _trackedRecordSerializer.Serialize(record))
