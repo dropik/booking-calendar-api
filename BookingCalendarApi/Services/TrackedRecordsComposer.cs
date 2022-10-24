@@ -8,15 +8,17 @@ namespace BookingCalendarApi.Services
         private readonly INationConverter _nationConverter;
         private readonly IPlaceConverter _placeConverter;
         private readonly IAccomodatedTypeSolver _accomodatedTypeSolver;
+        private readonly ITrackedRecordSerializer _trackedRecordSerializer;
 
-        public TrackedRecordsComposer(INationConverter nationConverter, IPlaceConverter placeConverter, IAccomodatedTypeSolver accomodatedTypeSolver)
+        public TrackedRecordsComposer(INationConverter nationConverter, IPlaceConverter placeConverter, IAccomodatedTypeSolver accomodatedTypeSolver, ITrackedRecordSerializer trackedRecordSerializer)
         {
             _nationConverter = nationConverter;
             _placeConverter = placeConverter;
             _accomodatedTypeSolver = accomodatedTypeSolver;
+            _trackedRecordSerializer = trackedRecordSerializer;
         }
 
-        public IEnumerable<TrackedRecord> Compose(IEnumerable<AssignedBooking<Models.Iperbooking.Guests.Guest>> source)
+        public IEnumerable<string> Compose(IEnumerable<AssignedBooking<Models.Iperbooking.Guests.Guest>> source)
         {
             var trackedRecordsBlocks = source
                 .Select(booking => booking.Rooms
@@ -77,7 +79,7 @@ namespace BookingCalendarApi.Services
                 )
                 .SelectMany(
                     block => block,
-                    (block, record) => record
+                    (block, record) => _trackedRecordSerializer.Serialize(record)
                  );
         }
     }

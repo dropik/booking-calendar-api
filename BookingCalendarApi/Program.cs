@@ -65,7 +65,12 @@ builder.Services.AddTransient<Func<IEnumerable<Place>, IPlaceConverter>>(
 builder.Services.AddTransient<Func<IEnumerable<RoomAssignment>, IAssignedBookingComposer>>(
     serviceProvider => (assignments) => new AssignedBookingComposer(serviceProvider.GetService<BookingCalendarContext>(), assignments));
 builder.Services.AddTransient<Func<INationConverter, IPlaceConverter, ITrackedRecordsComposer>>(
-    serviceProvider => (nationConverter, placeConverter) => new TrackedRecordsComposer(nationConverter, placeConverter, serviceProvider.GetService<IAccomodatedTypeSolver>()));
+    serviceProvider => (nationConverter, placeConverter) => new TrackedRecordsComposer(
+        nationConverter,
+        placeConverter,
+        serviceProvider.GetService<IAccomodatedTypeSolver>(),
+        serviceProvider.GetService<ITrackedRecordSerializer>()
+    ));
 #nullable enable
 
 var app = builder.Build();
