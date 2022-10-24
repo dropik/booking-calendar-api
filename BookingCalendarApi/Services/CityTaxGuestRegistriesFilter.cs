@@ -50,7 +50,7 @@ namespace BookingCalendarApi.Services
             return value;
         }
 
-        private static int GetAgeAtArrival(string birthDate, string arrival)
+        public static int GetAgeAtArrival(string birthDate, string arrival)
         {
             var birthDateObj = DateTime.ParseExact(birthDate, "yyyyMMdd", null);
             var arrivalObj = DateTime.ParseExact(arrival, "yyyyMMdd", null);
