@@ -37,6 +37,7 @@ builder.Services.AddTransient<IAlloggiatiTableReader, AlloggiatiTableReader>();
 builder.Services.AddTransient<ITrackedRecordSerializer, TrackedRecordSerializer>();
 builder.Services.AddTransient<IAccomodatedTypeSolver, AccomodatedTypeSolver>();
 builder.Services.AddTransient<IBookingWithGuestsProvider, BookingWithGuestsProvider>();
+builder.Services.AddTransient<INationConverterProvider, NationConverterProvider>();
 
 #nullable disable
 builder.Services.AddTransient<Func<BookingCalendarApi.Services.ISession>>(
