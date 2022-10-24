@@ -1,5 +1,4 @@
-﻿using BookingCalendarApi.Models.AlloggiatiService;
-using BookingCalendarApi.Services;
+﻿using BookingCalendarApi.Services;
 using Microsoft.AspNetCore.Mvc;
 
 namespace BookingCalendarApi.Controllers
@@ -9,30 +8,27 @@ namespace BookingCalendarApi.Controllers
     public class PoliceController : ControllerBase
     {
         private readonly IAlloggiatiServiceSession _session;
-        private readonly IAlloggiatiTableReader _tableReader;
-        private readonly Func<IEnumerable<Place>, IPlaceConverter> _placeConverterProvider;
+        private readonly IBookingWithGuestsProvider _bookingWithGuestsProvider;
         private readonly INationConverterProvider _nationConverterProvider;
+        private readonly IPlaceConverterProvider _placeConverterProvider;
         private readonly Func<INationConverter, IPlaceConverter, ITrackedRecordsComposer> _trackedRecordsComposerProvider;
         private readonly ITrackedRecordSerializer _trackedRecordSerializer;
-        private readonly IBookingWithGuestsProvider _bookingWithGuestsProvider;
 
         public PoliceController(
             IAlloggiatiServiceSession session,
-            IAlloggiatiTableReader tableReader,
-            Func<IEnumerable<Place>, IPlaceConverter> placeConverterProvider,
+            IBookingWithGuestsProvider bookingWithGuestsProvider,
             INationConverterProvider nationConverterProvider,
+            IPlaceConverterProvider placeConverterProvider,
             Func<INationConverter, IPlaceConverter, ITrackedRecordsComposer> trackedRecordsComposerProvider,
-            ITrackedRecordSerializer trackedRecordSerializer,
-            IBookingWithGuestsProvider bookingWithGuestsProvider
+            ITrackedRecordSerializer trackedRecordSerializer
         )
         {
             _session = session;
-            _tableReader = tableReader;
-            _placeConverterProvider = placeConverterProvider;
+            _bookingWithGuestsProvider = bookingWithGuestsProvider;
             _nationConverterProvider = nationConverterProvider;
+            _placeConverterProvider = placeConverterProvider;
             _trackedRecordsComposerProvider = trackedRecordsComposerProvider;
             _trackedRecordSerializer = trackedRecordSerializer;
-            _bookingWithGuestsProvider = bookingWithGuestsProvider;
         }
 
         [HttpGet("ricevuta")]
@@ -85,13 +81,9 @@ namespace BookingCalendarApi.Controllers
         {
             await _bookingWithGuestsProvider.FetchAsync(date);
             await _nationConverterProvider.FetchAsync();
+            await _placeConverterProvider.FetchAsync(_session);
             
-            await _session.OpenAsync();
-            var placesStr = await _session.GetTableAsync(AlloggiatiService.TipoTabella.Luoghi);
-            var places = _tableReader.ReadAsPlaces(placesStr);
-            var placeConverter = _placeConverterProvider(places);
-
-            var recordsComposer = _trackedRecordsComposerProvider(_nationConverterProvider.Converter, placeConverter);
+            var recordsComposer = _trackedRecordsComposerProvider(_nationConverterProvider.Converter, _placeConverterProvider.Converter);
 
             return _bookingWithGuestsProvider.Bookings
                 .UseComposer(recordsComposer)
