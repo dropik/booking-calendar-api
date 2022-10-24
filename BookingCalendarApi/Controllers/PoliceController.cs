@@ -1,6 +1,5 @@
 ﻿using BookingCalendarApi.Models;
 using BookingCalendarApi.Models.AlloggiatiService;
-using BookingCalendarApi.Models.Iperbooking.Guests;
 using BookingCalendarApi.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -12,42 +11,33 @@ namespace BookingCalendarApi.Controllers
     public class PoliceController : ControllerBase
     {
         private readonly IAlloggiatiServiceSession _session;
-        private readonly IBookingsProvider _bookingsProvider;
-        private readonly IIperbooking _iperbooking;
-        private readonly Func<IEnumerable<RoomAssignment>, IAssignedBookingComposer> _assignedBookingComposerProvider;
-        private readonly Func<IEnumerable<Reservation>, IBookingWithGuestsComposer> _bookingWithGuestsComposerProvider;
         private readonly BookingCalendarContext _context;
         private readonly IAlloggiatiTableReader _tableReader;
         private readonly Func<IEnumerable<Place>, IPlaceConverter> _placeConverterProvider;
         private readonly Func<IEnumerable<PoliceNationCode>, INationConverter> _nationConverterProvider;
         private readonly Func<INationConverter, IPlaceConverter, ITrackedRecordsComposer> _trackedRecordsComposerProvider;
         private readonly ITrackedRecordSerializer _trackedRecordSerializer;
+        private readonly IBookingWithGuestsProvider _bookingWithGuestsProvider;
 
         public PoliceController(
             IAlloggiatiServiceSession session,
-            IBookingsProvider bookingsProvider,
-            IIperbooking iperbooking,
-            Func<IEnumerable<RoomAssignment>, IAssignedBookingComposer> assignedBookingsComposerProvider,
-            Func<IEnumerable<Reservation>, IBookingWithGuestsComposer> bookingWithGuestsComposerProvider,
             BookingCalendarContext context,
             IAlloggiatiTableReader tableReader,
             Func<IEnumerable<Place>, IPlaceConverter> placeConverterProvider,
             Func<IEnumerable<PoliceNationCode>, INationConverter> nationConverterProvider,
             Func<INationConverter, IPlaceConverter, ITrackedRecordsComposer> trackedRecordsComposerProvider,
-            ITrackedRecordSerializer trackedRecordSerializer
+            ITrackedRecordSerializer trackedRecordSerializer,
+            IBookingWithGuestsProvider bookingWithGuestsProvider
         )
         {
             _session = session;
-            _bookingsProvider = bookingsProvider;
-            _iperbooking = iperbooking;
-            _assignedBookingComposerProvider = assignedBookingsComposerProvider;
-            _bookingWithGuestsComposerProvider = bookingWithGuestsComposerProvider;
             _context = context;
             _tableReader = tableReader;
             _placeConverterProvider = placeConverterProvider;
             _nationConverterProvider = nationConverterProvider;
             _trackedRecordsComposerProvider = trackedRecordsComposerProvider;
             _trackedRecordSerializer = trackedRecordSerializer;
+            _bookingWithGuestsProvider = bookingWithGuestsProvider;
         }
 
         [HttpGet("ricevuta")]
@@ -98,36 +88,7 @@ namespace BookingCalendarApi.Controllers
 
         private async Task<List<string>> ComposeRecordsAsync(string date)
         {
-            var to = DateTime.ParseExact(date, "yyyy-MM-dd", null).AddDays(1).ToString("yyyy-MM-dd");
-
-            await _bookingsProvider.FetchBookingsAsync(date, to, exactPeriod: true);
-            var bookings = _bookingsProvider.Bookings
-                .ExcludeCancelled();
-
-            var stayIds = bookings
-                .SelectMany(
-                    booking => booking.Rooms,
-                    (booking, room) => $"{room.StayId}-{room.Arrival}-{room.Departure}"
-                );
-
-            var assignments = await _context.RoomAssignments
-                .Where(assignment => stayIds.Contains(assignment.Id))
-                .ToListAsync();
-
-            var assignedBookingComposer = _assignedBookingComposerProvider(assignments);
-
-            var assignedBookings = bookings
-                .UseComposer(assignedBookingComposer)
-                .ExcludeNotAssigned();
-
-            var bookingIds = "";
-            foreach (var booking in assignedBookings)
-            {
-                bookingIds += $"{booking.Booking.BookingNumber},";
-            }
-
-            var guestResponse = await _iperbooking.GetGuestsAsync(bookingIds);
-            var bookingWithGuestsComposer = _bookingWithGuestsComposerProvider(guestResponse.Reservations);
+            await _bookingWithGuestsProvider.FetchAsync(date);
 
             var policeNations = await _context.PoliceNations.ToListAsync();
             var nationConverter = _nationConverterProvider(policeNations);
@@ -137,12 +98,10 @@ namespace BookingCalendarApi.Controllers
             var places = _tableReader.ReadAsPlaces(placesStr);
             var placeConverter = _placeConverterProvider(places);
 
-            var bookingsWithGuests = assignedBookings.UseComposer(bookingWithGuestsComposer);
-
             var recordsComposer = _trackedRecordsComposerProvider(nationConverter, placeConverter);
-            var correctRecords = bookingsWithGuests.UseComposer(recordsComposer);
 
-            return correctRecords
+            return _bookingWithGuestsProvider.Bookings
+                .UseComposer(recordsComposer)
                 .Select(record => _trackedRecordSerializer.Serialize(record))
                 .ToList();
         }
