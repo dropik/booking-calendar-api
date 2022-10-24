@@ -1,24 +1,33 @@
-﻿using BookingCalendarApi.Models.Iperbooking.Bookings;
+﻿using BookingCalendarApi.Models;
+using BookingCalendarApi.Models.Iperbooking.Bookings;
 
 namespace BookingCalendarApi.Services
 {
     public class AssignedBookingComposer : IAssignedBookingComposer
     {
         private readonly BookingCalendarContext _context;
+        private readonly IEnumerable<RoomAssignment> _assignments;
 
         public AssignedBookingComposer(BookingCalendarContext context)
         {
             _context = context;
+            _assignments = context.RoomAssignments;
         }
 
-        public IEnumerable<AssignedBooking<Guest>> Compose(IEnumerable<Booking> source) =>
+        public AssignedBookingComposer(BookingCalendarContext context, IEnumerable<RoomAssignment> assignments)
+        {
+            _context = context;
+            _assignments = assignments;
+        }
+
+        public IEnumerable<AssignedBooking<Guest>> Compose(IEnumerable<Models.Iperbooking.Bookings.Booking> source) =>
             source
             .Select(
                 booking => new AssignedBooking<Guest>(booking)
                 {
                     Rooms = booking.Rooms
                         .GroupJoin(
-                            _context.RoomAssignments,
+                            _assignments,
                             room => $"{room.StayId}-{room.Arrival}-{room.Departure}",
                             assignment => assignment.Id,
                             (room, assignments) => new { Room = room, Assignments = assignments }

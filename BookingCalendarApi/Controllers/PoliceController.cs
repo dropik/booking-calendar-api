@@ -14,7 +14,7 @@ namespace BookingCalendarApi.Controllers
         private readonly IAlloggiatiServiceSession _session;
         private readonly IBookingsProvider _bookingsProvider;
         private readonly IIperbooking _iperbooking;
-        private readonly IAssignedBookingComposer _assignedBookingComposer;
+        private readonly Func<IEnumerable<RoomAssignment>, IAssignedBookingComposer> _assignedBookingComposerProvider;
         private readonly Func<IEnumerable<Reservation>, IBookingWithGuestsComposer> _bookingWithGuestsComposerProvider;
         private readonly BookingCalendarContext _context;
         private readonly IAlloggiatiTableReader _tableReader;
@@ -27,7 +27,7 @@ namespace BookingCalendarApi.Controllers
             IAlloggiatiServiceSession session,
             IBookingsProvider bookingsProvider,
             IIperbooking iperbooking,
-            IAssignedBookingComposer assignedBookingsComposer,
+            Func<IEnumerable<RoomAssignment>, IAssignedBookingComposer> assignedBookingsComposerProvider,
             Func<IEnumerable<Reservation>, IBookingWithGuestsComposer> bookingWithGuestsComposerProvider,
             BookingCalendarContext context,
             IAlloggiatiTableReader tableReader,
@@ -40,7 +40,7 @@ namespace BookingCalendarApi.Controllers
             _session = session;
             _bookingsProvider = bookingsProvider;
             _iperbooking = iperbooking;
-            _assignedBookingComposer = assignedBookingsComposer;
+            _assignedBookingComposerProvider = assignedBookingsComposerProvider;
             _bookingWithGuestsComposerProvider = bookingWithGuestsComposerProvider;
             _context = context;
             _tableReader = tableReader;
@@ -104,8 +104,20 @@ namespace BookingCalendarApi.Controllers
             var bookings = _bookingsProvider.Bookings
                 .ExcludeCancelled();
 
+            var stayIds = bookings
+                .SelectMany(
+                    booking => booking.Rooms,
+                    (booking, room) => $"{room.StayId}-{room.Arrival}-{room.Departure}"
+                );
+
+            var assignments = await _context.RoomAssignments
+                .Where(assignment => stayIds.Contains(assignment.Id))
+                .ToListAsync();
+
+            var assignedBookingComposer = _assignedBookingComposerProvider(assignments);
+
             var assignedBookings = bookings
-                .UseComposer(_assignedBookingComposer)
+                .UseComposer(assignedBookingComposer)
                 .ExcludeNotAssigned();
 
             var bookingIds = "";
