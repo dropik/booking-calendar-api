@@ -51,18 +51,28 @@ namespace BookingCalendarApi.Services
 
         public async Task SendDataAsync(IList<string> data, bool test)
         {
+            var array = new ArrayOfString();
+            array.AddRange(data);
+
             if (test)
             {
                 var request = new TestRequest(new TestRequestBody()
                 {
                     Utente = _credentials.Utente,
                     token = Token,
-                    ElencoSchedine = (ArrayOfString)data
+                    ElencoSchedine = array
                 });
                 var response = await _service.TestAsync(request);
                 if (!response.Body.TestResult.esito)
                 {
                     throw new Exception(response.Body.TestResult.ErroreDettaglio);
+                }
+                foreach (var result in response.Body.result.Dettaglio)
+                {
+                    if (!result.esito)
+                    {
+                        throw new Exception(result.ErroreDettaglio);
+                    }
                 }
             }
             else
@@ -71,12 +81,19 @@ namespace BookingCalendarApi.Services
                 {
                     Utente = _credentials.Utente,
                     token = Token,
-                    ElencoSchedine = (ArrayOfString)data
+                    ElencoSchedine = array
                 });
                 var response = await _service.SendAsync(request);
                 if (!response.Body.SendResult.esito)
                 {
                     throw new Exception(response.Body.SendResult.ErroreDettaglio);
+                }
+                foreach (var result in response.Body.result.Dettaglio)
+                {
+                    if (!result.esito)
+                    {
+                        throw new Exception(result.ErroreDettaglio);
+                    }
                 }
             }
         }

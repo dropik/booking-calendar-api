@@ -66,7 +66,7 @@ namespace BookingCalendarApi.Controllers
         }
 
         [HttpPost("test")]
-        public async Task<ActionResult<List<string>>> TestAsync(SendRequest request)
+        public async Task<IActionResult> TestAsync(SendRequest request)
         {
             try
             {
@@ -117,7 +117,7 @@ namespace BookingCalendarApi.Controllers
                                     _ => throw new Exception("Gender was not found")
                                 },
                                 BirthDate = DateTime.ParseExact(guest.BirthDate, "yyyyMMdd", null),
-                                PlaceOfBirth = guest.BirthCity != null ? placeConverter.GetPlaceCodeByDescription(guest.BirthCity) : null,
+                                PlaceOfBirth = guest.BirthCountry != null && guest.BirthCountry == "IT" && guest.BirthCity != null ? placeConverter.GetPlaceCodeByDescription(guest.BirthCity) : null,
                                 ProvinceOfBirth = guest.BirthCounty,
                                 StateOfBirth = nationConverter.GetCodeByIso(guest.BirthCountry ?? "IT"),
                                 Citizenship = nationConverter.GetCodeByIso(guest.Citizenship ?? "IT"),
@@ -166,7 +166,9 @@ namespace BookingCalendarApi.Controllers
                     .Select(record => _trackedRecordSerializer.Serialize(record))
                     .ToList();
 
-                return result;
+                await _session.SendDataAsync(result, true);
+
+                return Ok();
             }
             catch (Exception exception)
             {
