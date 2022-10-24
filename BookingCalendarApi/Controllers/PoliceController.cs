@@ -79,9 +79,11 @@ namespace BookingCalendarApi.Controllers
 
         private async Task<List<string>> ComposeRecordsAsync(string date)
         {
-            await _bookingWithGuestsProvider.FetchAsync(date);
-            await _nationConverterProvider.FetchAsync();
-            await _placeConverterProvider.FetchAsync(_session);
+            await Task.WhenAll(
+                _bookingWithGuestsProvider.FetchAsync(date),
+                _nationConverterProvider.FetchAsync(),
+                _placeConverterProvider.FetchAsync(_session)
+            );
             
             var recordsComposer = _trackedRecordsComposerProvider(_nationConverterProvider.Converter, _placeConverterProvider.Converter);
 
