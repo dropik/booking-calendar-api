@@ -73,7 +73,7 @@
             return Type == AccomodatedType.FamilyMember || Type == AccomodatedType.GroupMember ? default : value;
         }
 
-        private string GetSanitizedName(string value)
+        private static string GetSanitizedName(string value)
         {
             var valueTransformationQuery = value
                     .Select(c => c switch
