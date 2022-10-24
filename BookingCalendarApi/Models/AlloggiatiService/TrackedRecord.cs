@@ -3,6 +3,8 @@
     public class TrackedRecord
     {
         private ushort _nights;
+        private string _surname = "";
+        private string _name = "";
         private string? _provinceOfBirth;
         private string? _documentType;
         private string? _documentNumber;
@@ -23,8 +25,16 @@
                 _nights = value;
             }
         }
-        public string Surname { get; set; } = "";
-        public string Name { get; set; } = "";
+        public string Surname
+        {
+            get => _surname;
+            set => _surname = GetSanitizedName(value);
+        }
+        public string Name
+        {
+            get => _name;
+            set => _name = GetSanitizedName(value);
+        }
         public Gender Sex { get; set; }
         public DateTime BirthDate { get; set; }
         public ulong? PlaceOfBirth { get; set; }
@@ -61,6 +71,29 @@
         private T? SetIfNotMember<T>(T? value)
         {
             return Type == AccomodatedType.FamilyMember || Type == AccomodatedType.GroupMember ? default : value;
+        }
+
+        private string GetSanitizedName(string value)
+        {
+            var valueTransformationQuery = value
+                    .Select(c => c switch
+                    {
+                        'à' => "A'",
+                        'ò' => "O'",
+                        'è' => "E'",
+                        'é' => "E'",
+                        'ù' => "U'",
+                        'ì' => "I'",
+                        _ => $"{char.ToUpper(c)}"
+                    })
+                    .SelectMany(s => s);
+
+            var result = "";
+            foreach (var c in valueTransformationQuery)
+            {
+                result += c;
+            }
+            return result;
         }
 
         public enum Gender
