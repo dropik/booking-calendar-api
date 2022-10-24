@@ -6,7 +6,7 @@
         private string _surname = "";
         private string _name = "";
         private string? _provinceOfBirth;
-        private string? _documentType;
+        private DocumentType? _documentType;
         private string? _documentNumber;
         private ulong? _documentIssuer;
 
@@ -52,17 +52,17 @@
         }
         public ulong StateOfBirth { get; set; }
         public ulong Citizenship { get; set; }
-        public string? DocumentType
+        public DocumentType? DocType
         {
             get => _documentType;
             set => _documentType = SetIfNotMember(value);
         }
-        public string? DocumentNumber
+        public string? DocNumber
         {
             get => _documentNumber;
             set => _documentNumber = SetIfNotMember(value);
         }
-        public ulong? DocumentIssuer
+        public ulong? DocIssuer
         {
             get => _documentIssuer;
             set => _documentIssuer = SetIfNotMember(value);
@@ -109,6 +109,13 @@
             GroupHead,
             FamilyMember,
             GroupMember,
+        }
+
+        public enum DocumentType
+        {
+            Ident,
+            Pasor,
+            Paten
         }
     }
 }

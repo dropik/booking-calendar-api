@@ -17,9 +17,9 @@ namespace BookingCalendarApi.Services
             $"{(record.ProvinceOfBirth != null ? record.PlaceOfBirth.ToString() : new string(' ', 2))}" +
             $"{record.StateOfBirth}" +
             $"{record.Citizenship}" +
-            $"{record.DocumentType ?? new string(' ', 5)}" +
-            $"{(record.DocumentNumber != null ? record.DocumentNumber.PadRight(20, ' ') : new string(' ', 20))}" +
-            $"{(record.DocumentIssuer != null ? record.DocumentIssuer.ToString() : new string(' ', 9))}" +
+            $"{(record.DocType != null ? record.DocType.ToString()?.ToUpper() : new string(' ', 5))}" +
+            $"{(record.DocNumber != null ? record.DocNumber.PadRight(20, ' ') : new string(' ', 20))}" +
+            $"{(record.DocIssuer != null ? record.DocIssuer.ToString() : new string(' ', 9))}" +
             $"\r\n";
 
         private static string SerializeType(AccomodatedType type) => type switch
