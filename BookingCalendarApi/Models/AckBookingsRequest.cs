@@ -1,8 +1,8 @@
 ﻿namespace BookingCalendarApi.Models
 {
-    public class AckBookingsDTO
+    public class AckBookingsRequest
     {
-        public AckBookingsDTO(string sessionId)
+        public AckBookingsRequest(string sessionId)
         {
             SessionId = sessionId;
         }

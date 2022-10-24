@@ -13,7 +13,14 @@
     <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="6.0.9" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="6.0.9" />
     <PackageReference Include="Pomelo.EntityFrameworkCore.MySql" Version="6.0.2" />
+    <PackageReference Include="Sylvan.Data" Version="0.2.7" />
+    <PackageReference Include="Sylvan.Data.Csv" Version="1.2.3" />
     <PackageReference Include="System.Formats.Cbor" Version="6.0.0" />
+    <PackageReference Include="System.ServiceModel.Duplex" Version="4.8.*" />
+    <PackageReference Include="System.ServiceModel.Federation" Version="4.8.*" />
+    <PackageReference Include="System.ServiceModel.Http" Version="4.8.*" />
+    <PackageReference Include="System.ServiceModel.NetTcp" Version="4.8.*" />
+    <PackageReference Include="System.ServiceModel.Security" Version="4.8.*" />
   </ItemGroup>
   <ProjectExtensions>
     <VisualStudio>

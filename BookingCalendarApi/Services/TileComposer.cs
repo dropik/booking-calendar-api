@@ -1,5 +1,5 @@
 ﻿using BookingCalendarApi.Models;
-using Room = BookingCalendarApi.Models.Iperbooking.Bookings.Room;
+using BookingCalendarApi.Models.Iperbooking.Bookings;
 
 namespace BookingCalendarApi.Services
 {
@@ -12,7 +12,7 @@ namespace BookingCalendarApi.Services
             _context = context;
         }
 
-        public IEnumerable<Tile> Compose(IEnumerable<Room> rooms)
+        public IEnumerable<Tile> Compose(IEnumerable<Room<Guest>> rooms)
         {
             return rooms
                 .GroupJoin(
@@ -28,8 +28,7 @@ namespace BookingCalendarApi.Services
                         from: DateTime.ParseExact(join.room.Arrival, "yyyyMMdd", null).ToString("yyyy-MM-dd"),
                         nights: Convert.ToUInt32((DateTime.ParseExact(join.room.Departure, "yyyyMMdd", null) - DateTime.ParseExact(join.room.Arrival, "yyyyMMdd", null)).Days),
                         roomType: join.room.RoomName,
-                        entity: join.room.RoomName,
-                        persons: Convert.ToUInt32(join.room.Guests.Count)
+                        persons: Convert.ToUInt32(join.room.Guests.Count())
                     )
                     {
                         RoomId = assignment?.RoomId ?? null

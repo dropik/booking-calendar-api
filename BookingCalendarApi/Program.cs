@@ -1,4 +1,7 @@
+using AlloggiatiService;
 using BookingCalendarApi;
+using BookingCalendarApi.Models;
+using BookingCalendarApi.Models.AlloggiatiService;
 using BookingCalendarApi.Models.Iperbooking.Guests;
 using BookingCalendarApi.Services;
 using Microsoft.EntityFrameworkCore;
@@ -26,7 +29,16 @@ builder.Services.AddTransient<IBookingComposer, BookingComposer>();
 builder.Services.AddTransient<IBookingShortComposer, BookingShortComposer>();
 builder.Services.AddTransient<BookingCalendarApi.Services.ISession, Session>();
 builder.Services.AddTransient<ITileComposer, TileComposer>();
+builder.Services.AddTransient<IAssignedBookingComposer, AssignedBookingComposer>();
 builder.Services.AddTransient<IStayComposer, StayComposer>();
+builder.Services.AddTransient<IServiceSoap, ServiceSoapClient>();
+builder.Services.AddTransient<IAlloggiatiServiceSession, AlloggiatiServiceSession>();
+builder.Services.AddTransient<IAlloggiatiTableReader, AlloggiatiTableReader>();
+builder.Services.AddTransient<ITrackedRecordSerializer, TrackedRecordSerializer>();
+builder.Services.AddTransient<IAccomodatedTypeSolver, AccomodatedTypeSolver>();
+builder.Services.AddTransient<IBookingWithGuestsProvider, BookingWithGuestsProvider>();
+builder.Services.AddTransient<INationConverterProvider, NationConverterProvider>();
+builder.Services.AddTransient<IPlaceConverterProvider, PlaceConverterProvider>();
 
 #nullable disable
 builder.Services.AddTransient<Func<BookingCalendarApi.Services.ISession>>(
@@ -44,6 +56,21 @@ builder.Services.AddTransient<Func<string, string, IEnumerable<Reservation>, ICi
                 )
             )
 );
+builder.Services.AddTransient<Func<IEnumerable<Reservation>, IBookingWithGuestsComposer>>(
+    serviceProvider => (reservations) => new BookingWithGuestsComposer(reservations));
+builder.Services.AddTransient<Func<IEnumerable<PoliceNationCode>, INationConverter>>(
+    serviceProvider => (nationCodes) => new NationConverter(nationCodes));
+builder.Services.AddTransient<Func<IEnumerable<Place>, IPlaceConverter>>(
+    serviceProvider => (places) => new PlaceConverter(places));
+builder.Services.AddTransient<Func<IEnumerable<RoomAssignment>, IAssignedBookingComposer>>(
+    serviceProvider => (assignments) => new AssignedBookingComposer(serviceProvider.GetService<BookingCalendarContext>(), assignments));
+builder.Services.AddTransient<Func<INationConverter, IPlaceConverter, ITrackedRecordsComposer>>(
+    serviceProvider => (nationConverter, placeConverter) => new TrackedRecordsComposer(
+        nationConverter,
+        placeConverter,
+        serviceProvider.GetService<IAccomodatedTypeSolver>(),
+        serviceProvider.GetService<ITrackedRecordSerializer>()
+    ));
 #nullable enable
 
 var app = builder.Build();

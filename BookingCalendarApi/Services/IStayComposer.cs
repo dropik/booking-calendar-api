@@ -2,5 +2,5 @@
 
 namespace BookingCalendarApi.Services
 {
-    public interface IStayComposer : IComposer<Booking, Stay> { }
+    public interface IStayComposer : IComposer<AssignedBooking<Guest>, Stay> { }
 }

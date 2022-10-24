@@ -17,6 +17,7 @@ namespace BookingCalendarApi.Models
         public string Surname { get; set; }
         public string DateOfBirth { get; set; }
         public string? PlaceOfBirth { get; set; }
+        public string? ProvinceOfBirth { get; set; }
         public string? StateOfBirth { get; set; }
     }
 }

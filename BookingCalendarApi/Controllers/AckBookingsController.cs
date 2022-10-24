@@ -17,7 +17,7 @@ namespace BookingCalendarApi.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> PostAsync(AckBookingsDTO request)
+        public async Task<IActionResult> PostAsync(AckBookingsRequest request)
         {
             var bookings = request.Bookings;
             var sessionId = request.SessionId;
