@@ -42,7 +42,8 @@ namespace BookingCalendarApi.Services
                     )
                     {
                         StateOfBirth = guest.BirthCountry,
-                        PlaceOfBirth = guest.BirthCity
+                        PlaceOfBirth = guest.BirthCity,
+                        ProvinceOfBirth = guest.BirthCounty
                     }
                 );
         }
