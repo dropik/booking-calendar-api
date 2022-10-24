@@ -13,23 +13,29 @@ namespace BookingCalendarApi.Services
 
         public IEnumerable<AssignedBooking<Models.Iperbooking.Guests.Guest>> Compose(IEnumerable<AssignedBooking<Guest>> source) =>
             source
-            .Join(_reservations,
+            .Join(
+                _reservations,
                 booking => booking.Booking.BookingNumber,
                 reservation => reservation.ReservationId,
                 (booking, reservation) => new AssignedBooking<Models.Iperbooking.Guests.Guest>(booking.Booking)
                 {
                     Rooms = booking.Rooms
-                        .Select(room => new AssignedRoom<Models.Iperbooking.Guests.Guest>(
-                                stayId: room.StayId,
-                                roomName: room.RoomName,
-                                arrival: room.Arrival,
-                                departure: room.Departure
-                            )
+                        .Select(
+                            room => new AssignedRoom<Models.Iperbooking.Guests.Guest>(
+                            stayId: room.StayId,
+                            roomName: room.RoomName,
+                            arrival: room.Arrival,
+                            departure: room.Departure
+                        )
                         {
                             RoomId = room.RoomId,
                             Guests = reservation.Guests
                                 .Where(guest => guest.ReservationRoomId == room.StayId)
+                                .Where(guest => guest.FirstName != "")
                         })
-                });
+                        .Where(room => room.Guests.Any())
+                }
+            )
+            .Where(booking => booking.Rooms.Any());
     }
 }
