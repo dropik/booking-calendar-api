@@ -5,6 +5,5 @@ namespace BookingCalendarApi.Services
     public interface IAlloggiatiTableReader
     {
         public List<Place> ReadAsPlaces(string data);
-        public List<DocumentType> ReadAsDocumentTypes(string data);
     }
 }

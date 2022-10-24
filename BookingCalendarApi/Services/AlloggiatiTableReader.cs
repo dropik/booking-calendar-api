@@ -11,11 +11,6 @@ namespace BookingCalendarApi.Services
             return ReadAs<Place>(data);
         }
 
-        public List<DocumentType> ReadAsDocumentTypes(string data)
-        {
-            return ReadAs<DocumentType>(data);
-        }
-
         private static List<T> ReadAs<T>(string data)
             where T : class, new()
         {
