@@ -22,8 +22,10 @@ namespace BookingCalendarApi.Controllers
         {
             try
             {
-                var to = DateTime.ParseExact(from, "yyyy-MM-dd", null).AddDays(1).ToString("yyyy-MM-dd");
-                await _bookingsProvider.FetchBookingsAsync(from, to, exactPeriod: true);
+                var fromDate = DateTime.ParseExact(from, "yyyy-MM-dd", null);
+                var arrivalFrom = fromDate.AddDays(-15).ToString("yyyy-MM-dd");
+                var arrivalTo = fromDate.AddDays(15).ToString("yyyy-MM-dd");
+                await _bookingsProvider.FetchBookingsAsync(arrivalFrom, arrivalTo, exactPeriod: true);
 
                 var booking = _bookingsProvider.Bookings
                     .SelectById(id)
