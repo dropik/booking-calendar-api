@@ -21,24 +21,25 @@ Or via .NET CLI:
 ```
 dotnet database update
 ```
-3. Set credentials for Iperbooking:
+3. Use **merge-iso-statipolizia.csv** file to import Police nation codes into your newly created **policenations** table in your MySQL database.
+4. Set credentials for Iperbooking:
 ```
 dotnet user-secrets set "Iperbooking:IdHotel" "{YourIdHotel}"
 dotnet user-secrets set "Iperbooking:Username" "{YourIperbookingUsername}"
 dotnet user-secrets set "Iperbooking:Password" "{YourIperbookingPassword}"
 ```
-4. Set Portale Alloggiati credentials (you would need to generate WsKey for this first on the Portale Alloggiati website):
+5. Set Portale Alloggiati credentials (you would need to generate WsKey for this first on the Portale Alloggiati website):
 ```
 dotnet user-secrets set "AlloggiatiService:Utente" "{YourPortaleAlloggiatiUsername}"
 dotnet user-secrets set "AlloggiatiService:Password" "{YourPortaleAlloggiatiPassword}"
 dotnet user-secrets set "AlloggiatiService:WsKey" "{YourGeneratedWsKey}"
 ```
-5. Set STU credentials:
+6. Set STU credentials:
 ```
 dotnet user-secrets set "STU:Username" "{YourSTUUsername}"
 dotnet user-secrets set "STU:Password" "{YourSTUPassword}"
 ```
-6. Run it:
+7. Run it:
 ```
 dotnet run
 ```
