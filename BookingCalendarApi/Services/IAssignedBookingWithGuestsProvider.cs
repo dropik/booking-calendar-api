@@ -2,7 +2,7 @@
 
 namespace BookingCalendarApi.Services
 {
-    public interface IBookingWithGuestsProvider
+    public interface IAssignedBookingWithGuestsProvider
     {
         public Task FetchAsync(string date);
         public IEnumerable<AssignedBooking<Models.Iperbooking.Guests.Guest>> Bookings { get; }

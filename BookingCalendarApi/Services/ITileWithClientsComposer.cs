@@ -3,5 +3,5 @@ using BookingCalendarApi.Models.Iperbooking.Bookings;
 
 namespace BookingCalendarApi.Services
 {
-    public interface ITileComposer : IComposer<Room<Guest>, Tile<uint>> { }
+    public interface ITileWithClientsComposer : IComposer<Room<Guest>, Tile<IEnumerable<Client>>> { }
 }

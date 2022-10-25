@@ -8,14 +8,14 @@ namespace BookingCalendarApi.Controllers
     public class PoliceController : ControllerBase
     {
         private readonly IAlloggiatiServiceSession _session;
-        private readonly IBookingWithGuestsProvider _bookingWithGuestsProvider;
+        private readonly IAssignedBookingWithGuestsProvider _bookingWithGuestsProvider;
         private readonly INationConverterProvider _nationConverterProvider;
         private readonly IPlaceConverterProvider _placeConverterProvider;
         private readonly Func<INationConverter, IPlaceConverter, ITrackedRecordsComposer> _trackedRecordsComposerProvider;
 
         public PoliceController(
             IAlloggiatiServiceSession session,
-            IBookingWithGuestsProvider bookingWithGuestsProvider,
+            IAssignedBookingWithGuestsProvider bookingWithGuestsProvider,
             INationConverterProvider nationConverterProvider,
             IPlaceConverterProvider placeConverterProvider,
             Func<INationConverter, IPlaceConverter, ITrackedRecordsComposer> trackedRecordsComposerProvider

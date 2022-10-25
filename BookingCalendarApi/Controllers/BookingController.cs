@@ -1,4 +1,5 @@
 using BookingCalendarApi.Models;
+using BookingCalendarApi.Models.Iperbooking.Guests;
 using BookingCalendarApi.Services;
 using Microsoft.AspNetCore.Mvc;
 
@@ -9,39 +10,58 @@ namespace BookingCalendarApi.Controllers
     public class BookingController : ControllerBase
     {
         private readonly IBookingsProvider _bookingsProvider;
-        private readonly IBookingComposer _bookingComposer;
+        private readonly Func<IEnumerable<Reservation>, IBookingWithClientsComposer> _bookingComposerProvider;
+        private readonly IIperbooking _iperbooking;
 
-        public BookingController(IBookingsProvider bookingsProvider, IBookingComposer bookingComposer)
+        private GuestsResponse GuestsResponse { get; set; } = new GuestsResponse();
+
+        public BookingController(
+            IBookingsProvider bookingsProvider,
+            Func<IEnumerable<Reservation>, IBookingWithClientsComposer> bookingComposerProvider,
+            IIperbooking iperbooking
+        )
         {
             _bookingsProvider = bookingsProvider;
-            _bookingComposer = bookingComposer;
+            _bookingComposerProvider = bookingComposerProvider;
+            _iperbooking = iperbooking;
         }
 
         [HttpGet]
-        public async Task<ActionResult<Booking>> GetAsync(string id, string from)
+        public async Task<ActionResult<Booking<IEnumerable<Client>>>> GetAsync(string id, string from)
         {
             try
             {
                 var fromDate = DateTime.ParseExact(from, "yyyy-MM-dd", null);
                 var arrivalFrom = fromDate.AddDays(-15).ToString("yyyy-MM-dd");
                 var arrivalTo = fromDate.AddDays(15).ToString("yyyy-MM-dd");
-                await _bookingsProvider.FetchBookingsAsync(arrivalFrom, arrivalTo, exactPeriod: true);
 
-                var booking = _bookingsProvider.Bookings
+                await Task.WhenAll(
+                    _bookingsProvider.FetchBookingsAsync(arrivalFrom, arrivalTo, exactPeriod: true),
+                    FetchGuestsAsync(id)
+                );
+                
+                var bookingComposer = _bookingComposerProvider(GuestsResponse.Reservations);
+
+                var result = _bookingsProvider.Bookings
                     .SelectById(id)
-                    .UseComposer(_bookingComposer);
+                    .UseComposer(bookingComposer);
 
-                if (!booking.Any())
+                if (!result.Any())
                 {
                     return NotFound();
                 }
 
-                return booking.First();
+                return result.First();
             }
             catch (Exception ex)
             {
                 return BadRequest(ex.Message);
             }
+        }
+
+        private async Task FetchGuestsAsync(string id)
+        {
+            GuestsResponse = await _iperbooking.GetGuestsAsync(id);
         }
     }
 }

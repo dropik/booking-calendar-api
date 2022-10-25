@@ -2,11 +2,11 @@
 
 namespace BookingCalendarApi.Services
 {
-    public class BookingWithGuestsComposer : IBookingWithGuestsComposer
+    public class AssignedkookingWithGuestsComposer : IAssignedBookingWithGuestsComposer
     {
         private readonly IEnumerable<Models.Iperbooking.Guests.Reservation> _reservations;
 
-        public BookingWithGuestsComposer(IEnumerable<Models.Iperbooking.Guests.Reservation> reservations)
+        public AssignedkookingWithGuestsComposer(IEnumerable<Models.Iperbooking.Guests.Reservation> reservations)
         {
             _reservations = reservations;
         }

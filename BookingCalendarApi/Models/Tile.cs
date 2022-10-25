@@ -1,13 +1,13 @@
 namespace BookingCalendarApi.Models
 {
-    public class Tile
+    public class Tile<TPerson>
     {
         public Tile(
             string id,
             string from,
             uint nights,
             string roomType,
-            uint persons
+            TPerson persons
         )
         {
             Id = id;
@@ -21,7 +21,7 @@ namespace BookingCalendarApi.Models
         public string From { get; set; }
         public uint Nights { get; set; }
         public string RoomType { get; set; }
-        public uint Persons { get; set; }
+        public TPerson Persons { get; set; }
         public long? RoomId { get; set; }
     }
 }

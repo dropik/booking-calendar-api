@@ -14,7 +14,7 @@ namespace BookingCalendarApi.Services
             _tileComposer = tileComposer;
         }
 
-        public IEnumerable<Models.Booking> Compose(IEnumerable<Models.Iperbooking.Bookings.Booking> bookings)
+        public IEnumerable<Booking<uint>> Compose(IEnumerable<Booking> bookings)
         {
             return bookings
                 .GroupJoin(
@@ -25,7 +25,7 @@ namespace BookingCalendarApi.Services
                 )
                 .SelectMany(
                     x => x.assignments.DefaultIfEmpty(),
-                    (join, assignment) => new Models.Booking(
+                    (join, assignment) => new Booking<uint>(
                         id:             join.booking.BookingNumber.ToString(),
                         name:           $"{join.booking.FirstName} {join.booking.LastName}",
                         lastModified:   join.booking.LastModified,

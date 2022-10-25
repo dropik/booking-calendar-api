@@ -4,7 +4,7 @@ using System.Text.Json.Serialization;
 
 namespace BookingCalendarApi.Models
 {
-    public class Booking
+    public class Booking<TPerson>
     {
         public Booking(string id, string name, string lastModified, string from, string to)
         {
@@ -24,6 +24,6 @@ namespace BookingCalendarApi.Models
         public string To { get; set; }
         public string? Color { get; set; }
 
-        public IEnumerable<Tile> Tiles { get; set; } = new List<Tile>();
+        public IEnumerable<Tile<TPerson>> Tiles { get; set; } = new List<Tile<TPerson>>();
     }
 }

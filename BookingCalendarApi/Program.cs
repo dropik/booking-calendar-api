@@ -36,7 +36,7 @@ builder.Services.AddTransient<IAlloggiatiServiceSession, AlloggiatiServiceSessio
 builder.Services.AddTransient<IAlloggiatiTableReader, AlloggiatiTableReader>();
 builder.Services.AddTransient<ITrackedRecordSerializer, TrackedRecordSerializer>();
 builder.Services.AddTransient<IAccomodatedTypeSolver, AccomodatedTypeSolver>();
-builder.Services.AddTransient<IBookingWithGuestsProvider, BookingWithGuestsProvider>();
+builder.Services.AddTransient<IAssignedBookingWithGuestsProvider, AssignedBookingWithGuestsProvider>();
 builder.Services.AddTransient<INationConverterProvider, NationConverterProvider>();
 builder.Services.AddTransient<IPlaceConverterProvider, PlaceConverterProvider>();
 
@@ -56,8 +56,8 @@ builder.Services.AddTransient<Func<string, string, IEnumerable<Reservation>, ICi
                 )
             )
 );
-builder.Services.AddTransient<Func<IEnumerable<Reservation>, IBookingWithGuestsComposer>>(
-    serviceProvider => (reservations) => new BookingWithGuestsComposer(reservations));
+builder.Services.AddTransient<Func<IEnumerable<Reservation>, IAssignedBookingWithGuestsComposer>>(
+    serviceProvider => (reservations) => new AssignedkookingWithGuestsComposer(reservations));
 builder.Services.AddTransient<Func<IEnumerable<PoliceNationCode>, INationConverter>>(
     serviceProvider => (nationCodes) => new NationConverter(nationCodes));
 builder.Services.AddTransient<Func<IEnumerable<Place>, IPlaceConverter>>(
@@ -70,6 +70,14 @@ builder.Services.AddTransient<Func<INationConverter, IPlaceConverter, ITrackedRe
         placeConverter,
         serviceProvider.GetService<IAccomodatedTypeSolver>(),
         serviceProvider.GetService<ITrackedRecordSerializer>()
+    ));
+builder.Services.AddTransient<Func<Reservation, ITileWithClientsComposer>>(
+    serviceProvider => (reservation) => new TileWithClientsComposer(serviceProvider.GetService<BookingCalendarContext>(), reservation));
+builder.Services.AddTransient<Func<IEnumerable<Reservation>, IBookingWithClientsComposer>>(
+    serviceProvider => (reservations) => new BookingWithClientsComposer(
+        serviceProvider.GetService<Func<Reservation, ITileWithClientsComposer>>(),
+        reservations,
+        serviceProvider.GetService<BookingCalendarContext>()
     ));
 #nullable enable
 

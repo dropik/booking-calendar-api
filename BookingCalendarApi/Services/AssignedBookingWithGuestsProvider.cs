@@ -5,20 +5,20 @@ using Microsoft.EntityFrameworkCore;
 
 namespace BookingCalendarApi.Services
 {
-    public class BookingWithGuestsProvider : IBookingWithGuestsProvider
+    public class AssignedBookingWithGuestsProvider : IAssignedBookingWithGuestsProvider
     {
         private readonly IBookingsProvider _bookingsProvider;
         private readonly BookingCalendarContext _context;
         private readonly Func<IEnumerable<RoomAssignment>, IAssignedBookingComposer> _assignedBookingComposerProvider;
         private readonly IIperbooking _iperbooking;
-        private readonly Func<IEnumerable<Reservation>, IBookingWithGuestsComposer> _bookingWithGuestsComposerProvider;
+        private readonly Func<IEnumerable<Reservation>, IAssignedBookingWithGuestsComposer> _bookingWithGuestsComposerProvider;
 
-        public BookingWithGuestsProvider(
+        public AssignedBookingWithGuestsProvider(
             IBookingsProvider bookingsProvider,
             BookingCalendarContext context,
             Func<IEnumerable<RoomAssignment>, IAssignedBookingComposer> assignedBookingComposerProvider,
             IIperbooking iperbooking,
-            Func<IEnumerable<Reservation>, IBookingWithGuestsComposer> bookingWithGuestsComposerProvider)
+            Func<IEnumerable<Reservation>, IAssignedBookingWithGuestsComposer> bookingWithGuestsComposerProvider)
         {
             _bookingsProvider = bookingsProvider;
             _context = context;
