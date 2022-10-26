@@ -36,7 +36,7 @@ namespace BookingCalendarApi.Services
 
             foreach (var guest in guestsInStay)
             {
-                if (guest.FirstName == "")
+                if (guest.FirstName == "" || guest.BirthDate.Trim() == "")
                 {
                     value.Standard -= (uint)nights;
                 }
