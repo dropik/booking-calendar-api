@@ -4,6 +4,7 @@ using BookingCalendarApi.Models;
 using BookingCalendarApi.Models.AlloggiatiService;
 using BookingCalendarApi.Models.Iperbooking.Guests;
 using BookingCalendarApi.Services;
+using C59Service;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -39,6 +40,7 @@ builder.Services.AddTransient<IAccomodatedTypeSolver, AccomodatedTypeSolver>();
 builder.Services.AddTransient<IAssignedBookingWithGuestsProvider, AssignedBookingWithGuestsProvider>();
 builder.Services.AddTransient<INationConverterProvider, NationConverterProvider>();
 builder.Services.AddTransient<IPlaceConverterProvider, PlaceConverterProvider>();
+builder.Services.AddTransient<EC59ServiceEndpoint, EC59ServiceEndpointClient>();
 
 #nullable disable
 builder.Services.AddTransient<Func<BookingCalendarApi.Services.ISession>>(
