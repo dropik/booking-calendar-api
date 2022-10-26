@@ -38,7 +38,7 @@ namespace BookingCalendarApi.Services
                         bookingId:      reservation.ReservationId.ToString(),
                         name:           guest.FirstName,
                         surname:        guest.LastName,
-                        dateOfBirth:    guest.BirthDate
+                        dateOfBirth:    guest.BirthDate.Trim() != "" ? DateTime.ParseExact(guest.BirthDate, "yyyyMMdd", null).ToString("yyyy-MM-dd") : ""
                     )
                     {
                         StateOfBirth = guest.BirthCountry,
