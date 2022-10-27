@@ -25,7 +25,8 @@ namespace BookingCalendarApi.Controllers
         public async Task<ActionResult<listaStruttureResponse>> GetAsync()
         {
             var request = new listaStrutture(_username, _password);
-            return await _service.listaStruttureAsync(request);
+            var response = await _service.listaStruttureAsync(request);
+            return response;
         }
     }
 }

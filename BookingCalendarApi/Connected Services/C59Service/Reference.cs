@@ -1205,7 +1205,7 @@ namespace C59Service
         {
             if ((endpointConfiguration == EndpointConfiguration.EC59ServiceEndpointPort))
             {
-                System.ServiceModel.BasicHttpBinding result = new System.ServiceModel.BasicHttpBinding();
+                System.ServiceModel.BasicHttpsBinding result = new System.ServiceModel.BasicHttpsBinding();
                 result.MaxBufferSize = int.MaxValue;
                 result.ReaderQuotas = System.Xml.XmlDictionaryReaderQuotas.Max;
                 result.MaxReceivedMessageSize = int.MaxValue;
@@ -1219,7 +1219,7 @@ namespace C59Service
         {
             if ((endpointConfiguration == EndpointConfiguration.EC59ServiceEndpointPort))
             {
-                return new System.ServiceModel.EndpointAddress("http://172.20.2.68:22080/c59service");
+                return new System.ServiceModel.EndpointAddress("https://dtu.provincia.tn.it/c59service");
             }
             throw new System.InvalidOperationException(string.Format("L\'endpoint denominato \'{0}\' non è stato trovato.", endpointConfiguration));
         }
