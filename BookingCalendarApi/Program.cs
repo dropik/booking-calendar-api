@@ -61,7 +61,7 @@ builder.Services.AddTransient<Func<string, string, IEnumerable<Reservation>, ICi
 );
 builder.Services.AddTransient<Func<IEnumerable<Reservation>, IAssignedBookingWithGuestsComposer>>(
     serviceProvider => (reservations) => new AssignedkookingWithGuestsComposer(reservations));
-builder.Services.AddTransient<Func<IEnumerable<PoliceNationCode>, INationConverter>>(
+builder.Services.AddTransient<Func<IEnumerable<Nation>, INationConverter>>(
     serviceProvider => (nationCodes) => new NationConverter(nationCodes));
 builder.Services.AddTransient<Func<IEnumerable<Place>, IPlaceConverter>>(
     serviceProvider => (places) => new PlaceConverter(places));

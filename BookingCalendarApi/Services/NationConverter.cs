@@ -4,17 +4,17 @@ namespace BookingCalendarApi.Services
 {
     public class NationConverter : INationConverter
     {
-        private readonly IEnumerable<PoliceNationCode> _nationCodes;
+        private readonly IEnumerable<Nation> _nations;
 
-        public NationConverter(IEnumerable<PoliceNationCode> nationCodes)
+        public NationConverter(IEnumerable<Nation> nations)
         {
-            _nationCodes = nationCodes;
+            _nations = nations;
         }
 
         public ulong GetCodeByIso(string iso)
         {
-            var foundCodeEntry = _nationCodes
-                .SingleOrDefault(nationCode => nationCode.Iso == iso);
+            var foundCodeEntry = _nations
+                .SingleOrDefault(nation => nation.Iso == iso);
 
             if (foundCodeEntry == null)
             {
