@@ -41,6 +41,7 @@ builder.Services.AddTransient<IAssignedBookingWithGuestsProvider, AssignedBookin
 builder.Services.AddTransient<INationConverterProvider, NationConverterProvider>();
 builder.Services.AddTransient<IPlaceConverterProvider, PlaceConverterProvider>();
 builder.Services.AddTransient<EC59ServiceEndpoint, EC59ServiceEndpointClient>();
+builder.Services.AddTransient<IC59ServiceSession, C59ServiceSession>();
 
 #nullable disable
 builder.Services.AddTransient<Func<BookingCalendarApi.Services.ISession>>(
