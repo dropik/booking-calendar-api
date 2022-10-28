@@ -24,10 +24,9 @@ namespace BookingCalendarApi.Services
                 .First();
         }
 
-        public async Task SendAsync(c59WSPO data)
+        public async Task SendNewDataAsync()
         {
-            var request = new inviaC59Full(_credentials.Username, _credentials.Password, _credentials.Struttura, data);
-            await _service.inviaC59FullAsync(request);
+            throw new NotImplementedException();
         }
     }
 }
