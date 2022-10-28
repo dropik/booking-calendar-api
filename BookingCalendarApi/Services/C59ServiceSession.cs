@@ -14,6 +14,16 @@ namespace BookingCalendarApi.Services
             _credentials = configuration.GetSection("C59Service").Get<Credentials>();
         }
 
+        public async Task<string> GetLastDateAsync()
+        {
+            var request = new ultimoC59(_credentials.Username, _credentials.Password, _credentials.Struttura);
+            var response = await _service.ultimoC59Async(request);
+            return response.@return.elencoC59
+                .Select(item => item.dataMovimentazione.ToString("yyyy-MM-dd"))
+                .OrderBy(date => date)
+                .First();
+        }
+
         public async Task SendAsync(c59WSPO data)
         {
             var request = new inviaC59Full(_credentials.Username, _credentials.Password, _credentials.Struttura, data);

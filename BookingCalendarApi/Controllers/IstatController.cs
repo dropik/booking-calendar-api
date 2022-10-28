@@ -1,4 +1,5 @@
-﻿using C59Service;
+﻿using BookingCalendarApi.Models;
+using BookingCalendarApi.Services;
 using Microsoft.AspNetCore.Mvc;
 
 namespace BookingCalendarApi.Controllers
@@ -7,26 +8,25 @@ namespace BookingCalendarApi.Controllers
     [ApiController]
     public class IstatController : ControllerBase
     {
-        private readonly EC59ServiceEndpoint _service;
-        private readonly IConfiguration _configuration;
-        private readonly string _username;
-        private readonly string _password;
+        private readonly IC59ServiceSession _serviseSession;
 
-        public IstatController(EC59ServiceEndpoint service, IConfiguration configuration)
+        public IstatController(IC59ServiceSession serviceSession)
         {
-            _service = service;
-            _configuration = configuration;
-            var c59 = _configuration.GetSection("C59Service");
-            _username = c59.GetValue<string>("Username");
-            _password = c59.GetValue<string>("Password");
+            _serviseSession = serviceSession;
         }
 
         [HttpGet]
-        public async Task<ActionResult<listaStruttureResponse>> GetAsync()
+        public async Task<ActionResult<IstatLastDateResponse>> GetLastDateAsync()
         {
-            var request = new listaStrutture(_username, _password);
-            var response = await _service.listaStruttureAsync(request);
-            return response;
+            try
+            {
+                var response = await _serviseSession.GetLastDateAsync();
+                return new IstatLastDateResponse(response);
+            }
+            catch (Exception exception)
+            {
+                return BadRequest(exception.Message);
+            }
         }
     }
 }
