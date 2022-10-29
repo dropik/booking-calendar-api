@@ -50,3 +50,6 @@ dotnet run
 - Added ISTAT endpoint to send new ISTAT data and to get last published date.
 - Fixed wrong police data row serialization.
 - Added nation descriptions to nations table.
+- Better police place of birth search by description.
+- Fixed simultaneous context bound stuff on police data generation.
+- Fixed taking bookings from following date when publishing to police.
