@@ -85,6 +85,7 @@ namespace BookingCalendarApi.Controllers
             var recordsComposer = _trackedRecordsComposerProvider(_nationConverterProvider.Converter, _placeConverterProvider.Converter);
 
             return _bookingWithGuestsProvider.Bookings
+                .SelectByArrival(DateTime.ParseExact(date, "yyyy-MM-dd", null))
                 .UseComposer(recordsComposer)
                 .ToList();
         }
