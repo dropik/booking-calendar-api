@@ -77,8 +77,7 @@ namespace BookingCalendarApi.Controllers
         private async Task<List<string>> ComposeRecordsAsync(string date)
         {
             await Task.WhenAll(
-                _bookingWithGuestsProvider.FetchAsync(date),
-                _nationConverterProvider.FetchAsync(),
+                ContextBoundStuff(date),
                 _placeConverterProvider.FetchAsync(_session)
             );
             
@@ -88,6 +87,12 @@ namespace BookingCalendarApi.Controllers
                 .SelectByArrival(DateTime.ParseExact(date, "yyyy-MM-dd", null))
                 .UseComposer(recordsComposer)
                 .ToList();
+        }
+
+        private async Task ContextBoundStuff(string date)
+        {
+            await _bookingWithGuestsProvider.FetchAsync(date);
+            await _nationConverterProvider.FetchAsync();
         }
 
         public class SendRequest
