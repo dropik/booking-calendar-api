@@ -1,5 +1,6 @@
 ﻿using BookingCalendarApi.Models.C59Service;
 using C59Service;
+using Microsoft.EntityFrameworkCore;
 
 namespace BookingCalendarApi.Services
 {
@@ -7,11 +8,15 @@ namespace BookingCalendarApi.Services
     {
         private readonly EC59ServiceEndpoint _service;
         private readonly Credentials _credentials;
+        private readonly IAssignedBookingWithGuestsProvider _bookingsProvider;
+        private readonly BookingCalendarContext _context;
 
-        public C59ServiceSession(EC59ServiceEndpoint service, IConfiguration configuration)
+        public C59ServiceSession(EC59ServiceEndpoint service, IConfiguration configuration, IAssignedBookingWithGuestsProvider bookingsProvider, BookingCalendarContext context)
         {
             _service = service;
             _credentials = configuration.GetSection("C59Service").Get<Credentials>();
+            _bookingsProvider = bookingsProvider;
+            _context = context;
         }
 
         public async Task<string> GetLastDateAsync()
@@ -26,7 +31,46 @@ namespace BookingCalendarApi.Services
 
         public async Task SendNewDataAsync()
         {
-            throw new NotImplementedException();
+            var lastUploadRequest = new ultimoC59(_credentials.Username, _credentials.Password, _credentials.Struttura);
+            var lastUploadResponse = await _service.ultimoC59Async(lastUploadRequest);
+            var lastUpload = lastUploadResponse.@return.elencoC59
+                .OrderBy(item => item.dataMovimentazione.ToString("yyyy-MM-dd"))
+                .First();
+
+            var nations = await _context.Nations.ToListAsync();
+
+            var fromDate = lastUpload.dataMovimentazione.AddDays(1);
+            var toDate = DateTime.Now.AddDays(-1); // always publish up to yesterday
+            await _bookingsProvider.FetchAsync(fromDate.ToString("yyyy-MM-dd"), toDate.ToString("yyyy-MM-dd"), exactPeriod: false);
+
+            var prevTotal = lastUpload.totalePartenze;
+            var dateCounter = fromDate;
+            while ((toDate - dateCounter).Days >= 0)
+            {
+                var date = dateCounter.ToString("yyyyMMdd");
+                var arrivedOrDeparturedStays = _bookingsProvider.Bookings
+                    .SelectMany(
+                        booking => booking.Rooms
+                            .Where(room => room.Arrival == date || room.Departure == date),
+                        (booking, room) => room
+                    );
+                var guestsWithProvinceOrState = arrivedOrDeparturedStays
+                    .SelectMany(
+                        stay => stay.Guests
+                            .Where(guest =>
+                                guest.BirthCountry != null &&
+                                guest.BirthCountry.Trim() != "" &&
+                                ((guest.BirthCountry != "IT") || (guest.BirthCounty != null && guest.BirthCounty.Trim() != ""))),
+                        (stay, guest) => new
+                        {
+                            stay.Arrival,
+                            stay.Departure,
+                            Country = guest.BirthCountry,
+                            Province = guest.BirthCounty
+                        }
+                    );
+                // implement movements composition
+            }
         }
     }
 }
