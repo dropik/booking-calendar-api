@@ -30,12 +30,12 @@ namespace BookingCalendarApi.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult<IEnumerable<MovementsTestResponseItem>>> SendNewDataAsync()
+        public async Task<IActionResult> SendNewDataAsync()
         {
             try
             {
-                var response = await _serviseSession.SendNewDataAsync();
-                return response.ToList();
+                await _serviseSession.SendNewDataAsync();
+                return Ok();
             }
             catch (Exception exception)
             {

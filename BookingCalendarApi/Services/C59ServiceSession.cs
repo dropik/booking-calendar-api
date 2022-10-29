@@ -30,7 +30,7 @@ namespace BookingCalendarApi.Services
                 .First();
         }
 
-        public async Task<IEnumerable<MovementsTestResponseItem>> SendNewDataAsync()
+        public async Task SendNewDataAsync()
         {
             var lastUploadRequest = new ultimoC59(_credentials.Username, _credentials.Password, _credentials.Struttura);
             var lastUploadResponse = await _service.ultimoC59Async(lastUploadRequest);
@@ -46,7 +46,6 @@ namespace BookingCalendarApi.Services
 
             var prevTotal = lastUpload.totalePartenze;
             var dateCounter = fromDate;
-            var result = new List<MovementsTestResponseItem>();
             while ((toDate - dateCounter).Days >= 0)
             {
                 var date = dateCounter.ToString("yyyyMMdd");
@@ -92,11 +91,27 @@ namespace BookingCalendarApi.Services
                         }))
                     .SelectMany(movements => movements);
 
-                result.Add(new MovementsTestResponseItem(date, movements));
+                var totalArrived = movements.Sum(movement => movement.arrivi);
+                var totalDepartured = movements.Sum(movement => movement.partenze);
+                var total = prevTotal + totalArrived - totalDepartured;
+
+                var request = new inviaC59Full(_credentials.Username, _credentials.Password, _credentials.Struttura, new c59WSPO()
+                {
+                    dataMovimentazione = dateCounter,
+                    esercizioAperto = true,
+                    totaleArrivi = totalArrived,
+                    totalePartenze = totalDepartured,
+                    totalePresenti = total,
+                    unitaAbitativeDisponibili = 11,
+                    unitaAbitativeOccupate = 0,
+                    movimenti = movements.ToArray()
+                });
+
+                await _service.inviaC59FullAsync(request);
+
+                prevTotal = total;
                 dateCounter = dateCounter.AddDays(1);
             }
-
-            return result;
         }
     }
 }
