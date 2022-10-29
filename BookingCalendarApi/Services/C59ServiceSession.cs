@@ -1,4 +1,5 @@
-﻿using BookingCalendarApi.Models.C59Service;
+﻿using BookingCalendarApi.Models;
+using BookingCalendarApi.Models.C59Service;
 using C59Service;
 using Microsoft.EntityFrameworkCore;
 
@@ -29,7 +30,7 @@ namespace BookingCalendarApi.Services
                 .First();
         }
 
-        public async Task SendNewDataAsync()
+        public async Task<IEnumerable<MovementsTestResponseItem>> SendNewDataAsync()
         {
             var lastUploadRequest = new ultimoC59(_credentials.Username, _credentials.Password, _credentials.Struttura);
             var lastUploadResponse = await _service.ultimoC59Async(lastUploadRequest);
@@ -40,11 +41,12 @@ namespace BookingCalendarApi.Services
             var nations = await _context.Nations.ToListAsync();
 
             var fromDate = lastUpload.dataMovimentazione.AddDays(1);
-            var toDate = DateTime.Now.AddDays(-1); // always publish up to yesterday
+            var toDate = DateTime.ParseExact(DateTime.Now.AddDays(-1).ToString("yyyyMMdd"), "yyyyMMdd", null); // always publish up to yesterday
             await _bookingsProvider.FetchAsync(fromDate.ToString("yyyy-MM-dd"), toDate.ToString("yyyy-MM-dd"), exactPeriod: false);
 
             var prevTotal = lastUpload.totalePartenze;
             var dateCounter = fromDate;
+            var result = new List<MovementsTestResponseItem>();
             while ((toDate - dateCounter).Days >= 0)
             {
                 var date = dateCounter.ToString("yyyyMMdd");
@@ -69,8 +71,32 @@ namespace BookingCalendarApi.Services
                             Province = guest.BirthCounty
                         }
                     );
-                // implement movements composition
+                var movements = guestsWithProvinceOrState
+                    .GroupBy(guest => guest.Country)
+                    .Select(group => group.Key != "IT" ? new List<movimentoWSPO>() {
+                        new movimentoWSPO()
+                        {
+                            italia = false,
+                            targa = nations.SingleOrDefault(nation => nation.Iso == group.Key)?.Description,
+                            arrivi = group.Where(item => item.Arrival == date).Count(),
+                            partenze = group.Where(item => item.Departure == date).Count()
+                        }
+                    } : group
+                        .GroupBy(item => item.Province)
+                        .Select(provinceGroup => new movimentoWSPO()
+                        {
+                            italia = true,
+                            targa = provinceGroup.Key,
+                            arrivi = provinceGroup.Where(item => item.Arrival == date).Count(),
+                            partenze = provinceGroup.Where(item => item.Departure == date).Count()
+                        }))
+                    .SelectMany(movements => movements);
+
+                result.Add(new MovementsTestResponseItem(date, movements));
+                dateCounter = dateCounter.AddDays(1);
             }
+
+            return result;
         }
     }
 }

@@ -28,5 +28,19 @@ namespace BookingCalendarApi.Controllers
                 return BadRequest(exception.Message);
             }
         }
+
+        [HttpPost]
+        public async Task<ActionResult<IEnumerable<MovementsTestResponseItem>>> SendNewDataAsync()
+        {
+            try
+            {
+                var response = await _serviseSession.SendNewDataAsync();
+                return response.ToList();
+            }
+            catch (Exception exception)
+            {
+                return BadRequest(exception.Message);
+            }
+        }
     }
 }
