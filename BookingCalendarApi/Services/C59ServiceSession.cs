@@ -30,7 +30,7 @@ namespace BookingCalendarApi.Services
                 .First();
         }
 
-        public async Task SendNewDataAsync()
+        public async Task SendNewDataAsync(DateTime to)
         {
             var lastUploadRequest = new ultimoC59(_credentials.Username, _credentials.Password, _credentials.Struttura);
             var lastUploadResponse = await _service.ultimoC59Async(lastUploadRequest);
@@ -41,12 +41,16 @@ namespace BookingCalendarApi.Services
             var nations = await _context.Nations.ToListAsync();
 
             var fromDate = lastUpload.dataMovimentazione.AddDays(1);
-            var toDate = DateTime.ParseExact(DateTime.Now.AddDays(-1).ToString("yyyyMMdd"), "yyyyMMdd", null); // always publish up to yesterday
-            await _bookingsProvider.FetchAsync(fromDate.ToString("yyyy-MM-dd"), toDate.ToString("yyyy-MM-dd"), exactPeriod: false);
+            if ((to - fromDate).Days < 0)
+            {
+                throw new Exception("Overriding ISTAT history is not possible.");
+            }
+
+            await _bookingsProvider.FetchAsync(fromDate.ToString("yyyy-MM-dd"), to.ToString("yyyy-MM-dd"), exactPeriod: false);
 
             var prevTotal = lastUpload.totalePartenze;
             var dateCounter = fromDate;
-            while ((toDate - dateCounter).Days >= 0)
+            while ((to - dateCounter).Days >= 0)
             {
                 var date = dateCounter.ToString("yyyyMMdd");
                 var arrivedOrDeparturedStays = _bookingsProvider.Bookings

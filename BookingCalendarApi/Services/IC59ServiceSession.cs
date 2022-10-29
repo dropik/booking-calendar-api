@@ -4,7 +4,7 @@ namespace BookingCalendarApi.Services
 {
     public interface IC59ServiceSession
     {
-        public Task SendNewDataAsync();
+        public Task SendNewDataAsync(DateTime date);
         public Task<string> GetLastDateAsync();
     }
 }
