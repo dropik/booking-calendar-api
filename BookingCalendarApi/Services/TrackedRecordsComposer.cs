@@ -37,7 +37,7 @@ namespace BookingCalendarApi.Services
                                 _ => throw new Exception("Gender was not found")
                             },
                             BirthDate = DateTime.ParseExact(guest.BirthDate, "yyyyMMdd", null),
-                            PlaceOfBirth = guest.BirthCountry != null && guest.BirthCountry == "IT" && guest.BirthCity != null ? _placeConverter.GetPlaceCodeByDescription(guest.BirthCity) : null,
+                            PlaceOfBirth = guest.BirthCountry != null && guest.BirthCountry == "IT" && guest.BirthCity != null && guest.BirthCity.Trim() != "" ? _placeConverter.GetPlaceCodeByDescription(guest.BirthCity) : null,
                             ProvinceOfBirth = guest.BirthCounty,
                             StateOfBirth = _nationConverter.GetCodeByIso(guest.BirthCountry ?? "IT"),
                             Citizenship = _nationConverter.GetCodeByIso(guest.Citizenship ?? "IT"),
