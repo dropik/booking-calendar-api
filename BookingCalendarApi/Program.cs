@@ -4,6 +4,7 @@ using BookingCalendarApi.Models;
 using BookingCalendarApi.Models.AlloggiatiService;
 using BookingCalendarApi.Models.Iperbooking.Guests;
 using BookingCalendarApi.Services;
+using C59Service;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -39,6 +40,8 @@ builder.Services.AddTransient<IAccomodatedTypeSolver, AccomodatedTypeSolver>();
 builder.Services.AddTransient<IAssignedBookingWithGuestsProvider, AssignedBookingWithGuestsProvider>();
 builder.Services.AddTransient<INationConverterProvider, NationConverterProvider>();
 builder.Services.AddTransient<IPlaceConverterProvider, PlaceConverterProvider>();
+builder.Services.AddTransient<EC59ServiceEndpoint, EC59ServiceEndpointClient>();
+builder.Services.AddTransient<IC59ServiceSession, C59ServiceSession>();
 
 #nullable disable
 builder.Services.AddTransient<Func<BookingCalendarApi.Services.ISession>>(
@@ -58,7 +61,7 @@ builder.Services.AddTransient<Func<string, string, IEnumerable<Reservation>, ICi
 );
 builder.Services.AddTransient<Func<IEnumerable<Reservation>, IAssignedBookingWithGuestsComposer>>(
     serviceProvider => (reservations) => new AssignedkookingWithGuestsComposer(reservations));
-builder.Services.AddTransient<Func<IEnumerable<PoliceNationCode>, INationConverter>>(
+builder.Services.AddTransient<Func<IEnumerable<Nation>, INationConverter>>(
     serviceProvider => (nationCodes) => new NationConverter(nationCodes));
 builder.Services.AddTransient<Func<IEnumerable<Place>, IPlaceConverter>>(
     serviceProvider => (places) => new PlaceConverter(places));

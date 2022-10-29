@@ -32,8 +32,12 @@ namespace BookingCalendarApi.Services
                 formattedDescription += c;
             }
 
+            var levenshtein = new Fastenshtein.Levenshtein(formattedDescription);
+
             var foundPlaceEntry = _places
-                .SingleOrDefault(place => place.Descrizione == formattedDescription);
+                .Select(place => new { Place = place, Distance = levenshtein.DistanceFrom(place.Descrizione) })
+                .OrderBy(comparison => comparison.Distance)
+                .First().Place;
 
             return foundPlaceEntry?.Codice;
         }

@@ -12,7 +12,7 @@ namespace BookingCalendarApi
         public DbSet<SessionEntry> Sessions => Set<SessionEntry>();
         public DbSet<RoomAssignment> RoomAssignments => Set<RoomAssignment>();
         public DbSet<ColorAssignment> ColorAssignments => Set<ColorAssignment>();
-        public DbSet<PoliceNationCode> PoliceNations => Set<PoliceNationCode>();
+        public DbSet<Nation> Nations => Set<Nation>();
 
         protected override void OnModelCreating(ModelBuilder builder)
         {

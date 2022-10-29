@@ -29,11 +29,11 @@ namespace BookingCalendarApi.Services
 
         public IEnumerable<AssignedBooking<Models.Iperbooking.Guests.Guest>> Bookings { get; private set; } = new List<AssignedBooking<Models.Iperbooking.Guests.Guest>>();
 
-        public async Task FetchAsync(string date)
+        public async Task FetchAsync(string from, string? to = null, bool exactPeriod = true)
         {
-            var to = DateTime.ParseExact(date, "yyyy-MM-dd", null).AddDays(1).ToString("yyyy-MM-dd");
+            to ??= DateTime.ParseExact(from, "yyyy-MM-dd", null).AddDays(1).ToString("yyyy-MM-dd");
 
-            await _bookingsProvider.FetchBookingsAsync(date, to, exactPeriod: true);
+            await _bookingsProvider.FetchBookingsAsync(from, to, exactPeriod);
             var bookings = _bookingsProvider.Bookings
                 .ExcludeCancelled();
 
