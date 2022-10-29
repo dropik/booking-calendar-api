@@ -14,13 +14,12 @@ namespace BookingCalendarApi.Services
             $"{SerializeGender(record.Sex)}" +
             $"{record.BirthDate:dd/MM/yyyy}" +
             $"{(record.PlaceOfBirth != null ? record.PlaceOfBirth.ToString() : new string(' ', 9))}" +
-            $"{record.ProvinceOfBirth ?? new string(' ', 2)}" +
+            $"{(record.ProvinceOfBirth != null && record.ProvinceOfBirth.Length == 2 ? record.ProvinceOfBirth : new string(' ', 2))}" +
             $"{record.StateOfBirth}" +
             $"{record.Citizenship}" +
             $"{(record.DocType != null ? record.DocType.ToString()?.ToUpper() : new string(' ', 5))}" +
             $"{(record.DocNumber != null ? record.DocNumber.PadRight(20, ' ') : new string(' ', 20))}" +
-            $"{(record.DocIssuer != null ? record.DocIssuer.ToString() : new string(' ', 9))}" +
-            $"\r\n";
+            $"{(record.DocIssuer != null ? record.DocIssuer.ToString() : new string(' ', 9))}";
 
         private static string SerializeType(AccomodatedType type) => type switch
         {
