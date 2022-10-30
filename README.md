@@ -46,6 +46,8 @@ dotnet run
 ```
 
 ## Changelog
+### v1.1.1
+- Fixed missing date specified field in ISTAT publication.
 ### v1.1.0
 - Added ISTAT endpoint to send new ISTAT data and to get last published date.
 - Fixed wrong police data row serialization.
