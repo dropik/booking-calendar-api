@@ -102,6 +102,7 @@ namespace BookingCalendarApi.Services
                 var request = new inviaC59Full(_credentials.Username, _credentials.Password, _credentials.Struttura, new c59WSPO()
                 {
                     dataMovimentazione = dateCounter,
+                    dataMovimentazioneSpecified = true,
                     esercizioAperto = true,
                     totaleArrivi = totalArrived,
                     totalePartenze = totalDepartured,
