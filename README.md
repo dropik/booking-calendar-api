@@ -46,6 +46,8 @@ dotnet run
 ```
 
 ## Changelog
+### v1.1.2
+- Fixed correct tracked records order by record type.
 ### v1.1.1
 - Fixed missing date specified field in ISTAT publication.
 ### v1.1.0
