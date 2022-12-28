@@ -78,7 +78,7 @@ namespace BookingCalendarApi.Services
                     .Any()
                 )
                 .SelectMany(
-                    block => block,
+                    block => block.OrderBy(r => r.Type),
                     (block, record) => _trackedRecordSerializer.Serialize(record)
                  );
         }
