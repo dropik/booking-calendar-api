@@ -44,7 +44,10 @@ namespace BookingCalendarApi.Controllers
                                 bookingId: reservation.ReservationId.ToString(),
                                 name: guest.FirstName,
                                 surname: guest.LastName,
-                                dateOfBirth: DateTime.ParseExact(guest.BirthDate, "yyyyMMdd", null).ToString("yyyy-MM-dd"),
+                                dateOfBirth:
+                                    guest.BirthDate.Length == 0
+                                    ? ""
+                                    : DateTime.ParseExact(guest.BirthDate, "yyyyMMdd", null).ToString("yyyy-MM-dd"),
                                 bookingName: $"{booking.FirstName} {booking.LastName}",
                                 bookingFrom: DateTime.ParseExact(booking.Rooms.OrderBy(room => room.Arrival).First().Arrival, "yyyyMMdd", null).ToString("yyyy-MM-dd"),
                                 bookingTo: DateTime.ParseExact(booking.Rooms.OrderBy(room => room.Departure).Last().Departure, "yyyyMMdd", null).ToString("yyyy-MM-dd")
