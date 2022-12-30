@@ -8,12 +8,12 @@ namespace BookingCalendarApi.Controllers
     [ApiController]
     public class BookingsByNameController : ControllerBase
     {
-        private readonly IBookingsProvider _bookingsProvider;
+        private readonly IIperbooking _iperbooking;
         private readonly IBookingShortComposer _bookingShortComposer;
 
-        public BookingsByNameController(IBookingsProvider bookingsProvider, IBookingShortComposer bookingShortComposer)
+        public BookingsByNameController(IIperbooking iperbooking, IBookingShortComposer bookingShortComposer)
         {
-            _bookingsProvider = bookingsProvider;
+            _iperbooking = iperbooking;
             _bookingShortComposer = bookingShortComposer;
         }
 
@@ -22,18 +22,12 @@ namespace BookingCalendarApi.Controllers
         {
             try
             {
-                await _bookingsProvider.FetchBookingsAsync(from, to);
-
                 var definedName = name ?? "";
-
-                var bookings = _bookingsProvider.Bookings
+                return (await _iperbooking.GetBookingsAsync(from, to))
                     .SelectInRange(from, to)
                     .SelectByName(definedName)
                     .UseComposer(_bookingShortComposer)
                     .ToList();
-
-                return bookings;
-
             }
             catch (Exception ex)
             {

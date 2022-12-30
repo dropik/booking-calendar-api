@@ -1,7 +1,6 @@
 using AlloggiatiService;
 using BookingCalendarApi;
 using BookingCalendarApi.Models;
-using BookingCalendarApi.Models.AlloggiatiService;
 using BookingCalendarApi.Models.Iperbooking.Guests;
 using BookingCalendarApi.Services;
 using C59Service;
@@ -30,7 +29,6 @@ builder.Services.AddScoped<IAlloggiatiServiceSession, AlloggiatiServiceSession>(
 builder.Services.AddScoped<DataContext>();
 
 // transient services
-builder.Services.AddTransient<IBookingsProvider, BookingsProvider>();
 builder.Services.AddTransient<IBookingComposer, BookingComposer>();
 builder.Services.AddTransient<IBookingShortComposer, BookingShortComposer>();
 builder.Services.AddTransient<IBookingsCachingSession, BookingsCachingSession>();

@@ -2,6 +2,7 @@
 using BookingCalendarApi.Models.Iperbooking.Bookings;
 using BookingCalendarApi.Models.Iperbooking.Guests;
 using BookingCalendarApi.Models.Iperbooking.RoomRates;
+using Humanizer;
 using System.Text;
 using System.Text.Json;
 
@@ -51,8 +52,20 @@ namespace BookingCalendarApi.Services
             return new List<RoomRateRoom>();
         }
 
-        public async Task<IEnumerable<Booking>> GetBookingsAsync(string arrivalFrom, string arrivalTo)
+        public async Task<List<Booking>> GetBookingsAsync(string from, string to, bool exactPeriod = false)
         {
+            var fromDate = DateTime.ParseExact(from, "yyyy-MM-dd", null);
+            var toDate = DateTime.ParseExact(to, "yyyy-MM-dd", null);
+
+            if (!exactPeriod)
+            {
+                fromDate = fromDate.AddDays(-30);
+                toDate = toDate.AddDays(30);
+            }
+
+            var arrivalFrom = fromDate.ToString("yyyyMMdd");
+            var arrivalTo = toDate.ToString("yyyyMMdd");
+
             var url = $"https://api.iperbooking.net/v1/GetBookings.cfm?idhotel={_auth.IdHotel}&username={_auth.Username}&password={_auth.Password}&format=json&arrivalfrom={arrivalFrom}&arrivalto={arrivalTo}";
             try
             {
@@ -63,7 +76,7 @@ namespace BookingCalendarApi.Services
                 var data = await content.ReadAsStringAsync();
                 if (data != null)
                 {
-                    var poco = JsonSerializer.Deserialize<ICollection<Booking>>(data, new JsonSerializerOptions()
+                    var poco = JsonSerializer.Deserialize<List<Booking>>(data, new JsonSerializerOptions()
                     {
                         PropertyNameCaseInsensitive = true
                     });

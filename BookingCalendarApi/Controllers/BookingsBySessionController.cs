@@ -1,4 +1,5 @@
 using BookingCalendarApi.Models;
+using BookingCalendarApi.Models.Iperbooking.Bookings;
 using BookingCalendarApi.Services;
 using Microsoft.AspNetCore.Mvc;
 
@@ -8,16 +9,18 @@ namespace BookingCalendarApi.Controllers
     [ApiController]
     public class BookingsBySessionController : ControllerBase
     {
-        private readonly IBookingsProvider _bookingsProvider;
+        private readonly IIperbooking _iperbooking;
         private readonly IBookingComposer _bookingComposer;
         private readonly IBookingsCachingSession _session;
 
+        private List<Booking> Bookings { get; set; } = new();
+
         public BookingsBySessionController(
-            IBookingsProvider bookingsProvider,
+            IIperbooking iperbooking,
             IBookingComposer bookingComposer,
             IBookingsCachingSession session)
         {
-            _bookingsProvider = bookingsProvider;
+            _iperbooking = iperbooking;
             _bookingComposer = bookingComposer;
             _session = session;
         }
@@ -29,10 +32,10 @@ namespace BookingCalendarApi.Controllers
             {
                 await Task.WhenAll(
                     _session.OpenAsync(sessionId),
-                    _bookingsProvider.FetchBookingsAsync(from, to)
+                    FetchBookings(from, to)
                 );
 
-                var bookings = _bookingsProvider.Bookings
+                var bookings = Bookings
                     .SelectInRange(from, to, true)
                     .ExcludeBySession(_session)
                     .UseComposer(_bookingComposer)
@@ -46,6 +49,11 @@ namespace BookingCalendarApi.Controllers
             {
                 return BadRequest(ex.Message);
             }
+        }
+
+        private async Task FetchBookings(string from, string to)
+        {
+            Bookings = await _iperbooking.GetBookingsAsync(from, to);
         }
     }
 }

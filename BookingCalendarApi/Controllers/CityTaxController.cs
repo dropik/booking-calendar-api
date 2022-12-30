@@ -9,21 +9,18 @@ namespace BookingCalendarApi.Controllers
     [ApiController]
     public class CityTaxController : ControllerBase
     {
-        private readonly IBookingsProvider _bookingsProvider;
         private readonly IAssignedBookingComposer _assignedBookingComposer;
         private readonly IStayComposer _stayComposer;
         private readonly IIperbooking _iperbooking;
         private readonly Func<string, string, IEnumerable<Reservation>, ICityTaxCalculator> _calculatorProvider;
 
         public CityTaxController(
-            IBookingsProvider bookingsProvider,
             IAssignedBookingComposer assignedBookingComposer,
             IStayComposer stayComposer,
             IIperbooking iperbooking,
             Func<string, string, IEnumerable<Reservation>, ICityTaxCalculator> calculatorProvider
         )
         {
-            _bookingsProvider = bookingsProvider;
             _assignedBookingComposer = assignedBookingComposer;
             _stayComposer = stayComposer;
             _iperbooking = iperbooking;
@@ -35,8 +32,7 @@ namespace BookingCalendarApi.Controllers
         {
             try
             {
-                await _bookingsProvider.FetchBookingsAsync(from, to);
-                var bookings = _bookingsProvider.Bookings
+                var bookings = (await _iperbooking.GetBookingsAsync(from, to))
                     .ExcludeCancelled()
                     .SelectInRange(from, to);
 

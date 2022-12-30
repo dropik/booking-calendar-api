@@ -1,4 +1,5 @@
 using BookingCalendarApi.Models;
+using BookingCalendarApi.Models.Iperbooking.Bookings;
 using BookingCalendarApi.Models.Iperbooking.Guests;
 using BookingCalendarApi.Services;
 using Microsoft.AspNetCore.Mvc;
@@ -9,19 +10,17 @@ namespace BookingCalendarApi.Controllers
     [ApiController]
     public class BookingController : ControllerBase
     {
-        private readonly IBookingsProvider _bookingsProvider;
         private readonly Func<IEnumerable<Reservation>, IBookingWithClientsComposer> _bookingComposerProvider;
         private readonly IIperbooking _iperbooking;
 
+        private List<Booking> Bookings { get; set; } = new();
         private GuestsResponse GuestsResponse { get; set; } = new GuestsResponse();
 
         public BookingController(
-            IBookingsProvider bookingsProvider,
             Func<IEnumerable<Reservation>, IBookingWithClientsComposer> bookingComposerProvider,
             IIperbooking iperbooking
         )
         {
-            _bookingsProvider = bookingsProvider;
             _bookingComposerProvider = bookingComposerProvider;
             _iperbooking = iperbooking;
         }
@@ -36,13 +35,13 @@ namespace BookingCalendarApi.Controllers
                 var arrivalTo = fromDate.AddDays(15).ToString("yyyy-MM-dd");
 
                 await Task.WhenAll(
-                    _bookingsProvider.FetchBookingsAsync(arrivalFrom, arrivalTo, exactPeriod: true),
-                    FetchGuestsAsync(id)
+                    FetchBookings(arrivalFrom, arrivalTo),
+                    FetchGuests(id)
                 );
                 
                 var bookingComposer = _bookingComposerProvider(GuestsResponse.Reservations);
 
-                var result = _bookingsProvider.Bookings
+                var result = Bookings
                     .SelectById(id)
                     .UseComposer(bookingComposer);
 
@@ -59,7 +58,12 @@ namespace BookingCalendarApi.Controllers
             }
         }
 
-        private async Task FetchGuestsAsync(string id)
+        private async Task FetchBookings(string from, string to)
+        {
+            Bookings = await _iperbooking.GetBookingsAsync(from, to, exactPeriod: true);
+        }
+
+        private async Task FetchGuests(string id)
         {
             GuestsResponse = await _iperbooking.GetGuestsAsync(id);
         }

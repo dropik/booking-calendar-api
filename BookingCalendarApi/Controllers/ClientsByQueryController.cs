@@ -22,7 +22,7 @@ namespace BookingCalendarApi.Controllers
             {
                 var arrivalFrom = DateTime.ParseExact(from, "yyyy-MM-dd", null).ToString("yyyyMMdd");
                 var arrivalTo = DateTime.ParseExact(to, "yyyy-MM-dd", null).ToString("yyyyMMdd");
-                var bookings = await _iperbooking.GetBookingsAsync(arrivalFrom, arrivalTo);
+                var bookings = await _iperbooking.GetBookingsAsync(arrivalFrom, arrivalTo, exactPeriod: true);
 
                 string bookingIds = "";
                 foreach (var booking in bookings)

@@ -7,18 +7,15 @@ namespace BookingCalendarApi.Services
 {
     public class AssignedBookingWithGuestsProvider : IAssignedBookingWithGuestsProvider
     {
-        private readonly IBookingsProvider _bookingsProvider;
         private readonly BookingCalendarContext _context;
         private readonly Func<IEnumerable<RoomAssignment>, IAssignedBookingComposer> _assignedBookingComposerProvider;
         private readonly IIperbooking _iperbooking;
 
         public AssignedBookingWithGuestsProvider(
-            IBookingsProvider bookingsProvider,
             BookingCalendarContext context,
             Func<IEnumerable<RoomAssignment>, IAssignedBookingComposer> assignedBookingComposerProvider,
             IIperbooking iperbooking)
         {
-            _bookingsProvider = bookingsProvider;
             _context = context;
             _assignedBookingComposerProvider = assignedBookingComposerProvider;
             _iperbooking = iperbooking;
@@ -28,8 +25,7 @@ namespace BookingCalendarApi.Services
         {
             to ??= DateTime.ParseExact(from, "yyyy-MM-dd", null).AddDays(1).ToString("yyyy-MM-dd");
 
-            await _bookingsProvider.FetchBookingsAsync(from, to, exactPeriod);
-            var bookings = _bookingsProvider.Bookings
+            var bookings = (await _iperbooking.GetBookingsAsync(from, to, exactPeriod))
                 .ExcludeCancelled();
 
             var stayIds = bookings
