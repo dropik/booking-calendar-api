@@ -11,20 +11,17 @@ namespace BookingCalendarApi.Services
         private readonly BookingCalendarContext _context;
         private readonly Func<IEnumerable<RoomAssignment>, IAssignedBookingComposer> _assignedBookingComposerProvider;
         private readonly IIperbooking _iperbooking;
-        private readonly Func<IEnumerable<Reservation>, IAssignedBookingWithGuestsComposer> _bookingWithGuestsComposerProvider;
 
         public AssignedBookingWithGuestsProvider(
             IBookingsProvider bookingsProvider,
             BookingCalendarContext context,
             Func<IEnumerable<RoomAssignment>, IAssignedBookingComposer> assignedBookingComposerProvider,
-            IIperbooking iperbooking,
-            Func<IEnumerable<Reservation>, IAssignedBookingWithGuestsComposer> bookingWithGuestsComposerProvider)
+            IIperbooking iperbooking)
         {
             _bookingsProvider = bookingsProvider;
             _context = context;
             _assignedBookingComposerProvider = assignedBookingComposerProvider;
             _iperbooking = iperbooking;
-            _bookingWithGuestsComposerProvider = bookingWithGuestsComposerProvider;
         }
 
         public IEnumerable<AssignedBooking<Models.Iperbooking.Guests.Guest>> Bookings { get; private set; } = new List<AssignedBooking<Models.Iperbooking.Guests.Guest>>();
@@ -60,8 +57,32 @@ namespace BookingCalendarApi.Services
             }
 
             var guestResponse = await _iperbooking.GetGuestsAsync(bookingIds);
-            var bookingWithGuestsComposer = _bookingWithGuestsComposerProvider(guestResponse.Reservations);
-            Bookings = assignedBookings.UseComposer(bookingWithGuestsComposer);
+
+            Bookings = assignedBookings
+                .Join(
+                    guestResponse.Reservations,
+                    booking => booking.Booking.BookingNumber,
+                    reservation => reservation.ReservationId,
+                    (booking, reservation) => new AssignedBooking<Models.Iperbooking.Guests.Guest>(booking.Booking)
+                    {
+                        Rooms = booking.Rooms
+                            .Select(
+                                room => new AssignedRoom<Models.Iperbooking.Guests.Guest>(
+                                stayId: room.StayId,
+                                roomName: room.RoomName,
+                                arrival: room.Arrival,
+                                departure: room.Departure
+                            )
+                                {
+                                    RoomId = room.RoomId,
+                                    Guests = reservation.Guests
+                                    .Where(guest => guest.ReservationRoomId == room.StayId)
+                                    .Where(guest => guest.FirstName != "")
+                                })
+                            .Where(room => room.Guests.Any())
+                    }
+                )
+                .Where(booking => booking.Rooms.Any());
         }
     }
 }
