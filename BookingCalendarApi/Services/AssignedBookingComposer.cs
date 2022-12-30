@@ -5,19 +5,11 @@ namespace BookingCalendarApi.Services
 {
     public class AssignedBookingComposer : IAssignedBookingComposer
     {
-        private readonly BookingCalendarContext _context;
-        private readonly IEnumerable<RoomAssignment> _assignments;
+        private readonly List<RoomAssignment> _assignments;
 
-        public AssignedBookingComposer(BookingCalendarContext context)
+        public AssignedBookingComposer(DataContext dataContext)
         {
-            _context = context;
-            _assignments = context.RoomAssignments;
-        }
-
-        public AssignedBookingComposer(BookingCalendarContext context, IEnumerable<RoomAssignment> assignments)
-        {
-            _context = context;
-            _assignments = assignments;
+            _assignments = dataContext.RoomAssignments;
         }
 
         public IEnumerable<AssignedBooking<BookingGuest>> Compose(IEnumerable<Booking> source) =>

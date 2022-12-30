@@ -58,8 +58,6 @@ builder.Services.AddTransient<Func<string, string, IEnumerable<Reservation>, ICi
                 )
             )
 );
-builder.Services.AddTransient<Func<IEnumerable<RoomAssignment>, IAssignedBookingComposer>>(
-    serviceProvider => (assignments) => new AssignedBookingComposer(serviceProvider.GetService<BookingCalendarContext>(), assignments));
 builder.Services.AddTransient<Func<Reservation, ITileWithClientsComposer>>(
     serviceProvider => (reservation) => new TileWithClientsComposer(serviceProvider.GetService<BookingCalendarContext>(), reservation));
 builder.Services.AddTransient<Func<IEnumerable<Reservation>, IBookingWithClientsComposer>>(

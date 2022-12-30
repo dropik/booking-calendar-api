@@ -1,5 +1,4 @@
-﻿using BookingCalendarApi.Models;
-using BookingCalendarApi.Models.Iperbooking.Bookings;
+﻿using BookingCalendarApi.Models.Iperbooking.Bookings;
 using BookingCalendarApi.Models.Iperbooking.Guests;
 using Microsoft.EntityFrameworkCore;
 
@@ -8,17 +7,20 @@ namespace BookingCalendarApi.Services
     public class AssignedBookingWithGuestsProvider : IAssignedBookingWithGuestsProvider
     {
         private readonly BookingCalendarContext _context;
-        private readonly Func<IEnumerable<RoomAssignment>, IAssignedBookingComposer> _assignedBookingComposerProvider;
+        private readonly IAssignedBookingComposer _assignedBookingComposer;
         private readonly IIperbooking _iperbooking;
+        private readonly DataContext _dataContext;
 
         public AssignedBookingWithGuestsProvider(
             BookingCalendarContext context,
-            Func<IEnumerable<RoomAssignment>, IAssignedBookingComposer> assignedBookingComposerProvider,
-            IIperbooking iperbooking)
+            IAssignedBookingComposer assignedBookingComposer,
+            IIperbooking iperbooking,
+            DataContext dataContext)
         {
             _context = context;
-            _assignedBookingComposerProvider = assignedBookingComposerProvider;
+            _assignedBookingComposer = assignedBookingComposer;
             _iperbooking = iperbooking;
+            _dataContext = dataContext;
         }
 
         public async Task<List<AssignedBooking<Guest>>> Get(string from, string? to = null, bool exactPeriod = true)
@@ -34,14 +36,12 @@ namespace BookingCalendarApi.Services
                     (booking, room) => $"{room.StayId}-{room.Arrival}-{room.Departure}"
             );
 
-            var assignments = await _context.RoomAssignments
+            _dataContext.RoomAssignments.AddRange(await _context.RoomAssignments
                 .Where(assignment => stayIds.Contains(assignment.Id))
-                .ToListAsync();
-
-            var assignedBookingComposer = _assignedBookingComposerProvider(assignments);
+                .ToListAsync());
 
             var assignedBookings = bookings
-                .UseComposer(assignedBookingComposer)
+                .UseComposer(_assignedBookingComposer)
                 .ExcludeNotAssigned();
 
             var bookingIds = "";
