@@ -48,6 +48,7 @@ namespace BookingCalendarApi.Controllers
         {
             try
             {
+                await _session.OpenAsync();
                 var records = await ComposeRecordsAsync(request.Date);
                 await _session.SendDataAsync(records, true);
                 return Ok();
@@ -63,6 +64,7 @@ namespace BookingCalendarApi.Controllers
         {
             try
             {
+                await _session.OpenAsync();
                 var records = await ComposeRecordsAsync(request.Date);
                 await _session.SendDataAsync(records, true);        // test it first
                 await _session.SendDataAsync(records, false);       // if no exception occured - send
@@ -78,7 +80,7 @@ namespace BookingCalendarApi.Controllers
         {
             await Task.WhenAll(
                 ContextBoundStuff(date),
-                _placeConverterProvider.FetchAsync(_session)
+                _placeConverterProvider.FetchAsync()
             );
             
             var recordsComposer = _trackedRecordsComposerProvider(_nationConverterProvider.Converter, _placeConverterProvider.Converter);

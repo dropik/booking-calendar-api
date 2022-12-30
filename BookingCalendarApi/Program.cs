@@ -24,7 +24,11 @@ builder.Services.AddDbContext<BookingCalendarContext>((options) =>
     )
 );
 
-builder.Services.AddSingleton<IIperbooking, Iperbooking>();
+// scoped services
+builder.Services.AddScoped<IIperbooking, Iperbooking>();
+builder.Services.AddScoped<IAlloggiatiServiceSession, AlloggiatiServiceSession>();
+
+// transient services
 builder.Services.AddTransient<IBookingsProvider, BookingsProvider>();
 builder.Services.AddTransient<IBookingComposer, BookingComposer>();
 builder.Services.AddTransient<IBookingShortComposer, BookingShortComposer>();
@@ -33,7 +37,6 @@ builder.Services.AddTransient<ITileComposer, TileComposer>();
 builder.Services.AddTransient<IAssignedBookingComposer, AssignedBookingComposer>();
 builder.Services.AddTransient<IStayComposer, StayComposer>();
 builder.Services.AddTransient<IServiceSoap, ServiceSoapClient>();
-builder.Services.AddTransient<IAlloggiatiServiceSession, AlloggiatiServiceSession>();
 builder.Services.AddTransient<ITrackedRecordSerializer, TrackedRecordSerializer>();
 builder.Services.AddTransient<IAccomodatedTypeSolver, AccomodatedTypeSolver>();
 builder.Services.AddTransient<IAssignedBookingWithGuestsProvider, AssignedBookingWithGuestsProvider>();
