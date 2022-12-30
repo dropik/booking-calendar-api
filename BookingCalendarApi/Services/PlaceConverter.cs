@@ -4,9 +4,9 @@ namespace BookingCalendarApi.Services
 {
     public class PlaceConverter : IPlaceConverter
     {
-        private readonly IEnumerable<Place> _places;
+        private readonly List<Place> _places;
 
-        public PlaceConverter(IEnumerable<Place> places)
+        public PlaceConverter(List<Place> places)
         {
             _places = places;
         }

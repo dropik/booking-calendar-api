@@ -100,9 +100,9 @@ namespace BookingCalendarApi.Services
             return response.Body.PDF;
         }
 
-        public async Task<List<Place>> GetPlacesAsync(TipoTabella tipoTabella)
+        public async Task<List<Place>> GetPlacesAsync()
         {
-            var tableDataStr = await GetTableAsync(tipoTabella);
+            var tableDataStr = await GetTableAsync(TipoTabella.Luoghi);
             using var textReader = new StringReader(tableDataStr);
             using var csvReader = CsvDataReader.Create(textReader);
             return csvReader.GetRecords<Place>().ToList();

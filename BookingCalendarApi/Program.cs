@@ -27,6 +27,7 @@ builder.Services.AddDbContext<BookingCalendarContext>((options) =>
 // scoped services
 builder.Services.AddScoped<IIperbooking, Iperbooking>();
 builder.Services.AddScoped<IAlloggiatiServiceSession, AlloggiatiServiceSession>();
+builder.Services.AddScoped<List<Place>>();
 
 // transient services
 builder.Services.AddTransient<IBookingsProvider, BookingsProvider>();
@@ -41,9 +42,9 @@ builder.Services.AddTransient<ITrackedRecordSerializer, TrackedRecordSerializer>
 builder.Services.AddTransient<IAccomodatedTypeSolver, AccomodatedTypeSolver>();
 builder.Services.AddTransient<IAssignedBookingWithGuestsProvider, AssignedBookingWithGuestsProvider>();
 builder.Services.AddTransient<INationConverterProvider, NationConverterProvider>();
-builder.Services.AddTransient<IPlaceConverterProvider, PlaceConverterProvider>();
 builder.Services.AddTransient<EC59ServiceEndpoint, EC59ServiceEndpointClient>();
 builder.Services.AddTransient<IC59ServiceSession, C59ServiceSession>();
+builder.Services.AddTransient<IPlaceConverter, PlaceConverter>();
 
 #nullable disable
 builder.Services.AddTransient<Func<string, string, IEnumerable<Reservation>, ICityTaxCalculator>>(
@@ -63,14 +64,12 @@ builder.Services.AddTransient<Func<IEnumerable<Reservation>, IAssignedBookingWit
     serviceProvider => (reservations) => new AssignedkookingWithGuestsComposer(reservations));
 builder.Services.AddTransient<Func<IEnumerable<Nation>, INationConverter>>(
     serviceProvider => (nationCodes) => new NationConverter(nationCodes));
-builder.Services.AddTransient<Func<IEnumerable<Place>, IPlaceConverter>>(
-    serviceProvider => (places) => new PlaceConverter(places));
 builder.Services.AddTransient<Func<IEnumerable<RoomAssignment>, IAssignedBookingComposer>>(
     serviceProvider => (assignments) => new AssignedBookingComposer(serviceProvider.GetService<BookingCalendarContext>(), assignments));
-builder.Services.AddTransient<Func<INationConverter, IPlaceConverter, ITrackedRecordsComposer>>(
-    serviceProvider => (nationConverter, placeConverter) => new TrackedRecordsComposer(
+builder.Services.AddTransient<Func<INationConverter, ITrackedRecordsComposer>>(
+    serviceProvider => (nationConverter) => new TrackedRecordsComposer(
         nationConverter,
-        placeConverter,
+        serviceProvider.GetService<IPlaceConverter>(),
         serviceProvider.GetService<IAccomodatedTypeSolver>(),
         serviceProvider.GetService<ITrackedRecordSerializer>()
     ));
