@@ -28,7 +28,7 @@ builder.Services.AddSingleton<IIperbooking, Iperbooking>();
 builder.Services.AddTransient<IBookingsProvider, BookingsProvider>();
 builder.Services.AddTransient<IBookingComposer, BookingComposer>();
 builder.Services.AddTransient<IBookingShortComposer, BookingShortComposer>();
-builder.Services.AddTransient<BookingCalendarApi.Services.ISession, Session>();
+builder.Services.AddTransient<IBookingsCachingSession, BookingsCachingSession>();
 builder.Services.AddTransient<ITileComposer, TileComposer>();
 builder.Services.AddTransient<IAssignedBookingComposer, AssignedBookingComposer>();
 builder.Services.AddTransient<IStayComposer, StayComposer>();
@@ -44,8 +44,6 @@ builder.Services.AddTransient<EC59ServiceEndpoint, EC59ServiceEndpointClient>();
 builder.Services.AddTransient<IC59ServiceSession, C59ServiceSession>();
 
 #nullable disable
-builder.Services.AddTransient<Func<BookingCalendarApi.Services.ISession>>(
-    serviceProvider => () => serviceProvider.GetService<BookingCalendarApi.Services.ISession>());
 builder.Services.AddTransient<Func<string, string, IEnumerable<Reservation>, ICityTaxCalculator>>(
     serviceProvider =>
         (from, to, reservations) =>

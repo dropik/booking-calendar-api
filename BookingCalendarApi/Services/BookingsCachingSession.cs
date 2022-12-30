@@ -1,12 +1,11 @@
 using BookingCalendarApi.Models;
-using BookingCalendarApi.Models.Iperbooking.Bookings;
 using Microsoft.EntityFrameworkCore;
 using System.Formats.Cbor;
 using Booking = BookingCalendarApi.Models.Iperbooking.Bookings.Booking;
 
 namespace BookingCalendarApi.Services
 {
-    public class Session : ISession
+    public class BookingsCachingSession : IBookingsCachingSession
     {
         private readonly BookingCalendarContext _context;
 
@@ -14,7 +13,7 @@ namespace BookingCalendarApi.Services
         private List<SessionBooking> SessionBookings { get; set; } = new List<SessionBooking>();
         private SessionEntry? Entry { get; set; }
 
-        public Session(BookingCalendarContext context)
+        public BookingsCachingSession(BookingCalendarContext context)
         {
             _context = context;
         }
@@ -38,7 +37,7 @@ namespace BookingCalendarApi.Services
             }
         }
 
-        private Guid GetGuid(string? sessionId)
+        private static Guid GetGuid(string? sessionId)
         {
             try
             {

@@ -1,4 +1,5 @@
 ﻿using BookingCalendarApi.Models;
+using BookingCalendarApi.Services;
 using Microsoft.AspNetCore.Mvc;
 
 namespace BookingCalendarApi.Controllers
@@ -8,12 +9,12 @@ namespace BookingCalendarApi.Controllers
     public class AckBookingsController : ControllerBase
     {
         private readonly BookingCalendarContext _context;
-        private readonly Func<Services.ISession> _sessionProvider;
+        private readonly IBookingsCachingSession _session;
 
-        public AckBookingsController(BookingCalendarContext context, Func<Services.ISession> sessionProvider)
+        public AckBookingsController(BookingCalendarContext context, IBookingsCachingSession session)
         {
             _context = context;
-            _sessionProvider = sessionProvider;
+            _session = session;
         }
 
         [HttpPost]
@@ -29,9 +30,8 @@ namespace BookingCalendarApi.Controllers
 
             try
             {
-                var session = _sessionProvider();
-                await session.OpenAsync(sessionId);
-                session.WriteNewData(bookings);
+                await _session.OpenAsync(sessionId);
+                _session.WriteNewData(bookings);
                 await _context.SaveChangesAsync();
                 return Ok();
             }

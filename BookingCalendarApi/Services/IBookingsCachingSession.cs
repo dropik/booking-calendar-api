@@ -3,7 +3,7 @@ using Booking = BookingCalendarApi.Models.Iperbooking.Bookings.Booking;
 
 namespace BookingCalendarApi.Services
 {
-    public interface ISession
+    public interface IBookingsCachingSession
     {
         public Guid Id { get; }
         public Task OpenAsync(string? sessionId);

@@ -10,17 +10,16 @@ namespace BookingCalendarApi.Controllers
     {
         private readonly IBookingsProvider _bookingsProvider;
         private readonly IBookingComposer _bookingComposer;
-        private readonly Func<Services.ISession> _sessionProvider;
+        private readonly IBookingsCachingSession _session;
 
         public BookingsBySessionController(
             IBookingsProvider bookingsProvider,
             IBookingComposer bookingComposer,
-            Func<Services.ISession> sessionProvider
-        )
+            IBookingsCachingSession session)
         {
             _bookingsProvider = bookingsProvider;
             _bookingComposer = bookingComposer;
-            _sessionProvider = sessionProvider;
+            _session = session;
         }
 
         [HttpGet]
@@ -28,20 +27,18 @@ namespace BookingCalendarApi.Controllers
         {
             try
             {
-                var session = _sessionProvider();
-
                 await Task.WhenAll(
-                    session.OpenAsync(sessionId),
+                    _session.OpenAsync(sessionId),
                     _bookingsProvider.FetchBookingsAsync(from, to)
                 );
 
                 var bookings = _bookingsProvider.Bookings
                     .SelectInRange(from, to, true)
-                    .ExcludeBySession(session)
+                    .ExcludeBySession(_session)
                     .UseComposer(_bookingComposer)
                     .ToList();
 
-                return new BookingsBySession(session.Id.ToString())
+                return new BookingsBySession(_session.Id.ToString())
                 {
                     Bookings = bookings
                 };
