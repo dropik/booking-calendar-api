@@ -40,7 +40,6 @@ builder.Services.AddTransient<IAssignedBookingComposer, AssignedBookingComposer>
 builder.Services.AddTransient<IStayComposer, StayComposer>();
 builder.Services.AddTransient<IServiceSoap, ServiceSoapClient>();
 builder.Services.AddTransient<ITrackedRecordSerializer, TrackedRecordSerializer>();
-builder.Services.AddTransient<IAccomodatedTypeSolver, AccomodatedTypeSolver>();
 builder.Services.AddTransient<IAssignedBookingWithGuestsProvider, AssignedBookingWithGuestsProvider>();
 builder.Services.AddTransient<EC59ServiceEndpoint, EC59ServiceEndpointClient>();
 builder.Services.AddTransient<IC59ServiceSession, C59ServiceSession>();
