@@ -4,12 +4,10 @@ namespace BookingCalendarApi.Services
 {
     public class PlaceConverterProvider : IPlaceConverterProvider
     {
-        private readonly IAlloggiatiTableReader _tableReader;
         private readonly Func<IEnumerable<Place>, IPlaceConverter> _placeConverterProvider;
 
-        public PlaceConverterProvider(IAlloggiatiTableReader tableReader, Func<IEnumerable<Place>, IPlaceConverter> placeConverterProvider)
+        public PlaceConverterProvider(Func<IEnumerable<Place>, IPlaceConverter> placeConverterProvider)
         {
-            _tableReader = tableReader;
             _placeConverterProvider = placeConverterProvider;
             Converter = _placeConverterProvider(new List<Place>());
         }
@@ -19,8 +17,7 @@ namespace BookingCalendarApi.Services
         public async Task FetchAsync(IAlloggiatiServiceSession session)
         {
             await session.OpenAsync();
-            var placesStr = await session.GetTableAsync(AlloggiatiService.TipoTabella.Luoghi);
-            var places = _tableReader.ReadAsPlaces(placesStr);
+            var places = await session.GetPlacesAsync(AlloggiatiService.TipoTabella.Luoghi);
             Converter = _placeConverterProvider(places);
         }
     }

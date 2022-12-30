@@ -1,12 +1,13 @@
 ﻿using AlloggiatiService;
+using BookingCalendarApi.Models.AlloggiatiService;
 
 namespace BookingCalendarApi.Services
 {
     public interface IAlloggiatiServiceSession
     {
-        public Task OpenAsync();
-        public Task<string> GetTableAsync(TipoTabella tipoTabella);
-        public Task SendDataAsync(IList<string> data, bool test);
-        public Task<byte[]> GetRicevutaAsync(DateTime date);
+        Task OpenAsync();
+        Task SendDataAsync(IList<string> data, bool test);
+        Task<byte[]> GetRicevutaAsync(DateTime date);
+        Task<List<Place>> GetPlacesAsync(TipoTabella tipoTabella);
     }
 }

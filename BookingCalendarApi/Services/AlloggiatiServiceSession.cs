@@ -1,5 +1,7 @@
 ﻿using AlloggiatiService;
 using BookingCalendarApi.Models.AlloggiatiService;
+using Sylvan.Data;
+using Sylvan.Data.Csv;
 
 namespace BookingCalendarApi.Services
 {
@@ -31,22 +33,6 @@ namespace BookingCalendarApi.Services
             }
 
             Token = response.Body.GenerateTokenResult.token;
-        }
-
-        public async Task<string> GetTableAsync(TipoTabella tipoTabella)
-        {
-            var request = new TabellaRequest(new TabellaRequestBody()
-            {
-                Utente = _credentials.Utente,
-                token = Token,
-                tipo = tipoTabella
-            });
-            var response = await _service.TabellaAsync(request);
-            if (!response.Body.TabellaResult.esito)
-            {
-                throw new Exception(response.Body.TabellaResult.ErroreDettaglio);
-            }
-            return response.Body.CSV;
         }
 
         public async Task SendDataAsync(IList<string> data, bool test)
@@ -112,6 +98,30 @@ namespace BookingCalendarApi.Services
                 throw new Exception(response.Body.RicevutaResult.ErroreDettaglio);
             }
             return response.Body.PDF;
+        }
+
+        public async Task<List<Place>> GetPlacesAsync(TipoTabella tipoTabella)
+        {
+            var tableDataStr = await GetTableAsync(tipoTabella);
+            using var textReader = new StringReader(tableDataStr);
+            using var csvReader = CsvDataReader.Create(textReader);
+            return csvReader.GetRecords<Place>().ToList();
+        }
+
+        private async Task<string> GetTableAsync(TipoTabella tipoTabella)
+        {
+            var request = new TabellaRequest(new TabellaRequestBody()
+            {
+                Utente = _credentials.Utente,
+                token = Token,
+                tipo = tipoTabella
+            });
+            var response = await _service.TabellaAsync(request);
+            if (!response.Body.TabellaResult.esito)
+            {
+                throw new Exception(response.Body.TabellaResult.ErroreDettaglio);
+            }
+            return response.Body.CSV;
         }
     }
 }

@@ -34,7 +34,6 @@ builder.Services.AddTransient<IAssignedBookingComposer, AssignedBookingComposer>
 builder.Services.AddTransient<IStayComposer, StayComposer>();
 builder.Services.AddTransient<IServiceSoap, ServiceSoapClient>();
 builder.Services.AddTransient<IAlloggiatiServiceSession, AlloggiatiServiceSession>();
-builder.Services.AddTransient<IAlloggiatiTableReader, AlloggiatiTableReader>();
 builder.Services.AddTransient<ITrackedRecordSerializer, TrackedRecordSerializer>();
 builder.Services.AddTransient<IAccomodatedTypeSolver, AccomodatedTypeSolver>();
 builder.Services.AddTransient<IAssignedBookingWithGuestsProvider, AssignedBookingWithGuestsProvider>();
