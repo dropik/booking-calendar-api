@@ -12,23 +12,20 @@ namespace BookingCalendarApi.Controllers
     {
         private readonly IAlloggiatiServiceSession _session;
         private readonly IAssignedBookingWithGuestsProvider _bookingWithGuestsProvider;
-        private readonly List<Place> _places;
-        private readonly List<Nation> _nations;
+        private readonly DataContext _dataContext;
         private readonly ITrackedRecordsComposer _trackedRecordsComposer;
         private readonly BookingCalendarContext _context;
 
         public PoliceController(
             IAlloggiatiServiceSession session,
             IAssignedBookingWithGuestsProvider bookingWithGuestsProvider,
-            List<Place> places,
-            List<Nation> nations,
+            DataContext dataContext,
             ITrackedRecordsComposer trackedRecordsComposer,
             BookingCalendarContext context)
         {
             _session = session;
             _bookingWithGuestsProvider = bookingWithGuestsProvider;
-            _places = places;
-            _nations = nations;
+            _dataContext = dataContext;
             _trackedRecordsComposer = trackedRecordsComposer;
             _context = context;
         }
@@ -97,14 +94,12 @@ namespace BookingCalendarApi.Controllers
         private async Task ContextBoundStuff(string date)
         {
             await _bookingWithGuestsProvider.FetchAsync(date);
-            _nations.Clear();
-            _nations.AddRange(await _context.Nations.ToListAsync());
+            _dataContext.Nations.AddRange(await _context.Nations.ToListAsync());
         }
 
         private async Task FetchPlaces()
         {
-            _places.Clear();
-            _places.AddRange(await _session.GetPlacesAsync());
+            _dataContext.Places.AddRange(await _session.GetPlacesAsync());
         }
 
         public class SendRequest

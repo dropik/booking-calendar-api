@@ -6,9 +6,9 @@ namespace BookingCalendarApi.Services
     {
         private readonly List<Nation> _nations;
 
-        public NationConverter(List<Nation> nations)
+        public NationConverter(DataContext context)
         {
-            _nations = nations;
+            _nations = context.Nations;
         }
 
         public ulong GetCodeByIso(string iso)

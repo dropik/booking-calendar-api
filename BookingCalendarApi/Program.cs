@@ -27,8 +27,7 @@ builder.Services.AddDbContext<BookingCalendarContext>((options) =>
 // scoped services
 builder.Services.AddScoped<IIperbooking, Iperbooking>();
 builder.Services.AddScoped<IAlloggiatiServiceSession, AlloggiatiServiceSession>();
-builder.Services.AddScoped<List<Place>>();
-builder.Services.AddScoped<List<Nation>>();
+builder.Services.AddScoped<DataContext>();
 
 // transient services
 builder.Services.AddTransient<IBookingsProvider, BookingsProvider>();

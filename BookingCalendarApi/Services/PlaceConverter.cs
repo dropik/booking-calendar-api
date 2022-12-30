@@ -6,9 +6,9 @@ namespace BookingCalendarApi.Services
     {
         private readonly List<Place> _places;
 
-        public PlaceConverter(List<Place> places)
+        public PlaceConverter(DataContext context)
         {
-            _places = places;
+            _places = context.Places;
         }
 
         public ulong? GetPlaceCodeByDescription(string description)
