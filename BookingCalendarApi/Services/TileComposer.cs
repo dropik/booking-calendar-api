@@ -12,7 +12,7 @@ namespace BookingCalendarApi.Services
             _context = context;
         }
 
-        public IEnumerable<Tile<uint>> Compose(IEnumerable<Room<Guest>> rooms)
+        public IEnumerable<Tile<uint>> Compose(IEnumerable<BookingRoom<BookingGuest>> rooms)
         {
             return rooms
                 .GroupJoin(

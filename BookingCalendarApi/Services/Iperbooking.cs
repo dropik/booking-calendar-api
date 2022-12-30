@@ -1,4 +1,7 @@
 ﻿using BookingCalendarApi.Models.Iperbooking;
+using BookingCalendarApi.Models.Iperbooking.Bookings;
+using BookingCalendarApi.Models.Iperbooking.Guests;
+using BookingCalendarApi.Models.Iperbooking.RoomRates;
 using System.Text;
 using System.Text.Json;
 
@@ -13,7 +16,7 @@ namespace BookingCalendarApi.Services
             _auth = configuration.GetSection("Iperbooking").Get<Auth>();
         }
 
-        public async Task<IEnumerable<Models.Iperbooking.RoomRates.Room>> GetRoomRatesAsync()
+        public async Task<IEnumerable<RoomRateRoom>> GetRoomRatesAsync()
         {
             var url = $"https://api.iperbooking.net/v1/GetRoomRates.cfm?idhotel={_auth.IdHotel}&username={_auth.Username}&password={_auth.Password}&format=json";
             try
@@ -25,7 +28,7 @@ namespace BookingCalendarApi.Services
                 var data = await content.ReadAsStringAsync();
                 if (data != null)
                 {
-                    var poco = JsonSerializer.Deserialize<ICollection<Models.Iperbooking.RoomRates.Room>>(data, new JsonSerializerOptions()
+                    var poco = JsonSerializer.Deserialize<ICollection<RoomRateRoom>>(data, new JsonSerializerOptions()
                     {
                         PropertyNameCaseInsensitive = true
                     });
@@ -45,10 +48,10 @@ namespace BookingCalendarApi.Services
                 Console.WriteLine(exception.Message);
             }
 
-            return new List<Models.Iperbooking.RoomRates.Room>();
+            return new List<RoomRateRoom>();
         }
 
-        public async Task<IEnumerable<Models.Iperbooking.Bookings.Booking>> GetBookingsAsync(string arrivalFrom, string arrivalTo)
+        public async Task<IEnumerable<Booking>> GetBookingsAsync(string arrivalFrom, string arrivalTo)
         {
             var url = $"https://api.iperbooking.net/v1/GetBookings.cfm?idhotel={_auth.IdHotel}&username={_auth.Username}&password={_auth.Password}&format=json&arrivalfrom={arrivalFrom}&arrivalto={arrivalTo}";
             try
@@ -60,7 +63,7 @@ namespace BookingCalendarApi.Services
                 var data = await content.ReadAsStringAsync();
                 if (data != null)
                 {
-                    var poco = JsonSerializer.Deserialize<ICollection<Models.Iperbooking.Bookings.Booking>>(data, new JsonSerializerOptions()
+                    var poco = JsonSerializer.Deserialize<ICollection<Booking>>(data, new JsonSerializerOptions()
                     {
                         PropertyNameCaseInsensitive = true
                     });
@@ -80,10 +83,10 @@ namespace BookingCalendarApi.Services
                 Console.WriteLine(exception.Message);
             }
 
-            return new List<Models.Iperbooking.Bookings.Booking>();
+            return new List<Booking>();
         }
 
-        public async Task<Models.Iperbooking.Guests.GuestsResponse> GetGuestsAsync(string reservationId)
+        public async Task<GuestsResponse> GetGuestsAsync(string reservationId)
         {
             try
             {
@@ -98,7 +101,7 @@ namespace BookingCalendarApi.Services
                 var data = await content.ReadAsStringAsync();
                 if (data != null)
                 {
-                    var poco = JsonSerializer.Deserialize<Models.Iperbooking.Guests.GuestsResponse>(data, new JsonSerializerOptions()
+                    var poco = JsonSerializer.Deserialize<GuestsResponse>(data, new JsonSerializerOptions()
                     {
                         PropertyNameCaseInsensitive = true
                     });
@@ -121,7 +124,7 @@ namespace BookingCalendarApi.Services
                 Console.WriteLine(exception.Message);
             }
 
-            return new Models.Iperbooking.Guests.GuestsResponse();
+            return new GuestsResponse();
         }
     }
 }

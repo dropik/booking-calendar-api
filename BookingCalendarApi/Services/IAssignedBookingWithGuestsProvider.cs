@@ -1,10 +1,10 @@
 ﻿using BookingCalendarApi.Models.Iperbooking.Bookings;
+using BookingCalendarApi.Models.Iperbooking.Guests;
 
 namespace BookingCalendarApi.Services
 {
     public interface IAssignedBookingWithGuestsProvider
     {
-        public Task FetchAsync(string from, string? to = null, bool exactPeriod = true);
-        public IEnumerable<AssignedBooking<Models.Iperbooking.Guests.Guest>> Bookings { get; }
+        public Task<List<AssignedBooking<Guest>>> Get(string from, string? to = null, bool exactPeriod = true);
     }
 }

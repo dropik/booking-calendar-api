@@ -24,9 +24,7 @@ namespace BookingCalendarApi.Services
             _iperbooking = iperbooking;
         }
 
-        public IEnumerable<AssignedBooking<Models.Iperbooking.Guests.Guest>> Bookings { get; private set; } = new List<AssignedBooking<Models.Iperbooking.Guests.Guest>>();
-
-        public async Task FetchAsync(string from, string? to = null, bool exactPeriod = true)
+        public async Task<List<AssignedBooking<Guest>>> Get(string from, string? to = null, bool exactPeriod = true)
         {
             to ??= DateTime.ParseExact(from, "yyyy-MM-dd", null).AddDays(1).ToString("yyyy-MM-dd");
 
@@ -58,16 +56,16 @@ namespace BookingCalendarApi.Services
 
             var guestResponse = await _iperbooking.GetGuestsAsync(bookingIds);
 
-            Bookings = assignedBookings
+            return assignedBookings
                 .Join(
                     guestResponse.Reservations,
                     booking => booking.Booking.BookingNumber,
                     reservation => reservation.ReservationId,
-                    (booking, reservation) => new AssignedBooking<Models.Iperbooking.Guests.Guest>(booking.Booking)
+                    (booking, reservation) => new AssignedBooking<Guest>(booking.Booking)
                     {
                         Rooms = booking.Rooms
                             .Select(
-                                room => new AssignedRoom<Models.Iperbooking.Guests.Guest>(
+                                room => new AssignedRoom<Guest>(
                                 stayId: room.StayId,
                                 roomName: room.RoomName,
                                 arrival: room.Arrival,
@@ -82,7 +80,8 @@ namespace BookingCalendarApi.Services
                             .Where(room => room.Guests.Any())
                     }
                 )
-                .Where(booking => booking.Rooms.Any());
+                .Where(booking => booking.Rooms.Any())
+                .ToList();
         }
     }
 }

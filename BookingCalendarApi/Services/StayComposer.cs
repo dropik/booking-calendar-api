@@ -4,7 +4,7 @@ namespace BookingCalendarApi.Services
 {
     public class StayComposer : IStayComposer
     {
-        public IEnumerable<Stay> Compose(IEnumerable<AssignedBooking<Guest>> source) =>
+        public IEnumerable<Stay> Compose(IEnumerable<AssignedBooking<BookingGuest>> source) =>
             source
             .SelectMany(
                 bookingContainer => bookingContainer.Rooms,

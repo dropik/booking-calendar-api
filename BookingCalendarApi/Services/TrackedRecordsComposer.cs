@@ -1,5 +1,6 @@
 ﻿using BookingCalendarApi.Models.AlloggiatiService;
 using BookingCalendarApi.Models.Iperbooking.Bookings;
+using BookingCalendarApi.Models.Iperbooking.Guests;
 
 namespace BookingCalendarApi.Services
 {
@@ -19,7 +20,7 @@ namespace BookingCalendarApi.Services
             _trackedRecordSerializer = trackedRecordSerializer;
         }
 
-        public IEnumerable<string> Compose(IEnumerable<AssignedBooking<Models.Iperbooking.Guests.Guest>> source)
+        public IEnumerable<string> Compose(IEnumerable<AssignedBooking<Guest>> source)
         {
             var trackedRecordsBlocks = source
                 .Select(booking => booking.Rooms
@@ -33,8 +34,8 @@ namespace BookingCalendarApi.Services
                             Name = guest.FirstName,
                             Sex = guest.Gender switch
                             {
-                                Models.Iperbooking.Guests.Guest.Sex.M => TrackedRecord.Gender.Male,
-                                Models.Iperbooking.Guests.Guest.Sex.F => TrackedRecord.Gender.Female,
+                                Guest.Sex.M => TrackedRecord.Gender.Male,
+                                Guest.Sex.F => TrackedRecord.Gender.Female,
                                 _ => throw new Exception("Gender was not found")
                             },
                             BirthDate = DateTime.ParseExact(guest.BirthDate, "yyyyMMdd", null),
@@ -44,9 +45,9 @@ namespace BookingCalendarApi.Services
                             Citizenship = _nationConverter.GetCodeByIso(guest.Citizenship ?? "IT"),
                             DocType = guest.DocType switch
                             {
-                                Models.Iperbooking.Guests.Guest.DocumentType.ID => TrackedRecord.DocumentType.Ident,
-                                Models.Iperbooking.Guests.Guest.DocumentType.PP => TrackedRecord.DocumentType.Pasor,
-                                Models.Iperbooking.Guests.Guest.DocumentType.DL => TrackedRecord.DocumentType.Paten,
+                                Guest.DocumentType.ID => TrackedRecord.DocumentType.Ident,
+                                Guest.DocumentType.PP => TrackedRecord.DocumentType.Pasor,
+                                Guest.DocumentType.DL => TrackedRecord.DocumentType.Paten,
                                 _ => null
                             },
                             DocNumber = guest.DocNumber,

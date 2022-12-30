@@ -1,5 +1,5 @@
-﻿using BookingCalendarApi.Models;
-using BookingCalendarApi.Models.AlloggiatiService;
+﻿using BookingCalendarApi.Models.Iperbooking.Bookings;
+using BookingCalendarApi.Models.Iperbooking.Guests;
 using BookingCalendarApi.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -15,6 +15,8 @@ namespace BookingCalendarApi.Controllers
         private readonly DataContext _dataContext;
         private readonly ITrackedRecordsComposer _trackedRecordsComposer;
         private readonly BookingCalendarContext _context;
+
+        private List<AssignedBooking<Guest>> AssignedBookingsWithGuests { get; set; } = new();
 
         public PoliceController(
             IAlloggiatiServiceSession session,
@@ -85,7 +87,7 @@ namespace BookingCalendarApi.Controllers
                 FetchPlaces()
             );
             
-            return _bookingWithGuestsProvider.Bookings
+            return AssignedBookingsWithGuests
                 .SelectByArrival(DateTime.ParseExact(date, "yyyy-MM-dd", null))
                 .UseComposer(_trackedRecordsComposer)
                 .ToList();
@@ -93,7 +95,7 @@ namespace BookingCalendarApi.Controllers
 
         private async Task ContextBoundStuff(string date)
         {
-            await _bookingWithGuestsProvider.FetchAsync(date);
+            AssignedBookingsWithGuests = await _bookingWithGuestsProvider.Get(date);
             _dataContext.Nations.AddRange(await _context.Nations.ToListAsync());
         }
 

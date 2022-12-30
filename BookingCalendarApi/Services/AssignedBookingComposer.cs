@@ -20,10 +20,10 @@ namespace BookingCalendarApi.Services
             _assignments = assignments;
         }
 
-        public IEnumerable<AssignedBooking<Guest>> Compose(IEnumerable<Models.Iperbooking.Bookings.Booking> source) =>
+        public IEnumerable<AssignedBooking<BookingGuest>> Compose(IEnumerable<Booking> source) =>
             source
             .Select(
-                booking => new AssignedBooking<Guest>(booking)
+                booking => new AssignedBooking<BookingGuest>(booking)
                 {
                     Rooms = booking.Rooms
                         .GroupJoin(
@@ -37,7 +37,7 @@ namespace BookingCalendarApi.Services
                             (join, assignment) => new { join.Room, assignment?.RoomId }
                         )
                         .GroupBy(roomContainer => roomContainer.Room.StayId)
-                        .Select(roomContainerGroup => new AssignedRoom<Guest>(
+                        .Select(roomContainerGroup => new AssignedRoom<BookingGuest>(
                             stayId: roomContainerGroup.Key,
                             roomName: roomContainerGroup.First().Room.RoomName,
                             arrival: roomContainerGroup.OrderBy(roomContainer => roomContainer.Room.Arrival).First().Room.Arrival,

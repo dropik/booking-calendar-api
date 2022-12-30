@@ -1,8 +1,8 @@
 namespace BookingCalendarApi.Models.Iperbooking.Bookings
 {
-    public class Guest
+    public class BookingGuest
     {
-        public Guest(bool isChild)
+        public BookingGuest(bool isChild)
         {
             IsChild = isChild;
         }

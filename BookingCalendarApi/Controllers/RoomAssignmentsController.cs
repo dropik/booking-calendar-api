@@ -4,7 +4,6 @@ using BookingCalendarApi.Models.Iperbooking.Bookings;
 using BookingCalendarApi.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using Booking = BookingCalendarApi.Models.Iperbooking.Bookings.Booking;
 
 namespace BookingCalendarApi.Controllers
 {

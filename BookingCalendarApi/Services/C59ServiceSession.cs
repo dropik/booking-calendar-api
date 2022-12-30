@@ -1,5 +1,4 @@
-﻿using BookingCalendarApi.Models;
-using BookingCalendarApi.Models.C59Service;
+﻿using BookingCalendarApi.Models.C59Service;
 using C59Service;
 using Microsoft.EntityFrameworkCore;
 
@@ -46,14 +45,14 @@ namespace BookingCalendarApi.Services
                 throw new Exception("Overriding ISTAT history is not possible.");
             }
 
-            await _bookingsProvider.FetchAsync(fromDate.ToString("yyyy-MM-dd"), to.ToString("yyyy-MM-dd"), exactPeriod: false);
+            var bookings = await _bookingsProvider.Get(fromDate.ToString("yyyy-MM-dd"), to.ToString("yyyy-MM-dd"), exactPeriod: false);
 
             var prevTotal = lastUpload.totalePartenze;
             var dateCounter = fromDate;
             while ((to - dateCounter).Days >= 0)
             {
                 var date = dateCounter.ToString("yyyyMMdd");
-                var arrivedOrDeparturedStays = _bookingsProvider.Bookings
+                var arrivedOrDeparturedStays = bookings
                     .SelectMany(
                         booking => booking.Rooms
                             .Where(room => room.Arrival == date || room.Departure == date),

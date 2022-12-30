@@ -15,7 +15,7 @@ namespace BookingCalendarApi.Services
             _reservation = reservation;
         }
 
-        public IEnumerable<Tile<IEnumerable<Client>>> Compose(IEnumerable<Room<Models.Iperbooking.Bookings.Guest>> rooms)
+        public IEnumerable<Tile<IEnumerable<Client>>> Compose(IEnumerable<BookingRoom<BookingGuest>> rooms)
         {
             return rooms
                 .GroupJoin(

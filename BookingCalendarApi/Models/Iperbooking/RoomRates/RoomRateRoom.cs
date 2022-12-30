@@ -1,8 +1,8 @@
 ﻿namespace BookingCalendarApi.Models.Iperbooking.RoomRates
 {
-    public class Room
+    public class RoomRateRoom
     {
-        public Room(string roomName)
+        public RoomRateRoom(string roomName)
         {
             RoomName = roomName;
         }

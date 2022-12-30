@@ -1,4 +1,5 @@
 ﻿using BookingCalendarApi.Models;
+using BookingCalendarApi.Models.Iperbooking.RoomRates;
 using BookingCalendarApi.Services;
 using Microsoft.AspNetCore.Mvc;
 
@@ -25,7 +26,7 @@ namespace BookingCalendarApi.Controllers
 
     static class Extensions
     {
-        public static IEnumerable<RoomType> SelectRoomTypes(this IEnumerable<Models.Iperbooking.RoomRates.Room> roomRates)
+        public static IEnumerable<RoomType> SelectRoomTypes(this IEnumerable<RoomRateRoom> roomRates)
         {
             return roomRates
                 .SelectMany(

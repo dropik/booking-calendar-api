@@ -16,6 +16,6 @@
         public string Departure { get; set; }
         public long? RoomId { get; set; }
 
-        public IEnumerable<Guest> Guests { get; set; } = new List<Guest>();
+        public IEnumerable<BookingGuest> Guests { get; set; } = new List<BookingGuest>();
     }
 }

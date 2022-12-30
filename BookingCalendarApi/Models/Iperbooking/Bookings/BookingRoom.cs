@@ -1,8 +1,8 @@
 namespace BookingCalendarApi.Models.Iperbooking.Bookings
 {
-    public class Room<TGuest>
+    public class BookingRoom<TGuest>
     {
-        public Room(long stayId, string roomName, string arrival, string departure)
+        public BookingRoom(long stayId, string roomName, string arrival, string departure)
         {
             StayId = stayId;
             RoomName = roomName;
