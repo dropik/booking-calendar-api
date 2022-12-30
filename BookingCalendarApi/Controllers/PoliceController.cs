@@ -1,6 +1,8 @@
-﻿using BookingCalendarApi.Models.AlloggiatiService;
+﻿using BookingCalendarApi.Models;
+using BookingCalendarApi.Models.AlloggiatiService;
 using BookingCalendarApi.Services;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace BookingCalendarApi.Controllers
 {
@@ -10,23 +12,25 @@ namespace BookingCalendarApi.Controllers
     {
         private readonly IAlloggiatiServiceSession _session;
         private readonly IAssignedBookingWithGuestsProvider _bookingWithGuestsProvider;
-        private readonly INationConverterProvider _nationConverterProvider;
         private readonly List<Place> _places;
-        private readonly Func<INationConverter, ITrackedRecordsComposer> _trackedRecordsComposerProvider;
+        private readonly List<Nation> _nations;
+        private readonly ITrackedRecordsComposer _trackedRecordsComposer;
+        private readonly BookingCalendarContext _context;
 
         public PoliceController(
             IAlloggiatiServiceSession session,
             IAssignedBookingWithGuestsProvider bookingWithGuestsProvider,
-            INationConverterProvider nationConverterProvider,
             List<Place> places,
-            Func<INationConverter, ITrackedRecordsComposer> trackedRecordsComposerProvider
-        )
+            List<Nation> nations,
+            ITrackedRecordsComposer trackedRecordsComposer,
+            BookingCalendarContext context)
         {
             _session = session;
             _bookingWithGuestsProvider = bookingWithGuestsProvider;
-            _nationConverterProvider = nationConverterProvider;
             _places = places;
-            _trackedRecordsComposerProvider = trackedRecordsComposerProvider;
+            _nations = nations;
+            _trackedRecordsComposer = trackedRecordsComposer;
+            _context = context;
         }
 
         [HttpGet("ricevuta")]
@@ -84,18 +88,17 @@ namespace BookingCalendarApi.Controllers
                 FetchPlaces()
             );
             
-            var recordsComposer = _trackedRecordsComposerProvider(_nationConverterProvider.Converter);
-
             return _bookingWithGuestsProvider.Bookings
                 .SelectByArrival(DateTime.ParseExact(date, "yyyy-MM-dd", null))
-                .UseComposer(recordsComposer)
+                .UseComposer(_trackedRecordsComposer)
                 .ToList();
         }
 
         private async Task ContextBoundStuff(string date)
         {
             await _bookingWithGuestsProvider.FetchAsync(date);
-            await _nationConverterProvider.FetchAsync();
+            _nations.Clear();
+            _nations.AddRange(await _context.Nations.ToListAsync());
         }
 
         private async Task FetchPlaces()

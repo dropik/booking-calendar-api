@@ -4,9 +4,9 @@ namespace BookingCalendarApi.Services
 {
     public class NationConverter : INationConverter
     {
-        private readonly IEnumerable<Nation> _nations;
+        private readonly List<Nation> _nations;
 
-        public NationConverter(IEnumerable<Nation> nations)
+        public NationConverter(List<Nation> nations)
         {
             _nations = nations;
         }
