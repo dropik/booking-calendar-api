@@ -24,6 +24,6 @@ namespace BookingCalendarApi.Models
         public string To { get; set; }
         public string? Color { get; set; }
 
-        public IEnumerable<Tile<TPerson>> Tiles { get; set; } = new List<Tile<TPerson>>();
+        public List<Tile<TPerson>> Tiles { get; set; } = new List<Tile<TPerson>>();
     }
 }

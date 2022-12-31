@@ -35,7 +35,7 @@ namespace BookingCalendarApi.Services
                     {
                         Status = join.booking.Status,
                         Color = assignment?.Color,
-                        Tiles = join.booking.Rooms.UseComposer(_tileComposer)
+                        Tiles = join.booking.Rooms.UseComposer(_tileComposer).ToList()
                     }
                 );
         }

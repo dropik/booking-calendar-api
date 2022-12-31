@@ -1,6 +1,5 @@
 using AlloggiatiService;
 using BookingCalendarApi;
-using BookingCalendarApi.Models;
 using BookingCalendarApi.Models.Iperbooking.Guests;
 using BookingCalendarApi.Services;
 using C59Service;
@@ -58,8 +57,6 @@ builder.Services.AddTransient<Func<string, string, IEnumerable<Reservation>, ICi
                 )
             )
 );
-builder.Services.AddTransient<Func<Reservation, ITileWithClientsComposer>>(
-    serviceProvider => (reservation) => new TileWithClientsComposer(serviceProvider.GetService<BookingCalendarContext>(), reservation));
 #nullable enable
 
 var app = builder.Build();

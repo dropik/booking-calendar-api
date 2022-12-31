@@ -10,19 +10,14 @@ namespace BookingCalendarApi.Controllers
     [ApiController]
     public class BookingController : ControllerBase
     {
-        private readonly Func<Reservation, ITileWithClientsComposer> _tileComposerProvider;
         private readonly IIperbooking _iperbooking;
         private readonly BookingCalendarContext _context;
 
         private List<Booking> Bookings { get; set; } = new();
         private GuestsResponse GuestsResponse { get; set; } = new GuestsResponse();
 
-        public BookingController(
-            Func<Reservation, ITileWithClientsComposer> tileComposerProvider,
-            IIperbooking iperbooking,
-            BookingCalendarContext context)
+        public BookingController(IIperbooking iperbooking, BookingCalendarContext context)
         {
-            _tileComposerProvider = tileComposerProvider;
             _iperbooking = iperbooking;
             _context = context;
         }
@@ -57,10 +52,36 @@ namespace BookingCalendarApi.Controllers
                             {
                                 Status = join.Booking.Status,
                                 Color = join.Color?.Color,
-                                Tiles = join.Booking.Rooms
-                                    .UseComposer(_tileComposerProvider(
-                                        GuestsResponse.Reservations.SingleOrDefault(reservation => reservation.ReservationId == join.Booking.BookingNumber)
-                                        ?? throw new Exception("Provided reservation for merging booking with its guests not found")))
+                                Tiles = (from room in @join.Booking.Rooms
+                                        join reservation in GuestsResponse.Reservations on @join.Booking.BookingNumber equals reservation.ReservationId
+                                        join assignment in _context.RoomAssignments on $"{room.StayId}-{room.Arrival}-{room.Departure}" equals assignment.Id into gj
+                                        from assignment in gj.DefaultIfEmpty()
+                                        select new { Room = room, Reservation = reservation, Assignment = assignment })
+                                        .ToList()
+                                        .Select(join => new Tile<List<Client>>(
+                                            id: $"{join.Room.StayId}-{join.Room.Arrival}-{join.Room.Departure}",
+                                            from: DateTime.ParseExact(join.Room.Arrival, "yyyyMMdd", null).ToString("yyyy-MM-dd"),
+                                            nights: Convert.ToUInt32((DateTime.ParseExact(join.Room.Departure, "yyyyMMdd", null) - DateTime.ParseExact(join.Room.Arrival, "yyyyMMdd", null)).Days),
+                                            roomType: join.Room.RoomName,
+                                            persons: join.Reservation.Guests
+                                                .Where(guest => guest.ReservationRoomId == join.Room.StayId)
+                                                .Select(guest => new Client(
+                                                    id: guest.GuestId,
+                                                    bookingId: join.Reservation.ReservationId.ToString(),
+                                                    name: guest.FirstName,
+                                                    surname: guest.LastName,
+                                                    dateOfBirth: guest.BirthDate.Trim() != string.Empty ? DateTime.ParseExact(guest.BirthDate, "yyyyMMdd", null).ToString("yyyy-MM-dd") : ""
+                                                )
+                                                {
+                                                    PlaceOfBirth = guest.BirthCity,
+                                                    ProvinceOfBirth = guest.BirthCounty,
+                                                    StateOfBirth = guest.BirthCountry
+                                                })
+                                                .ToList())
+                                            {
+                                                RoomId = join.Assignment?.RoomId ?? null
+                                            })
+                                        .ToList()
                             });
 
                 if (!query.Any())
