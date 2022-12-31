@@ -28,7 +28,6 @@ builder.Services.AddScoped<IAlloggiatiServiceSession, AlloggiatiServiceSession>(
 builder.Services.AddScoped<DataContext>();
 
 // transient services
-builder.Services.AddTransient<IBookingComposer, BookingComposer>();
 builder.Services.AddTransient<IBookingShortComposer, BookingShortComposer>();
 builder.Services.AddTransient<IBookingsCachingSession, BookingsCachingSession>();
 builder.Services.AddTransient<ITileComposer, TileComposer>();
