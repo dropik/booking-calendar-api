@@ -10,23 +10,25 @@ namespace BookingCalendarApi.Controllers
     [ApiController]
     public class BookingController : ControllerBase
     {
-        private readonly Func<IEnumerable<Reservation>, IBookingWithClientsComposer> _bookingComposerProvider;
+        private readonly Func<Reservation, ITileWithClientsComposer> _tileComposerProvider;
         private readonly IIperbooking _iperbooking;
+        private readonly BookingCalendarContext _context;
 
         private List<Booking> Bookings { get; set; } = new();
         private GuestsResponse GuestsResponse { get; set; } = new GuestsResponse();
 
         public BookingController(
-            Func<IEnumerable<Reservation>, IBookingWithClientsComposer> bookingComposerProvider,
-            IIperbooking iperbooking
-        )
+            Func<Reservation, ITileWithClientsComposer> tileComposerProvider,
+            IIperbooking iperbooking,
+            BookingCalendarContext context)
         {
-            _bookingComposerProvider = bookingComposerProvider;
+            _tileComposerProvider = tileComposerProvider;
             _iperbooking = iperbooking;
+            _context = context;
         }
 
         [HttpGet]
-        public async Task<ActionResult<Booking<IEnumerable<Client>>>> GetAsync(string id, string from)
+        public async Task<ActionResult<Booking<List<Client>>>> GetAsync(string id, string from)
         {
             try
             {
@@ -38,19 +40,35 @@ namespace BookingCalendarApi.Controllers
                     FetchBookings(arrivalFrom, arrivalTo),
                     FetchGuests(id)
                 );
-                
-                var bookingComposer = _bookingComposerProvider(GuestsResponse.Reservations);
 
-                var result = Bookings
-                    .SelectById(id)
-                    .UseComposer(bookingComposer);
+                var booking = Bookings.SelectById(id);
 
-                if (!result.Any())
+                var query = (from b in booking
+                            join color in _context.ColorAssignments on b.BookingNumber.ToString() equals color.BookingId into gj
+                            from color in gj.DefaultIfEmpty()
+                            select new { Booking = b, Color = color }
+                            ).ToList()
+                            .Select(join => new Booking<List<Client>>(
+                                id: join.Booking.BookingNumber.ToString(),
+                                name: $"{join.Booking.FirstName} {join.Booking.LastName}",
+                                lastModified: join.Booking.LastModified,
+                                from: DateTime.ParseExact(join.Booking.Rooms.OrderBy(room => room.Arrival).First().Arrival, "yyyyMMdd", null).ToString("yyyy-MM-dd"),
+                                to: DateTime.ParseExact(join.Booking.Rooms.OrderBy(room => room.Departure).Last().Departure, "yyyyMMdd", null).ToString("yyyy-MM-dd"))
+                            {
+                                Status = join.Booking.Status,
+                                Color = join.Color?.Color,
+                                Tiles = join.Booking.Rooms
+                                    .UseComposer(_tileComposerProvider(
+                                        GuestsResponse.Reservations.SingleOrDefault(reservation => reservation.ReservationId == join.Booking.BookingNumber)
+                                        ?? throw new Exception("Provided reservation for merging booking with its guests not found")))
+                            });
+
+                if (!query.Any())
                 {
                     return NotFound();
                 }
 
-                return result.First();
+                return query.First();
             }
             catch (Exception ex)
             {

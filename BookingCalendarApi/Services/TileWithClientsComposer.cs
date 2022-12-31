@@ -15,7 +15,7 @@ namespace BookingCalendarApi.Services
             _reservation = reservation;
         }
 
-        public IEnumerable<Tile<IEnumerable<Client>>> Compose(IEnumerable<BookingRoom<BookingGuest>> rooms)
+        public IEnumerable<Tile<List<Client>>> Compose(IEnumerable<BookingRoom<BookingGuest>> rooms)
         {
             return rooms
                 .GroupJoin(
@@ -26,7 +26,7 @@ namespace BookingCalendarApi.Services
                 )
                 .SelectMany(
                     x => x.assignments.DefaultIfEmpty(),
-                    (join, assignment) => new Tile<IEnumerable<Client>>(
+                    (join, assignment) => new Tile<List<Client>>(
                         id: $"{join.room.StayId}-{join.room.Arrival}-{join.room.Departure}",
                         from: DateTime.ParseExact(join.room.Arrival, "yyyyMMdd", null).ToString("yyyy-MM-dd"),
                         nights: Convert.ToUInt32((DateTime.ParseExact(join.room.Departure, "yyyyMMdd", null) - DateTime.ParseExact(join.room.Arrival, "yyyyMMdd", null)).Days),
@@ -44,9 +44,8 @@ namespace BookingCalendarApi.Services
                                 PlaceOfBirth = guest.BirthCity,
                                 ProvinceOfBirth = guest.BirthCounty,
                                 StateOfBirth = guest.BirthCountry
-                            }
-                        )
-                    )
+                            })
+                            .ToList())
                     {
                         RoomId = assignment?.RoomId ?? null
                     }

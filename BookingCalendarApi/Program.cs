@@ -60,12 +60,6 @@ builder.Services.AddTransient<Func<string, string, IEnumerable<Reservation>, ICi
 );
 builder.Services.AddTransient<Func<Reservation, ITileWithClientsComposer>>(
     serviceProvider => (reservation) => new TileWithClientsComposer(serviceProvider.GetService<BookingCalendarContext>(), reservation));
-builder.Services.AddTransient<Func<IEnumerable<Reservation>, IBookingWithClientsComposer>>(
-    serviceProvider => (reservations) => new BookingWithClientsComposer(
-        serviceProvider.GetService<Func<Reservation, ITileWithClientsComposer>>(),
-        reservations,
-        serviceProvider.GetService<BookingCalendarContext>()
-    ));
 #nullable enable
 
 var app = builder.Build();
