@@ -65,15 +65,17 @@ namespace BookingCalendarApi.Services
                                 stayId: room.StayId,
                                 roomName: room.RoomName,
                                 arrival: room.Arrival,
-                                departure: room.Departure
-                            )
+                                departure: room.Departure,
+                                rateId: room.RateId)
                                 {
                                     RoomId = room.RoomId,
                                     Guests = reservation.Guests
-                                    .Where(guest => guest.ReservationRoomId == room.StayId)
-                                    .Where(guest => guest.FirstName != "")
+                                        .Where(guest => guest.ReservationRoomId == room.StayId)
+                                        .Where(guest => guest.FirstName != "")
+                                        .ToList()
                                 })
                             .Where(room => room.Guests.Any())
+                            .ToList()
                     }
                 )
                 .Where(booking => booking.Rooms.Any())

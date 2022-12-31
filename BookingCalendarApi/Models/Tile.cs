@@ -7,6 +7,7 @@ namespace BookingCalendarApi.Models
             string from,
             uint nights,
             string roomType,
+            string rateId,
             TPerson persons
         )
         {
@@ -14,6 +15,7 @@ namespace BookingCalendarApi.Models
             From = from;
             Nights = nights;
             RoomType = roomType;
+            RateId = rateId;
             Persons = persons;
         }
 
@@ -23,5 +25,6 @@ namespace BookingCalendarApi.Models
         public string RoomType { get; set; }
         public TPerson Persons { get; set; }
         public long? RoomId { get; set; }
+        public string RateId { get; set; } = "";
     }
 }

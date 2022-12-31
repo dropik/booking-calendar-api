@@ -10,6 +10,7 @@ namespace BookingCalendarApi.Services
             {
                 Rooms = booking.Rooms
                     .Where(room => room.RoomId != null)
+                    .ToList()
             })
             .Where(booking => booking.Rooms.Any());
 
@@ -19,6 +20,7 @@ namespace BookingCalendarApi.Services
             {
                 Rooms = booking.Rooms
                     .Where(room => (DateTime.ParseExact(room.Arrival, "yyyyMMdd", null) - arrival).Days == 0)
+                    .ToList()
             })
             .Where(booking => booking.Rooms.Any());
     }

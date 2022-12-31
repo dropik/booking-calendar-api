@@ -12,6 +12,7 @@ namespace BookingCalendarApi.Services
                 {
                     Guests = reservation.Guests
                         .Where(guest => guest.ReservationRoomId.ToString() == stayId)
+                        .ToList()
                 });
         }
 
@@ -22,9 +23,9 @@ namespace BookingCalendarApi.Services
                 {
                     Guests = reservation.Guests
                         .Where(guest =>
-                            guest.FirstName != string.Empty &&
-                            $"{guest.FirstName} {guest.LastName}".Contains(query, StringComparison.OrdinalIgnoreCase)
-                        )
+                            guest.FirstName != string.Empty
+                            && $"{guest.FirstName} {guest.LastName}".Contains(query, StringComparison.OrdinalIgnoreCase))
+                        .ToList()
                 });
         }
 

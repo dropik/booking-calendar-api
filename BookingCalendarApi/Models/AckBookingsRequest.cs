@@ -7,7 +7,7 @@
             SessionId = sessionId;
         }
 
-        public IEnumerable<SessionBooking> Bookings { get; set; } = new List<SessionBooking>();
+        public List<SessionBooking> Bookings { get; set; } = new();
         public string SessionId { get; set; }
     }
 }

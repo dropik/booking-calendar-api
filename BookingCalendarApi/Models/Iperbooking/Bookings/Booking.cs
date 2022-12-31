@@ -19,7 +19,7 @@ namespace BookingCalendarApi.Models.Iperbooking.Bookings
         public string LastName { get; set; }
         public string LastModified { get; set; }
 
-        public ICollection<BookingRoom<BookingGuest>> Rooms { get; set; } = new List<BookingRoom<BookingGuest>>();
+        public List<BookingRoom<BookingGuest>> Rooms { get; set; } = new();
     }
 
     public enum BookingStatus {

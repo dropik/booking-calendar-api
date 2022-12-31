@@ -22,23 +22,22 @@ namespace BookingCalendarApi.Services
                             _assignments,
                             room => $"{room.StayId}-{room.Arrival}-{room.Departure}",
                             assignment => assignment.Id,
-                            (room, assignments) => new { Room = room, Assignments = assignments }
-                        )
+                            (room, assignments) => new { Room = room, Assignments = assignments })
                         .SelectMany(
                             join => join.Assignments.DefaultIfEmpty(),
-                            (join, assignment) => new { join.Room, assignment?.RoomId }
-                        )
+                            (join, assignment) => new { join.Room, assignment?.RoomId })
                         .GroupBy(roomContainer => roomContainer.Room.StayId)
                         .Select(roomContainerGroup => new AssignedRoom<BookingGuest>(
                             stayId: roomContainerGroup.Key,
                             roomName: roomContainerGroup.First().Room.RoomName,
                             arrival: roomContainerGroup.OrderBy(roomContainer => roomContainer.Room.Arrival).First().Room.Arrival,
-                            departure: roomContainerGroup.OrderBy(roomContainer => roomContainer.Room.Departure).Last().Room.Departure
-                        )
+                            departure: roomContainerGroup.OrderBy(roomContainer => roomContainer.Room.Departure).Last().Room.Departure,
+                            rateId: roomContainerGroup.First().Room.RateId)
                         {
                             Guests = roomContainerGroup.First().Room.Guests,
                             RoomId = roomContainerGroup.First().RoomId
                         })
+                        .ToList()
                 }
             );
     }

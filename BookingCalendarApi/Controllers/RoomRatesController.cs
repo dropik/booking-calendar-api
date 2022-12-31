@@ -1,26 +1,37 @@
 ﻿using BookingCalendarApi.Models;
 using BookingCalendarApi.Models.Iperbooking.RoomRates;
+using BookingCalendarApi.Models.Responses;
 using BookingCalendarApi.Services;
 using Microsoft.AspNetCore.Mvc;
 
 namespace BookingCalendarApi.Controllers
 {
-    [Route("api/v1/room-types")]
+    [Route("api/v1/room-rates")]
     [ApiController]
-    public class RoomTypesController : ControllerBase
+    public class RoomRatesController : ControllerBase
     {
         private readonly IIperbooking iperbooking;
 
-        public RoomTypesController(IIperbooking iperbooking)
+        public RoomRatesController(IIperbooking iperbooking)
         {
             this.iperbooking = iperbooking;
         }
 
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<RoomType>>> GetAsync()
+        public async Task<ActionResult<RoomRatesResponse>> GetAsync()
         {
             var roomRates = await iperbooking.GetRoomRatesAsync();
-            return roomRates.SelectRoomTypes().ToList();
+            return Ok(new RoomRatesResponse()
+            {
+                RoomTypes = roomRates
+                    .SelectRoomTypes()
+                    .ToList(),
+
+                RoomRates = roomRates
+                    .SelectMany(rate => rate.RateGroups)
+                    .SelectMany(group => group.Rates)
+                    .ToList()
+            });
         }
     }
 

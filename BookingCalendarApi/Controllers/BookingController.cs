@@ -63,6 +63,7 @@ namespace BookingCalendarApi.Controllers
                                             from: DateTime.ParseExact(join.Room.Arrival, "yyyyMMdd", null).ToString("yyyy-MM-dd"),
                                             nights: Convert.ToUInt32((DateTime.ParseExact(join.Room.Departure, "yyyyMMdd", null) - DateTime.ParseExact(join.Room.Arrival, "yyyyMMdd", null)).Days),
                                             roomType: join.Room.RoomName,
+                                            rateId: join.Room.RateId,
                                             persons: join.Reservation.Guests
                                                 .Where(guest => guest.ReservationRoomId == join.Room.StayId)
                                                 .Select(guest => new Client(

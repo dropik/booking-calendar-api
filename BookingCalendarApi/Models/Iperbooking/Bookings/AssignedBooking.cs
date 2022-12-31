@@ -8,6 +8,6 @@
         }
 
         public Booking Booking { get; set; }
-        public IEnumerable<AssignedRoom<TGuest>> Rooms { get; set; } = new List<AssignedRoom<TGuest>>();
+        public List<AssignedRoom<TGuest>> Rooms { get; set; } = new();
     }
 }

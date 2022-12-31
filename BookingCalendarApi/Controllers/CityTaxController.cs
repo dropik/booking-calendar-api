@@ -60,13 +60,11 @@ namespace BookingCalendarApi.Controllers
                             stayId: room.StayId,
                             bookingNumber: bookingContainer.Booking.BookingNumber,
                             arrival: room.Arrival,
-                            departure: room.Departure
-                        )
+                            departure: room.Departure)
                         {
                             Guests = room.Guests,
                             RoomId = room.RoomId
-                        }
-                    )
+                        })
                     .ExcludeNotAssigned()
                     .UseCalculator(calculator);
                     

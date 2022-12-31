@@ -8,6 +8,6 @@ namespace BookingCalendarApi.Models.Iperbooking.Guests
         }
 
         public long ReservationId { get; set; }
-        public IEnumerable<Guest> Guests { get; set; } = new List<Guest>();
+        public List<Guest> Guests { get; set; } = new();
     }
 }
