@@ -1,4 +1,5 @@
 ﻿using BookingCalendarApi.Models;
+using BookingCalendarApi.Models.Iperbooking.Bookings;
 using BookingCalendarApi.Models.Iperbooking.Guests;
 using BookingCalendarApi.Services;
 using Microsoft.AspNetCore.Mvc;
@@ -11,7 +12,6 @@ namespace BookingCalendarApi.Controllers
     public class CityTaxController : ControllerBase
     {
         private readonly IAssignedBookingComposer _assignedBookingComposer;
-        private readonly IStayComposer _stayComposer;
         private readonly IIperbooking _iperbooking;
         private readonly Func<string, string, IEnumerable<Reservation>, ICityTaxCalculator> _calculatorProvider;
         private readonly DataContext _dataContext;
@@ -19,14 +19,12 @@ namespace BookingCalendarApi.Controllers
 
         public CityTaxController(
             IAssignedBookingComposer assignedBookingComposer,
-            IStayComposer stayComposer,
             IIperbooking iperbooking,
             Func<string, string, IEnumerable<Reservation>, ICityTaxCalculator> calculatorProvider,
             DataContext dataContext,
             BookingCalendarContext context)
         {
             _assignedBookingComposer = assignedBookingComposer;
-            _stayComposer = stayComposer;
             _iperbooking = iperbooking;
             _calculatorProvider = calculatorProvider;
             _dataContext = dataContext;
@@ -56,7 +54,19 @@ namespace BookingCalendarApi.Controllers
 
                 return bookings
                     .UseComposer(_assignedBookingComposer)
-                    .UseComposer(_stayComposer)
+                    .SelectMany(
+                        bookingContainer => bookingContainer.Rooms,
+                        (bookingContainer, room) => new Stay(
+                            stayId: room.StayId,
+                            bookingNumber: bookingContainer.Booking.BookingNumber,
+                            arrival: room.Arrival,
+                            departure: room.Departure
+                        )
+                        {
+                            Guests = room.Guests,
+                            RoomId = room.RoomId
+                        }
+                    )
                     .ExcludeNotAssigned()
                     .UseCalculator(calculator);
                     
