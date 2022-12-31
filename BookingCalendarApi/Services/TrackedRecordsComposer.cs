@@ -1,6 +1,7 @@
 ﻿using BookingCalendarApi.Models.AlloggiatiService;
 using BookingCalendarApi.Models.Iperbooking.Bookings;
 using BookingCalendarApi.Models.Iperbooking.Guests;
+using static BookingCalendarApi.Models.AlloggiatiService.TrackedRecord;
 
 namespace BookingCalendarApi.Services
 {
@@ -8,16 +9,11 @@ namespace BookingCalendarApi.Services
     {
         private readonly INationConverter _nationConverter;
         private readonly IPlaceConverter _placeConverter;
-        private readonly ITrackedRecordSerializer _trackedRecordSerializer;
 
-        public TrackedRecordsComposer(
-            INationConverter nationConverter,
-            IPlaceConverter placeConverter,
-            ITrackedRecordSerializer trackedRecordSerializer)
+        public TrackedRecordsComposer(INationConverter nationConverter, IPlaceConverter placeConverter)
         {
             _nationConverter = nationConverter;
             _placeConverter = placeConverter;
-            _trackedRecordSerializer = trackedRecordSerializer;
         }
 
         public IEnumerable<string> Compose(IEnumerable<AssignedBooking<Guest>> source)
@@ -34,8 +30,8 @@ namespace BookingCalendarApi.Services
                             Name = guest.FirstName,
                             Sex = guest.Gender switch
                             {
-                                Guest.Sex.M => TrackedRecord.Gender.Male,
-                                Guest.Sex.F => TrackedRecord.Gender.Female,
+                                Guest.Sex.M => Gender.Male,
+                                Guest.Sex.F => Gender.Female,
                                 _ => throw new Exception("Gender was not found")
                             },
                             BirthDate = DateTime.ParseExact(guest.BirthDate, "yyyyMMdd", null),
@@ -45,9 +41,9 @@ namespace BookingCalendarApi.Services
                             Citizenship = _nationConverter.GetCodeByIso(guest.Citizenship ?? "IT"),
                             DocType = guest.DocType switch
                             {
-                                Guest.DocumentType.ID => TrackedRecord.DocumentType.Ident,
-                                Guest.DocumentType.PP => TrackedRecord.DocumentType.Pasor,
-                                Guest.DocumentType.DL => TrackedRecord.DocumentType.Paten,
+                                Guest.DocumentType.ID => DocumentType.Ident,
+                                Guest.DocumentType.PP => DocumentType.Pasor,
+                                Guest.DocumentType.DL => DocumentType.Paten,
                                 _ => null
                             },
                             DocNumber = guest.DocNumber,
@@ -73,15 +69,15 @@ namespace BookingCalendarApi.Services
             return recordBlocksWithCorrectPlaceOfBirth
                 .Where(block => block
                     .Where(record =>
-                        record.Type == TrackedRecord.AccomodatedType.SingleGuest && block.Count == 1 ||
-                        record.Type == TrackedRecord.AccomodatedType.FamilyHead ||
-                        record.Type == TrackedRecord.AccomodatedType.GroupHead
+                        record.Type == AccomodatedType.SingleGuest && block.Count == 1 ||
+                        record.Type == AccomodatedType.FamilyHead ||
+                        record.Type == AccomodatedType.GroupHead
                      )
                     .Any()
                 )
                 .SelectMany(
                     block => block.OrderBy(r => r.Type),
-                    (block, record) => _trackedRecordSerializer.Serialize(record)
+                    (block, record) => SerializeRecord(record)
                  );
         }
 
@@ -89,15 +85,15 @@ namespace BookingCalendarApi.Services
         {
             if (recordsBlock.Count() == 1)
             {
-                recordToSolve.Type = TrackedRecord.AccomodatedType.SingleGuest;
+                recordToSolve.Type = AccomodatedType.SingleGuest;
             }
-            else if (recordsBlock.Where(record => record.Type == TrackedRecord.AccomodatedType.FamilyHead).Any())
+            else if (recordsBlock.Where(record => record.Type == AccomodatedType.FamilyHead).Any())
             {
-                recordToSolve.Type = TrackedRecord.AccomodatedType.FamilyMember;
+                recordToSolve.Type = AccomodatedType.FamilyMember;
             }
-            else if (recordsBlock.Where(record => record.Type == TrackedRecord.AccomodatedType.GroupHead).Any())
+            else if (recordsBlock.Where(record => record.Type == AccomodatedType.GroupHead).Any())
             {
-                recordToSolve.Type = TrackedRecord.AccomodatedType.GroupMember;
+                recordToSolve.Type = AccomodatedType.GroupMember;
             }
             else
             {
@@ -110,8 +106,8 @@ namespace BookingCalendarApi.Services
                 var mightBeFamily =
                     (
                         recordsBlock.Count() == 2 &&
-                        recordsBlock.Where(record => record.Sex == TrackedRecord.Gender.Male).Any() &&
-                        recordsBlock.Where(record => record.Sex == TrackedRecord.Gender.Female).Any()
+                        recordsBlock.Where(record => record.Sex == Gender.Male).Any() &&
+                        recordsBlock.Where(record => record.Sex == Gender.Female).Any()
                     ) ||
                     (
                         recordsBlock.Count() > 2 &&
@@ -121,9 +117,42 @@ namespace BookingCalendarApi.Services
                     recordsBlock.Where(record => record.Surname == recordToSolve.Surname).Count() > 2;
 
                 recordToSolve.Type = canBeHead
-                    ? mightBeFamily ? TrackedRecord.AccomodatedType.FamilyHead : TrackedRecord.AccomodatedType.GroupHead
-                    : mightBeFamily ? TrackedRecord.AccomodatedType.FamilyMember : TrackedRecord.AccomodatedType.GroupMember;
+                    ? mightBeFamily ? AccomodatedType.FamilyHead : AccomodatedType.GroupHead
+                    : mightBeFamily ? AccomodatedType.FamilyMember : AccomodatedType.GroupMember;
             }
         }
+
+        private static string SerializeRecord(TrackedRecord record) =>
+            $"{SerializeType(record.Type)}" +
+            $"{record.Arrival:dd/MM/yyyy}" +
+            $"{record.Nights:D2}" +
+            $"{record.Surname.PadRight(50, ' ')[..50]}" +
+            $"{record.Name.PadRight(30, ' ')[..30]}" +
+            $"{SerializeGender(record.Sex)}" +
+            $"{record.BirthDate:dd/MM/yyyy}" +
+            $"{(record.PlaceOfBirth != null ? record.PlaceOfBirth.ToString() : new string(' ', 9))}" +
+            $"{(record.ProvinceOfBirth != null && record.ProvinceOfBirth.Length == 2 ? record.ProvinceOfBirth : new string(' ', 2))}" +
+            $"{record.StateOfBirth}" +
+            $"{record.Citizenship}" +
+            $"{(record.DocType != null ? record.DocType.ToString()?.ToUpper() : new string(' ', 5))}" +
+            $"{(record.DocNumber != null ? record.DocNumber.PadRight(20, ' ') : new string(' ', 20))}" +
+            $"{(record.DocIssuer != null ? record.DocIssuer.ToString() : new string(' ', 9))}";
+
+        private static string SerializeType(AccomodatedType type) => type switch
+        {
+            AccomodatedType.SingleGuest => "16",
+            AccomodatedType.FamilyHead => "17",
+            AccomodatedType.GroupHead => "18",
+            AccomodatedType.FamilyMember => "19",
+            AccomodatedType.GroupMember => "20",
+            _ => throw new NotImplementedException()
+        };
+
+        private static string SerializeGender(Gender gender) => gender switch
+        {
+            Gender.Male => "1",
+            Gender.Female => "2",
+            _ => throw new NotImplementedException()
+        };
     }
 }
