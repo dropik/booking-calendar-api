@@ -12,20 +12,17 @@ namespace BookingCalendarApi.Controllers
         private readonly IIperbooking _iperbooking;
         private readonly IBookingsCachingSession _session;
         private readonly BookingCalendarContext _context;
-        private readonly ITileComposer _tileComposer;
 
         private List<Booking> Bookings { get; set; } = new();
 
         public BookingsBySessionController(
             IIperbooking iperbooking,
             IBookingsCachingSession session,
-            BookingCalendarContext context,
-            ITileComposer tileComposer)
+            BookingCalendarContext context)
         {
             _iperbooking = iperbooking;
             _session = session;
             _context = context;
-            _tileComposer = tileComposer;
         }
 
         [HttpGet]
@@ -43,23 +40,36 @@ namespace BookingCalendarApi.Controllers
                     .ExcludeBySession(_session);
 
                 var bookingsWithColors = from booking in bookings
-                                               join color in _context.ColorAssignments on booking.BookingNumber.ToString() equals color.BookingId into gj
-                                               from color in gj.DefaultIfEmpty()
-                                               select new { Booking = booking, Color = color };
+                                         join color in _context.ColorAssignments on booking.BookingNumber.ToString() equals color.BookingId into gj
+                                         from color in gj.DefaultIfEmpty()
+                                         select new { Booking = booking, Color = color };
 
                 var bookingsWithGuestsCount = bookingsWithColors.Select(join => new Booking<uint>(
                         id: join.Booking.BookingNumber.ToString(),
                         name: $"{join.Booking.FirstName} {join.Booking.LastName}",
                         lastModified: join.Booking.LastModified,
                         from: DateTime.ParseExact(join.Booking.Rooms.OrderBy(room => room.Arrival).First().Arrival, "yyyyMMdd", null).ToString("yyyy-MM-dd"),
-                        to: DateTime.ParseExact(join.Booking.Rooms.OrderBy(room => room.Departure).Last().Departure, "yyyyMMdd", null).ToString("yyyy-MM-dd")
-                    )
+                        to: DateTime.ParseExact(join.Booking.Rooms.OrderBy(room => room.Departure).Last().Departure, "yyyyMMdd", null).ToString("yyyy-MM-dd"))
                     {
                         Status = join.Booking.Status,
                         Color = join.Color?.Color,
-                        Tiles = join.Booking.Rooms.UseComposer(_tileComposer).ToList()
-                    }
-                );
+                        Tiles = (from room in @join.Booking.Rooms
+                                 join assignment in _context.RoomAssignments on $"{room.StayId}-{room.Arrival}-{room.Departure}" equals assignment.Id into gj
+                                 from assignment in gj.DefaultIfEmpty()
+                                 select new { Room = room, Assignment = assignment })
+                                     .ToList()
+                                     .Select(join => new Tile<uint>(
+                                        id: $"{join.Room.StayId}-{join.Room.Arrival}-{join.Room.Departure}",
+                                        from: DateTime.ParseExact(join.Room.Arrival, "yyyyMMdd", null).ToString("yyyy-MM-dd"),
+                                        nights: Convert.ToUInt32((DateTime.ParseExact(join.Room.Departure, "yyyyMMdd", null) - DateTime.ParseExact(join.Room.Arrival, "yyyyMMdd", null)).Days),
+                                        roomType: join.Room.RoomName,
+                                        persons: Convert.ToUInt32(join.Room.Guests.Count()))
+                                     {
+                                         RoomId = join.Assignment?.RoomId ?? null
+                                     })
+                                     .ToList()
+                    })
+                    .ToList();
 
                 return new BookingsBySession(_session.Id.ToString())
                 {
