@@ -46,6 +46,9 @@ dotnet run
 ```
 
 ## Changelog
+### v1.2.0
+- Added base board information to tiles.
+- Fixed minor bugs.
 ### v1.1.2
 - Fixed correct tracked records order by record type.
 ### v1.1.1
