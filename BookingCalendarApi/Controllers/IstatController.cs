@@ -32,15 +32,8 @@ namespace BookingCalendarApi.Controllers
         [HttpPost]
         public async Task<IActionResult> SendNewDataAsync(IstatSendDataRequest request)
         {
-            try
-            {
-                await _serviseSession.SendNewDataAsync(DateTime.ParseExact(request.Date, "yyyy-MM-dd", null));
-                return Ok();
-            }
-            catch (Exception exception)
-            {
-                return BadRequest(exception.Message);
-            }
+            await _serviseSession.SendNewDataAsync(DateTime.ParseExact(request.Date, "yyyy-MM-dd", null));
+            return Ok();
         }
     }
 }
