@@ -1,6 +1,8 @@
 ﻿using BookingCalendarApi.Models;
 using BookingCalendarApi.Models.Iperbooking.Bookings;
 using BookingCalendarApi.Models.Iperbooking.Guests;
+using Microsoft.EntityFrameworkCore;
+using System.Formats.Cbor;
 
 namespace BookingCalendarApi.Services
 {
@@ -8,19 +10,17 @@ namespace BookingCalendarApi.Services
     {
         private readonly IIperbooking _iperbooking;
         private readonly BookingCalendarContext _context;
-        private readonly IBookingsCachingSession _session;
 
         private List<Booking> Bookings { get; set; } = new();
         private GuestsResponse GuestsResponse { get; set; } = new();
+        private Guid SessionId { get; set; }
+        private List<SessionBooking> SessionBookings { get; set; } = new();
+        private SessionEntry? Entry { get; set; }
 
-        public BookingService(
-            IIperbooking iperbooking,
-            BookingCalendarContext context,
-            IBookingsCachingSession session)
+        public BookingService(IIperbooking iperbooking, BookingCalendarContext context)
         {
             _iperbooking = iperbooking;
             _context = context;
-            _session = session;
         }
 
         public async Task<Booking<List<Client>>> Get(string id, string from)
@@ -29,7 +29,7 @@ namespace BookingCalendarApi.Services
             var arrivalFrom = fromDate.AddDays(-15).ToString("yyyy-MM-dd");
             var arrivalTo = fromDate.AddDays(15).ToString("yyyy-MM-dd");
             await Task.WhenAll(
-                FetchBookings(arrivalFrom, arrivalTo),
+                FetchBookings(arrivalFrom, arrivalTo, exactPeriod: true),
                 FetchGuests(id)
             );
             var booking = Bookings.SelectById(id);
@@ -120,13 +120,15 @@ namespace BookingCalendarApi.Services
         public async Task<BookingsBySessionResponse> GetBySession(string from, string to, string? sessionId)
         {
             await Task.WhenAll(
-                    _session.OpenAsync(sessionId),
+                    OpenSessionWithId(sessionId),
                     FetchBookings(from, to)
                 );
 
             var bookings = Bookings
                 .SelectInRange(from, to, true)
-                .ExcludeBySession(_session);
+                .Where(booking => !SessionBookings
+                    .Where(sessionBooking => sessionBooking.Equals(new SessionBooking(booking.BookingNumber.ToString(), booking.LastModified)))
+                    .Any());
 
             var bookingsWithColors = from booking in bookings
                                      join color in _context.ColorAssignments on booking.BookingNumber.ToString() equals color.BookingId into gj
@@ -161,7 +163,7 @@ namespace BookingCalendarApi.Services
             })
                 .ToList();
 
-            return new BookingsBySessionResponse(_session.Id.ToString())
+            return new BookingsBySessionResponse(SessionId.ToString())
             {
                 Bookings = bookingsWithGuestsCount
             };
@@ -177,14 +179,77 @@ namespace BookingCalendarApi.Services
                 return;
             }
 
-            await _session.OpenAsync(sessionId);
-            _session.WriteNewData(bookings);
+            await OpenSessionWithId(sessionId);
+            AddBookingsToSession(bookings);
+
             await _context.SaveChangesAsync();
         }
 
-        private async Task FetchBookings(string from, string to)
+        private async Task OpenSessionWithId(string? sessionId)
         {
-            Bookings = await _iperbooking.GetBookingsAsync(from, to, exactPeriod: true);
+            SessionId = GetSessionId(sessionId);
+            SessionBookings = new();
+            Entry = await _context.Sessions.SingleOrDefaultAsync(session => session.Id.Equals(SessionId));
+            if (Entry != null && !Entry.Id.Equals(Guid.Empty))
+            {
+                var data = Entry.Data;
+                var reader = new CborReader(data);
+                reader.ReadStartArray();
+                while (reader.PeekState() != CborReaderState.EndArray)
+                {
+                    var bookingId = reader.ReadTextString();
+                    var lastModified = reader.ReadTextString();
+                    SessionBookings.Add(new SessionBooking(bookingId, lastModified));
+                }
+            }
+        }
+
+        private static Guid GetSessionId(string? sessionId)
+        {
+            try
+            {
+                return sessionId != null ? Guid.Parse(sessionId) : Guid.NewGuid();
+            }
+            catch (Exception)
+            {
+                return Guid.NewGuid();
+            }
+        }
+
+        private void AddBookingsToSession(IEnumerable<SessionBooking> bookings)
+        {
+            foreach (var booking in bookings)
+            {
+                if (!SessionBookings.Contains(booking))
+                {
+                    SessionBookings.Add(booking);
+                }
+            }
+
+            var writer = new CborWriter();
+            writer.WriteStartArray(SessionBookings.Count * 2);
+            foreach (var booking in SessionBookings)
+            {
+                writer.WriteTextString(booking.BookingId);
+                writer.WriteTextString(booking.LastModified);
+            }
+            writer.WriteEndArray();
+
+            var data = writer.Encode();
+
+            if (Entry != null)
+            {
+                Entry.Data = data;
+            }
+            else
+            {
+                _context.Sessions.Add(new SessionEntry(SessionId) { Data = data });
+            }
+        }
+
+        private async Task FetchBookings(string from, string to, bool exactPeriod = false)
+        {
+            Bookings = await _iperbooking.GetBookingsAsync(from, to, exactPeriod);
         }
 
         private async Task FetchGuests(string id)

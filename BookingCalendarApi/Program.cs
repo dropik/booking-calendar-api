@@ -37,7 +37,6 @@ builder.Services.AddScoped<DataContext>();
 
 // transient services
 builder.Services.AddTransient<IBookingService, BookingService>();
-builder.Services.AddTransient<IBookingsCachingSession, BookingsCachingSession>();
 builder.Services.AddTransient<IAssignedBookingComposer, AssignedBookingComposer>();
 builder.Services.AddTransient<IServiceSoap, ServiceSoapClient>();
 builder.Services.AddTransient<IAssignedBookingWithGuestsProvider, AssignedBookingWithGuestsProvider>();
