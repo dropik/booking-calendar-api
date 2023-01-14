@@ -8,37 +8,18 @@ namespace BookingCalendarApi.Controllers
     [ApiController]
     public class AckBookingsController : ControllerBase
     {
-        private readonly BookingCalendarContext _context;
-        private readonly IBookingsCachingSession _session;
+        private readonly IAckBookingsService _service;
 
-        public AckBookingsController(BookingCalendarContext context, IBookingsCachingSession session)
+        public AckBookingsController(IAckBookingsService service)
         {
-            _context = context;
-            _session = session;
+            _service = service;
         }
 
         [HttpPost]
         public async Task<IActionResult> PostAsync(AckBookingsRequest request)
         {
-            var bookings = request.Bookings;
-            var sessionId = request.SessionId;
-
-            if (bookings == null)
-            {
-                return Ok();
-            }
-
-            try
-            {
-                await _session.OpenAsync(sessionId);
-                _session.WriteNewData(bookings);
-                await _context.SaveChangesAsync();
-                return Ok();
-            }
-            catch (Exception)
-            {
-                return BadRequest();
-            }
+            await _service.Ack(request);
+            return Ok();
         }
     }
 }
