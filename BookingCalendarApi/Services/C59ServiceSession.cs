@@ -79,7 +79,7 @@ namespace BookingCalendarApi.Services
                         new movimentoWSPO()
                         {
                             italia = false,
-                            targa = nations.SingleOrDefault(nation => nation.Iso == group.Key)?.Description,
+                            targa = nations.SingleOrDefault(nation => nation.Iso == group.Key)?.Description ?? "",
                             arrivi = group.Where(item => item.Arrival == date).Count(),
                             partenze = group.Where(item => item.Departure == date).Count()
                         }
