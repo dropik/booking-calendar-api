@@ -1,8 +1,8 @@
 ﻿namespace BookingCalendarApi.Models
 {
-    public class BookingsBySession
+    public class BookingsBySessionResponse
     {
-        public BookingsBySession(string sessionId)
+        public BookingsBySessionResponse(string sessionId)
         {
             SessionId = sessionId;
         }
