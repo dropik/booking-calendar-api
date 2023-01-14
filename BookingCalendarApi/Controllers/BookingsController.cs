@@ -26,5 +26,12 @@ namespace BookingCalendarApi.Controllers
         {
             return Ok(await _service.GetByName(from, to, name));
         }
+
+        [HttpPost("ack-bookings")]
+        public async Task<IActionResult> Post(AckBookingsRequest request)
+        {
+            await _service.Ack(request);
+            return Ok();
+        }
     }
 }

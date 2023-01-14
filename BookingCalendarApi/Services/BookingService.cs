@@ -8,14 +8,19 @@ namespace BookingCalendarApi.Services
     {
         private readonly IIperbooking _iperbooking;
         private readonly BookingCalendarContext _context;
+        private readonly IBookingsCachingSession _session;
 
         private List<Booking> Bookings { get; set; } = new();
         private GuestsResponse GuestsResponse { get; set; } = new();
 
-        public BookingService(IIperbooking iperbooking, BookingCalendarContext context)
+        public BookingService(
+            IIperbooking iperbooking,
+            BookingCalendarContext context,
+            IBookingsCachingSession session)
         {
             _iperbooking = iperbooking;
             _context = context;
+            _session = session;
         }
 
         public async Task<Booking<List<Client>>> Get(string id, string from)
@@ -110,6 +115,21 @@ namespace BookingCalendarApi.Services
                     Color = join.Color?.Color
                 })
                 .ToList();
+        }
+
+        public async Task Ack(AckBookingsRequest request)
+        {
+            var bookings = request.Bookings;
+            var sessionId = request.SessionId;
+
+            if (bookings == null)
+            {
+                return;
+            }
+
+            await _session.OpenAsync(sessionId);
+            _session.WriteNewData(bookings);
+            await _context.SaveChangesAsync();
         }
 
         private async Task FetchBookings(string from, string to)
