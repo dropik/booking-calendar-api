@@ -7,7 +7,7 @@ namespace BookingCalendarApi.Services
     {
         public CityTaxOver10Days(ICityTaxCalculator wrappee) : base(wrappee) { }
 
-        public override CityTax Calculate(Stay stay)
+        public override CityTaxResponse Calculate(Stay stay)
         {
             var value = base.Calculate(stay);
             var arrival = DateTime.ParseExact(stay.Arrival, "yyyyMMdd", null);

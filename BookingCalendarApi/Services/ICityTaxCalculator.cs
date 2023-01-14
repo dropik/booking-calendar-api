@@ -5,6 +5,6 @@ namespace BookingCalendarApi.Services
 {
     public interface ICityTaxCalculator
     {
-        public CityTax Calculate(Stay stay);
+        public CityTaxResponse Calculate(Stay stay);
     }
 }

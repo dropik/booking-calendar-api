@@ -14,7 +14,7 @@ namespace BookingCalendarApi.Services
             _to = DateTime.ParseExact(to, "yyyy-MM-dd", null);
         }
 
-        public override CityTax Calculate(Stay stay)
+        public override CityTaxResponse Calculate(Stay stay)
         {
             var value = base.Calculate(stay);
             var guests = stay.Guests.Count();

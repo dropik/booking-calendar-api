@@ -13,7 +13,7 @@ namespace BookingCalendarApi.Services
             _reservations = reservations;
         }
 
-        public override CityTax Calculate(Stay stay)
+        public override CityTaxResponse Calculate(Stay stay)
         {
             var value = base.Calculate(stay);
 

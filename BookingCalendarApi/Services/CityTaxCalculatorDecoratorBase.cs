@@ -12,7 +12,7 @@ namespace BookingCalendarApi.Services
             _wrappee = wrappee;
         }
 
-        public virtual CityTax Calculate(Stay stay)
+        public virtual CityTaxResponse Calculate(Stay stay)
         {
             return _wrappee.Calculate(stay);
         }

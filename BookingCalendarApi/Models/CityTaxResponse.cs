@@ -1,6 +1,6 @@
 ﻿namespace BookingCalendarApi.Models
 {
-    public class CityTax
+    public class CityTaxResponse
     {
         public uint Standard { get; set; }
         public uint Children { get; set; }

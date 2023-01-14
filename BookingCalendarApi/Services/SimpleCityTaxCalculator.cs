@@ -5,9 +5,9 @@ namespace BookingCalendarApi.Services
 {
     public class SimpleCityTaxCalculator : ICityTaxCalculator
     {
-        public CityTax Calculate(Stay stay)
+        public CityTaxResponse Calculate(Stay stay)
         {
-            return new CityTax()
+            return new CityTaxResponse()
             {
                 Standard = Convert.ToUInt32(
                             stay.Guests.Count() *
