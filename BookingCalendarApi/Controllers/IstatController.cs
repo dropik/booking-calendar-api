@@ -18,15 +18,7 @@ namespace BookingCalendarApi.Controllers
         [HttpGet]
         public async Task<ActionResult<IstatLastDateResponse>> GetLastDateAsync()
         {
-            try
-            {
-                var response = await _serviseSession.GetLastDateAsync();
-                return new IstatLastDateResponse(response);
-            }
-            catch (Exception exception)
-            {
-                return BadRequest(exception.Message);
-            }
+            return Ok(await _serviseSession.GetLastDateAsync());
         }
 
         [HttpPost]

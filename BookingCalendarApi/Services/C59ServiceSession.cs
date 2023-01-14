@@ -1,4 +1,5 @@
-﻿using BookingCalendarApi.Models.C59Service;
+﻿using BookingCalendarApi.Models;
+using BookingCalendarApi.Models.C59Service;
 using C59Service;
 using Microsoft.EntityFrameworkCore;
 
@@ -19,14 +20,18 @@ namespace BookingCalendarApi.Services
             _context = context;
         }
 
-        public async Task<string> GetLastDateAsync()
+        public async Task<IstatLastDateResponse> GetLastDateAsync()
         {
             var request = new ultimoC59(_credentials.Username, _credentials.Password, _credentials.Struttura);
             var response = await _service.ultimoC59Async(request);
-            return response.@return.elencoC59
+            var lastDate = response.@return.elencoC59
                 .Select(item => item.dataMovimentazione.ToString("yyyy-MM-dd"))
                 .OrderBy(date => date)
                 .First();
+            return new()
+            {
+                LastDate = lastDate,
+            };
         }
 
         public async Task SendNewDataAsync(DateTime to)
