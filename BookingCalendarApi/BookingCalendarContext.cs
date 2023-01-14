@@ -29,6 +29,9 @@ namespace BookingCalendarApi
                 .WithMany()
                 .HasForeignKey(a => a.RoomId)
                 .OnDelete(DeleteBehavior.SetNull);
+
+            builder.Entity<Nation>()
+                .HasData(new Nation("UK", 100000219, "REGNO UNITO"));
         }
     }
 }
