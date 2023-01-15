@@ -1,4 +1,5 @@
 ﻿using AlloggiatiService;
+using BookingCalendarApi.Exceptions;
 using BookingCalendarApi.Models.AlloggiatiService;
 using Sylvan.Data;
 using Sylvan.Data.Csv;
@@ -29,7 +30,7 @@ namespace BookingCalendarApi.Services
             var response = await _service.GenerateTokenAsync(request);
             if (!response.Body.result.esito)
             {
-                throw new Exception(response.Body.result.ErroreDettaglio);
+                throw new BookingCalendarException(BCError.POLICE_SERVICE_ERROR, response.Body.result.ErroreDettaglio);
             }
 
             Token = response.Body.GenerateTokenResult.token;
@@ -51,13 +52,13 @@ namespace BookingCalendarApi.Services
                 var response = await _service.TestAsync(request);
                 if (!response.Body.TestResult.esito)
                 {
-                    throw new Exception(response.Body.TestResult.ErroreDettaglio);
+                    throw new BookingCalendarException(BCError.POLICE_SERVICE_ERROR, response.Body.TestResult.ErroreDettaglio);
                 }
                 foreach (var result in response.Body.result.Dettaglio)
                 {
                     if (!result.esito)
                     {
-                        throw new Exception(result.ErroreDettaglio);
+                        throw new BookingCalendarException(BCError.POLICE_SERVICE_ERROR, result.ErroreDettaglio);
                     }
                 }
             }
@@ -72,13 +73,13 @@ namespace BookingCalendarApi.Services
                 var response = await _service.SendAsync(request);
                 if (!response.Body.SendResult.esito)
                 {
-                    throw new Exception(response.Body.SendResult.ErroreDettaglio);
+                    throw new BookingCalendarException(BCError.POLICE_SERVICE_ERROR, response.Body.SendResult.ErroreDettaglio);
                 }
                 foreach (var result in response.Body.result.Dettaglio)
                 {
                     if (!result.esito)
                     {
-                        throw new Exception(result.ErroreDettaglio);
+                        throw new BookingCalendarException(BCError.POLICE_SERVICE_ERROR, result.ErroreDettaglio);
                     }
                 }
             }
@@ -95,7 +96,7 @@ namespace BookingCalendarApi.Services
             var response = await _service.RicevutaAsync(request);
             if (!response.Body.RicevutaResult.esito)
             {
-                throw new Exception(response.Body.RicevutaResult.ErroreDettaglio);
+                throw new BookingCalendarException(BCError.POLICE_SERVICE_ERROR, response.Body.RicevutaResult.ErroreDettaglio);
             }
             return response.Body.PDF;
         }
@@ -119,7 +120,7 @@ namespace BookingCalendarApi.Services
             var response = await _service.TabellaAsync(request);
             if (!response.Body.TabellaResult.esito)
             {
-                throw new Exception(response.Body.TabellaResult.ErroreDettaglio);
+                throw new BookingCalendarException(BCError.POLICE_SERVICE_ERROR, response.Body.TabellaResult.ErroreDettaglio);
             }
             return response.Body.CSV;
         }

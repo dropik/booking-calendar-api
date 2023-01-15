@@ -11,6 +11,6 @@
             ErrorCode = errorCode;
         }
 
-        public int ErrorCode { get; private set; } = BookingCalendarError.SERVER_ERROR;
+        public int ErrorCode { get; private set; } = BCError.SERVER_ERROR;
     }
 }

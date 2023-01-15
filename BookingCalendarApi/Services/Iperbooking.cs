@@ -1,8 +1,8 @@
-﻿using BookingCalendarApi.Models.Iperbooking;
+﻿using BookingCalendarApi.Exceptions;
+using BookingCalendarApi.Models.Iperbooking;
 using BookingCalendarApi.Models.Iperbooking.Bookings;
 using BookingCalendarApi.Models.Iperbooking.Guests;
 using BookingCalendarApi.Models.Iperbooking.RoomRates;
-using Humanizer;
 using System.Text;
 using System.Text.Json;
 
@@ -38,11 +38,11 @@ namespace BookingCalendarApi.Services
                         return poco;
                     } else
                     {
-                        throw new Exception("Cannot deserialize fetched iperbooking data");
+                        throw new BookingCalendarException(BCError.IPERBOOKING_ERROR, "Cannot deserialize fetched iperbooking data");
                     }
                 } else
                 {
-                    throw new Exception("Fetched empty data from iperbooking");
+                    throw new BookingCalendarException(BCError.IPERBOOKING_ERROR, "Fetched empty data from iperbooking");
                 }
             } catch(Exception exception)
             {
@@ -85,11 +85,11 @@ namespace BookingCalendarApi.Services
                         return poco;
                     } else
                     {
-                        throw new Exception("Cannot deserialize fetched iperbooking data");
+                        throw new BookingCalendarException(BCError.IPERBOOKING_ERROR, "Cannot deserialize fetched iperbooking data");
                     }
                 } else
                 {
-                    throw new Exception("Fetched empty data from iperbooking");
+                    throw new BookingCalendarException(BCError.IPERBOOKING_ERROR, "Fetched empty data from iperbooking");
                 }
             } catch(Exception exception)
             {
@@ -103,7 +103,7 @@ namespace BookingCalendarApi.Services
         {
             try
             {
-                var requestData = new Models.Iperbooking.Guests.GuestsRequest(int.Parse(_auth.IdHotel), _auth.Username, _auth.Password, reservationId);
+                var requestData = new GuestsRequest(int.Parse(_auth.IdHotel), _auth.Username, _auth.Password, reservationId);
                 var json = JsonSerializer.Serialize(requestData);
                 var body = new StringContent(json, Encoding.UTF8, "application/json");
                 var url = "https://api.iperbooking.net/v1/GetGuests.cfm";
@@ -123,12 +123,12 @@ namespace BookingCalendarApi.Services
                         return poco;
                     } else
                     {
-                        throw new Exception("Cannot deserialize fetched iperbooking data");
+                        throw new BookingCalendarException(BCError.IPERBOOKING_ERROR, "Cannot deserialize fetched iperbooking data");
                     }
                 }
                 else
                 {
-                    throw new Exception("Fetched empty data from iperbooking");
+                    throw new BookingCalendarException(BCError.IPERBOOKING_ERROR, "Fetched empty data from iperbooking");
                 }
 
             }

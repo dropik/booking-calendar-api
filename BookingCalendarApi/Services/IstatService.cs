@@ -1,4 +1,5 @@
-﻿using BookingCalendarApi.Models.C59Service;
+﻿using BookingCalendarApi.Exceptions;
+using BookingCalendarApi.Models.C59Service;
 using BookingCalendarApi.Models.Requests;
 using BookingCalendarApi.Models.Responses;
 using C59Service;
@@ -49,7 +50,7 @@ namespace BookingCalendarApi.Services
             var fromDate = lastUpload.dataMovimentazione.AddDays(1);
             if ((to - fromDate).Days < 0)
             {
-                throw new Exception("Overriding ISTAT history is not possible.");
+                throw new BookingCalendarException(BCError.ISTAT_ERROR, "Overriding ISTAT history is not possible.");
             }
 
             var bookings = await _bookingsProvider.Get(fromDate.ToString("yyyy-MM-dd"), to.ToString("yyyy-MM-dd"), exactPeriod: false);

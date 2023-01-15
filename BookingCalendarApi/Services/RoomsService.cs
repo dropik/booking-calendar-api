@@ -1,4 +1,5 @@
-﻿using BookingCalendarApi.Models.Entities;
+﻿using BookingCalendarApi.Exceptions;
+using BookingCalendarApi.Models.Entities;
 using Microsoft.EntityFrameworkCore;
 
 namespace BookingCalendarApi.Services
@@ -37,12 +38,12 @@ namespace BookingCalendarApi.Services
         {
             if (!await _context.Rooms.AnyAsync(room => room.Id == id))
             {
-                throw new Exception("Room not found.");
+                throw new BookingCalendarException(BCError.NOT_FOUND, "Room not found.");
             }
 
             if (id != room.Id)
             {
-                throw new Exception("Model id can not be changed.");
+                throw new BookingCalendarException(BCError.ID_CHANGE_ATTEMPT, "Model id can not be changed.");
             }
 
             await CheckRoomTypeExists(room.Type);
@@ -68,7 +69,7 @@ namespace BookingCalendarApi.Services
 
             if (!matchedTypes.Any())
             {
-                throw new Exception("Given room type was not found on Iperbooking");
+                throw new BookingCalendarException(BCError.MISSING_ORIGIN_DATA, "Given room type was not found on Iperbooking");
             }
         }
     }

@@ -1,4 +1,5 @@
-﻿using BookingCalendarApi.Models;
+﻿using BookingCalendarApi.Exceptions;
+using BookingCalendarApi.Models;
 using BookingCalendarApi.Models.Iperbooking.Bookings;
 using Microsoft.EntityFrameworkCore;
 
@@ -101,7 +102,7 @@ namespace BookingCalendarApi.Services
                     var nextArrival = DateTime.ParseExact(nextItem.Arrival, "yyyyMMdd", null);
                     if (nextArrival < currentDeparture)
                     {
-                        throw new Exception($"Collision between tiles {currentItem.Id} and {nextItem.Id} detected on room id {group.Key}. Reverting...");
+                        throw new BookingCalendarException(BCError.ROOMS_COLLISION, $"Collision between tiles {currentItem.Id} and {nextItem.Id} detected on room id {group.Key}. Reverting...");
                     }
                 }
             }

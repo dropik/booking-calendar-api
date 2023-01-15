@@ -87,7 +87,7 @@ namespace BookingCalendarApi.Services
 
             if (!query.Any())
             {
-                throw new BookingCalendarException("No booking found.");
+                throw new BookingCalendarException(BCError.NOT_FOUND, "No booking found.");
             }
 
             return query.First();

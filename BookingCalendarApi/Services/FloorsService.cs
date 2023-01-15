@@ -1,4 +1,5 @@
-﻿using BookingCalendarApi.Models.Entities;
+﻿using BookingCalendarApi.Exceptions;
+using BookingCalendarApi.Models.Entities;
 using Microsoft.EntityFrameworkCore;
 
 namespace BookingCalendarApi.Services
@@ -37,12 +38,12 @@ namespace BookingCalendarApi.Services
         {
             if (! await _context.Floors.AnyAsync(floor => floor.Id == id))
             {
-                throw new Exception("Floor not found.");
+                throw new BookingCalendarException(BCError.NOT_FOUND, "Floor not found.");
             }
 
             if (id != floor.Id)
             {
-                throw new Exception("Model id can not be changed.");
+                throw new BookingCalendarException(BCError.ID_CHANGE_ATTEMPT, "Model id can not be changed.");
             }
 
             _context.Attach(floor);
