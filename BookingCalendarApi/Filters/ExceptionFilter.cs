@@ -27,6 +27,10 @@ namespace BookingCalendarApi.Filters
                     {
                         context.HttpContext.Response.StatusCode = (int)HttpStatusCode.NotFound;
                     }
+                    else if (bcException.ErrorCode == BCError.CONNECTION_ERROR)
+                    {
+                        context.HttpContext.Response.StatusCode = (int)HttpStatusCode.RequestTimeout;
+                    }
                     else if (
                         bcException.ErrorCode == BCError.ID_CHANGE_ATTEMPT ||
                         bcException.ErrorCode == BCError.MISSING_ORIGIN_DATA ||

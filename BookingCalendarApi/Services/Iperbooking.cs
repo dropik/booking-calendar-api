@@ -91,12 +91,10 @@ namespace BookingCalendarApi.Services
                 {
                     throw new BookingCalendarException(BCError.IPERBOOKING_ERROR, "Fetched empty data from iperbooking");
                 }
-            } catch(Exception exception)
+            } catch(HttpRequestException exception)
             {
-                Console.WriteLine(exception.Message);
+                throw new BookingCalendarException(BCError.CONNECTION_ERROR, $"Failed estalishing connection with Iperbooking: {exception.Message}");
             }
-
-            return new List<Booking>();
         }
 
         public async Task<GuestsResponse> GetGuests(string reservationId)

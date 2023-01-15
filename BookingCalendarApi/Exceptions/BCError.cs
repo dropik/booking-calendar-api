@@ -7,6 +7,7 @@
         public static int NOT_FOUND { get; } = 1;
         public static int ID_CHANGE_ATTEMPT { get; } = 2;
         public static int MISSING_ORIGIN_DATA { get; } = 3;
+        public static int CONNECTION_ERROR { get; } = 4;
 
         // domain errors
         public static int MAX_STAY_EXCEEDED { get; } = 100;
