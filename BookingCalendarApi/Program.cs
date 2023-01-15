@@ -42,6 +42,7 @@ builder.Services.AddTransient<IColorAssignmentsService, ColorAssignmentsService>
 builder.Services.AddTransient<IFloorsService, FloorsService>();
 builder.Services.AddTransient<IIstatService, IstatService>();
 builder.Services.AddTransient<IPoliceService, PoliceService>();
+builder.Services.AddTransient<IRoomAssignmentsService, RoomAssignmentsService>();
 builder.Services.AddTransient<IAssignedBookingComposer, AssignedBookingComposer>();
 builder.Services.AddTransient<IServiceSoap, ServiceSoapClient>();
 builder.Services.AddTransient<IAssignedBookingWithGuestsProvider, AssignedBookingWithGuestsProvider>();
