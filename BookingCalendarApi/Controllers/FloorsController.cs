@@ -1,99 +1,50 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using BookingCalendarApi.Models;
+﻿using BookingCalendarApi.Models;
+using BookingCalendarApi.Services;
+using Microsoft.AspNetCore.Mvc;
 
 namespace BookingCalendarApi.Controllers
 {
-    [Route("api/v1/[controller]")]
+    [Route("api/v1/floors")]
     [ApiController]
     public class FloorsController : ControllerBase
     {
-        private readonly BookingCalendarContext _context;
+        private readonly IFloorsService _service;
 
-        public FloorsController(BookingCalendarContext context)
+        public FloorsController(IFloorsService service)
         {
-            _context = context;
+            _service = service;
         }
 
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Floor>>> GetFloorsAsync()
+        public async Task<ActionResult<List<Floor>>> GetAll()
         {
-            await _context.Floors
-                .Include(floor => floor.Rooms
-                    .OrderBy(room => room.Id))
-                .ToListAsync();
-            return await _context.Floors.ToListAsync();
+            return Ok(await _service.GetAll());
         }
 
         [HttpGet("{id}")]
-        public async Task<ActionResult<Floor>> GetFloorAsync(long id)
+        public async Task<ActionResult<Floor>> Get(long id)
         {
-            var floor = await _context.Floors.FindAsync(id);
-
-            if (floor == null)
-            {
-                return NotFound();
-            }
-
-            return floor;
-        }
-
-        [HttpPut("{id}")]
-        public async Task<IActionResult> PutFloorAsync(long id, Floor floor)
-        {
-            if (id != floor.Id)
-            {
-                return BadRequest();
-            }
-
-            _context.Entry(floor).State = EntityState.Modified;
-
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!FloorExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
-
-            return NoContent();
+            return Ok(await _service.Get(id));
         }
 
         [HttpPost]
-        public async Task<ActionResult<Floor>> PostFloorAsync(Floor floor)
+        public async Task<ActionResult<Floor>> Post(Floor floor)
         {
-            _context.Floors.Add(floor);
-            await _context.SaveChangesAsync();
+            var createdFloor = await _service.Create(floor);
+            return CreatedAtAction("Get", new { id = createdFloor.Id }, createdFloor);
+        }
 
-            return CreatedAtAction("GetFloor", new { id = floor.Id }, floor);
+        [HttpPut("{id}")]
+        public async Task<IActionResult> Put(long id, Floor floor)
+        {
+            return Ok(await _service.Update(id, floor));
         }
 
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteFloorAsync(long id)
+        public async Task<IActionResult> Delete(long id)
         {
-            var floor = await _context.Floors.FindAsync(id);
-            if (floor == null)
-            {
-                return NotFound();
-            }
-
-            _context.Floors.Remove(floor);
-            await _context.SaveChangesAsync();
-
-            return NoContent();
-        }
-
-        private bool FloorExists(long id)
-        {
-            return _context.Floors.Any(e => e.Id == id);
+            await _service.Delete(id);
+            return Ok();
         }
     }
 }
