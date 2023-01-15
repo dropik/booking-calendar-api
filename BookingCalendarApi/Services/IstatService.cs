@@ -5,14 +5,14 @@ using Microsoft.EntityFrameworkCore;
 
 namespace BookingCalendarApi.Services
 {
-    public class C59ServiceSession : IC59ServiceSession
+    public class IstatService : IIstatService
     {
         private readonly EC59ServiceEndpoint _service;
         private readonly Credentials _credentials;
         private readonly IAssignedBookingWithGuestsProvider _bookingsProvider;
         private readonly BookingCalendarContext _context;
 
-        public C59ServiceSession(EC59ServiceEndpoint service, IConfiguration configuration, IAssignedBookingWithGuestsProvider bookingsProvider, BookingCalendarContext context)
+        public IstatService(EC59ServiceEndpoint service, IConfiguration configuration, IAssignedBookingWithGuestsProvider bookingsProvider, BookingCalendarContext context)
         {
             _service = service;
             _credentials = configuration.GetSection("C59Service").Get<Credentials>();
@@ -20,7 +20,7 @@ namespace BookingCalendarApi.Services
             _context = context;
         }
 
-        public async Task<IstatLastDateResponse> GetLastDateAsync()
+        public async Task<IstatLastDateResponse> GetLastDate()
         {
             var request = new ultimoC59(_credentials.Username, _credentials.Password, _credentials.Struttura);
             var response = await _service.ultimoC59Async(request);
@@ -34,8 +34,9 @@ namespace BookingCalendarApi.Services
             };
         }
 
-        public async Task SendNewDataAsync(DateTime to)
+        public async Task SendNewData(IstatSendDataRequest request)
         {
+            var to = DateTime.ParseExact(request.Date, "yyyy-MM-dd", null);
             var lastUploadRequest = new ultimoC59(_credentials.Username, _credentials.Password, _credentials.Struttura);
             var lastUploadResponse = await _service.ultimoC59Async(lastUploadRequest);
             var lastUpload = lastUploadResponse.@return.elencoC59
@@ -103,7 +104,7 @@ namespace BookingCalendarApi.Services
                 var totalDepartured = movements.Sum(movement => movement.partenze);
                 var total = prevTotal + totalArrived - totalDepartured;
 
-                var request = new inviaC59Full(_credentials.Username, _credentials.Password, _credentials.Struttura, new c59WSPO()
+                var c59Request = new inviaC59Full(_credentials.Username, _credentials.Password, _credentials.Struttura, new c59WSPO()
                 {
                     dataMovimentazione = dateCounter,
                     dataMovimentazioneSpecified = true,
@@ -116,7 +117,7 @@ namespace BookingCalendarApi.Services
                     movimenti = movements.ToArray()
                 });
 
-                await _service.inviaC59FullAsync(request);
+                await _service.inviaC59FullAsync(c59Request);
 
                 prevTotal = total;
                 dateCounter = dateCounter.AddDays(1);

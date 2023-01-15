@@ -4,27 +4,27 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace BookingCalendarApi.Controllers
 {
-    [Route("api/v1/[controller]")]
+    [Route("api/v1/istat")]
     [ApiController]
     public class IstatController : ControllerBase
     {
-        private readonly IC59ServiceSession _serviseSession;
+        private readonly IIstatService _serviseSession;
 
-        public IstatController(IC59ServiceSession serviceSession)
+        public IstatController(IIstatService serviceSession)
         {
             _serviseSession = serviceSession;
         }
 
         [HttpGet]
-        public async Task<ActionResult<IstatLastDateResponse>> GetLastDateAsync()
+        public async Task<ActionResult<IstatLastDateResponse>> GetLastDate()
         {
-            return Ok(await _serviseSession.GetLastDateAsync());
+            return Ok(await _serviseSession.GetLastDate());
         }
 
         [HttpPost]
-        public async Task<IActionResult> SendNewDataAsync(IstatSendDataRequest request)
+        public async Task<IActionResult> SendNewData(IstatSendDataRequest request)
         {
-            await _serviseSession.SendNewDataAsync(DateTime.ParseExact(request.Date, "yyyy-MM-dd", null));
+            await _serviseSession.SendNewData(request);
             return Ok();
         }
     }
