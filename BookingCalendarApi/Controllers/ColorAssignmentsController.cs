@@ -1,6 +1,5 @@
-using BookingCalendarApi.Models;
+using BookingCalendarApi.Services;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 
 namespace BookingCalendarApi.Controllers
 {
@@ -8,48 +7,18 @@ namespace BookingCalendarApi.Controllers
     [ApiController]
     public class ColorAssignmentsController : ControllerBase
     {
-        private readonly BookingCalendarContext _context;
+        private readonly IColorAssignmentsService _service;
 
-        public ColorAssignmentsController(BookingCalendarContext context)
+        public ColorAssignmentsController(IColorAssignmentsService service)
         {
-            _context = context;
+            _service = service;
         }
 
         [HttpPost]
-        public async Task<IActionResult> PostAsync(IDictionary<string, string> colors)
+        public async Task<IActionResult> Post(IDictionary<string, string> colors)
         {
-            if (colors == null)
-            {
-                return BadRequest();
-            }
-
-            try
-            {
-                foreach (var (bookingId, color) in colors)
-                {
-                    await StoreAssignmentAsync(bookingId, color);
-                }
-
-                await _context.SaveChangesAsync();
-
-                return Ok();
-            } catch (Exception)
-            {
-                return BadRequest();
-            }
-        }
-
-        private async Task StoreAssignmentAsync(string bookingId, string color)
-        {
-            var assignment = await _context.ColorAssignments.SingleOrDefaultAsync(a => a.BookingId == bookingId);
-            if (assignment != null && assignment.BookingId == bookingId)
-            {
-                assignment.Color = color;
-            }
-            else
-            {
-                _context.ColorAssignments.Add(new ColorAssignment(bookingId, color));
-            }
+            await _service.AssignColors(colors);
+            return Ok();
         }
     }
 }
