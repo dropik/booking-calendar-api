@@ -1,4 +1,4 @@
-﻿using BookingCalendarApi.Models;
+﻿using BookingCalendarApi.Models.Responses;
 
 namespace BookingCalendarApi.Services
 {
@@ -11,7 +11,7 @@ namespace BookingCalendarApi.Services
             _iperbooking = iperbooking;
         }
 
-        public async Task<List<ClientWithBooking>> GetByQuery(string query, string from, string to)
+        public async Task<List<ClientWithBookingResponse>> GetByQuery(string query, string from, string to)
         {
             var bookings = await _iperbooking.GetBookings(from, to, exactPeriod: true);
 
@@ -30,7 +30,7 @@ namespace BookingCalendarApi.Services
                     reservation => reservation.ReservationId,
                     booking => booking.BookingNumber,
                     (reservation, booking) => reservation.Guests
-                        .Select(guest => new ClientWithBooking(
+                        .Select(guest => new ClientWithBookingResponse(
                             id: guest.GuestId,
                             bookingId: reservation.ReservationId.ToString(),
                             name: guest.FirstName,
@@ -53,7 +53,7 @@ namespace BookingCalendarApi.Services
                 .ToList();
         }
 
-        public async Task<List<Client>> GetByTile(string bookingId, string tileId)
+        public async Task<List<ClientResponse>> GetByTile(string bookingId, string tileId)
         {
             var stayId = tileId.Split("-")[0];
             var response = await _iperbooking.GetGuests(bookingId);

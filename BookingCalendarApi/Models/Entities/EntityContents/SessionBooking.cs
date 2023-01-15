@@ -1,4 +1,4 @@
-﻿namespace BookingCalendarApi.Models
+﻿namespace BookingCalendarApi.Models.Entities.EntityContents
 {
     public class SessionBooking
     {

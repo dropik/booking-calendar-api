@@ -1,8 +1,8 @@
-namespace BookingCalendarApi.Models
+namespace BookingCalendarApi.Models.Responses
 {
-    public class Client
+    public class ClientResponse
     {
-        public Client(string id, string bookingId, string name, string surname, string dateOfBirth)
+        public ClientResponse(string id, string bookingId, string name, string surname, string dateOfBirth)
         {
             Id = id;
             BookingId = bookingId;

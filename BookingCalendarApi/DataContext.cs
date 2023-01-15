@@ -1,5 +1,5 @@
-﻿using BookingCalendarApi.Models;
-using BookingCalendarApi.Models.AlloggiatiService;
+﻿using BookingCalendarApi.Models.AlloggiatiService;
+using BookingCalendarApi.Models.Entities;
 
 namespace BookingCalendarApi
 {

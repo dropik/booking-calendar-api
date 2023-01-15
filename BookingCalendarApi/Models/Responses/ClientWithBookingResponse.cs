@@ -1,8 +1,8 @@
-﻿namespace BookingCalendarApi.Models
+﻿namespace BookingCalendarApi.Models.Responses
 {
-    public class ClientWithBooking : Client
+    public class ClientWithBookingResponse : ClientResponse
     {
-        public ClientWithBooking(string id, string bookingId, string name, string surname, string dateOfBirth, string bookingName, string bookingFrom, string bookingTo)
+        public ClientWithBookingResponse(string id, string bookingId, string name, string surname, string dateOfBirth, string bookingName, string bookingFrom, string bookingTo)
             : base(id, bookingId, name, surname, dateOfBirth)
         {
             BookingName = bookingName;

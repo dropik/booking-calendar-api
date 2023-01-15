@@ -1,4 +1,4 @@
-﻿namespace BookingCalendarApi.Models
+﻿namespace BookingCalendarApi.Models.Requests
 {
     public class PoliceSendRequest
     {

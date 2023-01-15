@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using BookingCalendarApi.Models;
 using BookingCalendarApi.Services;
+using BookingCalendarApi.Models.Entities;
 
 namespace BookingCalendarApi.Controllers
 {

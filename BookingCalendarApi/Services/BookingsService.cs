@@ -1,6 +1,9 @@
-﻿using BookingCalendarApi.Models;
+﻿using BookingCalendarApi.Models.Entities;
+using BookingCalendarApi.Models.Entities.EntityContents;
 using BookingCalendarApi.Models.Iperbooking.Bookings;
 using BookingCalendarApi.Models.Iperbooking.Guests;
+using BookingCalendarApi.Models.Requests;
+using BookingCalendarApi.Models.Responses;
 using Microsoft.EntityFrameworkCore;
 using System.Formats.Cbor;
 
@@ -23,7 +26,7 @@ namespace BookingCalendarApi.Services
             _context = context;
         }
 
-        public async Task<Booking<List<Client>>> Get(string id, string from)
+        public async Task<BookingResponse<List<ClientResponse>>> Get(string id, string from)
         {
             var fromDate = DateTime.ParseExact(from, "yyyy-MM-dd", null);
             var arrivalFrom = fromDate.AddDays(-15).ToString("yyyy-MM-dd");
@@ -39,7 +42,7 @@ namespace BookingCalendarApi.Services
                          from color in gj.DefaultIfEmpty()
                          select new { Booking = b, Color = color }
                         ).ToList()
-                        .Select(join => new Booking<List<Client>>(
+                        .Select(join => new BookingResponse<List<ClientResponse>>(
                             id: join.Booking.BookingNumber.ToString(),
                             name: $"{join.Booking.FirstName} {join.Booking.LastName}",
                             lastModified: join.Booking.LastModified,
@@ -54,7 +57,7 @@ namespace BookingCalendarApi.Services
                                      from assignment in gj.DefaultIfEmpty()
                                      select new { Room = room, Reservation = reservation, Assignment = assignment })
                                     .ToList()
-                                    .Select(join => new Tile<List<Client>>(
+                                    .Select(join => new TileResponse<List<ClientResponse>>(
                                         id: $"{join.Room.StayId}-{join.Room.Arrival}-{join.Room.Departure}",
                                         from: DateTime.ParseExact(join.Room.Arrival, "yyyyMMdd", null).ToString("yyyy-MM-dd"),
                                         nights: Convert.ToUInt32((DateTime.ParseExact(join.Room.Departure, "yyyyMMdd", null) - DateTime.ParseExact(join.Room.Arrival, "yyyyMMdd", null)).Days),
@@ -62,7 +65,7 @@ namespace BookingCalendarApi.Services
                                         rateId: join.Room.RateId,
                                         persons: join.Reservation.Guests
                                             .Where(guest => guest.ReservationRoomId == join.Room.StayId)
-                                            .Select(guest => new Client(
+                                            .Select(guest => new ClientResponse(
                                                 id: guest.GuestId,
                                                 bookingId: join.Reservation.ReservationId.ToString(),
                                                 name: guest.FirstName,
@@ -89,7 +92,7 @@ namespace BookingCalendarApi.Services
             return query.First();
         }
 
-        public async Task<List<ShortBooking>> GetByName(string from, string to, string? name)
+        public async Task<List<ShortBookingResponse>> GetByName(string from, string to, string? name)
         {
             var definedName = name ?? "";
             var bookingsByName = (await _iperbooking.GetBookings(from, to))
@@ -102,7 +105,7 @@ namespace BookingCalendarApi.Services
                                      select new { Booking = booking, Color = color };
 
             return bookingsWithColors
-                .Select(join => new ShortBooking(
+                .Select(join => new ShortBookingResponse(
                     id: join.Booking.BookingNumber.ToString(),
                     name: $"{join.Booking.FirstName} {join.Booking.LastName}",
                     lastModified: join.Booking.LastModified,
@@ -135,7 +138,7 @@ namespace BookingCalendarApi.Services
                                      from color in gj.DefaultIfEmpty()
                                      select new { Booking = booking, Color = color };
 
-            var bookingsWithGuestsCount = bookingsWithColors.Select(join => new Booking<uint>(
+            var bookingsWithGuestsCount = bookingsWithColors.Select(join => new BookingResponse<uint>(
                     id: join.Booking.BookingNumber.ToString(),
                     name: $"{join.Booking.FirstName} {join.Booking.LastName}",
                     lastModified: join.Booking.LastModified,
@@ -149,7 +152,7 @@ namespace BookingCalendarApi.Services
                          from assignment in gj.DefaultIfEmpty()
                          select new { Room = room, Assignment = assignment })
                                  .ToList()
-                                 .Select(join => new Tile<uint>(
+                                 .Select(join => new TileResponse<uint>(
                                     id: $"{join.Room.StayId}-{join.Room.Arrival}-{join.Room.Departure}",
                                     from: DateTime.ParseExact(join.Room.Arrival, "yyyyMMdd", null).ToString("yyyy-MM-dd"),
                                     nights: Convert.ToUInt32((DateTime.ParseExact(join.Room.Departure, "yyyyMMdd", null) - DateTime.ParseExact(join.Room.Arrival, "yyyyMMdd", null)).Days),

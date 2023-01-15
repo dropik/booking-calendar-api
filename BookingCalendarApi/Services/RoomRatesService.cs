@@ -23,7 +23,7 @@ namespace BookingCalendarApi.Services
                         (roomRate, rateGroup) => new { name = roomRate.RoomName, rateGroup })
                     .SelectMany(
                         roomRate => roomRate.rateGroup.Rates.Take(1),
-                        (roomRate, rate) => new RoomType(roomRate.name, rate.MinOccupancy, rate.MaxOccupancy))
+                        (roomRate, rate) => new RoomTypeResponse(roomRate.name, rate.MinOccupancy, rate.MaxOccupancy))
                     .ToList(),
 
                 RoomRates = roomRates

@@ -1,4 +1,4 @@
-﻿namespace BookingCalendarApi.Models
+﻿namespace BookingCalendarApi.Models.Responses
 {
     public class BookingsBySessionResponse
     {
@@ -7,7 +7,7 @@
             SessionId = sessionId;
         }
 
-        public List<Booking<uint>> Bookings { get; set; } = new List<Booking<uint>>();
+        public List<BookingResponse<uint>> Bookings { get; set; } = new List<BookingResponse<uint>>();
         public string SessionId { get; set; }
     }
 }

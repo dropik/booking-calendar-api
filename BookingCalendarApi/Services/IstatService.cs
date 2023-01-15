@@ -1,5 +1,6 @@
-﻿using BookingCalendarApi.Models;
-using BookingCalendarApi.Models.C59Service;
+﻿using BookingCalendarApi.Models.C59Service;
+using BookingCalendarApi.Models.Requests;
+using BookingCalendarApi.Models.Responses;
 using C59Service;
 using Microsoft.EntityFrameworkCore;
 

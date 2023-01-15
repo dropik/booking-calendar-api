@@ -1,8 +1,8 @@
-namespace BookingCalendarApi.Models
+namespace BookingCalendarApi.Models.Responses
 {
-    public class Tile<TPerson>
+    public class TileResponse<TPerson>
     {
-        public Tile(
+        public TileResponse(
             string id,
             string from,
             uint nights,

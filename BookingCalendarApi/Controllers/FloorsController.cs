@@ -1,4 +1,4 @@
-﻿using BookingCalendarApi.Models;
+﻿using BookingCalendarApi.Models.Entities;
 using BookingCalendarApi.Services;
 using Microsoft.AspNetCore.Mvc;
 

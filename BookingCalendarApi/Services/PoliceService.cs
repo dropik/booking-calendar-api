@@ -1,6 +1,7 @@
-﻿using BookingCalendarApi.Models;
-using BookingCalendarApi.Models.Iperbooking.Bookings;
+﻿using BookingCalendarApi.Models.Iperbooking.Bookings;
 using BookingCalendarApi.Models.Iperbooking.Guests;
+using BookingCalendarApi.Models.Requests;
+using BookingCalendarApi.Models.Responses;
 using Microsoft.EntityFrameworkCore;
 
 namespace BookingCalendarApi.Services
@@ -29,7 +30,7 @@ namespace BookingCalendarApi.Services
             _context = context;
         }
 
-        public async Task<PoliceRicevutaResult> GetRicevuta(string date)
+        public async Task<PoliceRicevutaResponse> GetRicevuta(string date)
         {
             await _session.Open();
             var pdf = await _session.GetRicevutaAsync(DateTime.ParseExact(date, "yyyy-MM-dd", null));

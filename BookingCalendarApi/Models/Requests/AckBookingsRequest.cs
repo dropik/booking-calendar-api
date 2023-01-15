@@ -1,4 +1,6 @@
-﻿namespace BookingCalendarApi.Models
+﻿using BookingCalendarApi.Models.Entities.EntityContents;
+
+namespace BookingCalendarApi.Models.Requests
 {
     public class AckBookingsRequest
     {

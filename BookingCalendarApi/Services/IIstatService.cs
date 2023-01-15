@@ -1,4 +1,5 @@
-﻿using BookingCalendarApi.Models;
+﻿using BookingCalendarApi.Models.Requests;
+using BookingCalendarApi.Models.Responses;
 
 namespace BookingCalendarApi.Services
 {

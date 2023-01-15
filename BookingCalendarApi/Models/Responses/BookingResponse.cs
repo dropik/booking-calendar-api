@@ -1,19 +1,18 @@
-﻿using BookingCalendarApi.Models.Internal;
+﻿using BookingCalendarApi.Models.Json;
 using BookingCalendarApi.Models.Iperbooking.Bookings;
 using System.Text.Json.Serialization;
 
-namespace BookingCalendarApi.Models
+namespace BookingCalendarApi.Models.Responses
 {
-    public class ShortBooking
+    public class BookingResponse<TPerson>
     {
-        public ShortBooking(string id, string name, string lastModified, string from, string to, uint occupations)
+        public BookingResponse(string id, string name, string lastModified, string from, string to)
         {
             Id = id;
             Name = name;
             LastModified = lastModified;
             From = from;
             To = to;
-            Occupations = occupations;
         }
 
         public string Id { get; set; }
@@ -24,6 +23,7 @@ namespace BookingCalendarApi.Models
         public string From { get; set; }
         public string To { get; set; }
         public string? Color { get; set; }
-        public uint Occupations { get; set; }
+
+        public List<TileResponse<TPerson>> Tiles { get; set; } = new List<TileResponse<TPerson>>();
     }
 }

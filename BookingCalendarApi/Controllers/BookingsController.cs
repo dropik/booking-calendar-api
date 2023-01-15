@@ -1,4 +1,5 @@
-using BookingCalendarApi.Models;
+using BookingCalendarApi.Models.Requests;
+using BookingCalendarApi.Models.Responses;
 using BookingCalendarApi.Services;
 using Microsoft.AspNetCore.Mvc;
 
@@ -16,13 +17,13 @@ namespace BookingCalendarApi.Controllers
         }
 
         [HttpGet("booking")]
-        public async Task<ActionResult<Booking<List<Client>>>> Get(string id, string from)
+        public async Task<ActionResult<BookingResponse<List<ClientResponse>>>> Get(string id, string from)
         {
             return Ok(await _service.Get(id, from));
         }
 
         [HttpGet("bookings-by-name")]
-        public async Task<ActionResult<List<ShortBooking>>> GetByName(string from, string to, string? name)
+        public async Task<ActionResult<List<ShortBookingResponse>>> GetByName(string from, string to, string? name)
         {
             return Ok(await _service.GetByName(from, to, name));
         }

@@ -1,4 +1,4 @@
-﻿namespace BookingCalendarApi.Models
+﻿namespace BookingCalendarApi.Models.Responses
 {
     public class IstatLastDateResponse
     {

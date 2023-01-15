@@ -1,5 +1,5 @@
-﻿using BookingCalendarApi.Models;
-using BookingCalendarApi.Models.Iperbooking.Bookings;
+﻿using BookingCalendarApi.Models.Iperbooking.Bookings;
+using BookingCalendarApi.Models.Responses;
 using Microsoft.EntityFrameworkCore;
 
 namespace BookingCalendarApi.Services
