@@ -41,7 +41,7 @@ namespace BookingCalendarApi.Services
             }
             catch (CommunicationException exception)
             {
-                throw new BookingCalendarException(BCError.CONNECTION_ERROR, $"Failed connecting to police service: {exception.Message}");
+                throw new BookingCalendarException(BCError.CONNECTION_ERROR, $"Failed establish connection to police service: {exception.Message}");
             }
         }
 
@@ -99,7 +99,7 @@ namespace BookingCalendarApi.Services
             }
             catch (CommunicationException exception)
             {
-                throw new BookingCalendarException(BCError.CONNECTION_ERROR, $"Failed connecting to police service: {exception.Message}");
+                throw new BookingCalendarException(BCError.CONNECTION_ERROR, $"Failed establish connection to police service: {exception.Message}");
             }
         }
 
@@ -123,7 +123,7 @@ namespace BookingCalendarApi.Services
             }
             catch (CommunicationException exception)
             {
-                throw new BookingCalendarException(BCError.CONNECTION_ERROR, $"Failed connecting to police service: {exception.Message}");
+                throw new BookingCalendarException(BCError.CONNECTION_ERROR, $"Failed establish connection to police service: {exception.Message}");
             }
         }
 
@@ -154,7 +154,7 @@ namespace BookingCalendarApi.Services
             }
             catch (CommunicationException exception)
             {
-                throw new BookingCalendarException(BCError.CONNECTION_ERROR, $"Failed connecting to police service: {exception.Message}");
+                throw new BookingCalendarException(BCError.CONNECTION_ERROR, $"Failed establish connection to police service: {exception.Message}");
             }
         }
     }

@@ -44,12 +44,10 @@ namespace BookingCalendarApi.Services
                 {
                     throw new BookingCalendarException(BCError.IPERBOOKING_ERROR, "Fetched empty data from iperbooking");
                 }
-            } catch(Exception exception)
+            } catch(HttpRequestException exception)
             {
-                Console.WriteLine(exception.Message);
+                throw new BookingCalendarException(BCError.CONNECTION_ERROR, $"Failed estalish connection with Iperbooking: {exception.Message}");
             }
-
-            return new List<RoomRateRoom>();
         }
 
         public async Task<List<Booking>> GetBookings(string from, string to, bool exactPeriod = false)
@@ -93,7 +91,7 @@ namespace BookingCalendarApi.Services
                 }
             } catch(HttpRequestException exception)
             {
-                throw new BookingCalendarException(BCError.CONNECTION_ERROR, $"Failed estalishing connection with Iperbooking: {exception.Message}");
+                throw new BookingCalendarException(BCError.CONNECTION_ERROR, $"Failed estalish connection with Iperbooking: {exception.Message}");
             }
         }
 
@@ -130,12 +128,10 @@ namespace BookingCalendarApi.Services
                 }
 
             }
-            catch (Exception exception)
+            catch (HttpRequestException exception)
             {
-                Console.WriteLine(exception.Message);
+                throw new BookingCalendarException(BCError.CONNECTION_ERROR, $"Failed estalish connection with Iperbooking: {exception.Message}");
             }
-
-            return new GuestsResponse();
         }
     }
 }
