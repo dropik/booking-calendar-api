@@ -27,7 +27,7 @@ namespace BookingCalendarApi.Services
         {
             to ??= DateTime.ParseExact(from, "yyyy-MM-dd", null).AddDays(1).ToString("yyyy-MM-dd");
 
-            var bookings = (await _iperbooking.GetBookingsAsync(from, to, exactPeriod))
+            var bookings = (await _iperbooking.GetBookings(from, to, exactPeriod))
                 .ExcludeCancelled();
 
             var stayIds = bookings
@@ -50,7 +50,7 @@ namespace BookingCalendarApi.Services
                 bookingIds += $"{booking.Booking.BookingNumber},";
             }
 
-            var guestResponse = await _iperbooking.GetGuestsAsync(bookingIds);
+            var guestResponse = await _iperbooking.GetGuests(bookingIds);
 
             return assignedBookings
                 .Join(

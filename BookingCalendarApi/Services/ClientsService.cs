@@ -13,7 +13,7 @@ namespace BookingCalendarApi.Services
 
         public async Task<List<ClientWithBooking>> GetByQuery(string query, string from, string to)
         {
-            var bookings = await _iperbooking.GetBookingsAsync(from, to, exactPeriod: true);
+            var bookings = await _iperbooking.GetBookings(from, to, exactPeriod: true);
 
             string bookingIds = "";
             foreach (var booking in bookings)
@@ -21,7 +21,7 @@ namespace BookingCalendarApi.Services
                 bookingIds += $"{booking.BookingNumber},";
             }
 
-            var guestsResponse = await _iperbooking.GetGuestsAsync(bookingIds);
+            var guestsResponse = await _iperbooking.GetGuests(bookingIds);
 
             return guestsResponse.Reservations
                 .SelectByQuery(query)
@@ -56,7 +56,7 @@ namespace BookingCalendarApi.Services
         public async Task<List<Client>> GetByTile(string bookingId, string tileId)
         {
             var stayId = tileId.Split("-")[0];
-            var response = await _iperbooking.GetGuestsAsync(bookingId);
+            var response = await _iperbooking.GetGuests(bookingId);
 
             return response.Reservations
                 .SelectByStayId(stayId)

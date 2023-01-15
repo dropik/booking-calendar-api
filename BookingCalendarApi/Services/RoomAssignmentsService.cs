@@ -50,7 +50,7 @@ namespace BookingCalendarApi.Services
 
             var arrivalFrom = DateTime.ParseExact(firstArrival, "yyyyMMdd", null).ToString("yyyy-MM-dd");
             var arrivalTo = DateTime.ParseExact(lastDeparture, "yyyyMMdd", null).ToString("yyyy-MM-dd");
-            return await _iperbooking.GetBookingsAsync(arrivalFrom, arrivalTo);
+            return await _iperbooking.GetBookings(arrivalFrom, arrivalTo);
         }
 
         private async Task<IDictionary<string, AssignedTile>> CreateAssignedTilesCacheAsync(IEnumerable<Booking> bookings)

@@ -92,7 +92,7 @@ namespace BookingCalendarApi.Services
         public async Task<List<ShortBooking>> GetByName(string from, string to, string? name)
         {
             var definedName = name ?? "";
-            var bookingsByName = (await _iperbooking.GetBookingsAsync(from, to))
+            var bookingsByName = (await _iperbooking.GetBookings(from, to))
                 .SelectInRange(from, to)
                 .SelectByName(definedName);
 
@@ -249,12 +249,12 @@ namespace BookingCalendarApi.Services
 
         private async Task FetchBookings(string from, string to, bool exactPeriod = false)
         {
-            Bookings = await _iperbooking.GetBookingsAsync(from, to, exactPeriod);
+            Bookings = await _iperbooking.GetBookings(from, to, exactPeriod);
         }
 
         private async Task FetchGuests(string id)
         {
-            GuestsResponse = await _iperbooking.GetGuestsAsync(id);
+            GuestsResponse = await _iperbooking.GetGuests(id);
         }
     }
 }

@@ -30,12 +30,12 @@ namespace BookingCalendarApi.Controllers
         [HttpPost]
         public async Task<ActionResult<Floor>> Post(Floor floor)
         {
-            var createdFloor = await _service.Create(floor);
-            return CreatedAtAction("Get", new { id = createdFloor.Id }, createdFloor);
+            var result = await _service.Create(floor);
+            return CreatedAtAction("Get", new { id = result.Id }, result);
         }
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> Put(long id, Floor floor)
+        public async Task<ActionResult<Floor>> Put(long id, Floor floor)
         {
             return Ok(await _service.Update(id, floor));
         }

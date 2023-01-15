@@ -29,7 +29,7 @@ namespace BookingCalendarApi.Services
         {
             _dataContext.RoomAssignments.AddRange(await _context.RoomAssignments.ToListAsync());
 
-            var bookings = (await _iperbooking.GetBookingsAsync(from, to))
+            var bookings = (await _iperbooking.GetBookings(from, to))
                 .ExcludeCancelled()
                 .SelectInRange(from, to);
 
@@ -39,7 +39,7 @@ namespace BookingCalendarApi.Services
                 bookingIds += $"{booking.BookingNumber},";
             }
 
-            var guestResponse = await _iperbooking.GetGuestsAsync(bookingIds);
+            var guestResponse = await _iperbooking.GetGuests(bookingIds);
 
             var stays = bookings
                 .UseComposer(_assignedBookingComposer)

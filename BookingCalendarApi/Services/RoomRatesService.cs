@@ -14,7 +14,7 @@ namespace BookingCalendarApi.Services
 
         public async Task<RoomRatesResponse> Get()
         {
-            var roomRates = await _iperbooking.GetRoomRatesAsync();
+            var roomRates = await _iperbooking.GetRoomRates();
             return new RoomRatesResponse()
             {
                 RoomTypes = roomRates
