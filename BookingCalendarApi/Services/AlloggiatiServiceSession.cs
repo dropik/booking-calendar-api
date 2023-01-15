@@ -18,7 +18,7 @@ namespace BookingCalendarApi.Services
             _service = service;
         }
 
-        public async Task OpenAsync()
+        public async Task Open()
         {
             var request = new GenerateTokenRequest(new GenerateTokenRequestBody()
             {
@@ -35,7 +35,7 @@ namespace BookingCalendarApi.Services
             Token = response.Body.GenerateTokenResult.token;
         }
 
-        public async Task SendDataAsync(IList<string> data, bool test)
+        public async Task SendData(IList<string> data, bool test)
         {
             var array = new ArrayOfString();
             array.AddRange(data);
