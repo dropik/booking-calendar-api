@@ -1,7 +1,6 @@
 using AlloggiatiService;
 using BookingCalendarApi;
 using BookingCalendarApi.Filters;
-using BookingCalendarApi.Models.Iperbooking.Guests;
 using BookingCalendarApi.Services;
 using C59Service;
 using Microsoft.EntityFrameworkCore;
@@ -46,22 +45,6 @@ builder.Services.AddTransient<IC59ServiceSession, C59ServiceSession>();
 builder.Services.AddTransient<IPlaceConverter, PlaceConverter>();
 builder.Services.AddTransient<INationConverter, NationConverter>();
 builder.Services.AddTransient<ITrackedRecordsComposer, TrackedRecordsComposer>();
-
-#nullable disable
-builder.Services.AddTransient<Func<string, string, IEnumerable<Reservation>, ICityTaxCalculator>>(
-    serviceProvider =>
-        (from, to, reservations) =>
-            new CityTaxPeriodTrimmer(
-                from, to,
-                new CityTaxOver10Days(
-                    new CityTaxGuestRegistriesFilter(
-                        reservations,
-                        new SimpleCityTaxCalculator()
-                    )
-                )
-            )
-);
-#nullable enable
 
 var app = builder.Build();
 

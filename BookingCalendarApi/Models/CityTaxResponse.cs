@@ -2,8 +2,8 @@
 {
     public class CityTaxResponse
     {
-        public uint Standard { get; set; }
-        public uint Children { get; set; }
-        public uint Over10Days { get;set; }
+        public int Standard { get; set; }
+        public int Children { get; set; }
+        public int Over10Days { get;set; }
     }
 }

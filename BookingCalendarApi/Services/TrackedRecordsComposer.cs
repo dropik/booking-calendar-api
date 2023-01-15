@@ -101,7 +101,7 @@ namespace BookingCalendarApi.Services
                     recordToSolve.DocType != null &&
                     recordToSolve.DocNumber != null &&
                     recordToSolve.DocIssuer != null &&
-                    CityTaxGuestRegistriesFilter.GetAgeAtArrival(recordToSolve.BirthDate.ToString("yyyyMMdd"), recordToSolve.Arrival.ToString("yyyyMMdd")) >= 18;
+                    Utils.GetAgeAtArrival(recordToSolve.BirthDate.ToString("yyyyMMdd"), recordToSolve.Arrival.ToString("yyyyMMdd")) >= 18;
 
                 var mightBeFamily =
                     (
@@ -112,7 +112,7 @@ namespace BookingCalendarApi.Services
                     (
                         recordsBlock.Count() > 2 &&
                         recordsBlock.Count() <= 5 &&
-                        recordsBlock.Where(record => CityTaxGuestRegistriesFilter.GetAgeAtArrival(record.BirthDate.ToString("yyyyMMdd"), record.Arrival.ToString("yyyyMMdd")) >= 18).Count() < recordsBlock.Count()
+                        recordsBlock.Where(record => Utils.GetAgeAtArrival(record.BirthDate.ToString("yyyyMMdd"), record.Arrival.ToString("yyyyMMdd")) >= 18).Count() < recordsBlock.Count()
                     ) ||
                     recordsBlock.Where(record => record.Surname == recordToSolve.Surname).Count() > 2;
 

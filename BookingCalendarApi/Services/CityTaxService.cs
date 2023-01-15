@@ -1,6 +1,5 @@
 ﻿using BookingCalendarApi.Models;
 using BookingCalendarApi.Models.Iperbooking.Bookings;
-using BookingCalendarApi.Models.Iperbooking.Guests;
 using Microsoft.EntityFrameworkCore;
 
 namespace BookingCalendarApi.Services
@@ -9,20 +8,19 @@ namespace BookingCalendarApi.Services
     {
         private readonly IAssignedBookingComposer _assignedBookingComposer;
         private readonly IIperbooking _iperbooking;
-        private readonly Func<string, string, IEnumerable<Reservation>, ICityTaxCalculator> _calculatorProvider;
         private readonly DataContext _dataContext;
         private readonly BookingCalendarContext _context;
+
+        private const int CHILD_AGE = 14;
 
         public CityTaxService(
             IAssignedBookingComposer assignedBookingComposer,
             IIperbooking iperbooking,
-            Func<string, string, IEnumerable<Reservation>, ICityTaxCalculator> calculatorProvider,
             DataContext dataContext,
             BookingCalendarContext context)
         {
             _assignedBookingComposer = assignedBookingComposer;
             _iperbooking = iperbooking;
-            _calculatorProvider = calculatorProvider;
             _dataContext = dataContext;
             _context = context;
         }
@@ -43,9 +41,7 @@ namespace BookingCalendarApi.Services
 
             var guestResponse = await _iperbooking.GetGuestsAsync(bookingIds);
 
-            var calculator = _calculatorProvider(from, to, guestResponse.Reservations);
-
-            return bookings
+            var stays = bookings
                 .UseComposer(_assignedBookingComposer)
                 .SelectMany(
                     bookingContainer => bookingContainer.Rooms,
@@ -58,8 +54,59 @@ namespace BookingCalendarApi.Services
                         Guests = room.Guests,
                         RoomId = room.RoomId
                     })
-                .ExcludeNotAssigned()
-                .UseCalculator(calculator);
+                .ExcludeNotAssigned();
+
+            var guests = guestResponse.Reservations
+                .SelectMany(reservation => reservation.Guests, (reservation, guest) => new { guest.ReservationRoomId, guest.FirstName, guest.BirthDate })
+                .Join(stays, guest => guest.ReservationRoomId, stay => stay.StayId, (guest, stay) => new { guest.FirstName, guest.BirthDate, stay.Arrival, stay.Departure });
+
+            var result = new CityTaxResponse();
+
+            foreach (var guest in guests)
+            {
+                if (guest.FirstName == "" || guest.BirthDate.Trim() == "")
+                {
+                    continue;
+                }
+
+                var guestResult = new CityTaxResponse();
+                var nights = (DateTime.ParseExact(guest.Departure, "yyyyMMdd", null) - DateTime.ParseExact(guest.Arrival, "yyyyMMdd", null)).Days;
+                var age = Utils.GetAgeAtArrival(guest.BirthDate, guest.Arrival);
+
+                if (age < CHILD_AGE)
+                {
+                    guestResult.Children = nights;
+                }
+                else
+                {
+                    guestResult.Standard = Math.Min(nights, 10);
+                    guestResult.Over10Days = Math.Max(nights - 10, 0);
+                }
+
+                var cropLeft = Math.Max((DateTime.ParseExact(from, "yyyy-MM-dd", null) - DateTime.ParseExact(guest.Arrival, "yyyyMMdd", null)).Days, 0);
+                guestResult.Children = Math.Max(guestResult.Children - cropLeft, 0);
+                guestResult.Standard -= cropLeft;
+                if (guestResult.Standard < 0)
+                {
+                    guestResult.Over10Days = Math.Max(guestResult.Over10Days + guestResult.Standard, 0);
+                    guestResult.Standard = 0;
+                }
+
+                var cropRight = Math.Max((DateTime.ParseExact(guest.Departure, "yyyyMMdd", null) - DateTime.ParseExact(to, "yyyy-MM-dd", null)).Days, 0);
+                guestResult.Children = Math.Max(guestResult.Children - cropRight, 0);
+                guestResult.Over10Days -= cropRight;
+                if (guestResult.Over10Days < 0)
+                {
+                    guestResult.Standard = Math.Max(guestResult.Standard + guestResult.Over10Days, 0);
+                    guestResult.Over10Days = 0;
+                }
+
+                result.Standard += guestResult.Standard;
+                result.Children += guestResult.Children;
+                result.Over10Days += guestResult.Over10Days;
+            }
+
+            return result;
         }
     }
 }
