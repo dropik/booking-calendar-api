@@ -1,4 +1,5 @@
-﻿using BookingCalendarApi.Models.Entities;
+﻿using BookingCalendarApi.Exceptions;
+using BookingCalendarApi.Models.Entities;
 using BookingCalendarApi.Models.Entities.EntityContents;
 using BookingCalendarApi.Models.Iperbooking.Bookings;
 using BookingCalendarApi.Models.Iperbooking.Guests;
@@ -86,7 +87,7 @@ namespace BookingCalendarApi.Services
 
             if (!query.Any())
             {
-                throw new Exception("No booking found.");
+                throw new BookingCalendarException("No booking found.");
             }
 
             return query.First();

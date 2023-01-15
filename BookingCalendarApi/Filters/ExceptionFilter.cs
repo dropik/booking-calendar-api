@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using BookingCalendarApi.Exceptions;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 using System.Net;
 
@@ -18,6 +19,12 @@ namespace BookingCalendarApi.Filters
                 context.HttpContext.Response.ContentType = "application/json";
                 context.ExceptionHandled = true;
                 context.Result = new ObjectResult(context.Exception.Message);
+
+                var bcException = context.Exception as BookingCalendarException;
+                if (bcException != null)
+                {
+                    context.Result = new ObjectResult(new { bcException.ErrorCode, bcException.Message });
+                }
             }
         }
     }
