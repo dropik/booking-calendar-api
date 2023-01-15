@@ -76,7 +76,7 @@ namespace BookingCalendarApi.Services
                                             })
                                             .ToList())
                                     {
-                                        RoomId = join.Assignment?.RoomId ?? null
+                                        RoomId = join.Assignment?.RoomId
                                     })
                                     .ToList()
                         });
@@ -155,9 +155,9 @@ namespace BookingCalendarApi.Services
                                     nights: Convert.ToUInt32((DateTime.ParseExact(join.Room.Departure, "yyyyMMdd", null) - DateTime.ParseExact(join.Room.Arrival, "yyyyMMdd", null)).Days),
                                     roomType: join.Room.RoomName,
                                     rateId: join.Room.RateId,
-                                    persons: Convert.ToUInt32(join.Room.Guests.Count()))
+                                    persons: Convert.ToUInt32(join.Room.Guests.Count))
                                  {
-                                     RoomId = join.Assignment?.RoomId ?? null
+                                     RoomId = join.Assignment?.RoomId
                                  })
                                  .ToList()
             })
@@ -243,7 +243,7 @@ namespace BookingCalendarApi.Services
             }
             else
             {
-                _context.Sessions.Add(new SessionEntry(SessionId) { Data = data });
+                _context.Sessions.Add(new() { Id = SessionId, Data = data });
             }
         }
 

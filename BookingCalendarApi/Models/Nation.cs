@@ -1,6 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations;
-
-namespace BookingCalendarApi.Models
+﻿namespace BookingCalendarApi.Models
 {
     public class Nation
     {
@@ -11,11 +9,8 @@ namespace BookingCalendarApi.Models
             Description = description;
         }
 
-        [Key]
-        public string Iso { get; set; }
-        [Required]
+        public string Iso { get; set; } = "";
         public ulong Code { get; set; }
-        [Required]
-        public string Description { get; set; }
+        public string Description { get; set; } = "";
     }
 }

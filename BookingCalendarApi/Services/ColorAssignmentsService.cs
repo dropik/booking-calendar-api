@@ -28,7 +28,7 @@ namespace BookingCalendarApi.Services
                 }
                 else
                 {
-                    _context.ColorAssignments.Add(new ColorAssignment(bookingId, color));
+                    _context.ColorAssignments.Add(new() { BookingId = bookingId, Color = color });
                 }
             }
 
