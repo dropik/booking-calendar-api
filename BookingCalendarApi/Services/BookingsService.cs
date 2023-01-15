@@ -6,7 +6,7 @@ using System.Formats.Cbor;
 
 namespace BookingCalendarApi.Services
 {
-    public class BookingService : IBookingService
+    public class BookingsService : IBookingsService
     {
         private readonly IIperbooking _iperbooking;
         private readonly BookingCalendarContext _context;
@@ -17,7 +17,7 @@ namespace BookingCalendarApi.Services
         private List<SessionBooking> SessionBookings { get; set; } = new();
         private SessionEntry? Entry { get; set; }
 
-        public BookingService(IIperbooking iperbooking, BookingCalendarContext context)
+        public BookingsService(IIperbooking iperbooking, BookingCalendarContext context)
         {
             _iperbooking = iperbooking;
             _context = context;

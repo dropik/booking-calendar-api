@@ -35,7 +35,7 @@ builder.Services.AddScoped<IAlloggiatiServiceSession, AlloggiatiServiceSession>(
 builder.Services.AddScoped<DataContext>();
 
 // transient services
-builder.Services.AddTransient<IBookingService, BookingService>();
+builder.Services.AddTransient<IBookingsService, BookingsService>();
 builder.Services.AddTransient<ICityTaxService, CityTaxService>();
 builder.Services.AddTransient<IClientsService, ClientsService>();
 builder.Services.AddTransient<IColorAssignmentsService, ColorAssignmentsService>();

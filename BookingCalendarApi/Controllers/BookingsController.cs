@@ -8,9 +8,9 @@ namespace BookingCalendarApi.Controllers
     [ApiController]
     public class BookingsController : ControllerBase
     {
-        private readonly IBookingService _service;
+        private readonly IBookingsService _service;
 
-        public BookingsController(IBookingService service)
+        public BookingsController(IBookingsService service)
         {
             _service = service;
         }
