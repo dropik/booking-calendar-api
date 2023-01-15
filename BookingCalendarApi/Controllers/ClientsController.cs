@@ -16,9 +16,15 @@ namespace BookingCalendarApi.Controllers
         }
 
         [HttpGet("clients-by-query")]
-        public async Task<ActionResult<IEnumerable<ClientWithBooking>>> GetByQuery(string query, string from, string to)
+        public async Task<ActionResult<List<ClientWithBooking>>> GetByQuery(string query, string from, string to)
         {
             return Ok(await _service.GetByQuery(query, from, to));
+        }
+
+        [HttpGet("clients-by-tile")]
+        public async Task<ActionResult<List<Client>>> GetByTile(string bookingId, string tileId)
+        {
+            return Ok(await _service.GetByTile(bookingId, tileId));
         }
     }
 }

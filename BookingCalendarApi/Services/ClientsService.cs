@@ -52,5 +52,16 @@ namespace BookingCalendarApi.Services
                 .SelectMany(guests => guests)
                 .ToList();
         }
+
+        public async Task<List<Client>> GetByTile(string bookingId, string tileId)
+        {
+            var stayId = tileId.Split("-")[0];
+            var response = await _iperbooking.GetGuestsAsync(bookingId);
+
+            return response.Reservations
+                .SelectByStayId(stayId)
+                .ComposeResponse()
+                .ToList();
+        }
     }
 }
