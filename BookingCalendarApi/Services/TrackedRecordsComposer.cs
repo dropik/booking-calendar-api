@@ -32,7 +32,7 @@ namespace BookingCalendarApi.Services
                             {
                                 Guest.Sex.M => Gender.Male,
                                 Guest.Sex.F => Gender.Female,
-                                _ => throw new Exception("Gender was not found")
+                                _ => Gender.Male,
                             },
                             BirthDate = DateTime.ParseExact(guest.BirthDate, "yyyyMMdd", null),
                             PlaceOfBirth = guest.BirthCountry != null && guest.BirthCountry == "IT" && guest.BirthCity != null && guest.BirthCity.Trim() != "" ? _placeConverter.GetPlaceCodeByDescription(guest.BirthCity) : null,
@@ -101,7 +101,7 @@ namespace BookingCalendarApi.Services
                     recordToSolve.DocType != null &&
                     recordToSolve.DocNumber != null &&
                     recordToSolve.DocIssuer != null &&
-                    CityTaxGuestRegistriesFilter.GetAgeAtArrival(recordToSolve.BirthDate.ToString("yyyyMMdd"), recordToSolve.Arrival.ToString("yyyyMMdd")) >= 18;
+                    Utils.GetAgeAtArrival(recordToSolve.BirthDate.ToString("yyyyMMdd"), recordToSolve.Arrival.ToString("yyyyMMdd")) >= 18;
 
                 var mightBeFamily =
                     (
@@ -112,7 +112,7 @@ namespace BookingCalendarApi.Services
                     (
                         recordsBlock.Count() > 2 &&
                         recordsBlock.Count() <= 5 &&
-                        recordsBlock.Where(record => CityTaxGuestRegistriesFilter.GetAgeAtArrival(record.BirthDate.ToString("yyyyMMdd"), record.Arrival.ToString("yyyyMMdd")) >= 18).Count() < recordsBlock.Count()
+                        recordsBlock.Where(record => Utils.GetAgeAtArrival(record.BirthDate.ToString("yyyyMMdd"), record.Arrival.ToString("yyyyMMdd")) >= 18).Count() < recordsBlock.Count()
                     ) ||
                     recordsBlock.Where(record => record.Surname == recordToSolve.Surname).Count() > 2;
 
@@ -145,14 +145,14 @@ namespace BookingCalendarApi.Services
             AccomodatedType.GroupHead => "18",
             AccomodatedType.FamilyMember => "19",
             AccomodatedType.GroupMember => "20",
-            _ => throw new NotImplementedException()
+            _ => "20",
         };
 
         private static string SerializeGender(Gender gender) => gender switch
         {
             Gender.Male => "1",
             Gender.Female => "2",
-            _ => throw new NotImplementedException()
+            _ => "1",
         };
     }
 }

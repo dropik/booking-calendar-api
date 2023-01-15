@@ -1,4 +1,6 @@
-﻿namespace BookingCalendarApi.Models.AlloggiatiService
+﻿using BookingCalendarApi.Exceptions;
+
+namespace BookingCalendarApi.Models.AlloggiatiService
 {
     public class TrackedRecord
     {
@@ -18,7 +20,7 @@
             {
                 if (value > 30)
                 {
-                    throw new Exception("Exceeded maximum stay of 30 nights");
+                    throw new BookingCalendarException(BCError.MAX_STAY_EXCEEDED, "Exceeded maximum stay of 30 nights");
                 }
 
                 _nights = value;

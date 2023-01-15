@@ -1,6 +1,6 @@
 using AlloggiatiService;
 using BookingCalendarApi;
-using BookingCalendarApi.Models.Iperbooking.Guests;
+using BookingCalendarApi.Filters;
 using BookingCalendarApi.Services;
 using C59Service;
 using Microsoft.EntityFrameworkCore;
@@ -9,9 +9,16 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 
-builder.Services.AddControllers().AddJsonOptions(options =>
-    options.JsonSerializerOptions.DefaultIgnoreCondition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingNull);
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
+builder.Services
+    .AddControllers(options =>
+    {
+        options.Filters.Add<ExceptionFilter>();
+    })
+    .AddJsonOptions(options =>
+    {
+        options.JsonSerializerOptions.DefaultIgnoreCondition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingNull;
+    });
+
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
@@ -28,31 +35,23 @@ builder.Services.AddScoped<IAlloggiatiServiceSession, AlloggiatiServiceSession>(
 builder.Services.AddScoped<DataContext>();
 
 // transient services
-builder.Services.AddTransient<IBookingsCachingSession, BookingsCachingSession>();
+builder.Services.AddTransient<IBookingsService, BookingsService>();
+builder.Services.AddTransient<ICityTaxService, CityTaxService>();
+builder.Services.AddTransient<IClientsService, ClientsService>();
+builder.Services.AddTransient<IColorAssignmentsService, ColorAssignmentsService>();
+builder.Services.AddTransient<IFloorsService, FloorsService>();
+builder.Services.AddTransient<IIstatService, IstatService>();
+builder.Services.AddTransient<IPoliceService, PoliceService>();
+builder.Services.AddTransient<IRoomAssignmentsService, RoomAssignmentsService>();
+builder.Services.AddTransient<IRoomRatesService, RoomRatesService>();
+builder.Services.AddTransient<IRoomsService, RoomsService>();
 builder.Services.AddTransient<IAssignedBookingComposer, AssignedBookingComposer>();
 builder.Services.AddTransient<IServiceSoap, ServiceSoapClient>();
 builder.Services.AddTransient<IAssignedBookingWithGuestsProvider, AssignedBookingWithGuestsProvider>();
 builder.Services.AddTransient<EC59ServiceEndpoint, EC59ServiceEndpointClient>();
-builder.Services.AddTransient<IC59ServiceSession, C59ServiceSession>();
 builder.Services.AddTransient<IPlaceConverter, PlaceConverter>();
 builder.Services.AddTransient<INationConverter, NationConverter>();
 builder.Services.AddTransient<ITrackedRecordsComposer, TrackedRecordsComposer>();
-
-#nullable disable
-builder.Services.AddTransient<Func<string, string, IEnumerable<Reservation>, ICityTaxCalculator>>(
-    serviceProvider =>
-        (from, to, reservations) =>
-            new CityTaxPeriodTrimmer(
-                from, to,
-                new CityTaxOver10Days(
-                    new CityTaxGuestRegistriesFilter(
-                        reservations,
-                        new SimpleCityTaxCalculator()
-                    )
-                )
-            )
-);
-#nullable enable
 
 var app = builder.Build();
 

@@ -1,5 +1,5 @@
-using BookingCalendarApi.Models;
 using BookingCalendarApi.Models.Iperbooking.Guests;
+using BookingCalendarApi.Models.Responses;
 
 namespace BookingCalendarApi.Services
 {
@@ -29,12 +29,12 @@ namespace BookingCalendarApi.Services
                 });
         }
 
-        public static IEnumerable<Client> ComposeResponse(this IEnumerable<Reservation> reservations)
+        public static IEnumerable<ClientResponse> ComposeResponse(this IEnumerable<Reservation> reservations)
         {
             return reservations
                 .SelectMany(
                     x => x.Guests,
-                    (reservation, guest) => new Client(
+                    (reservation, guest) => new ClientResponse(
                         id:             guest.GuestId,
                         bookingId:      reservation.ReservationId.ToString(),
                         name:           guest.FirstName,

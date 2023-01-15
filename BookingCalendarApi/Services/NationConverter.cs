@@ -1,4 +1,5 @@
-﻿using BookingCalendarApi.Models;
+﻿using BookingCalendarApi.Exceptions;
+using BookingCalendarApi.Models.Entities;
 
 namespace BookingCalendarApi.Services
 {
@@ -18,7 +19,7 @@ namespace BookingCalendarApi.Services
 
             if (foundCodeEntry == null)
             {
-                throw new Exception("Cannot find nation by ISO code");
+                throw new BookingCalendarException(BCError.MISSING_NATION, "Cannot find nation by ISO code");
             }
 
             return foundCodeEntry.Code;

@@ -1596,7 +1596,7 @@ namespace BookingCalendarApi.Migrations
                     b.Property<string>("Id")
                         .HasColumnType("varchar(255)");
 
-                    b.Property<long?>("RoomId")
+                    b.Property<long>("RoomId")
                         .HasColumnType("bigint");
 
                     b.HasKey("Id");
@@ -1635,7 +1635,8 @@ namespace BookingCalendarApi.Migrations
                     b.HasOne("BookingCalendarApi.Models.Room", null)
                         .WithMany()
                         .HasForeignKey("RoomId")
-                        .OnDelete(DeleteBehavior.SetNull);
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("BookingCalendarApi.Models.Floor", b =>

@@ -6,8 +6,8 @@ namespace BookingCalendarApi.Services
 {
     public interface IIperbooking
     {
-        public Task<IEnumerable<RoomRateRoom>> GetRoomRatesAsync();
-        public Task<List<Booking>> GetBookingsAsync(string from, string to, bool exactPeriod = false);
-        public Task<GuestsResponse> GetGuestsAsync(string reservationId);
+        public Task<IEnumerable<RoomRateRoom>> GetRoomRates();
+        public Task<List<Booking>> GetBookings(string from, string to, bool exactPeriod = false);
+        public Task<GuestsResponse> GetGuests(string reservationId);
     }
 }

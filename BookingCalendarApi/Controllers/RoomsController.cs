@@ -1,116 +1,50 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using BookingCalendarApi.Models;
 using BookingCalendarApi.Services;
+using BookingCalendarApi.Models.Entities;
 
 namespace BookingCalendarApi.Controllers
 {
-    [Route("api/v1/[controller]")]
+    [Route("api/v1/rooms")]
     [ApiController]
     public class RoomsController : ControllerBase
     {
-        private readonly BookingCalendarContext _context;
-        private readonly IIperbooking _iperbooking;
+        private readonly IRoomsService _service;
 
-        public RoomsController(BookingCalendarContext context, IIperbooking iperbooking)
+        public RoomsController(IRoomsService service)
         {
-            _context = context;
-            _iperbooking = iperbooking;
+            _service = service;
         }
 
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Room>>> GetRoomsAsync()
+        public async Task<ActionResult<List<Room>>> GetAll()
         {
-            return await _context.Rooms.ToListAsync();
+            return Ok(await _service.GetAll());
         }
 
         [HttpGet("{id}")]
-        public async Task<ActionResult<Room>> GetRoomAsync(long id)
+        public async Task<ActionResult<Room>> Get(long id)
         {
-            var room = await _context.Rooms.FindAsync(id);
-
-            if (room == null)
-            {
-                return NotFound();
-            }
-
-            return room;
-        }
-
-        [HttpPut("{id}")]
-        public async Task<IActionResult> PutRoomAsync(long id, Room room)
-        {
-            if (id != room.Id)
-            {
-                return BadRequest();
-            }
-
-            if (!(await RoomTypeExistsAsync(room.Type)))
-            {
-                return BadRequest("Given room type was not found on Iperbooking");
-            }
-
-            _context.Entry(room).State = EntityState.Modified;
-
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!RoomExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
-
-            return NoContent();
+            return Ok(await _service.Get(id));
         }
 
         [HttpPost]
-        public async Task<ActionResult<Room>> PostRoomAsync(Room room)
+        public async Task<ActionResult<Room>> Post(Room room)
         {
-            if (!(await RoomTypeExistsAsync(room.Type)))
-            {
-                return BadRequest("Given room type was not found on Iperbooking");
-            }
+            var result = await _service.Create(room);
+            return CreatedAtAction("Get", new { id = result.Id }, result);
+        }
 
-            _context.Rooms.Add(room);
-            await _context.SaveChangesAsync();
-
-            return CreatedAtAction("GetRoom", new { id = room.Id }, room);
+        [HttpPut("{id}")]
+        public async Task<ActionResult<Room>> Put(long id, Room room)
+        {
+            return Ok(await _service.Update(id, room));
         }
 
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteRoomAsync(long id)
+        public async Task<IActionResult> Delete(long id)
         {
-            var room = await _context.Rooms.FindAsync(id);
-            if (room == null)
-            {
-                return NotFound();
-            }
-
-            _context.Rooms.Remove(room);
-            await _context.SaveChangesAsync();
-
-            return NoContent();
-        }
-
-        private bool RoomExists(long id)
-        {
-            return _context.Rooms.Any(e => e.Id == id);
-        }
-
-        private async Task<bool> RoomTypeExistsAsync(string roomType)
-        {
-            var roomRates = await _iperbooking.GetRoomRatesAsync();
-            var matchedTypes = roomRates.Where(r => r.RoomName == roomType);
-
-            return matchedTypes.Any();
+            await _service.Delete(id);
+            return Ok();
         }
     }
 }

@@ -1,46 +1,32 @@
-﻿using BookingCalendarApi.Models;
+﻿using BookingCalendarApi.Models.Requests;
+using BookingCalendarApi.Models.Responses;
 using BookingCalendarApi.Services;
 using Microsoft.AspNetCore.Mvc;
 
 namespace BookingCalendarApi.Controllers
 {
-    [Route("api/v1/[controller]")]
+    [Route("api/v1/istat")]
     [ApiController]
     public class IstatController : ControllerBase
     {
-        private readonly IC59ServiceSession _serviseSession;
+        private readonly IIstatService _serviseSession;
 
-        public IstatController(IC59ServiceSession serviceSession)
+        public IstatController(IIstatService serviceSession)
         {
             _serviseSession = serviceSession;
         }
 
         [HttpGet]
-        public async Task<ActionResult<IstatLastDateResponse>> GetLastDateAsync()
+        public async Task<ActionResult<IstatLastDateResponse>> GetLastDate()
         {
-            try
-            {
-                var response = await _serviseSession.GetLastDateAsync();
-                return new IstatLastDateResponse(response);
-            }
-            catch (Exception exception)
-            {
-                return BadRequest(exception.Message);
-            }
+            return Ok(await _serviseSession.GetLastDate());
         }
 
         [HttpPost]
-        public async Task<IActionResult> SendNewDataAsync(IstatSendDataRequest request)
+        public async Task<IActionResult> SendNewData(IstatSendDataRequest request)
         {
-            try
-            {
-                await _serviseSession.SendNewDataAsync(DateTime.ParseExact(request.Date, "yyyy-MM-dd", null));
-                return Ok();
-            }
-            catch (Exception exception)
-            {
-                return BadRequest(exception.Message);
-            }
+            await _serviseSession.SendNewData(request);
+            return Ok();
         }
     }
 }
