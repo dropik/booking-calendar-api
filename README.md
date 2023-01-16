@@ -46,6 +46,10 @@ dotnet run
 ```
 
 ## Changelog
+### v1.2.1
+- Added exception filter. More advanced status codes handling.
+- Handling connection errors and given correct status code for that.
+- Added entities configurations. Seeding data directly from configuration.
 ### v1.2.0
 - Added base board information to tiles.
 - Fixed minor bugs.
