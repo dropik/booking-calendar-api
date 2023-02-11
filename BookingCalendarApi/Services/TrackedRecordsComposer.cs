@@ -44,6 +44,7 @@ namespace BookingCalendarApi.Services
                                 Guest.DocumentType.ID => DocumentType.Ident,
                                 Guest.DocumentType.PP => DocumentType.Pasor,
                                 Guest.DocumentType.DL => DocumentType.Paten,
+                                Guest.DocumentType.XX => DocumentType.Idele,
                                 _ => null
                             },
                             DocNumber = guest.DocNumber,

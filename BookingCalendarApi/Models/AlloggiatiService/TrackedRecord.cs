@@ -105,7 +105,8 @@ namespace BookingCalendarApi.Models.AlloggiatiService
         {
             Ident,
             Pasor,
-            Paten
+            Paten,
+            Idele,
         }
     }
 }
