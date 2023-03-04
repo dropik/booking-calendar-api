@@ -90,7 +90,7 @@ namespace BookingCalendarApi.Services
                         new movimentoWSPO()
                         {
                             italia = false,
-                            targa = nations.SingleOrDefault(nation => nation.Iso == group.Key)?.Description ?? "",
+                            targa = DecapitalizeCountryName(nations.SingleOrDefault(nation => nation.Iso == group.Key)?.Description ?? ""),
                             arrivi = group.Where(item => item.Arrival == dateStr).Count(),
                             partenze = group.Where(item => item.Departure == dateStr).Count()
                         }
@@ -130,6 +130,16 @@ namespace BookingCalendarApi.Services
                 var totalArrived = movements.Movements.Sum(movement => movement.arrivi);
                 var totalDepartured = movements.Movements.Sum(movement => movement.partenze);
                 var total = movements.PrevTotal + totalArrived - totalDepartured;
+
+                movements.Movements = movements.Movements
+                    .Select(m => new movimentoWSPO()
+                    {
+                        italia = m.italia,
+                        targa = m.targa.ToUpperInvariant(),
+                        arrivi = m.arrivi,
+                        partenze = m.partenze,
+                    })
+                    .ToList();
 
                 var c59Request = new inviaC59Full(_credentials.Username, _credentials.Password, _credentials.Struttura, new c59WSPO()
                 {
@@ -255,6 +265,29 @@ namespace BookingCalendarApi.Services
             {
                 throw new BookingCalendarException(BCError.CONNECTION_ERROR, $"Failed establish connection with ISTAT service: {exception.Message}");
             }
+        }
+
+        private static string DecapitalizeCountryName(string name)
+        {
+            if (name == null)
+            {
+                return "";
+            }
+
+            if (name.Length <= 4)
+            {
+                return name;
+            }
+
+            var split = name.Split(' ');
+            var result = "";
+            foreach (var item in split)
+            {
+                result += $"{item[..1]}{item[1..].ToLowerInvariant()} ";
+            }
+            result = result.Remove(result.Length - 1);
+
+            return result;
         }
     }
 }
