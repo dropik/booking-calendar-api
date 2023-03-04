@@ -103,7 +103,7 @@ namespace BookingCalendarApi.Services
             }
         }
 
-        public async Task<byte[]> GetRicevutaAsync(DateTime date)
+        public async Task<byte[]> GetRicevuta(DateTime date)
         {
             try
             {
@@ -127,15 +127,15 @@ namespace BookingCalendarApi.Services
             }
         }
 
-        public async Task<List<Place>> GetPlacesAsync()
+        public async Task<List<Place>> GetPlaces()
         {
-            var tableDataStr = await GetTableAsync(TipoTabella.Luoghi);
+            var tableDataStr = await GetTable(TipoTabella.Luoghi);
             using var textReader = new StringReader(tableDataStr);
             using var csvReader = CsvDataReader.Create(textReader);
             return csvReader.GetRecords<Place>().ToList();
         }
 
-        private async Task<string> GetTableAsync(TipoTabella tipoTabella)
+        private async Task<string> GetTable(TipoTabella tipoTabella)
         {
             try
             {

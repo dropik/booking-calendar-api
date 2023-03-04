@@ -6,7 +6,7 @@ namespace BookingCalendarApi.Services
     {
         Task Open();
         Task SendData(IList<string> data, bool test);
-        Task<byte[]> GetRicevutaAsync(DateTime date);
-        Task<List<Place>> GetPlacesAsync();
+        Task<byte[]> GetRicevuta(DateTime date);
+        Task<List<Place>> GetPlaces();
     }
 }

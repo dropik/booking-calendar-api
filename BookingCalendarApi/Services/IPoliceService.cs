@@ -8,5 +8,6 @@ namespace BookingCalendarApi.Services
         Task<PoliceRicevutaResponse> GetRicevuta(string date);
         Task Test(PoliceSendRequest request);
         Task Send(PoliceSendRequest request);
+        Task<List<string>> GetProvinces();
     }
 }
