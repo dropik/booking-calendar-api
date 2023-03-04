@@ -267,6 +267,14 @@ namespace BookingCalendarApi.Services
             }
         }
 
+        public async Task<List<string>> GetCountries()
+        {
+            var countries = await (from nation in _context.Nations
+                                   select nation.Description
+                                  ).ToListAsync();
+            return countries.Distinct().Select(c => DecapitalizeCountryName(c)).OrderBy(c => c).ToList();
+        }
+
         private static string DecapitalizeCountryName(string name)
         {
             if (name == null)
@@ -274,7 +282,7 @@ namespace BookingCalendarApi.Services
                 return "";
             }
 
-            if (name.Length <= 4)
+            if (name.Length <= 3)
             {
                 return name;
             }
@@ -283,9 +291,46 @@ namespace BookingCalendarApi.Services
             var result = "";
             foreach (var item in split)
             {
-                result += $"{item[..1]}{item[1..].ToLowerInvariant()} ";
+                if (item == "E")
+                {
+                    result += "e ";
+                }
+                else
+                {
+                    result += $"{item[..1]}{item[1..].ToLowerInvariant()} ";
+                }
             }
             result = result.Remove(result.Length - 1);
+
+            split = result.Split('\'');
+            result = split[0];
+            for (var i = 1; i < split.Length; i++)
+            {
+                var item = split[i];
+                if (item.Length == 0)
+                {
+                    result += "'";
+                }
+                else
+                {
+                    result += $"'{item[..1].ToUpperInvariant()}{item[1..]}";
+                }
+            }
+
+            split = result.Split(".");
+            result = split[0];
+            for (var i = 1; i < split.Length; i++)
+            {
+                var item = split[i];
+                if (item.Length == 0)
+                {
+                    result += ".";
+                }
+                else
+                {
+                    result += $".{item[..1].ToUpperInvariant()}{item[1..]}";
+                }
+            }
 
             return result;
         }

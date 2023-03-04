@@ -10,5 +10,6 @@ namespace BookingCalendarApi.Services
         Task<IstatLastDateResponse> GetLastDate();
         Task<IstatMovementsDTO> GetMovements();
         Task SendMovements(IstatMovementsDTO movements);
+        Task<List<string>> GetCountries();
     }
 }

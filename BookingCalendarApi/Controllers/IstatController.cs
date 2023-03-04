@@ -42,5 +42,11 @@ namespace BookingCalendarApi.Controllers
             await _service.SendMovements(movements);
             return Ok();
         }
+
+        [HttpGet("countries")]
+        public async Task<ActionResult<List<string>>> GetCountries()
+        {
+            return Ok(await _service.GetCountries());
+        }
     }
 }
