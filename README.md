@@ -46,6 +46,8 @@ dotnet run
 ```
 
 ## Changelog
+### v1.2.2
+- Adjusted nation descriptions in seeding for better ISTAT compatibility.
 ### v1.2.1
 - Added exception filter. More advanced status codes handling.
 - Handling connection errors and given correct status code for that.
