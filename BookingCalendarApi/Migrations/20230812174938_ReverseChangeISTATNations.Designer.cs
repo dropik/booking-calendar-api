@@ -3,6 +3,7 @@ using System;
 using BookingCalendarApi;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,9 +11,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BookingCalendarApi.Migrations
 {
     [DbContext(typeof(BookingCalendarContext))]
-    partial class BookingCalendarContextModelSnapshot : ModelSnapshot
+    [Migration("20230812174938_ReverseChangeISTATNations")]
+    partial class ReverseChangeISTATNations
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -1275,7 +1277,7 @@ namespace BookingCalendarApi.Migrations
                         {
                             Iso = "SK",
                             Code = 100000348ul,
-                            Description = "REPUBBLICA SLOVACCA"
+                            Description = "SIRIA"
                         },
                         new
                         {
