@@ -3,6 +3,7 @@ using System;
 using BookingCalendarApi;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,9 +11,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BookingCalendarApi.Migrations
 {
     [DbContext(typeof(BookingCalendarContext))]
-    partial class BookingCalendarContextModelSnapshot : ModelSnapshot
+    [Migration("20230806152849_OriginalGermanyAndUSNames")]
+    partial class OriginalGermanyAndUSNames
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -69,31 +71,31 @@ namespace BookingCalendarApi.Migrations
                         {
                             Iso = "AD",
                             Code = 100000202ul,
-                            Description = "ANDORRA"
+                            Description = "ALTRI PAESI EUROPEI"
                         },
                         new
                         {
                             Iso = "AE",
                             Code = 100000322ul,
-                            Description = "EMIRATI ARABI UNITI"
+                            Description = "ALTRI PAESI ASIA OCCIDENTALE"
                         },
                         new
                         {
                             Iso = "AF",
                             Code = 100000301ul,
-                            Description = "AFGHANISTAN"
+                            Description = "ALTRI PAESI DELL'ASIA"
                         },
                         new
                         {
                             Iso = "AG",
                             Code = 100000503ul,
-                            Description = "ANTIGUA E BARBUDA"
+                            Description = "ALTRI PAESI CENTRO - SUD AMERICA"
                         },
                         new
                         {
                             Iso = "AI",
                             Code = 100000402ul,
-                            Description = "ANGOLA"
+                            Description = "ALTRI PAESI CENTRO - SUD AMERICA"
                         },
                         new
                         {
@@ -105,19 +107,19 @@ namespace BookingCalendarApi.Migrations
                         {
                             Iso = "AM",
                             Code = 100000358ul,
-                            Description = "ARMENIA"
+                            Description = "ALTRI PAESI ASIA OCCIDENTALE"
                         },
                         new
                         {
                             Iso = "AO",
                             Code = 100000402ul,
-                            Description = "ANGOLA"
+                            Description = "ALTRI PAESI DELL'AFRICA"
                         },
                         new
                         {
                             Iso = "AQ",
                             Code = 100000733ul,
-                            Description = "ANGOLA"
+                            Description = "ALTRI PAESI EXTRAEUROPEI"
                         },
                         new
                         {
@@ -129,7 +131,7 @@ namespace BookingCalendarApi.Migrations
                         {
                             Iso = "AS",
                             Code = 100000798ul,
-                            Description = "SAMOA"
+                            Description = "ALTRI PAESI O TERRITORI OCEANIA"
                         },
                         new
                         {
@@ -147,37 +149,37 @@ namespace BookingCalendarApi.Migrations
                         {
                             Iso = "AW",
                             Code = 100000358ul,
-                            Description = "ARMENIA"
+                            Description = "ALTRI PAESI CENTRO - SUD AMERICA"
                         },
                         new
                         {
                             Iso = "AX",
                             Code = 100000223ul,
-                            Description = "ISLANDA"
+                            Description = "FINLANDIA"
                         },
                         new
                         {
                             Iso = "AZ",
                             Code = 100000359ul,
-                            Description = "AZERBAIGIAN"
+                            Description = "ALTRI PAESI ASIA OCCIDENTALE"
                         },
                         new
                         {
                             Iso = "BA",
                             Code = 100000252ul,
-                            Description = "BOLIVIA"
+                            Description = "ALTRI PAESI EUROPEI"
                         },
                         new
                         {
                             Iso = "BB",
                             Code = 100000506ul,
-                            Description = "BARBADOS"
+                            Description = "ALTRI PAESI CENTRO - SUD AMERICA"
                         },
                         new
                         {
                             Iso = "BD",
                             Code = 100000305ul,
-                            Description = "BANGLADESH"
+                            Description = "ALTRI PAESI DELL'ASIA"
                         },
                         new
                         {
@@ -189,7 +191,7 @@ namespace BookingCalendarApi.Migrations
                         {
                             Iso = "BF",
                             Code = 100000409ul,
-                            Description = "BULGARIA"
+                            Description = "ALTRI PAESI DELL'AFRICA"
                         },
                         new
                         {
@@ -201,49 +203,49 @@ namespace BookingCalendarApi.Migrations
                         {
                             Iso = "BH",
                             Code = 100000304ul,
-                            Description = "BAHREIN"
+                            Description = "ALTRI PAESI ASIA OCCIDENTALE"
                         },
                         new
                         {
                             Iso = "BI",
                             Code = 100000410ul,
-                            Description = "BURUNDI"
+                            Description = "ALTRI PAESI DELL'AFRICA"
                         },
                         new
                         {
                             Iso = "BJ",
                             Code = 100000406ul,
-                            Description = "BENIN"
+                            Description = "ALTRI PAESI DELL'AFRICA"
                         },
                         new
                         {
                             Iso = "BL",
                             Code = 100000797ul,
-                            Description = "SAINT LUCIA"
+                            Description = "ALTRI PAESI CENTRO - SUD AMERICA"
                         },
                         new
                         {
                             Iso = "BM",
                             Code = 100000406ul,
-                            Description = "BENIN"
+                            Description = "ALTRI PAESI CENTRO - SUD AMERICA"
                         },
                         new
                         {
                             Iso = "BN",
                             Code = 100000309ul,
-                            Description = "BRUNEI"
+                            Description = "ALTRI PAESI DELL'ASIA"
                         },
                         new
                         {
                             Iso = "BO",
                             Code = 100000604ul,
-                            Description = "BOLIVIA"
+                            Description = "ALTRI PAESI CENTRO - SUD AMERICA"
                         },
                         new
                         {
                             Iso = "BQ",
                             Code = 100000232ul,
-                            Description = "PAESI BASSI"
+                            Description = "ALTRI PAESI CENTRO - SUD AMERICA"
                         },
                         new
                         {
@@ -255,37 +257,37 @@ namespace BookingCalendarApi.Migrations
                         {
                             Iso = "BS",
                             Code = 100000505ul,
-                            Description = "BAHAMAS"
+                            Description = "ALTRI PAESI CENTRO - SUD AMERICA"
                         },
                         new
                         {
                             Iso = "BT",
                             Code = 100000306ul,
-                            Description = "BHUTAN"
+                            Description = "ALTRI PAESI DELL'ASIA"
                         },
                         new
                         {
                             Iso = "BV",
                             Code = 100000223ul,
-                            Description = "ISLANDA"
+                            Description = "ALTRI PAESI EXTRAEUROPEI"
                         },
                         new
                         {
                             Iso = "BW",
                             Code = 100000408ul,
-                            Description = "BOTSWANA"
+                            Description = "ALTRI PAESI DELL'AFRICA"
                         },
                         new
                         {
                             Iso = "BY",
                             Code = 100000256ul,
-                            Description = "BIELORUSSIA"
+                            Description = "RUSSIA"
                         },
                         new
                         {
                             Iso = "BZ",
                             Code = 100000507ul,
-                            Description = "BELIZE"
+                            Description = "ALTRI PAESI CENTRO - SUD AMERICA"
                         },
                         new
                         {
@@ -297,25 +299,25 @@ namespace BookingCalendarApi.Migrations
                         {
                             Iso = "CC",
                             Code = 100000223ul,
-                            Description = "ISLANDA"
+                            Description = "AUSTRALIA"
                         },
                         new
                         {
                             Iso = "CD",
                             Code = 100000998ul,
-                            Description = "REPUBBLICA CENTRAFRICANA"
+                            Description = "ALTRI PAESI DELL'AFRICA"
                         },
                         new
                         {
                             Iso = "CF",
                             Code = 100000257ul,
-                            Description = "REPUBBLICA CENTRAFRICANA"
+                            Description = "ALTRI PAESI DELL'AFRICA"
                         },
                         new
                         {
                             Iso = "CG",
                             Code = 100000257ul,
-                            Description = "REPUBBLICA CENTRAFRICANA"
+                            Description = "ALTRI PAESI DELL'AFRICA"
                         },
                         new
                         {
@@ -327,67 +329,67 @@ namespace BookingCalendarApi.Migrations
                         {
                             Iso = "CI",
                             Code = 100000404ul,
-                            Description = "COSTA D'AVORIO"
+                            Description = "ALTRI PAESI DELL'AFRICA"
                         },
                         new
                         {
                             Iso = "CK",
                             Code = 100000223ul,
-                            Description = "ISLANDA"
+                            Description = "ALTRI PAESI O TERRITORI OCEANIA"
                         },
                         new
                         {
                             Iso = "CL",
                             Code = 100000606ul,
-                            Description = "CILE"
+                            Description = "ALTRI PAESI CENTRO - SUD AMERICA"
                         },
                         new
                         {
                             Iso = "CM",
                             Code = 100000411ul,
-                            Description = "CAMERUN"
+                            Description = "ALTRI PAESI DELL'AFRICA"
                         },
                         new
                         {
                             Iso = "CN",
                             Code = 100000606ul,
-                            Description = "CILE"
+                            Description = "CINA"
                         },
                         new
                         {
                             Iso = "CO",
                             Code = 100000608ul,
-                            Description = "COLOMBIA"
+                            Description = "ALTRI PAESI CENTRO - SUD AMERICA"
                         },
                         new
                         {
                             Iso = "CR",
                             Code = 100000404ul,
-                            Description = "COSTA D'AVORIO"
+                            Description = "ALTRI PAESI CENTRO - SUD AMERICA"
                         },
                         new
                         {
                             Iso = "CU",
                             Code = 100000514ul,
-                            Description = "CUBA"
+                            Description = "ALTRI PAESI CENTRO - SUD AMERICA"
                         },
                         new
                         {
                             Iso = "CV",
                             Code = 100000413ul,
-                            Description = "CAPO VERDE"
+                            Description = "ALTRI PAESI AFRICA MEDITERRANEA"
                         },
                         new
                         {
                             Iso = "CW",
                             Code = 100000514ul,
-                            Description = "CUBA"
+                            Description = "ALTRI PAESI CENTRO - SUD AMERICA"
                         },
                         new
                         {
                             Iso = "CX",
                             Code = 100000223ul,
-                            Description = "ISLANDA"
+                            Description = "AUSTRALIA"
                         },
                         new
                         {
@@ -411,7 +413,7 @@ namespace BookingCalendarApi.Migrations
                         {
                             Iso = "DJ",
                             Code = 100000424ul,
-                            Description = "GIBUTI"
+                            Description = "ALTRI PAESI DELL'AFRICA"
                         },
                         new
                         {
@@ -423,25 +425,25 @@ namespace BookingCalendarApi.Migrations
                         {
                             Iso = "DM",
                             Code = 100000515ul,
-                            Description = "DOMINICA"
+                            Description = "ALTRI PAESI CENTRO - SUD AMERICA"
                         },
                         new
                         {
                             Iso = "DO",
                             Code = 100000997ul,
-                            Description = "REPUBBLICA DOMINICANA"
+                            Description = "ALTRI PAESI CENTRO - SUD AMERICA"
                         },
                         new
                         {
                             Iso = "DZ",
                             Code = 100000401ul,
-                            Description = "ALGERIA"
+                            Description = "ALTRI PAESI AFRICA MEDITERRANEA"
                         },
                         new
                         {
                             Iso = "EC",
                             Code = 100000609ul,
-                            Description = "ECUADOR"
+                            Description = "ALTRI PAESI CENTRO - SUD AMERICA"
                         },
                         new
                         {
@@ -459,13 +461,13 @@ namespace BookingCalendarApi.Migrations
                         {
                             Iso = "EH",
                             Code = 100000533ul,
-                            Description = "S.VINCENT E GRENADINE"
+                            Description = "ALTRI PAESI AFRICA MEDITERRANEA"
                         },
                         new
                         {
                             Iso = "ER",
                             Code = 100000466ul,
-                            Description = "ERITREA"
+                            Description = "ALTRI PAESI DELL'AFRICA"
                         },
                         new
                         {
@@ -477,7 +479,7 @@ namespace BookingCalendarApi.Migrations
                         {
                             Iso = "ET",
                             Code = 100000420ul,
-                            Description = "ETIOPIA"
+                            Description = "ALTRI PAESI DELL'AFRICA"
                         },
                         new
                         {
@@ -489,25 +491,25 @@ namespace BookingCalendarApi.Migrations
                         {
                             Iso = "FJ",
                             Code = 100000703ul,
-                            Description = "FIGI"
+                            Description = "ALTRI PAESI O TERRITORI OCEANIA"
                         },
                         new
                         {
                             Iso = "FK",
                             Code = 100000223ul,
-                            Description = "ISLANDA"
+                            Description = "ALTRI PAESI CENTRO - SUD AMERICA"
                         },
                         new
                         {
                             Iso = "FM",
                             Code = 100000311ul,
-                            Description = "SRI LANKA(CEYLON)"
+                            Description = "ALTRI PAESI O TERRITORI OCEANIA"
                         },
                         new
                         {
                             Iso = "FO",
                             Code = 100000755ul,
-                            Description = "ETIOPIA"
+                            Description = "ALTRI PAESI EUROPEI"
                         },
                         new
                         {
@@ -519,7 +521,7 @@ namespace BookingCalendarApi.Migrations
                         {
                             Iso = "GA",
                             Code = 100000421ul,
-                            Description = "GABON"
+                            Description = "ALTRI PAESI DELL'AFRICA"
                         },
                         new
                         {
@@ -531,67 +533,67 @@ namespace BookingCalendarApi.Migrations
                         {
                             Iso = "GD",
                             Code = 100000519ul,
-                            Description = "GRENADA"
+                            Description = "ALTRI PAESI CENTRO - SUD AMERICA"
                         },
                         new
                         {
                             Iso = "GE",
                             Code = 100000360ul,
-                            Description = "GEORGIA"
+                            Description = "ALTRI PAESI ASIA OCCIDENTALE"
                         },
                         new
                         {
                             Iso = "GF",
                             Code = 100000612ul,
-                            Description = "GUYANA"
+                            Description = "ALTRI PAESI CENTRO - SUD AMERICA"
                         },
                         new
                         {
                             Iso = "GG",
                             Code = 100000761ul,
-                            Description = "GUATEMALA"
+                            Description = "REGNO UNITO"
                         },
                         new
                         {
                             Iso = "GH",
                             Code = 100000423ul,
-                            Description = "GHANA"
+                            Description = "ALTRI PAESI DELL'AFRICA"
                         },
                         new
                         {
                             Iso = "GI",
                             Code = 100000326ul,
-                            Description = "GIAPPONE"
+                            Description = "REGNO UNITO"
                         },
                         new
                         {
                             Iso = "GL",
                             Code = 100000758ul,
-                            Description = "GRENADA"
+                            Description = "DANIMARCA"
                         },
                         new
                         {
                             Iso = "GM",
                             Code = 100000422ul,
-                            Description = "GAMBIA"
+                            Description = "ALTRI PAESI DELL'AFRICA"
                         },
                         new
                         {
                             Iso = "GN",
                             Code = 100000425ul,
-                            Description = "GUINEA"
+                            Description = "ALTRI PAESI DELL'AFRICA"
                         },
                         new
                         {
                             Iso = "GP",
                             Code = 100000759ul,
-                            Description = "GRENADA"
+                            Description = "FRANCIA"
                         },
                         new
                         {
                             Iso = "GQ",
                             Code = 100000427ul,
-                            Description = "GUINEA EQUATORIALE"
+                            Description = "ALTRI PAESI DELL'AFRICA"
                         },
                         new
                         {
@@ -603,49 +605,49 @@ namespace BookingCalendarApi.Migrations
                         {
                             Iso = "GS",
                             Code = 100000360ul,
-                            Description = "GEORGIA"
+                            Description = "ALTRI PAESI CENTRO - SUD AMERICA"
                         },
                         new
                         {
                             Iso = "GT",
                             Code = 100000523ul,
-                            Description = "GUATEMALA"
+                            Description = "ALTRI PAESI CENTRO - SUD AMERICA"
                         },
                         new
                         {
                             Iso = "GU",
                             Code = 100000760ul,
-                            Description = "GRENADA"
+                            Description = "ALTRI PAESI O TERRITORI OCEANIA"
                         },
                         new
                         {
                             Iso = "GW",
                             Code = 100000427ul,
-                            Description = "GUINEA EQUATORIALE"
+                            Description = "ALTRI PAESI DELL'AFRICA"
                         },
                         new
                         {
                             Iso = "GY",
                             Code = 100000612ul,
-                            Description = "GUYANA"
+                            Description = "ALTRI PAESI CENTRO - SUD AMERICA"
                         },
                         new
                         {
                             Iso = "HK",
                             Code = 110000005ul,
-                            Description = "HONDURAS"
+                            Description = "ALTRI PAESI DELL'ASIA"
                         },
                         new
                         {
                             Iso = "HM",
                             Code = 100000223ul,
-                            Description = "ISLANDA"
+                            Description = "AUSTRALIA"
                         },
                         new
                         {
                             Iso = "HN",
                             Code = 100000525ul,
-                            Description = "HONDURAS"
+                            Description = "ALTRI PAESI CENTRO - SUD AMERICA"
                         },
                         new
                         {
@@ -657,7 +659,7 @@ namespace BookingCalendarApi.Migrations
                         {
                             Iso = "HT",
                             Code = 100000524ul,
-                            Description = "HAITI"
+                            Description = "ALTRI PAESI CENTRO - SUD AMERICA"
                         },
                         new
                         {
@@ -669,7 +671,7 @@ namespace BookingCalendarApi.Migrations
                         {
                             Iso = "ID",
                             Code = 100000331ul,
-                            Description = "INDONESIA"
+                            Description = "ALTRI PAESI DELL'ASIA"
                         },
                         new
                         {
@@ -687,7 +689,7 @@ namespace BookingCalendarApi.Migrations
                         {
                             Iso = "IM",
                             Code = 100000223ul,
-                            Description = "ISLANDA"
+                            Description = "REGNO UNITO"
                         },
                         new
                         {
@@ -699,19 +701,19 @@ namespace BookingCalendarApi.Migrations
                         {
                             Iso = "IO",
                             Code = 100000457ul,
-                            Description = "TERRITORI AUTONOMIA PALESTINESE"
+                            Description = "ALTRI PAESI DELL'ASIA"
                         },
                         new
                         {
                             Iso = "IQ",
                             Code = 100000333ul,
-                            Description = "IRAQ"
+                            Description = "ALTRI PAESI ASIA OCCIDENTALE"
                         },
                         new
                         {
                             Iso = "IR",
                             Code = 100000332ul,
-                            Description = "INDONESIA"
+                            Description = "ALTRI PAESI ASIA OCCIDENTALE"
                         },
                         new
                         {
@@ -723,25 +725,25 @@ namespace BookingCalendarApi.Migrations
                         {
                             Iso = "IT",
                             Code = 100000100ul,
-                            Description = "ISRAELE"
+                            Description = "ITALIA"
                         },
                         new
                         {
                             Iso = "JE",
                             Code = 100000223ul,
-                            Description = "ISLANDA"
+                            Description = "REGNO UNITO"
                         },
                         new
                         {
                             Iso = "JM",
                             Code = 100000518ul,
-                            Description = "GIAMAICA"
+                            Description = "ALTRI PAESI CENTRO - SUD AMERICA"
                         },
                         new
                         {
                             Iso = "JO",
                             Code = 100000327ul,
-                            Description = "GIORDANIA"
+                            Description = "ALTRI PAESI ASIA OCCIDENTALE"
                         },
                         new
                         {
@@ -753,109 +755,109 @@ namespace BookingCalendarApi.Migrations
                         {
                             Iso = "KE",
                             Code = 100000428ul,
-                            Description = "KENIA"
+                            Description = "ALTRI PAESI DELL'AFRICA"
                         },
                         new
                         {
                             Iso = "KG",
                             Code = 100000361ul,
-                            Description = "KIRGHIZISTAN"
+                            Description = "ALTRI PAESI DELL'ASIA"
                         },
                         new
                         {
                             Iso = "KH",
                             Code = 100000310ul,
-                            Description = "CAMBOGIA"
+                            Description = "ALTRI PAESI DELL'ASIA"
                         },
                         new
                         {
                             Iso = "KI",
                             Code = 100000708ul,
-                            Description = "KIRIBATI"
+                            Description = "ALTRI PAESI O TERRITORI OCEANIA"
                         },
                         new
                         {
                             Iso = "KM",
                             Code = 100000417ul,
-                            Description = "COMORE"
+                            Description = "ALTRI PAESI DELL'AFRICA"
                         },
                         new
                         {
                             Iso = "KN",
                             Code = 100000795ul,
-                            Description = "SAINT KITTS E NEVIS"
+                            Description = "ALTRI PAESI CENTRO - SUD AMERICA"
                         },
                         new
                         {
                             Iso = "KP",
                             Code = 100000319ul,
-                            Description = "CONGO"
+                            Description = "ALTRI PAESI DELL'ASIA"
                         },
                         new
                         {
                             Iso = "KR",
                             Code = 100000320ul,
-                            Description = "CONGO"
+                            Description = "COREA DEL SUD"
                         },
                         new
                         {
                             Iso = "KW",
                             Code = 100000335ul,
-                            Description = "KUWAIT"
+                            Description = "ALTRI PAESI ASIA OCCIDENTALE"
                         },
                         new
                         {
                             Iso = "KY",
                             Code = 100000223ul,
-                            Description = "ISLANDA"
+                            Description = "ALTRI PAESI EXTRAEUROPEI"
                         },
                         new
                         {
                             Iso = "KZ",
                             Code = 100000356ul,
-                            Description = "KAZAKISTAN"
+                            Description = "ALTRI PAESI DELL'ASIA"
                         },
                         new
                         {
                             Iso = "LA",
                             Code = 100000336ul,
-                            Description = "LAOS"
+                            Description = "ALTRI PAESI DELL'ASIA"
                         },
                         new
                         {
                             Iso = "LB",
                             Code = 100000337ul,
-                            Description = "LIBANO"
+                            Description = "ALTRI PAESI ASIA OCCIDENTALE"
                         },
                         new
                         {
                             Iso = "LC",
                             Code = 100000532ul,
-                            Description = "SAINT LUCIA"
+                            Description = "ALTRI PAESI CENTRO - SUD AMERICA"
                         },
                         new
                         {
                             Iso = "LI",
                             Code = 100000225ul,
-                            Description = "LIECHTENSTEIN"
+                            Description = "ALTRI PAESI EUROPEI"
                         },
                         new
                         {
                             Iso = "LK",
                             Code = 100000239ul,
-                            Description = "SPAGNA"
+                            Description = "ALTRI PAESI DELL'ASIA"
                         },
                         new
                         {
                             Iso = "LR",
                             Code = 100000430ul,
-                            Description = "LIBERIA"
+                            Description = "ALTRI PAESI DELL'AFRICA"
                         },
                         new
                         {
                             Iso = "LS",
                             Code = 100000429ul,
-                            Description = "LESOTHO"
+                            Description = "ALTRI PAESI DELL'AFRICA"
                         },
                         new
                         {
@@ -879,103 +881,103 @@ namespace BookingCalendarApi.Migrations
                         {
                             Iso = "LY",
                             Code = 100000431ul,
-                            Description = "LIBIA"
+                            Description = "ALTRI PAESI AFRICA MEDITERRANEA"
                         },
                         new
                         {
                             Iso = "MA",
                             Code = 100000436ul,
-                            Description = "MAROCCO"
+                            Description = "ALTRI PAESI AFRICA MEDITERRANEA"
                         },
                         new
                         {
                             Iso = "MC",
                             Code = 100000234ul,
-                            Description = "PORTOGALLO"
+                            Description = "ALTRI PAESI EUROPEI"
                         },
                         new
                         {
                             Iso = "MD",
                             Code = 100000254ul,
-                            Description = "MICRONESIA"
+                            Description = "ALTRI PAESI EUROPEI"
                         },
                         new
                         {
                             Iso = "ME",
                             Code = 100001001ul,
-                            Description = "MONTENEGRO"
+                            Description = "ALTRI PAESI EUROPEI"
                         },
                         new
                         {
                             Iso = "MF",
                             Code = 100000797ul,
-                            Description = "SAINT LUCIA"
+                            Description = "ALTRI PAESI CENTRO - SUD AMERICA"
                         },
                         new
                         {
                             Iso = "MG",
                             Code = 100000432ul,
-                            Description = "MADAGASCAR"
+                            Description = "ALTRI PAESI DELL'AFRICA"
                         },
                         new
                         {
                             Iso = "MH",
                             Code = 100000223ul,
-                            Description = "ISLANDA"
+                            Description = "ALTRI PAESI O TERRITORI OCEANIA"
                         },
                         new
                         {
                             Iso = "MK",
                             Code = 100000253ul,
-                            Description = "MACEDONIA(EX REPUBBLICA JUGOSLAVA)"
+                            Description = "ALTRI PAESI EUROPEI"
                         },
                         new
                         {
                             Iso = "ML",
                             Code = 100000435ul,
-                            Description = "MALI"
+                            Description = "ALTRI PAESI DELL'AFRICA"
                         },
                         new
                         {
                             Iso = "MM",
                             Code = 100000256ul,
-                            Description = "BIELORUSSIA"
+                            Description = "ALTRI PAESI DELL'ASIA"
                         },
                         new
                         {
                             Iso = "MN",
                             Code = 100000341ul,
-                            Description = "MONGOLIA"
+                            Description = "ALTRI PAESI DELL'ASIA"
                         },
                         new
                         {
                             Iso = "MO",
                             Code = 110000003ul,
-                            Description = "LUSSEMBURGO"
+                            Description = "ALTRI PAESI DELL'ASIA"
                         },
                         new
                         {
                             Iso = "MP",
                             Code = 100000223ul,
-                            Description = "ISLANDA"
+                            Description = "ALTRI PAESI DELL'ASIA"
                         },
                         new
                         {
                             Iso = "MQ",
                             Code = 100000773ul,
-                            Description = "MARSHALL"
+                            Description = "ALTRI PAESI DELL'AFRICA"
                         },
                         new
                         {
                             Iso = "MR",
                             Code = 100000437ul,
-                            Description = "MAURITANIA"
+                            Description = "ALTRI PAESI DELL'AFRICA"
                         },
                         new
                         {
                             Iso = "MS",
                             Code = 100000777ul,
-                            Description = "MONTENEGRO"
+                            Description = "ALTRI PAESI EXTRAEUROPEI"
                         },
                         new
                         {
@@ -987,73 +989,73 @@ namespace BookingCalendarApi.Migrations
                         {
                             Iso = "MU",
                             Code = 100000437ul,
-                            Description = "MAURITIUS"
+                            Description = "ALTRI PAESI DELL'AFRICA"
                         },
                         new
                         {
                             Iso = "MV",
                             Code = 100000339ul,
-                            Description = "MALDIVE"
+                            Description = "ALTRI PAESI DELL'ASIA"
                         },
                         new
                         {
                             Iso = "MW",
                             Code = 100000434ul,
-                            Description = "MALAWI"
+                            Description = "ALTRI PAESI DELL'AFRICA"
                         },
                         new
                         {
                             Iso = "MX",
                             Code = 100000527ul,
-                            Description = "MESSICO"
+                            Description = "ALTRI PAESI CENTRO - SUD AMERICA"
                         },
                         new
                         {
                             Iso = "MY",
                             Code = 100000767ul,
-                            Description = "MALAYSIA"
+                            Description = "ALTRI PAESI DELL'ASIA"
                         },
                         new
                         {
                             Iso = "MZ",
                             Code = 100000440ul,
-                            Description = "MOZAMBICO"
+                            Description = "ALTRI PAESI DELL'AFRICA"
                         },
                         new
                         {
                             Iso = "NA",
                             Code = 100000441ul,
-                            Description = "NAMIBIA"
+                            Description = "ALTRI PAESI DELL'AFRICA"
                         },
                         new
                         {
                             Iso = "NC",
                             Code = 100000780ul,
-                            Description = "NORVEGIA"
+                            Description = "ALTRI PAESI O TERRITORI OCEANIA"
                         },
                         new
                         {
                             Iso = "NE",
                             Code = 100000442ul,
-                            Description = "NIGER"
+                            Description = "ALTRI PAESI DELL'AFRICA"
                         },
                         new
                         {
                             Iso = "NF",
                             Code = 100000223ul,
-                            Description = "ISLANDA"
+                            Description = "AUSTRALIA"
                         },
                         new
                         {
                             Iso = "NG",
                             Code = 100000443ul,
-                            Description = "NIGERIA"
+                            Description = "ALTRI PAESI DELL'AFRICA"
                         },
                         new
                         {
                             Iso = "NI",
                             Code = 100000529ul,
-                            Description = "NICARAGUA"
+                            Description = "ALTRI PAESI CENTRO - SUD AMERICA"
                         },
                         new
                         {
@@ -1071,19 +1073,19 @@ namespace BookingCalendarApi.Migrations
                         {
                             Iso = "NP",
                             Code = 100000342ul,
-                            Description = "NEPAL"
+                            Description = "ALTRI PAESI DELL'ASIA"
                         },
                         new
                         {
                             Iso = "NR",
                             Code = 100000715ul,
-                            Description = "NAURU"
+                            Description = "ALTRI PAESI O TERRITORI OCEANIA"
                         },
                         new
                         {
                             Iso = "NU",
                             Code = 100000443ul,
-                            Description = "NIGERIA"
+                            Description = "ALTRI PAESI O TERRITORI OCEANIA"
                         },
                         new
                         {
@@ -1095,43 +1097,43 @@ namespace BookingCalendarApi.Migrations
                         {
                             Iso = "OM",
                             Code = 100000343ul,
-                            Description = "OMAN"
+                            Description = "ALTRI PAESI ASIA OCCIDENTALE"
                         },
                         new
                         {
                             Iso = "PA",
                             Code = 100000530ul,
-                            Description = "PANAMA"
+                            Description = "ALTRI PAESI CENTRO - SUD AMERICA"
                         },
                         new
                         {
                             Iso = "PE",
                             Code = 100000615ul,
-                            Description = "PERU'"
+                            Description = "ALTRI PAESI CENTRO - SUD AMERICA'"
                         },
                         new
                         {
                             Iso = "PF",
                             Code = 100000787ul,
-                            Description = "PERU'"
+                            Description = "ALTRI PAESI O TERRITORI OCEANIA"
                         },
                         new
                         {
                             Iso = "PG",
                             Code = 100000530ul,
-                            Description = "PAPUA NUOVA GUINEA"
+                            Description = "ALTRI PAESI O TERRITORI OCEANIA"
                         },
                         new
                         {
                             Iso = "PH",
                             Code = 100000323ul,
-                            Description = "FILIPPINE"
+                            Description = "ALTRI PAESI DELL'ASIA"
                         },
                         new
                         {
                             Iso = "PK",
                             Code = 100000344ul,
-                            Description = "PAKISTAN"
+                            Description = "ALTRI PAESI DELL'ASIA"
                         },
                         new
                         {
@@ -1143,25 +1145,25 @@ namespace BookingCalendarApi.Migrations
                         {
                             Iso = "PM",
                             Code = 100000797ul,
-                            Description = "SAINT LUCIA"
+                            Description = "FRANCIA"
                         },
                         new
                         {
                             Iso = "PN",
                             Code = 100000223ul,
-                            Description = "ISLANDA"
+                            Description = "ALTRI PAESI DELL'ASIA"
                         },
                         new
                         {
                             Iso = "PR",
                             Code = 100000233ul,
-                            Description = "POLONIA"
+                            Description = "ALTRI PAESI CENTRO - SUD AMERICA"
                         },
                         new
                         {
                             Iso = "PS",
                             Code = 100000536ul,
-                            Description = "STATI UNITI D'AMERICA"
+                            Description = "ALTRI PAESI ASIA OCCIDENTALE"
                         },
                         new
                         {
@@ -1173,25 +1175,25 @@ namespace BookingCalendarApi.Migrations
                         {
                             Iso = "PW",
                             Code = 100000344ul,
-                            Description = "PALAU"
+                            Description = "ALTRI PAESI DELL'ASIA"
                         },
                         new
                         {
                             Iso = "PY",
                             Code = 100000614ul,
-                            Description = "PARAGUAY"
+                            Description = "ALTRI PAESI CENTRO - SUD AMERICA"
                         },
                         new
                         {
                             Iso = "QA",
                             Code = 100000345ul,
-                            Description = "QATAR"
+                            Description = "ALTRI PAESI ASIA OCCIDENTALE"
                         },
                         new
                         {
                             Iso = "RE",
                             Code = 100000765ul,
-                            Description = "KUWAIT"
+                            Description = "ALTRI PAESI DELL'AFRICA"
                         },
                         new
                         {
@@ -1203,43 +1205,43 @@ namespace BookingCalendarApi.Migrations
                         {
                             Iso = "RS",
                             Code = 100001000ul,
-                            Description = "SENEGAL"
+                            Description = "ALTRI PAESI EUROPEI"
                         },
                         new
                         {
                             Iso = "RU",
                             Code = 100000245ul,
-                            Description = "FEDERAZIONE RUSSA"
+                            Description = "RUSSIA"
                         },
                         new
                         {
                             Iso = "RW",
                             Code = 100000446ul,
-                            Description = "RUANDA"
+                            Description = "ALTRI PAESI DELL'AFRICA"
                         },
                         new
                         {
                             Iso = "SA",
                             Code = 100000302ul,
-                            Description = "ARABIA SAUDITA"
+                            Description = "ALTRI PAESI ASIA OCCIDENTALE"
                         },
                         new
                         {
                             Iso = "SB",
                             Code = 100000223ul,
-                            Description = "ISLANDA"
+                            Description = "ALTRI PAESI O TERRITORI OCEANIA"
                         },
                         new
                         {
                             Iso = "SC",
                             Code = 100001000ul,
-                            Description = "SEYCHELLES"
+                            Description = "ALTRI PAESI DELL'AFRICA"
                         },
                         new
                         {
                             Iso = "SD",
                             Code = 100000455ul,
-                            Description = "SUDAN"
+                            Description = "ALTRI PAESI DELL'AFRICA"
                         },
                         new
                         {
@@ -1251,13 +1253,13 @@ namespace BookingCalendarApi.Migrations
                         {
                             Iso = "SG",
                             Code = 100000346ul,
-                            Description = "SINGAPORE"
+                            Description = "ALTRI PAESI DELL'ASIA"
                         },
                         new
                         {
                             Iso = "SH",
                             Code = 100000799ul,
-                            Description = "SAN MARINO"
+                            Description = "ALTRI PAESI DELL'AFRICA"
                         },
                         new
                         {
@@ -1269,145 +1271,145 @@ namespace BookingCalendarApi.Migrations
                         {
                             Iso = "SJ",
                             Code = 100000616ul,
-                            Description = "SURINAME"
+                            Description = "NORVEGIA"
                         },
                         new
                         {
                             Iso = "SK",
                             Code = 100000348ul,
-                            Description = "REPUBBLICA SLOVACCA"
+                            Description = "SLOVACCHIA"
                         },
                         new
                         {
                             Iso = "SL",
                             Code = 100000451ul,
-                            Description = "SIERRA LEONE"
+                            Description = "ALTRI PAESI DELL'AFRICA"
                         },
                         new
                         {
                             Iso = "SM",
                             Code = 100000236ul,
-                            Description = "SAN MARINO"
+                            Description = "ALTRI PAESI EUROPEI"
                         },
                         new
                         {
                             Iso = "SN",
                             Code = 100000450ul,
-                            Description = "SENEGAL"
+                            Description = "ALTRI PAESI DELL'AFRICA"
                         },
                         new
                         {
                             Iso = "SO",
                             Code = 100000453ul,
-                            Description = "SOMALIA"
+                            Description = "ALTRI PAESI DELL'AFRICA"
                         },
                         new
                         {
                             Iso = "SR",
                             Code = 100000616ul,
-                            Description = "SURINAME"
+                            Description = "ALTRI PAESI CENTRO - SUD AMERICA"
                         },
                         new
                         {
                             Iso = "SS",
                             Code = 100000455ul,
-                            Description = "SUDAN"
+                            Description = "ALTRI PAESI DELL'AFRICA"
                         },
                         new
                         {
                             Iso = "ST",
                             Code = 100000448ul,
-                            Description = "SAO TOME' E PRINCIPE"
+                            Description = "ALTRI PAESI DELL'AFRICA"
                         },
                         new
                         {
                             Iso = "SV",
                             Code = 100000517ul,
-                            Description = "EL SALVADOR"
+                            Description = "ALTRI PAESI CENTRO - SUD AMERICA"
                         },
                         new
                         {
                             Iso = "SX",
                             Code = 100000346ul,
-                            Description = "SINGAPORE"
+                            Description = "ALTRI PAESI CENTRO - SUD AMERICA"
                         },
                         new
                         {
                             Iso = "SY",
                             Code = 100000348ul,
-                            Description = "SIRIA"
+                            Description = "ALTRI PAESI ASIA OCCIDENTALE"
                         },
                         new
                         {
                             Iso = "SZ",
                             Code = 100000456ul,
-                            Description = "SWAZILAND"
+                            Description = "ALTRI PAESI DELL'AFRICA"
                         },
                         new
                         {
                             Iso = "TC",
                             Code = 100000223ul,
-                            Description = "ISLANDA"
+                            Description = "ALTRI PAESI CENTRO - SUD AMERICA"
                         },
                         new
                         {
                             Iso = "TD",
                             Code = 100000415ul,
-                            Description = "CIAD"
+                            Description = "ALTRI PAESI DELL'AFRICA"
                         },
                         new
                         {
                             Iso = "TF",
                             Code = 100000457ul,
-                            Description = "TANZANIA"
+                            Description = "ALTRI PAESI DELL'AFRICA"
                         },
                         new
                         {
                             Iso = "TG",
                             Code = 100000458ul,
-                            Description = "TOGO"
+                            Description = "ALTRI PAESI DELL'AFRICA"
                         },
                         new
                         {
                             Iso = "TH",
                             Code = 100000349ul,
-                            Description = "THAILANDIA"
+                            Description = "ALTRI PAESI DELL'ASIA"
                         },
                         new
                         {
                             Iso = "TJ",
                             Code = 100000362ul,
-                            Description = "TAGIKISTAN"
+                            Description = "ALTRI PAESI DELL'ASIA"
                         },
                         new
                         {
                             Iso = "TK",
                             Code = 100000806ul,
-                            Description = "TOGO"
+                            Description = "ALTRI PAESI O TERRITORI OCEANIA"
                         },
                         new
                         {
                             Iso = "TL",
                             Code = 100000805ul,
-                            Description = "THAILANDIA"
+                            Description = "ALTRI PAESI DELL'ASIA"
                         },
                         new
                         {
                             Iso = "TM",
                             Code = 100000364ul,
-                            Description = "TURKMENISTAN"
+                            Description = "ALTRI PAESI DELL'ASIA"
                         },
                         new
                         {
                             Iso = "TN",
                             Code = 100000460ul,
-                            Description = "TUNISIA"
+                            Description = "ALTRI PAESI AFRICA MEDITERRANEA"
                         },
                         new
                         {
                             Iso = "TO",
                             Code = 100000730ul,
-                            Description = "TONGA"
+                            Description = "ALTRI PAESI O TERRITORI OCEANIA"
                         },
                         new
                         {
@@ -1419,25 +1421,25 @@ namespace BookingCalendarApi.Migrations
                         {
                             Iso = "TT",
                             Code = 100000617ul,
-                            Description = "TRINIDAD E TOBAGO"
+                            Description = "ALTRI PAESI CENTRO - SUD AMERICA"
                         },
                         new
                         {
                             Iso = "TV",
                             Code = 100000731ul,
-                            Description = "TUVALU"
+                            Description = "ALTRI PAESI O TERRITORI OCEANIA"
                         },
                         new
                         {
                             Iso = "TW",
                             Code = 100000998ul,
-                            Description = "REPUBBLICA DEMOCRATICA DEL CONGO(EX ZAIRE)"
+                            Description = "ALTRI PAESI DELL'ASIA"
                         },
                         new
                         {
                             Iso = "TZ",
                             Code = 100000457ul,
-                            Description = "TANZANIA"
+                            Description = "ALTRI PAESI DELL'AFRICA"
                         },
                         new
                         {
@@ -1449,7 +1451,7 @@ namespace BookingCalendarApi.Migrations
                         {
                             Iso = "UG",
                             Code = 100000461ul,
-                            Description = "UGANDA"
+                            Description = "ALTRI PAESI DELL'AFRICA"
                         },
                         new
                         {
@@ -1461,7 +1463,7 @@ namespace BookingCalendarApi.Migrations
                         {
                             Iso = "UM",
                             Code = 100000223ul,
-                            Description = "ISLANDA"
+                            Description = "STATI UNITI D'AMERICA"
                         },
                         new
                         {
@@ -1473,25 +1475,25 @@ namespace BookingCalendarApi.Migrations
                         {
                             Iso = "UY",
                             Code = 100000618ul,
-                            Description = "URUGUAY"
+                            Description = "ALTRI PAESI CENTRO - SUD AMERICA"
                         },
                         new
                         {
                             Iso = "UZ",
                             Code = 100000357ul,
-                            Description = "UZBEKISTAN"
+                            Description = "ALTRI PAESI DELL'ASIA"
                         },
                         new
                         {
                             Iso = "VA",
                             Code = 100000246ul,
-                            Description = "CIPRO"
+                            Description = "ITALIA"
                         },
                         new
                         {
                             Iso = "VC",
                             Code = 100000797ul,
-                            Description = "SAINT LUCIA"
+                            Description = "ALTRI PAESI CENTRO - SUD AMERICA"
                         },
                         new
                         {
@@ -1503,67 +1505,67 @@ namespace BookingCalendarApi.Migrations
                         {
                             Iso = "VG",
                             Code = 100000764ul,
-                            Description = "ISLANDA"
+                            Description = "ALTRI PAESI CENTRO - SUD AMERICA"
                         },
                         new
                         {
                             Iso = "VI",
                             Code = 100000764ul,
-                            Description = "ISLANDA"
+                            Description = "ALTRI PAESI CENTRO - SUD AMERICA"
                         },
                         new
                         {
                             Iso = "VN",
                             Code = 100000353ul,
-                            Description = "VIETNAM"
+                            Description = "ALTRI PAESI DELL'ASIA"
                         },
                         new
                         {
                             Iso = "VU",
                             Code = 100000732ul,
-                            Description = "VANUATU"
+                            Description = "ALTRI PAESI O TERRITORI OCEANIA"
                         },
                         new
                         {
                             Iso = "WF",
                             Code = 100000815ul,
-                            Description = "VIETNAM"
+                            Description = "ALTRI PAESI O TERRITORI OCEANIA"
                         },
                         new
                         {
                             Iso = "WS",
                             Code = 100000727ul,
-                            Description = "SAMOA"
+                            Description = "ALTRI PAESI O TERRITORI OCEANIA"
                         },
                         new
                         {
                             Iso = "YE",
                             Code = 100000354ul,
-                            Description = "YEMEN"
+                            Description = "ALTRI PAESI ASIA OCCIDENTALE"
                         },
                         new
                         {
                             Iso = "YT",
                             Code = 100000774ul,
-                            Description = "MAURITIUS"
+                            Description = "ALTRI PAESI DELL'AFRICA"
                         },
                         new
                         {
                             Iso = "ZA",
                             Code = 100000467ul,
-                            Description = "SUD SUDAN, REPUBBLICA DEL"
+                            Description = "SUD AFRICA"
                         },
                         new
                         {
                             Iso = "ZM",
                             Code = 100000464ul,
-                            Description = "ZAMBIA"
+                            Description = "ALTRI PAESI DELL'AFRICA"
                         },
                         new
                         {
                             Iso = "ZW",
                             Code = 100000465ul,
-                            Description = "ZIMBABWE"
+                            Description = "ALTRI PAESI DELL'AFRICA"
                         });
                 });
 

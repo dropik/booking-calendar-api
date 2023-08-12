@@ -46,6 +46,8 @@ dotnet run
 ```
 
 ## Changelog
+### v1.2.3
+- Restored original Germany and USA country names, as it was giving errors in ISTAT.
 ### v1.2.2
 - Adjusted nation descriptions in seeding for better ISTAT compatibility.
 ### v1.2.1
