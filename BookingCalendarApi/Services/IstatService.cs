@@ -61,7 +61,7 @@ namespace BookingCalendarApi.Services
 
                 var bookings = await _bookingsProvider.Get(date.ToString("yyyy-MM-dd"), date.AddDays(1).ToString("yyyy-MM-dd"), exactPeriod: false);
 
-                var prevTotal = lastUpload.totalePartenze;
+                var prevTotal = lastUpload.totalePresenti;
                 var dateStr = date.ToString("yyyyMMdd");
                 var arrivedOrDeparturedStays = bookings
                     .SelectMany(
