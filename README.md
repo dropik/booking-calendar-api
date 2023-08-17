@@ -46,6 +46,8 @@ dotnet run
 ```
 
 ## Changelog
+### v1.2.4
+- Reversed ISTAT nation descriptions as of version 1.2.1.
 ### v1.2.3
 - Restored original Germany and USA country names, as it was giving errors in ISTAT.
 ### v1.2.2
