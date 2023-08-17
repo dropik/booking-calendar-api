@@ -46,6 +46,9 @@ dotnet run
 ```
 
 ## Changelog
+### v1.2.5
+- Adjusted some specific nations that are missing in ISTAT documentaion, and other nation description typos.
+- Added Pakistan nation.
 ### v1.2.4
 - Reversed ISTAT nation descriptions as of version 1.2.1.
 ### v1.2.3
