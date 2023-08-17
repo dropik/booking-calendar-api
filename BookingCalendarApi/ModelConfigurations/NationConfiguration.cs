@@ -157,7 +157,7 @@ namespace BookingCalendarApi.ModelConfigurations
                     new Nation("MF", 100000797, "FRANCIA"),                     // belongs to France
                     new Nation("MG", 100000432, "MADAGASCAR"),
                     new Nation("MH", 100000223, "MARSHALL"),
-                    new Nation("MK", 100000253, "MACEDONIA(EX REPUBBLICA JUGOSLAVA)"),
+                    new Nation("MK", 100000253, "MACEDONIA (EX REPUBBLICA JUGOSLAVA)"),
                     new Nation("ML", 100000435, "MALI"),
                     new Nation("MM", 100000256, "MYANMAR"),
                     new Nation("MN", 100000341, "MONGOLIA"),
@@ -196,12 +196,7 @@ namespace BookingCalendarApi.ModelConfigurations
                     new Nation("PM", 100000797, "FRANCIA"),                     // belongs to France
                     new Nation("PN", 100000223, "REGNO UNITO"),                 // belongs to UK
                     new Nation("PR", 100000233, "STATI UNITI D'AMERICA"),       // belongs to USA
-                    
-                    // that's actually Palestina... but it appears to be not present
-                    // in the list of ISTAT state... So placing the "most"
-                    // appropriate alternative for that:))
-                    new Nation("PS", 100000536, "ISRAELE"),
-                    
+                    new Nation("PS", 100000536, "PAKISTAN"),
                     new Nation("PT", 100000234, "PORTOGALLO"),
                     new Nation("PW", 100000344, "PALAU"),
                     new Nation("PY", 100000614, "PARAGUAY"),
