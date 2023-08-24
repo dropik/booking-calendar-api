@@ -69,6 +69,7 @@ namespace BookingCalendarApi.Services
                             .Where(room => room.Arrival == dateStr || room.Departure == dateStr),
                         (booking, room) => room
                     );
+
                 var guestsWithProvinceOrState = arrivedOrDeparturedStays
                     .SelectMany(
                         stay => stay.Guests
@@ -80,30 +81,22 @@ namespace BookingCalendarApi.Services
                         {
                             stay.Arrival,
                             stay.Departure,
-                            Country = guest.BirthCountry,
-                            Province = guest.BirthCounty
+                            IsItaly = guest.BirthCountry == "IT",
+                            Targa = guest.BirthCountry == "IT"
+                                ? guest.BirthCounty
+                                : DecapitalizeCountryName(nations.SingleOrDefault(nation => nation.Iso == guest.BirthCountry)?.Description ?? ""),
                         }
                     );
+
                 var movements = guestsWithProvinceOrState
-                    .GroupBy(guest => guest.Country)
-                    .Select(group => group.Key != "IT" ? new List<movimentoWSPO>() {
-                        new movimentoWSPO()
-                        {
-                            italia = false,
-                            targa = DecapitalizeCountryName(nations.SingleOrDefault(nation => nation.Iso == group.Key)?.Description ?? ""),
-                            arrivi = group.Where(item => item.Arrival == dateStr).Count(),
-                            partenze = group.Where(item => item.Departure == dateStr).Count()
-                        }
-                    } : group
-                        .GroupBy(item => item.Province)
-                        .Select(provinceGroup => new movimentoWSPO()
-                        {
-                            italia = true,
-                            targa = provinceGroup.Key,
-                            arrivi = provinceGroup.Where(item => item.Arrival == dateStr).Count(),
-                            partenze = provinceGroup.Where(item => item.Departure == dateStr).Count()
-                        }))
-                    .SelectMany(movements => movements)
+                    .GroupBy(guest => guest.Targa)
+                    .Select(group => new movimentoWSPO()
+                    {
+                        italia = group.First().IsItaly,
+                        targa = group.Key,
+                        arrivi = group.Where(item => item.Arrival == dateStr).Count(),
+                        partenze = group.Where(item => item.Departure == dateStr).Count()
+                    })
                     .ToList();
 
                 return new()
