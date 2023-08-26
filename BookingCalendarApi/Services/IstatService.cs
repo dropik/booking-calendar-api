@@ -129,8 +129,16 @@ namespace BookingCalendarApi.Services
                     {
                         italia = m.italia,
                         targa = m.targa.ToUpperInvariant(),
-                        arrivi = m.arrivi,
-                        partenze = m.partenze,
+                        arrivi = Math.Max(m.arrivi, 0),
+                        partenze = Math.Max(m.partenze, 0),
+                    })
+                    .GroupBy(m => m.targa)
+                    .Select(g => new movimentoWSPO()
+                    {
+                        italia = g.First().italia,
+                        targa = g.Key,
+                        arrivi = g.Sum(i => i.arrivi),
+                        partenze = g.Sum(i => i.partenze),
                     })
                     .ToList();
 
