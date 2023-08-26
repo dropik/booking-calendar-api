@@ -124,21 +124,34 @@ namespace BookingCalendarApi.Services
                 var totalDepartured = movements.Movements.Sum(movement => movement.partenze);
                 var total = movements.PrevTotal + totalArrived - totalDepartured;
 
+                if (movements.Movements.GroupBy(m => m.targa).Any(g => g.Count() > 1))
+                {
+                    throw new BookingCalendarException(BCError.INVALID_ISTAT_MOVEMENTS, "Duplicated entries found.");
+                }
+
+                foreach (var movement in movements.Movements)
+                {
+                    if (movement.arrivi < 0)
+                    {
+                        throw new BookingCalendarException(BCError.INVALID_ISTAT_MOVEMENTS, "Arrivals can not be negative.");
+                    }
+                    if (movement.partenze < 0)
+                    {
+                        throw new BookingCalendarException(BCError.INVALID_ISTAT_MOVEMENTS, "Departures can not be negative.");
+                    }
+                    if (movement.arrivi == 0 && movement.partenze == 0)
+                    {
+                        throw new BookingCalendarException(BCError.INVALID_ISTAT_MOVEMENTS, "Either arrivals or departures must be set.");
+                    }
+                }
+
                 movements.Movements = movements.Movements
                     .Select(m => new movimentoWSPO()
                     {
                         italia = m.italia,
                         targa = m.targa.ToUpperInvariant(),
-                        arrivi = Math.Max(m.arrivi, 0),
-                        partenze = Math.Max(m.partenze, 0),
-                    })
-                    .GroupBy(m => m.targa)
-                    .Select(g => new movimentoWSPO()
-                    {
-                        italia = g.First().italia,
-                        targa = g.Key,
-                        arrivi = g.Sum(i => i.arrivi),
-                        partenze = g.Sum(i => i.partenze),
+                        arrivi = m.arrivi,
+                        partenze = m.partenze,
                     })
                     .ToList();
 
