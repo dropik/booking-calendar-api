@@ -35,5 +35,11 @@ namespace BookingCalendarApi.Controllers
             await _service.Send(request);
             return Ok();
         }
+
+        [HttpGet("provinces")]
+        public async Task<ActionResult<List<string>>> GetProvinces()
+        {
+            return Ok(await _service.GetProvinces());
+        }
     }
 }

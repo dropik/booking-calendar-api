@@ -1,11 +1,15 @@
-﻿using BookingCalendarApi.Models.Requests;
+﻿using BookingCalendarApi.Models.DTO;
+using BookingCalendarApi.Models.Requests;
 using BookingCalendarApi.Models.Responses;
 
 namespace BookingCalendarApi.Services
 {
     public interface IIstatService
     {
-        public Task SendNewData(IstatSendDataRequest request);
-        public Task<IstatLastDateResponse> GetLastDate();
+        Task SendNewData(IstatSendDataRequest request);
+        Task<IstatLastDateResponse> GetLastDate();
+        Task<IstatMovementsDTO> GetMovements();
+        Task SendMovements(IstatMovementsDTO movements);
+        Task<List<string>> GetCountries();
     }
 }

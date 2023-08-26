@@ -33,7 +33,7 @@ namespace BookingCalendarApi.Services
         public async Task<PoliceRicevutaResponse> GetRicevuta(string date)
         {
             await _session.Open();
-            var pdf = await _session.GetRicevutaAsync(DateTime.ParseExact(date, "yyyy-MM-dd", null));
+            var pdf = await _session.GetRicevuta(DateTime.ParseExact(date, "yyyy-MM-dd", null));
             return new()
             {
                 Pdf = pdf,
@@ -54,6 +54,18 @@ namespace BookingCalendarApi.Services
             var records = await ComposeRecords(request.Date);
             await _session.SendData(records, true);        // test it first
             await _session.SendData(records, false);       // if no exception occured - send
+        }
+
+        public async Task<List<string>> GetProvinces()
+        {
+            await _session.Open();
+            var places = await _session.GetPlaces();
+            return places
+                .Select(p => p.Provincia)
+                .Distinct()
+                .Except(new List<string>() { "ES" })
+                .OrderBy(p => p)
+                .ToList();
         }
 
         private async Task<List<string>> ComposeRecords(string date)
@@ -77,7 +89,7 @@ namespace BookingCalendarApi.Services
 
         private async Task FetchPlaces()
         {
-            _dataContext.Places.AddRange(await _session.GetPlacesAsync());
+            _dataContext.Places.AddRange(await _session.GetPlaces());
         }
     }
 }
