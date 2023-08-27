@@ -46,33 +46,47 @@ dotnet run
 ```
 
 ## Changelog
+
+#### *Versions skipped up to 1.6 to sync with frontend*
+
 ### v1.2.8
 - Added wether deposit is made with a bank transfer to booking response.
+
 ### v1.2.7
 - Added deposit information to booking response.
+
 ### v1.2.6
 - ISTAT data must be fetched first and then reuploaded, so that eventual changes could be consumed.
 - Better validation and grouping of ISTAT data before send.
+
 ### v1.2.5
 - Adjusted some specific nations that are missing in ISTAT documentaion, and other nation description typos.
 - Added Pakistan nation.
+
 ### v1.2.4
 - Reversed ISTAT nation descriptions as of version 1.2.1.
+
 ### v1.2.3
 - Restored original Germany and USA country names, as it was giving errors in ISTAT.
+
 ### v1.2.2
 - Adjusted nation descriptions in seeding for better ISTAT compatibility.
+
 ### v1.2.1
 - Added exception filter. More advanced status codes handling.
 - Handling connection errors and given correct status code for that.
 - Added entities configurations. Seeding data directly from configuration.
+
 ### v1.2.0
 - Added base board information to tiles.
 - Fixed minor bugs.
+
 ### v1.1.2
 - Fixed correct tracked records order by record type.
+
 ### v1.1.1
 - Fixed missing date specified field in ISTAT publication.
+
 ### v1.1.0
 - Added ISTAT endpoint to send new ISTAT data and to get last published date.
 - Fixed wrong police data row serialization.
