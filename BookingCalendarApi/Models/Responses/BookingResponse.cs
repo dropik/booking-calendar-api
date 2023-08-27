@@ -6,27 +6,11 @@ namespace BookingCalendarApi.Models.Responses
 {
     public class BookingResponse<TPerson>
     {
-        public BookingResponse(
-            string id,
-            string name,
-            string lastModified,
-            string from,
-            string to,
-            decimal deposit,
-            bool depositConfirmed)
-        {
-            Id = id;
-            Name = name;
-            LastModified = lastModified;
-            From = from;
-            To = to;
-            Deposit = deposit;
-            DepositConfirmed = depositConfirmed;
-        }
-
         public string Id { get; set; }
         [JsonConverter(typeof(LowerCaseEnumConverter))]
         public BookingStatus Status { get; set; } = BookingStatus.New;
+        [JsonConverter(typeof(LowerCaseEnumConverter))]
+        public BookingPaymentMethod PaymentMethod { get; set; } = BookingPaymentMethod.XX;
         public string Name { get; set; }
         public string LastModified { get; set; }
         public string From { get; set; }
@@ -36,5 +20,25 @@ namespace BookingCalendarApi.Models.Responses
         public bool DepositConfirmed { get; set; }
 
         public List<TileResponse<TPerson>> Tiles { get; set; } = new List<TileResponse<TPerson>>();
+
+        public BookingResponse(
+            string id,
+            string name,
+            string lastModified,
+            string from,
+            string to,
+            decimal deposit,
+            bool depositConfirmed,
+            BookingPaymentMethod paymentMethod)
+        {
+            Id = id;
+            Name = name;
+            LastModified = lastModified;
+            From = from;
+            To = to;
+            Deposit = deposit;
+            DepositConfirmed = depositConfirmed;
+            PaymentMethod = paymentMethod;
+        }
     }
 }

@@ -46,6 +46,8 @@ dotnet run
 ```
 
 ## Changelog
+### v1.2.8
+- Added payment method to booking response.
 ### v1.2.7
 - Added deposit information to booking response.
 ### v1.2.6

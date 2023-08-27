@@ -15,6 +15,8 @@ namespace BookingCalendarApi.Models.Iperbooking.Bookings
         public long BookingNumber { get; set; }
         [JsonConverter(typeof(JsonStringEnumConverter))]
         public BookingStatus Status { get; set; } = BookingStatus.New;
+        [JsonConverter(typeof(JsonStringEnumConverter))]
+        public BookingPaymentMethod PaymentMethod { get; set; } = BookingPaymentMethod.XX;
         public string FirstName { get; set; }
         public string LastName { get; set; }
         public string LastModified { get; set; }
@@ -27,6 +29,14 @@ namespace BookingCalendarApi.Models.Iperbooking.Bookings
     public enum BookingStatus {
         New,
         Modified,
-        Cancelled
+        Cancelled,
     };
+
+    public enum BookingPaymentMethod
+    {
+        XX,         // not available
+        CC,         // credit card
+        GC,         // garancy credit
+        BT,         // bank transfer
+    }
 }

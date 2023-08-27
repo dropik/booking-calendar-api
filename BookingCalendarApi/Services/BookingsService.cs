@@ -50,7 +50,8 @@ namespace BookingCalendarApi.Services
                             from: DateTime.ParseExact(join.Booking.Rooms.OrderBy(room => room.Arrival).First().Arrival, "yyyyMMdd", null).ToString("yyyy-MM-dd"),
                             to: DateTime.ParseExact(join.Booking.Rooms.OrderBy(room => room.Departure).Last().Departure, "yyyyMMdd", null).ToString("yyyy-MM-dd"),
                             deposit: join.Booking.Deposit,
-                            depositConfirmed: join.Booking.DepositConfirmed)
+                            depositConfirmed: join.Booking.DepositConfirmed,
+                            paymentMethod: join.Booking.PaymentMethod)
                         {
                             Status = join.Booking.Status,
                             Color = join.Color?.Color,
@@ -148,7 +149,8 @@ namespace BookingCalendarApi.Services
                     from: DateTime.ParseExact(join.Booking.Rooms.OrderBy(room => room.Arrival).First().Arrival, "yyyyMMdd", null).ToString("yyyy-MM-dd"),
                     to: DateTime.ParseExact(join.Booking.Rooms.OrderBy(room => room.Departure).Last().Departure, "yyyyMMdd", null).ToString("yyyy-MM-dd"),
                     deposit: join.Booking.Deposit,
-                    depositConfirmed: join.Booking.DepositConfirmed)
+                    depositConfirmed: join.Booking.DepositConfirmed,
+                    paymentMethod: join.Booking.PaymentMethod)
             {
                 Status = join.Booking.Status,
                 Color = join.Color?.Color,
