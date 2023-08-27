@@ -46,6 +46,8 @@ dotnet run
 ```
 
 ## Changelog
+### v1.2.7
+- Added deposit information to booking response.
 ### v1.2.6
 - ISTAT data must be fetched first and then reuploaded, so that eventual changes could be consumed.
 - Better validation and grouping of ISTAT data before send.

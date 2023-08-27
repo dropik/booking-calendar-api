@@ -6,13 +6,22 @@ namespace BookingCalendarApi.Models.Responses
 {
     public class BookingResponse<TPerson>
     {
-        public BookingResponse(string id, string name, string lastModified, string from, string to)
+        public BookingResponse(
+            string id,
+            string name,
+            string lastModified,
+            string from,
+            string to,
+            decimal deposit,
+            bool depositConfirmed)
         {
             Id = id;
             Name = name;
             LastModified = lastModified;
             From = from;
             To = to;
+            Deposit = deposit;
+            DepositConfirmed = depositConfirmed;
         }
 
         public string Id { get; set; }
@@ -23,6 +32,8 @@ namespace BookingCalendarApi.Models.Responses
         public string From { get; set; }
         public string To { get; set; }
         public string? Color { get; set; }
+        public decimal Deposit { get; set; }
+        public bool DepositConfirmed { get; set; }
 
         public List<TileResponse<TPerson>> Tiles { get; set; } = new List<TileResponse<TPerson>>();
     }

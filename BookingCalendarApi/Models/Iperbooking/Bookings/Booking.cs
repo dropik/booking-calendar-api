@@ -18,6 +18,8 @@ namespace BookingCalendarApi.Models.Iperbooking.Bookings
         public string FirstName { get; set; }
         public string LastName { get; set; }
         public string LastModified { get; set; }
+        public decimal Deposit { get; set; }
+        public bool DepositConfirmed { get; set; }
 
         public List<BookingRoom<BookingGuest>> Rooms { get; set; } = new();
     }
