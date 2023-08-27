@@ -35,8 +35,13 @@ namespace BookingCalendarApi.Models.Iperbooking.Bookings
     public enum BookingPaymentMethod
     {
         XX,         // not available
-        CC,         // credit card
-        GC,         // garancy credit
-        BT,         // bank transfer
+        CC,         // Carta di credito
+        BT,         // Bonifico bancario
+        MO,         // Vaglia postale
+        GC,         // Carta di credito a garanzia
+        PT,         // Bollettino postale
+        PP,         // PayPal
+        CN,         // Carta di credito con Addebito
+        CA,         // Contanti
     }
 }

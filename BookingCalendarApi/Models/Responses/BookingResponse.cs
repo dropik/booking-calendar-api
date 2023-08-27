@@ -10,12 +10,12 @@ namespace BookingCalendarApi.Models.Responses
         [JsonConverter(typeof(LowerCaseEnumConverter))]
         public BookingStatus Status { get; set; } = BookingStatus.New;
         [JsonConverter(typeof(LowerCaseEnumConverter))]
-        public BookingPaymentMethod PaymentMethod { get; set; } = BookingPaymentMethod.XX;
         public string Name { get; set; }
         public string LastModified { get; set; }
         public string From { get; set; }
         public string To { get; set; }
         public string? Color { get; set; }
+        public bool IsBankTransfer { get; set; }
         public decimal Deposit { get; set; }
         public bool DepositConfirmed { get; set; }
 
@@ -29,7 +29,7 @@ namespace BookingCalendarApi.Models.Responses
             string to,
             decimal deposit,
             bool depositConfirmed,
-            BookingPaymentMethod paymentMethod)
+            bool isBankTransfer)
         {
             Id = id;
             Name = name;
@@ -38,7 +38,7 @@ namespace BookingCalendarApi.Models.Responses
             To = to;
             Deposit = deposit;
             DepositConfirmed = depositConfirmed;
-            PaymentMethod = paymentMethod;
+            IsBankTransfer = isBankTransfer;
         }
     }
 }

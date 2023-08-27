@@ -51,7 +51,7 @@ namespace BookingCalendarApi.Services
                             to: DateTime.ParseExact(join.Booking.Rooms.OrderBy(room => room.Departure).Last().Departure, "yyyyMMdd", null).ToString("yyyy-MM-dd"),
                             deposit: join.Booking.Deposit,
                             depositConfirmed: join.Booking.DepositConfirmed,
-                            paymentMethod: join.Booking.PaymentMethod)
+                            isBankTransfer: join.Booking.PaymentMethod == BookingPaymentMethod.BT)
                         {
                             Status = join.Booking.Status,
                             Color = join.Color?.Color,
@@ -150,7 +150,7 @@ namespace BookingCalendarApi.Services
                     to: DateTime.ParseExact(join.Booking.Rooms.OrderBy(room => room.Departure).Last().Departure, "yyyyMMdd", null).ToString("yyyy-MM-dd"),
                     deposit: join.Booking.Deposit,
                     depositConfirmed: join.Booking.DepositConfirmed,
-                    paymentMethod: join.Booking.PaymentMethod)
+                    isBankTransfer: join.Booking.PaymentMethod == BookingPaymentMethod.BT)
             {
                 Status = join.Booking.Status,
                 Color = join.Color?.Color,
