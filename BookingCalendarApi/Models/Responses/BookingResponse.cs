@@ -9,7 +9,6 @@ namespace BookingCalendarApi.Models.Responses
         public string Id { get; set; }
         [JsonConverter(typeof(LowerCaseEnumConverter))]
         public BookingStatus Status { get; set; } = BookingStatus.New;
-        [JsonConverter(typeof(LowerCaseEnumConverter))]
         public string Name { get; set; }
         public string LastModified { get; set; }
         public string From { get; set; }

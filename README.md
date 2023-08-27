@@ -47,7 +47,7 @@ dotnet run
 
 ## Changelog
 ### v1.2.8
-- Added payment method to booking response.
+- Added wether deposit is made with a bank transfer to booking response.
 ### v1.2.7
 - Added deposit information to booking response.
 ### v1.2.6
