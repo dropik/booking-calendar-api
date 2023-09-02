@@ -54,6 +54,9 @@ dotnet run
 
 ## Changelog
 
+### v1.6.0
+- Introduced JWT authentication.
+
 #### *Versions skipped up to 1.6 to sync with frontend*
 
 ### v1.2.8
