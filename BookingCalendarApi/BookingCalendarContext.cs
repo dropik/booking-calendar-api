@@ -14,6 +14,7 @@ namespace BookingCalendarApi
         public DbSet<RoomAssignment> RoomAssignments => Set<RoomAssignment>();
         public DbSet<ColorAssignment> ColorAssignments => Set<ColorAssignment>();
         public DbSet<Nation> Nations => Set<Nation>();
+        public DbSet<Structure> Structures => Set<Structure>();
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
@@ -23,6 +24,7 @@ namespace BookingCalendarApi
             builder.ApplyConfiguration(new RoomAssignmentConfiguration());
             builder.ApplyConfiguration(new ColorAssignmentConfiguration());
             builder.ApplyConfiguration(new NationConfiguration());
+            builder.ApplyConfiguration(new StructureConfiguration());
         }
     }
 }
