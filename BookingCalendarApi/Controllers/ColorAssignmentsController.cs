@@ -1,10 +1,12 @@
 using BookingCalendarApi.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace BookingCalendarApi.Controllers
 {
     [Route("api/v1/color-assignments")]
     [ApiController]
+    [Authorize]
     public class ColorAssignmentsController : ControllerBase
     {
         private readonly IColorAssignmentsService _service;

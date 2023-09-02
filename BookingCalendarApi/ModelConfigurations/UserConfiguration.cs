@@ -16,6 +16,8 @@ namespace BookingCalendarApi.ModelConfigurations
             builder.Property(u => u.VisibleName).IsRequired(false).HasMaxLength(PropertyDefaults.MAX_NAME_LENGTH);
 
             builder.HasOne<Structure>().WithMany().HasForeignKey(u => u.StructureId).OnDelete(DeleteBehavior.Restrict);
+
+            builder.HasIndex(u => u.Username).IsUnique();
         }
     }
 }

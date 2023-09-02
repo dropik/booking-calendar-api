@@ -24,25 +24,30 @@ dotnet database update
 3. Use **merge-iso-statipolizia.csv** file to import Police nation codes into your newly created **policenations** table in your MySQL database.
 4. Define *Structure* in the **structures** table of the database.
 5. Create user in the database.
-6. Set credentials for Iperbooking:
+6. Set JWT secrets
+```
+dotnet user-secrets set "JWT:Key" "<your-JWT-key>"
+dotnet user-secrets set "JWT:Issuer" "<your-JWT-issuer>"
+```
+7. Set credentials for Iperbooking:
 ```
 dotnet user-secrets set "Iperbooking:IdHotel" "{YourIdHotel}"
 dotnet user-secrets set "Iperbooking:Username" "{YourIperbookingUsername}"
 dotnet user-secrets set "Iperbooking:Password" "{YourIperbookingPassword}"
 ```
-7. Set Portale Alloggiati credentials (you would need to generate WsKey for this first on the Portale Alloggiati website):
+8. Set Portale Alloggiati credentials (you would need to generate WsKey for this first on the Portale Alloggiati website):
 ```
 dotnet user-secrets set "AlloggiatiService:Utente" "{YourPortaleAlloggiatiUsername}"
 dotnet user-secrets set "AlloggiatiService:Password" "{YourPortaleAlloggiatiPassword}"
 dotnet user-secrets set "AlloggiatiService:WsKey" "{YourGeneratedWsKey}"
 ```
-8. Set STU credentials:
+9. Set STU credentials:
 ```
 dotnet user-secrets set "C59Service:Username" "{YourSTUUsername}"
 dotnet user-secrets set "C59Service:Password" "{YourSTUPassword}"
 dotnet user-secrets set "C59Service:Struttura" "{YourSTUStructureId}"
 ```
-9. Run it:
+10. Run it:
 ```
 dotnet run
 ```

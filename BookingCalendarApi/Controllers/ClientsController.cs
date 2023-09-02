@@ -1,11 +1,13 @@
 ﻿using BookingCalendarApi.Models.Responses;
 using BookingCalendarApi.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace BookingCalendarApi.Controllers
 {
     [Route("api/v1")]
     [ApiController]
+    [Authorize]
     public class ClientsController : ControllerBase
     {
         private readonly IClientsService _service;

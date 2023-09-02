@@ -1,11 +1,13 @@
 ﻿using BookingCalendarApi.Models.Requests;
 using BookingCalendarApi.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace BookingCalendarApi.Controllers
 {
     [Route("api/v1/police")]
     [ApiController]
+    [Authorize]
     public class PoliceController : ControllerBase
     {
         private readonly IPoliceService _service;

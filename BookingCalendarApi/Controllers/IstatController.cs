@@ -2,12 +2,14 @@
 using BookingCalendarApi.Models.Requests;
 using BookingCalendarApi.Models.Responses;
 using BookingCalendarApi.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace BookingCalendarApi.Controllers
 {
     [Route("api/v1/istat")]
     [ApiController]
+    [Authorize]
     public class IstatController : ControllerBase
     {
         private readonly IIstatService _service;
