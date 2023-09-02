@@ -69,12 +69,15 @@ builder.Services.AddDbContext<BookingCalendarContext>((options) =>
 );
 
 // scoped services
+builder.Services.AddHttpContextAccessor();
+builder.Services.AddScoped(s => s.GetService<IHttpContextAccessor>()!.HttpContext!.User);
 builder.Services.AddScoped<IIperbooking, Iperbooking>();
 builder.Services.AddScoped<IAlloggiatiServiceSession, AlloggiatiServiceSession>();
 builder.Services.AddScoped<DataContext>();
 
 // transient services
 builder.Services.AddTransient<IAuthService, AuthService>();
+builder.Services.AddTransient<IUserService, UserService>();
 builder.Services.AddTransient<IBookingsService, BookingsService>();
 builder.Services.AddTransient<ICityTaxService, CityTaxService>();
 builder.Services.AddTransient<IClientsService, ClientsService>();
@@ -83,7 +86,6 @@ builder.Services.AddTransient<IFloorsService, FloorsService>();
 builder.Services.AddTransient<IIstatService, IstatService>();
 builder.Services.AddTransient<IPoliceService, PoliceService>();
 builder.Services.AddTransient<IRoomAssignmentsService, RoomAssignmentsService>();
-builder.Services.AddTransient<IRoomRatesService, RoomRatesService>();
 builder.Services.AddTransient<IRoomsService, RoomsService>();
 builder.Services.AddTransient<IAssignedBookingComposer, AssignedBookingComposer>();
 builder.Services.AddTransient<IServiceSoap, ServiceSoapClient>();

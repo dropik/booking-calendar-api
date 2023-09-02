@@ -2,8 +2,8 @@
 
 namespace BookingCalendarApi.Services
 {
-    public interface IRoomRatesService
+    public interface IUserService
     {
-        Task<RoomRatesResponse> Get();
+        Task<CurrentUserResponse> GetCurrentUser();
     }
 }
