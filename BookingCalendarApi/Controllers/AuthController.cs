@@ -36,5 +36,26 @@ namespace BookingCalendarApi.Controllers
                 return Unauthorized();
             }
         }
+
+        [HttpPost("refresh")]
+        public async Task<ActionResult<TokenResponse>> Refresh([FromBody] RefreshTokenRequest request)
+        {
+            try
+            {
+                var result = await _service.GetToken(request);
+                if (result == null)
+                {
+                    return Unauthorized();
+                }
+                else
+                {
+                    return result;
+                }
+            }
+            catch (Exception)
+            {
+                return Unauthorized();
+            }
+        }
     }
 }
