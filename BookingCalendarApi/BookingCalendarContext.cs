@@ -14,7 +14,6 @@ namespace BookingCalendarApi
         public DbSet<Nation> Nations => Set<Nation>();
         public DbSet<Floor> Floors => Set<Floor>();
         public DbSet<Room> Rooms => Set<Room>();
-        public DbSet<SessionEntry> Sessions => Set<SessionEntry>();
         public DbSet<RoomAssignment> RoomAssignments => Set<RoomAssignment>();
         public DbSet<ColorAssignment> ColorAssignments => Set<ColorAssignment>();
 
@@ -26,7 +25,6 @@ namespace BookingCalendarApi
             builder.ApplyConfiguration(new NationConfiguration());
             builder.ApplyConfiguration(new FloorConfiguration());
             builder.ApplyConfiguration(new RoomConfiguration());
-            builder.ApplyConfiguration(new SessionEntryConfiguration());
             builder.ApplyConfiguration(new RoomAssignmentConfiguration());
             builder.ApplyConfiguration(new ColorAssignmentConfiguration());
         }
