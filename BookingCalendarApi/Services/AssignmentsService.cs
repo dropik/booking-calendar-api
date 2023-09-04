@@ -40,7 +40,7 @@ namespace BookingCalendarApi.Services
 
         private async Task AddColors(IDictionary<string, string> colors)
         {
-            if (colors == null)
+            if (colors == null || colors.Count == 0)
             {
                 return;
             }
@@ -61,6 +61,11 @@ namespace BookingCalendarApi.Services
 
         private async Task AddRooms(IDictionary<string, long?> rooms)
         {
+            if (rooms == null || rooms.Count == 0)
+            {
+                return;
+            }
+
             var bookings = await GetBookings(rooms);
 
             var statuses = bookings
