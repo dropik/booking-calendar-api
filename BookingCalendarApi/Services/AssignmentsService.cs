@@ -1,59 +1,91 @@
 ﻿using BookingCalendarApi.Exceptions;
-using BookingCalendarApi.Models;
 using BookingCalendarApi.Models.Iperbooking.Bookings;
+using BookingCalendarApi.Models.Requests;
 using Microsoft.EntityFrameworkCore;
 
 namespace BookingCalendarApi.Services
 {
-    public class RoomAssignmentsService : IRoomAssignmentsService
+    public class AssignmentsService : IAssignmentsService
     {
         private readonly BookingCalendarContext _context;
         private readonly IIperbooking _iperbooking;
 
-        public RoomAssignmentsService(BookingCalendarContext context, IIperbooking iperbooking)
+        public AssignmentsService(BookingCalendarContext context, IIperbooking iperbooking)
         {
             _context = context;
             _iperbooking = iperbooking;
         }
 
-        public async Task AssignRooms(IDictionary<string, long?> assignmentRequests)
+        public async Task Set(AssignmentsRequest request)
         {
-            if (assignmentRequests == null)
+            if (request == null)
             {
                 return;
             }
 
-            var bookings = await GetBookings(assignmentRequests);
+            request.Colors ??= new();
+            request.Rooms ??= new();
 
-            // eliminate all cancelled bookings
-            var cancelledIds = bookings
-                .Where(booking => booking.Status == BookingStatus.Cancelled)
-                .SelectMany(booking => booking.Rooms, (booking, room) => $"{room.StayId}-{room.Arrival}-{room.Departure}")
-                .ToList();
+            await AddColors(request.Colors);
+            await AddRooms(request.Rooms);
 
-            var cancelledAssignments = await (from assignment in _context.RoomAssignments
-                                              where cancelledIds.Contains(assignment.Id)
-                                              select assignment)
-                                             .ToListAsync();
-
-            foreach ( var assignment in cancelledAssignments )
-            {
-                _context.Remove(assignment);
-            }
             await _context.SaveChangesAsync();
+        }
 
-            // compiling current ocupations table
-            var nonCancelledIds = bookings
-                .Where(booking => booking.Status != BookingStatus.Cancelled)
-                .SelectMany(booking => booking.Rooms, (booking, room) => $"{room.StayId}-{room.Arrival}-{room.Departure}")
-                .ToList();
+        public async Task SetColors(IDictionary<string, string> request)
+        {
+            await AddColors(request);
+            await _context.SaveChangesAsync();
+        }
 
-            var currentAssignments = await (from assignment in _context.RoomAssignments
-                                            where nonCancelledIds.Contains(assignment.Id)
-                                            select assignment)
-                                           .ToListAsync();
+        private async Task AddColors(IDictionary<string, string> colors)
+        {
+            if (colors == null)
+            {
+                return;
+            }
 
-            var roomOccupations = currentAssignments
+            foreach (var (bookingId, color) in colors)
+            {
+                var assignment = await _context.ColorAssignments.SingleOrDefaultAsync(a => a.BookingId == bookingId);
+                if (assignment != null && assignment.BookingId == bookingId)
+                {
+                    assignment.Color = color;
+                }
+                else
+                {
+                    _context.ColorAssignments.Add(new() { BookingId = bookingId, Color = color });
+                }
+            }
+        }
+
+        private async Task AddRooms(IDictionary<string, long?> rooms)
+        {
+            var bookings = await GetBookings(rooms);
+
+            var statuses = bookings
+                .SelectMany(booking => booking.Rooms, (booking, room) => new { Id = $"{room.StayId}-{room.Arrival}-{room.Departure}", Status = booking.Status })
+                .ToDictionary(x => x.Id, x => x.Status);
+
+            var ids = statuses.Select(s => s.Key).ToList();
+
+            var assignments = await (from assignment in _context.RoomAssignments
+                                     where ids.Contains(assignment.Id)
+                                     select assignment).ToListAsync();
+
+            // removing assignments of bookings that were cancelled
+            for (var i = 0; i < assignments.Count; i++)
+            {
+                var assignment = assignments[i];
+                if (statuses[assignment.Id] == BookingStatus.Cancelled)
+                {
+                    assignments.RemoveAt(i);
+                    _context.Remove(assignment);
+                    i--;
+                }
+            }
+
+            var roomOccupations = assignments
                 .Join(bookings
                     .Where(booking => booking.Status != BookingStatus.Cancelled)
                     .SelectMany(booking => booking.Rooms, (booking, room) => new { Id = $"{room.StayId}-{room.Arrival}-{room.Departure}", room.Arrival, room.Departure }),
@@ -63,7 +95,7 @@ namespace BookingCalendarApi.Services
                 .ToDictionary(join => join.Id);
 
             // applying new assignments to table
-            foreach (var (tileId, roomId) in assignmentRequests)
+            foreach (var (tileId, roomId) in rooms)
             {
                 if (roomOccupations.TryGetValue(tileId, out var value))
                 {
@@ -108,13 +140,13 @@ namespace BookingCalendarApi.Services
             }
 
             // saving assignments
-            var requestedIds = assignmentRequests.Select(r => r.Key).ToList();
+            var requestedIds = rooms.Select(r => r.Key).ToList();
             var modifiedAssignments = await (from assignment in _context.RoomAssignments
                                              where requestedIds.Contains(assignment.Id)
                                              select assignment
                                             ).ToDictionaryAsync(assignment => assignment.Id);
 
-            foreach (var (tileId, roomId) in assignmentRequests)
+            foreach (var (tileId, roomId) in rooms)
             {
                 if (modifiedAssignments.TryGetValue(tileId, out var assignment))
                 {
@@ -139,8 +171,6 @@ namespace BookingCalendarApi.Services
                     _context.Add(assignment);
                 }
             }
-
-            await _context.SaveChangesAsync();
         }
 
         private async Task<IEnumerable<Booking>> GetBookings(IDictionary<string, long?> assignmentRequests)

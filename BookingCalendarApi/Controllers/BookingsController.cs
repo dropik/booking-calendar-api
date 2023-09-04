@@ -18,7 +18,7 @@ namespace BookingCalendarApi.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<List<BookingResponse<uint>>>> GetBySession([FromQuery] string from, [FromQuery] string to)
+        public async Task<ActionResult<List<BookingResponse<uint>>>> GetByPeriod([FromQuery] string from, [FromQuery] string to)
         {
             return Ok(await _service.GetByPeriod(from, to));
         }
