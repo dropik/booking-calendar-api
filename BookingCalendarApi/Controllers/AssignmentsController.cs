@@ -23,12 +23,5 @@ namespace BookingCalendarApi.Controllers
             await _service.Set(request);
             return Ok();
         }
-
-        [HttpPost("colors")]
-        public async Task<IActionResult> SetColors([FromBody] IDictionary<string, string> request)
-        {
-            await _service.SetColors(request);
-            return Ok();
-        }
     }
 }

@@ -32,12 +32,6 @@ namespace BookingCalendarApi.Services
             await _context.SaveChangesAsync();
         }
 
-        public async Task SetColors(IDictionary<string, string> request)
-        {
-            await AddColors(request);
-            await _context.SaveChangesAsync();
-        }
-
         private async Task AddColors(IDictionary<string, string> colors)
         {
             if (colors == null || colors.Count == 0)
@@ -69,7 +63,7 @@ namespace BookingCalendarApi.Services
             var bookings = await GetBookings(rooms);
 
             var statuses = bookings
-                .SelectMany(booking => booking.Rooms, (booking, room) => new { Id = $"{room.StayId}-{room.Arrival}-{room.Departure}", Status = booking.Status })
+                .SelectMany(booking => booking.Rooms, (booking, room) => new { Id = $"{room.StayId}-{room.Arrival}-{room.Departure}", booking.Status })
                 .ToDictionary(x => x.Id, x => x.Status);
 
             var ids = statuses.Select(s => s.Key).ToList();

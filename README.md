@@ -58,7 +58,7 @@ dotnet run
 - Introduced JWT authentication.
 - Placed user related and structure data into single /users/current endpoint.
 - Removed the concept of session.
-- Added assignments resource, which allows to update room and color assignments as atomic operation.
+- Collapsed assignments into single resource.
 
 #### *Versions skipped up to 1.6 to sync with frontend*
 
