@@ -1,6 +1,4 @@
 ﻿using BookingCalendarApi.Models.DTO;
-using BookingCalendarApi.Models.Requests;
-using BookingCalendarApi.Models.Responses;
 using BookingCalendarApi.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -19,26 +17,13 @@ namespace BookingCalendarApi.Controllers
             _service = serviceSession;
         }
 
-        [HttpGet]
-        public async Task<ActionResult<IstatLastDateResponse>> GetLastDate()
-        {
-            return Ok(await _service.GetLastDate());
-        }
-
-        [HttpPost]
-        public async Task<IActionResult> SendNewData(IstatSendDataRequest request)
-        {
-            await _service.SendNewData(request);
-            return Ok();
-        }
-
         [HttpGet("movements")]
         public async Task<ActionResult<IstatMovementsDTO>> GetMovements()
         {
             return Ok(await _service.GetMovements());
         }
 
-        [HttpPost("send")]
+        [HttpPost("movements")]
         public async Task<IActionResult> SendMovements([FromBody] IstatMovementsDTO movements)
         {
             await _service.SendMovements(movements);
