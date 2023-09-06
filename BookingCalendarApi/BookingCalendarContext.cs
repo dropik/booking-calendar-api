@@ -1,5 +1,5 @@
 ﻿using BookingCalendarApi.ModelConfigurations;
-using BookingCalendarApi.Models.Entities;
+using BookingCalendarApi.Models;
 using Microsoft.EntityFrameworkCore;
 
 namespace BookingCalendarApi

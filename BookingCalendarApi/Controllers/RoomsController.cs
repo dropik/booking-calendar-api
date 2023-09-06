@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using BookingCalendarApi.Services;
-using BookingCalendarApi.Models.Entities;
+using BookingCalendarApi.Models;
 using Microsoft.AspNetCore.Authorization;
 
 namespace BookingCalendarApi.Controllers

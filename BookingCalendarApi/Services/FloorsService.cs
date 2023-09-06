@@ -1,5 +1,5 @@
-﻿using BookingCalendarApi.Exceptions;
-using BookingCalendarApi.Models.Entities;
+﻿using BookingCalendarApi.Models;
+using BookingCalendarApi.Models.Exceptions;
 using Microsoft.EntityFrameworkCore;
 
 namespace BookingCalendarApi.Services

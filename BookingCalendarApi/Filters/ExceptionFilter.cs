@@ -1,4 +1,4 @@
-﻿using BookingCalendarApi.Exceptions;
+﻿using BookingCalendarApi.Models.Exceptions;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 using System.Net;
@@ -20,8 +20,7 @@ namespace BookingCalendarApi.Filters
                 context.ExceptionHandled = true;
                 context.Result = new ObjectResult(context.Exception.Message);
 
-                var bcException = context.Exception as BookingCalendarException;
-                if (bcException != null)
+                if (context.Exception is BookingCalendarException bcException)
                 {
                     if (bcException.ErrorCode == BCError.NOT_FOUND)
                     {

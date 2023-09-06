@@ -1,4 +1,4 @@
-﻿using BookingCalendarApi.Exceptions;
+﻿using BookingCalendarApi.Models.Exceptions;
 using BookingCalendarApi.Models.C59Service;
 using BookingCalendarApi.Models.DTO;
 using C59Service;

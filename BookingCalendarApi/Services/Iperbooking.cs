@@ -1,4 +1,4 @@
-﻿using BookingCalendarApi.Exceptions;
+﻿using BookingCalendarApi.Models.Exceptions;
 using BookingCalendarApi.Models.Iperbooking;
 using BookingCalendarApi.Models.Iperbooking.Bookings;
 using BookingCalendarApi.Models.Iperbooking.Guests;

@@ -1,4 +1,4 @@
-﻿using BookingCalendarApi.Exceptions;
+﻿using BookingCalendarApi.Models.Exceptions;
 using BookingCalendarApi.Models.Responses;
 using Microsoft.EntityFrameworkCore;
 using System.Security.Claims;

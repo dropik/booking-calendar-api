@@ -1,4 +1,4 @@
-﻿using BookingCalendarApi.Models.Entities;
+﻿using BookingCalendarApi.Models;
 using BookingCalendarApi.Models.Iperbooking.RoomRates;
 
 namespace BookingCalendarApi.Models.Responses

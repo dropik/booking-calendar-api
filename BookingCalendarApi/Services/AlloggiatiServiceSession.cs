@@ -1,6 +1,6 @@
 ﻿using AlloggiatiService;
-using BookingCalendarApi.Exceptions;
 using BookingCalendarApi.Models.AlloggiatiService;
+using BookingCalendarApi.Models.Exceptions;
 using Sylvan.Data;
 using Sylvan.Data.Csv;
 using System.ServiceModel;

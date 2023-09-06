@@ -1,5 +1,5 @@
-﻿using BookingCalendarApi.Exceptions;
-using BookingCalendarApi.Models.Entities;
+﻿using BookingCalendarApi.Models;
+using BookingCalendarApi.Models.Exceptions;
 
 namespace BookingCalendarApi.Services
 {
@@ -15,13 +15,8 @@ namespace BookingCalendarApi.Services
         public ulong GetCodeByIso(string iso)
         {
             var foundCodeEntry = _nations
-                .SingleOrDefault(nation => nation.Iso == iso);
-
-            if (foundCodeEntry == null)
-            {
-                throw new BookingCalendarException(BCError.MISSING_NATION, "Cannot find nation by ISO code");
-            }
-
+                .SingleOrDefault(nation => nation.Iso == iso)
+                ?? throw new BookingCalendarException(BCError.MISSING_NATION, "Cannot find nation by ISO code");
             return foundCodeEntry.Code;
         }
     }
