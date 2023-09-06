@@ -8,11 +8,11 @@ namespace BookingCalendarApi.Controllers
     [Route("api/v1/users")]
     [ApiController]
     [Authorize]
-    public class UserController : ControllerBase
+    public class UsersController : ControllerBase
     {
         private readonly IUserService _service;
 
-        public UserController(IUserService service)
+        public UsersController(IUserService service)
         {
             _service = service;
         }
