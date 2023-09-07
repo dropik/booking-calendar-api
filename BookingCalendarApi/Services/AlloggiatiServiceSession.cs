@@ -10,34 +10,35 @@ namespace BookingCalendarApi.Services
     public class AlloggiatiServiceSession : IAlloggiatiServiceSession
     {
         private readonly Credentials _credentials;
-        private readonly IServiceSoap _service;
+        private readonly IPoliceClient _policeClient;
 
         private string Token { get; set; } = "";
 
-        public AlloggiatiServiceSession(IConfiguration configuration, IServiceSoap service)
+        public AlloggiatiServiceSession(IConfiguration configuration, IPoliceClient policeClient)
         {
             _credentials = configuration.GetSection("AlloggiatiService").Get<Credentials>();
-            _service = service;
+            _policeClient = policeClient;
         }
 
         public async Task Open()
         {
             try
             {
-
-                var request = new GenerateTokenRequest(new GenerateTokenRequestBody()
+                var response = await _policeClient.GenerateTokenAsync(new()
                 {
-                    Utente = _credentials.Utente,
-                    Password = _credentials.Password,
-                    WsKey = _credentials.WsKey
+                    Body = new()
+                    {
+                        Utente = _credentials.Utente,
+                        Password = _credentials.Password,
+                        WsKey = _credentials.WsKey,
+                    }
                 });
-                var response = await _service.GenerateTokenAsync(request);
-                if (!response.Body.result.esito)
+                if (!response.Body.Result.Esito)
                 {
-                    throw new BookingCalendarException(BCError.POLICE_SERVICE_ERROR, response.Body.result.ErroreDettaglio);
+                    throw new BookingCalendarException(BCError.POLICE_SERVICE_ERROR, response.Body.Result.ErroreDettaglio);
                 }
 
-                Token = response.Body.GenerateTokenResult.token;
+                Token = response.Body.GenerateTokenResult.Token;
             }
             catch (CommunicationException exception)
             {
@@ -54,43 +55,45 @@ namespace BookingCalendarApi.Services
             {
                 if (test)
                 {
-                    var request = new TestRequest(new TestRequestBody()
+                    var response = await _policeClient.TestAsync(new()
                     {
-                        Utente = _credentials.Utente,
-                        token = Token,
-                        ElencoSchedine = array
+                        Body = new()
+                        {
+                            Utente = _credentials.Utente,
+                            Token = Token,
+                            ElencoSchedine = array,
+                        }
                     });
-                
-                    var response = await _service.TestAsync(request);
-                    if (!response.Body.TestResult.esito)
+                    if (!response.Body.TestResult.Esito)
                     {
                         throw new BookingCalendarException(BCError.POLICE_SERVICE_ERROR, response.Body.TestResult.ErroreDettaglio);
                     }
-                    foreach (var result in response.Body.result.Dettaglio)
+                    foreach (var result in response.Body.Result.Dettaglio)
                     {
-                        if (!result.esito)
+                        if (!result.Esito)
                         {
                             throw new BookingCalendarException(BCError.POLICE_SERVICE_ERROR, result.ErroreDettaglio);
                         }
                     }
-                
                 }
                 else
                 {
-                    var request = new SendRequest(new SendRequestBody()
+                    var response = await _policeClient.SendAsync(new()
                     {
-                        Utente = _credentials.Utente,
-                        token = Token,
-                        ElencoSchedine = array
+                        Body = new()
+                        {
+                            Utente = _credentials.Utente,
+                            Token = Token,
+                            ElencoSchedine = array,
+                        }
                     });
-                    var response = await _service.SendAsync(request);
-                    if (!response.Body.SendResult.esito)
+                    if (!response.Body.SendResult.Esito)
                     {
                         throw new BookingCalendarException(BCError.POLICE_SERVICE_ERROR, response.Body.SendResult.ErroreDettaglio);
                     }
-                    foreach (var result in response.Body.result.Dettaglio)
+                    foreach (var result in response.Body.Result.Dettaglio)
                     {
-                        if (!result.esito)
+                        if (!result.Esito)
                         {
                             throw new BookingCalendarException(BCError.POLICE_SERVICE_ERROR, result.ErroreDettaglio);
                         }
@@ -107,15 +110,16 @@ namespace BookingCalendarApi.Services
         {
             try
             {
-
-                var request = new RicevutaRequest(new RicevutaRequestBody()
+                var response = await _policeClient.RicevutaAsync(new()
                 {
-                    Utente = _credentials.Utente,
-                    token = Token,
-                    Data = date
+                    Body = new()
+                    {
+                        Utente = _credentials.Utente,
+                        Token = Token,
+                        Data = date,
+                    }
                 });
-                var response = await _service.RicevutaAsync(request);
-                if (!response.Body.RicevutaResult.esito)
+                if (!response.Body.RicevutaResult.Esito)
                 {
                     throw new BookingCalendarException(BCError.POLICE_SERVICE_ERROR, response.Body.RicevutaResult.ErroreDettaglio);
                 }
@@ -129,24 +133,26 @@ namespace BookingCalendarApi.Services
 
         public async Task<List<Place>> GetPlaces()
         {
-            var tableDataStr = await GetTable(TipoTabella.Luoghi);
+            var tableDataStr = await GetTable(Models.Clients.Police.TipoTabella.Luoghi);
             using var textReader = new StringReader(tableDataStr);
             using var csvReader = CsvDataReader.Create(textReader);
             return csvReader.GetRecords<Place>().ToList();
         }
 
-        private async Task<string> GetTable(TipoTabella tipoTabella)
+        private async Task<string> GetTable(Models.Clients.Police.TipoTabella tipoTabella)
         {
             try
             {
-                var request = new TabellaRequest(new TabellaRequestBody()
+                var response = await _policeClient.TabellaAsync(new()
                 {
-                    Utente = _credentials.Utente,
-                    token = Token,
-                    tipo = tipoTabella
+                    Body = new()
+                    {
+                        Utente = _credentials.Utente,
+                        Token = Token,
+                        Tipo = tipoTabella
+                    }
                 });
-                var response = await _service.TabellaAsync(request);
-                if (!response.Body.TabellaResult.esito)
+                if (!response.Body.TabellaResult.Esito)
                 {
                     throw new BookingCalendarException(BCError.POLICE_SERVICE_ERROR, response.Body.TabellaResult.ErroreDettaglio);
                 }

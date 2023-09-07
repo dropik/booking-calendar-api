@@ -1,6 +1,7 @@
 using AlloggiatiService;
 
 using BookingCalendarApi;
+using BookingCalendarApi.Clients;
 using BookingCalendarApi.Filters;
 using BookingCalendarApi.Models.Configurations;
 using BookingCalendarApi.Services;
@@ -87,6 +88,7 @@ builder.Services.AddTransient<IIstatService, IstatService>();
 builder.Services.AddTransient<IPoliceService, PoliceService>();
 builder.Services.AddTransient<IRoomsService, RoomsService>();
 builder.Services.AddTransient<IAssignedBookingComposer, AssignedBookingComposer>();
+builder.Services.AddTransient<IPoliceClient, PoliceClient>();
 builder.Services.AddTransient<IServiceSoap, ServiceSoapClient>();
 builder.Services.AddTransient<IAssignedBookingWithGuestsProvider, AssignedBookingWithGuestsProvider>();
 builder.Services.AddTransient<EC59ServiceEndpoint, EC59ServiceEndpointClient>();
