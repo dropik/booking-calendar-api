@@ -1,4 +1,6 @@
-﻿namespace BookingCalendarApi
+﻿using System;
+
+namespace BookingCalendarApi
 {
     public static class Utils
     {
