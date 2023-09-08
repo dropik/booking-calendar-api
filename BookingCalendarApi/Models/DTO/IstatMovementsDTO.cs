@@ -1,4 +1,4 @@
-﻿using C59Service;
+﻿using BookingCalendarApi.Models.Clients.C59;
 
 namespace BookingCalendarApi.Models.DTO
 {
@@ -6,6 +6,6 @@ namespace BookingCalendarApi.Models.DTO
     {
         public string Date { get; set; } = "";
         public long PrevTotal { get; set; }
-        public List<movimentoWSPO> Movements { get; set; } = new();
+        public List<MovimentoWSPO> Movements { get; set; } = new();
     }
 }

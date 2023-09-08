@@ -1,7 +1,7 @@
-﻿using BookingCalendarApi.Models.Exceptions;
-using BookingCalendarApi.Models.C59Service;
+﻿using BookingCalendarApi.Models.C59Service;
+using BookingCalendarApi.Models.Clients.C59;
 using BookingCalendarApi.Models.DTO;
-using C59Service;
+using BookingCalendarApi.Models.Exceptions;
 using Microsoft.EntityFrameworkCore;
 using System.ServiceModel;
 
@@ -9,36 +9,40 @@ namespace BookingCalendarApi.Services
 {
     public class IstatService : IIstatService
     {
-        private readonly EC59ServiceEndpoint _service;
         private readonly Credentials _credentials;
         private readonly IAssignedBookingWithGuestsProvider _bookingsProvider;
         private readonly BookingCalendarContext _context;
+        private readonly IC59Client _c59Client;
 
-        public IstatService(EC59ServiceEndpoint service, IConfiguration configuration, IAssignedBookingWithGuestsProvider bookingsProvider, BookingCalendarContext context)
+        public IstatService(IConfiguration configuration, IAssignedBookingWithGuestsProvider bookingsProvider, BookingCalendarContext context, IC59Client c59Client)
         {
-            _service = service;
             _credentials = configuration.GetSection("C59Service").Get<Credentials>();
             _bookingsProvider = bookingsProvider;
             _context = context;
+            _c59Client = c59Client;
         }
 
         public async Task<IstatMovementsDTO> GetMovements()
         {
             try
             {
-                var lastUploadRequest = new ultimoC59(_credentials.Username, _credentials.Password, _credentials.Struttura);
-                var lastUploadResponse = await _service.ultimoC59Async(lastUploadRequest);
-                var lastUpload = lastUploadResponse.@return.elencoC59
-                    .OrderBy(item => item.dataMovimentazione.ToString("yyyy-MM-dd"))
+                var lastUploadResponse = await _c59Client.UltimoC59Async(new()
+                {
+                    Username = _credentials.Username,
+                    Password = _credentials.Password,
+                    Struttura = _credentials.Struttura,
+                });
+                var lastUpload = lastUploadResponse.@Return.ElencoC59
+                    .OrderBy(item => item.DataMovimentazione.ToString("yyyy-MM-dd"))
                     .First();
 
                 var nations = await _context.Nations.ToListAsync();
 
-                var date = lastUpload.dataMovimentazione.AddDays(1);
+                var date = lastUpload.DataMovimentazione.AddDays(1);
 
                 var bookings = await _bookingsProvider.Get(date.ToString("yyyy-MM-dd"), date.AddDays(1).ToString("yyyy-MM-dd"), exactPeriod: false);
 
-                var prevTotal = lastUpload.totalePresenti;
+                var prevTotal = lastUpload.TotalePresenti;
                 var dateStr = date.ToString("yyyyMMdd");
                 var arrivedOrDeparturedStays = bookings
                     .SelectMany(
@@ -67,12 +71,12 @@ namespace BookingCalendarApi.Services
 
                 var movements = guestsWithProvinceOrState
                     .GroupBy(guest => guest.Targa)
-                    .Select(group => new movimentoWSPO()
+                    .Select(group => new MovimentoWSPO()
                     {
-                        italia = group.First().IsItaly,
-                        targa = group.Key,
-                        arrivi = group.Where(item => item.Arrival == dateStr).Count(),
-                        partenze = group.Where(item => item.Departure == dateStr).Count()
+                        Italia = group.First().IsItaly,
+                        Targa = group.Key,
+                        Arrivi = group.Where(item => item.Arrival == dateStr).Count(),
+                        Partenze = group.Where(item => item.Departure == dateStr).Count()
                     })
                     .ToList();
 
@@ -97,55 +101,62 @@ namespace BookingCalendarApi.Services
         {
             try
             {
-                var totalArrived = movements.Movements.Sum(movement => movement.arrivi);
-                var totalDepartured = movements.Movements.Sum(movement => movement.partenze);
+                var totalArrived = movements.Movements.Sum(movement => movement.Arrivi);
+                var totalDepartured = movements.Movements.Sum(movement => movement.Partenze);
                 var total = movements.PrevTotal + totalArrived - totalDepartured;
 
-                if (movements.Movements.GroupBy(m => m.targa).Any(g => g.Count() > 1))
+                if (movements.Movements.GroupBy(m => m.Targa).Any(g => g.Count() > 1))
                 {
                     throw new BookingCalendarException(BCError.INVALID_ISTAT_MOVEMENTS, "Duplicated entries found.");
                 }
 
                 foreach (var movement in movements.Movements)
                 {
-                    if (movement.arrivi < 0)
+                    if (movement.Arrivi < 0)
                     {
                         throw new BookingCalendarException(BCError.INVALID_ISTAT_MOVEMENTS, "Arrivals can not be negative.");
                     }
-                    if (movement.partenze < 0)
+                    if (movement.Partenze < 0)
                     {
                         throw new BookingCalendarException(BCError.INVALID_ISTAT_MOVEMENTS, "Departures can not be negative.");
                     }
-                    if (movement.arrivi == 0 && movement.partenze == 0)
+                    if (movement.Arrivi == 0 && movement.Partenze == 0)
                     {
                         throw new BookingCalendarException(BCError.INVALID_ISTAT_MOVEMENTS, "Either arrivals or departures must be set.");
                     }
                 }
 
                 movements.Movements = movements.Movements
-                    .Select(m => new movimentoWSPO()
+                    .Select(m => new MovimentoWSPO()
                     {
-                        italia = m.italia,
-                        targa = m.targa.ToUpperInvariant(),
-                        arrivi = m.arrivi,
-                        partenze = m.partenze,
+                        Italia = m.Italia,
+                        Targa = m.Targa.ToUpperInvariant(),
+                        Arrivi = m.Arrivi,
+                        Partenze = m.Partenze,
                     })
                     .ToList();
 
-                var c59Request = new inviaC59Full(_credentials.Username, _credentials.Password, _credentials.Struttura, new c59WSPO()
+                var c59Request = new InviaC59FullRequest()
                 {
-                    dataMovimentazione = DateTime.ParseExact(movements.Date, "yyyy-MM-dd", null),
-                    dataMovimentazioneSpecified = true,
-                    esercizioAperto = true,
-                    totaleArrivi = totalArrived,
-                    totalePartenze = totalDepartured,
-                    totalePresenti = total,
-                    unitaAbitativeDisponibili = 11,     // that's hardcoded, does not seem to be used precedently
-                    unitaAbitativeOccupate = 0,         // that's also hardcoded
-                    movimenti = movements.Movements.ToArray()
-                });
+                    Username = _credentials.Username,
+                    Password = _credentials.Password,
+                    Struttura = _credentials.Struttura,
+                    C59 = new()
+                    {
+                        DataMovimentazione = DateTime.ParseExact(movements.Date, "yyyy-MM-dd", null),
+                        DataMovimentazioneSpecified = true,
+                        EsercizioAperto = true,
+                        TotaleArrivi = totalArrived,
+                        TotalePartenze = totalDepartured,
+                        TotalePresenti = total,
+                        UnitaAbitativeDisponibili = 11,     // that's hardcoded, does not seem to be used precedently
+                        UnitaAbitativeOccupate = 0,         // that's also hardcoded
+                        Movimenti = movements.Movements.ToArray(),
 
-                await _service.inviaC59FullAsync(c59Request);
+                    },
+                };
+
+                await _c59Client.InviaC59FullAsync(c59Request);
             }
             catch (FaultException exception)
             {

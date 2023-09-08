@@ -92,6 +92,7 @@ builder.Services.AddTransient<IPoliceClient, PoliceClient>();
 builder.Services.AddTransient<IServiceSoap, ServiceSoapClient>();
 builder.Services.AddTransient<IAssignedBookingWithGuestsProvider, AssignedBookingWithGuestsProvider>();
 builder.Services.AddTransient<EC59ServiceEndpoint, EC59ServiceEndpointClient>();
+builder.Services.AddTransient<IC59Client, C59Client>();
 builder.Services.AddTransient<IPlaceConverter, PlaceConverter>();
 builder.Services.AddTransient<INationConverter, NationConverter>();
 builder.Services.AddTransient<ITrackedRecordsComposer, TrackedRecordsComposer>();
