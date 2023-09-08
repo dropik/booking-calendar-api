@@ -4,6 +4,8 @@ using BookingCalendarApi;
 using BookingCalendarApi.Clients;
 using BookingCalendarApi.Filters;
 using BookingCalendarApi.Models.Configurations;
+using BookingCalendarApi.Repository;
+using BookingCalendarApi.Repository.NETCore;
 using BookingCalendarApi.Services;
 
 using C59Service;
@@ -18,6 +20,9 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddOptions();
 builder.Services.Configure<JWT>(builder.Configuration.GetSection("JWT"));
+builder.Services.Configure<BookingCalendarApi.Models.Iperbooking.Auth>(builder.Configuration.GetSection("Iperbooking"));
+builder.Services.Configure<BookingCalendarApi.Models.AlloggiatiService.Credentials>(builder.Configuration.GetSection("AlloggiatiService"));
+builder.Services.Configure<BookingCalendarApi.Models.C59Service.Credentials>(builder.Configuration.GetSection("C59Service"));
 
 builder.Services.AddAuthentication(options =>
 {
@@ -77,6 +82,7 @@ builder.Services.AddScoped<IAlloggiatiServiceSession, AlloggiatiServiceSession>(
 builder.Services.AddScoped<DataContext>();
 
 // transient services
+builder.Services.AddTransient<IRepository, Repository>();
 builder.Services.AddTransient<IAuthService, AuthService>();
 builder.Services.AddTransient<IUserService, UserService>();
 builder.Services.AddTransient<IBookingsService, BookingsService>();

@@ -1,0 +1,24 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Fastenshtein" Version="1.0.0.8" />
+    <PackageReference Include="Microsoft.AspNetCore.Identity" Version="2.1.39" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.Abstractions" Version="6.0.0" />
+    <PackageReference Include="Microsoft.Extensions.Options" Version="6.0.0" />
+    <PackageReference Include="Microsoft.IdentityModel.Tokens" Version="6.32.3" />
+    <PackageReference Include="Sylvan.Data" Version="0.2.12" />
+    <PackageReference Include="Sylvan.Data.Csv" Version="1.3.3" />
+    <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="6.32.3" />
+    <PackageReference Include="System.ServiceModel.Security" Version="4.8.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\BookingCalendarApi.Models\BookingCalendarApi.Models.csproj" />
+    <ProjectReference Include="..\BookingCalendarApi.Repository\BookingCalendarApi.Repository.csproj" />
+  </ItemGroup>
+
+</Project>
