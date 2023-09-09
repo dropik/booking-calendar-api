@@ -4,13 +4,7 @@ using System.IO;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Threading.Tasks;
-
-#if NET
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
-#else
 using System.Web.Http;
-#endif
 
 namespace BookingCalendarApi.Controllers
 {

@@ -1,12 +1,6 @@
 ﻿using BookingCalendarApi.Services;
 using System.Threading.Tasks;
-
-#if NET
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
-#else
 using System.Web.Http;
-#endif
 
 namespace BookingCalendarApi.Controllers
 {
