@@ -125,7 +125,16 @@
   <ItemGroup>
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
-    <Compile Include="Controllers\ValuesController.cs" />
+    <Compile Include="Controllers\AssignmentsController.cs" />
+    <Compile Include="Controllers\AuthController.cs" />
+    <Compile Include="Controllers\BookingsController.cs" />
+    <Compile Include="Controllers\CityTaxController.cs" />
+    <Compile Include="Controllers\ClientsController.cs" />
+    <Compile Include="Controllers\FloorsController.cs" />
+    <Compile Include="Controllers\IstatController.cs" />
+    <Compile Include="Controllers\PoliceController.cs" />
+    <Compile Include="Controllers\RoomsController.cs" />
+    <Compile Include="Controllers\UsersController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -142,7 +151,20 @@
       <DependentUpon>Web.config</DependentUpon>
     </Content>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <ProjectReference Include="..\BookingCalendarApi.Models\BookingCalendarApi.Models.csproj">
+      <Project>{40d19dc8-5390-470d-855d-e907a9e9f362}</Project>
+      <Name>BookingCalendarApi.Models</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\BookingCalendarApi.Repository\BookingCalendarApi.Repository.csproj">
+      <Project>{b33b770b-9c91-4c19-9b0b-4e2c9264c2a8}</Project>
+      <Name>BookingCalendarApi.Repository</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\BookingCalendarApi.Services\BookingCalendarApi.Services.csproj">
+      <Project>{09c22185-332f-4e64-9247-cb2821d5fd46}</Project>
+      <Name>BookingCalendarApi.Services</Name>
+    </ProjectReference>
+  </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
