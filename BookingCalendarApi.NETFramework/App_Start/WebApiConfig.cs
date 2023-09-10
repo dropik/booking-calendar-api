@@ -1,4 +1,5 @@
-﻿using System.Web.Http;
+﻿using Microsoft.Extensions.DependencyInjection;
+using System.Web.Http;
 
 namespace BookingCalendarApi.NETFramework
 {
@@ -7,6 +8,8 @@ namespace BookingCalendarApi.NETFramework
         public static void Register(HttpConfiguration config)
         {
             // Servizi e configurazione dell'API Web
+            var services = new ServiceCollection();
+            config.DependencyResolver = new DependencyResolver(services.BuildServiceProvider());
 
             // Route dell'API Web
             config.MapHttpAttributeRoutes();
