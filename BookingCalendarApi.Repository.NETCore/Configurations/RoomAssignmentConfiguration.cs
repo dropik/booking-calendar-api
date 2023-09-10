@@ -10,7 +10,7 @@ namespace BookingCalendarApi.Repository.NETCore.Configurations
             builder.HasKey(a => a.Id);
 
             builder
-                .HasOne<Room>()
+                .HasOne(a => a.Room)
                 .WithMany()
                 .HasForeignKey(a => a.RoomId)
                 .IsRequired()

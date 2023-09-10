@@ -1,4 +1,4 @@
-﻿namespace BookingCalendarApi.Repository.NETCore.Configurations
+﻿namespace BookingCalendarApi.Repository.Common
 {
     public class PropertyDefaults
     {
