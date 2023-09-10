@@ -1,4 +1,4 @@
-﻿using System.Web;
+﻿using BookingCalendarApi.NETFramework.Filters;
 using System.Web.Mvc;
 
 namespace BookingCalendarApi.NETFramework
@@ -7,6 +7,7 @@ namespace BookingCalendarApi.NETFramework
     {
         public static void RegisterGlobalFilters(GlobalFilterCollection filters)
         {
+            filters.Add(new ExceptionFilter());
         }
     }
 }
