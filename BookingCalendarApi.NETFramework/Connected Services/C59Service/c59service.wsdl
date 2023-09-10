@@ -1,0 +1,220 @@
+<?xml version="1.0" encoding="utf-8"?>
+<wsdl:definitions xmlns:tns="http://movimentazione.manager.web.module.dtu.infotn.it/" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:ns1="http://schemas.xmlsoap.org/soap/http" name="c59service" targetNamespace="http://movimentazione.manager.web.module.dtu.infotn.it/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+  <wsdl:types>
+    <xs:schema elementFormDefault="unqualified" targetNamespace="http://movimentazione.manager.web.module.dtu.infotn.it/" version="1.0" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+      <xs:element name="inviaC59" type="tns:inviaC59" />
+      <xs:element name="inviaC59Full" type="tns:inviaC59Full" />
+      <xs:element name="inviaC59FullResponse" type="tns:inviaC59FullResponse" />
+      <xs:element name="inviaC59Response" type="tns:inviaC59Response" />
+      <xs:element name="listaStrutture" type="tns:listaStrutture" />
+      <xs:element name="listaStruttureResponse" type="tns:listaStruttureResponse" />
+      <xs:element name="ultimoC59" type="tns:ultimoC59" />
+      <xs:element name="ultimoC59Response" type="tns:ultimoC59Response" />
+      <xs:complexType name="inviaC59Full">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="username" type="xs:string" />
+          <xs:element minOccurs="0" name="password" type="xs:string" />
+          <xs:element name="struttura" type="xs:long" />
+          <xs:element minOccurs="0" name="c59" type="tns:c59WSPO" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="c59WSPO">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="dataMovimentazione" type="xs:dateTime" />
+          <xs:element name="esercizioAperto" type="xs:boolean" />
+          <xs:element minOccurs="0" maxOccurs="unbounded" name="movimenti" nillable="true" type="tns:movimentoWSPO" />
+          <xs:element name="totaleArrivi" type="xs:long" />
+          <xs:element name="totalePartenze" type="xs:long" />
+          <xs:element name="totalePresenti" type="xs:long" />
+          <xs:element name="unitaAbitativeDisponibili" type="xs:long" />
+          <xs:element name="unitaAbitativeOccupate" type="xs:long" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="movimentoWSPO">
+        <xs:sequence>
+          <xs:element name="arrivi" type="xs:long" />
+          <xs:element name="italia" type="xs:boolean" />
+          <xs:element name="partenze" type="xs:long" />
+          <xs:element minOccurs="0" name="targa" type="xs:string" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="inviaC59FullResponse">
+        <xs:sequence>
+          <xs:element minOccurs="0" maxOccurs="unbounded" name="return" type="tns:c59WSPO" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="ultimoC59">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="username" type="xs:string" />
+          <xs:element minOccurs="0" name="password" type="xs:string" />
+          <xs:element name="struttura" type="xs:long" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="ultimoC59Response">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="return" type="tns:movimentiC59" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="movimentiC59">
+        <xs:sequence>
+          <xs:element minOccurs="0" maxOccurs="unbounded" name="elencoC59" nillable="true" type="tns:c59PO" />
+          <xs:element minOccurs="0" name="struttura" type="xs:long" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="c59PO">
+        <xs:complexContent mixed="false">
+          <xs:extension base="tns:commonPO">
+            <xs:sequence>
+              <xs:element minOccurs="0" name="dataMovimentazione" type="xs:dateTime" />
+              <xs:element minOccurs="0" name="isEsercizioAperto" type="xs:boolean" />
+              <xs:element minOccurs="0" name="isValidato" type="xs:boolean" />
+              <xs:element minOccurs="0" maxOccurs="unbounded" name="listaDettaglioMovimenti" nillable="true" type="tns:dettaglioMovimentiC59PO" />
+              <xs:element minOccurs="0" name="totaleArrivi" type="xs:long" />
+              <xs:element minOccurs="0" name="totalePartenze" type="xs:long" />
+              <xs:element minOccurs="0" name="totalePresenti" type="xs:long" />
+              <xs:element minOccurs="0" name="unitaAbitativeDisponibili" type="xs:long" />
+              <xs:element minOccurs="0" name="unitaAbitativeOccupate" type="xs:long" />
+            </xs:sequence>
+          </xs:extension>
+        </xs:complexContent>
+      </xs:complexType>
+      <xs:complexType name="commonPO" abstract="true">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="idObj" type="xs:long" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="dettaglioMovimentiC59PO">
+        <xs:complexContent mixed="false">
+          <xs:extension base="tns:commonPO">
+            <xs:sequence>
+              <xs:element minOccurs="0" name="arrivi" type="xs:long" />
+              <xs:element minOccurs="0" name="dataMovimentazione" type="xs:dateTime" />
+              <xs:element minOccurs="0" name="idNazione" type="xs:long" />
+              <xs:element minOccurs="0" name="idProvincia" type="xs:long" />
+              <xs:element minOccurs="0" name="isItalia" type="xs:boolean" />
+              <xs:element minOccurs="0" name="numeroAlloggi" type="xs:long" />
+              <xs:element minOccurs="0" name="partenze" type="xs:long" />
+            </xs:sequence>
+          </xs:extension>
+        </xs:complexContent>
+      </xs:complexType>
+      <xs:complexType name="listaStrutture">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="username" type="xs:string" />
+          <xs:element minOccurs="0" name="password" type="xs:string" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="listaStruttureResponse">
+        <xs:sequence>
+          <xs:element minOccurs="0" maxOccurs="unbounded" name="return" type="tns:struttura" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="struttura">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="name" type="xs:string" />
+          <xs:element name="struttura" type="xs:long" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="inviaC59">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="username" type="xs:string" />
+          <xs:element minOccurs="0" name="password" type="xs:string" />
+          <xs:element name="struttura" type="xs:long" />
+          <xs:element minOccurs="0" name="dataMovimentazione" type="xs:dateTime" />
+          <xs:element minOccurs="0" name="unitaAbitativeOccupate" type="xs:long" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="inviaC59Response">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="return" type="tns:movimentiC59" />
+        </xs:sequence>
+      </xs:complexType>
+    </xs:schema>
+  </wsdl:types>
+  <wsdl:message name="inviaC59FullResponse">
+    <wsdl:part name="parameters" element="tns:inviaC59FullResponse" />
+  </wsdl:message>
+  <wsdl:message name="ultimoC59">
+    <wsdl:part name="parameters" element="tns:ultimoC59" />
+  </wsdl:message>
+  <wsdl:message name="ultimoC59Response">
+    <wsdl:part name="parameters" element="tns:ultimoC59Response" />
+  </wsdl:message>
+  <wsdl:message name="inviaC59">
+    <wsdl:part name="parameters" element="tns:inviaC59" />
+  </wsdl:message>
+  <wsdl:message name="inviaC59Full">
+    <wsdl:part name="parameters" element="tns:inviaC59Full" />
+  </wsdl:message>
+  <wsdl:message name="listaStrutture">
+    <wsdl:part name="parameters" element="tns:listaStrutture" />
+  </wsdl:message>
+  <wsdl:message name="listaStruttureResponse">
+    <wsdl:part name="parameters" element="tns:listaStruttureResponse" />
+  </wsdl:message>
+  <wsdl:message name="inviaC59Response">
+    <wsdl:part name="parameters" element="tns:inviaC59Response" />
+  </wsdl:message>
+  <wsdl:portType name="EC59ServiceEndpoint">
+    <wsdl:operation name="inviaC59Full">
+      <wsdl:input name="inviaC59Full" message="tns:inviaC59Full" />
+      <wsdl:output name="inviaC59FullResponse" message="tns:inviaC59FullResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="ultimoC59">
+      <wsdl:input name="ultimoC59" message="tns:ultimoC59" />
+      <wsdl:output name="ultimoC59Response" message="tns:ultimoC59Response" />
+    </wsdl:operation>
+    <wsdl:operation name="listaStrutture">
+      <wsdl:input name="listaStrutture" message="tns:listaStrutture" />
+      <wsdl:output name="listaStruttureResponse" message="tns:listaStruttureResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="inviaC59">
+      <wsdl:input name="inviaC59" message="tns:inviaC59" />
+      <wsdl:output name="inviaC59Response" message="tns:inviaC59Response" />
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="c59serviceSoapBinding" type="tns:EC59ServiceEndpoint">
+    <soap:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="inviaC59Full">
+      <soap:operation soapAction="" style="document" />
+      <wsdl:input name="inviaC59Full">
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="inviaC59FullResponse">
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ultimoC59">
+      <soap:operation soapAction="" style="document" />
+      <wsdl:input name="ultimoC59">
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="ultimoC59Response">
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="listaStrutture">
+      <soap:operation soapAction="" style="document" />
+      <wsdl:input name="listaStrutture">
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="listaStruttureResponse">
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="inviaC59">
+      <soap:operation soapAction="" style="document" />
+      <wsdl:input name="inviaC59">
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="inviaC59Response">
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="c59service">
+    <wsdl:port name="EC59ServiceEndpointPort" binding="tns:c59serviceSoapBinding">
+      <soap:address location="http://172.20.2.68:22080/c59service" />
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>

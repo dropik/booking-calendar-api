@@ -96,6 +96,13 @@
     <Reference Include="System.Runtime.CompilerServices.Unsafe, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <HintPath>..\packages\System.Runtime.CompilerServices.Unsafe.6.0.0\lib\net461\System.Runtime.CompilerServices.Unsafe.dll</HintPath>
     </Reference>
+    <Reference Include="System.ServiceModel" />
+    <Reference Include="System.Text.Encodings.Web, Version=6.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Text.Encodings.Web.6.0.0\lib\net461\System.Text.Encodings.Web.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Text.Json, Version=6.0.0.8, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Text.Json.6.0.8\lib\net461\System.Text.Json.dll</HintPath>
+    </Reference>
     <Reference Include="System.Threading.Tasks.Extensions, Version=4.2.0.1, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
       <HintPath>..\packages\System.Threading.Tasks.Extensions.4.5.4\lib\net461\System.Threading.Tasks.Extensions.dll</HintPath>
     </Reference>
@@ -175,6 +182,18 @@
   <ItemGroup>
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
+    <Compile Include="Clients\C59Client.cs" />
+    <Compile Include="Clients\PoliceClient.cs" />
+    <Compile Include="Connected Services\AlloggiatiService\Reference.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Compile>
+    <Compile Include="Connected Services\C59Service\Reference.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Compile>
     <Compile Include="Controllers\AssignmentsController.cs" />
     <Compile Include="Controllers\AuthController.cs" />
     <Compile Include="Controllers\BookingsController.cs" />
@@ -191,6 +210,84 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Connected Services\AlloggiatiService\BookingCalendarApi.NETFramework.AlloggiatiService.Authentication_TestResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Content>
+    <Content Include="Connected Services\AlloggiatiService\BookingCalendarApi.NETFramework.AlloggiatiService.ElencoSchedineEsito.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Content>
+    <Content Include="Connected Services\AlloggiatiService\BookingCalendarApi.NETFramework.AlloggiatiService.EsitoOperazioneServizio.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Content>
+    <Content Include="Connected Services\AlloggiatiService\BookingCalendarApi.NETFramework.AlloggiatiService.GenerateTokenResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Content>
+    <Content Include="Connected Services\AlloggiatiService\BookingCalendarApi.NETFramework.AlloggiatiService.GestioneAppartamenti_AggiungiAppartamentoResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Content>
+    <Content Include="Connected Services\AlloggiatiService\BookingCalendarApi.NETFramework.AlloggiatiService.GestioneAppartamenti_DisabilitaAppartamentoResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Content>
+    <Content Include="Connected Services\AlloggiatiService\BookingCalendarApi.NETFramework.AlloggiatiService.GestioneAppartamenti_FileUnico_SendResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Content>
+    <Content Include="Connected Services\AlloggiatiService\BookingCalendarApi.NETFramework.AlloggiatiService.GestioneAppartamenti_FileUnico_TestResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Content>
+    <Content Include="Connected Services\AlloggiatiService\BookingCalendarApi.NETFramework.AlloggiatiService.GestioneAppartamenti_SendResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Content>
+    <Content Include="Connected Services\AlloggiatiService\BookingCalendarApi.NETFramework.AlloggiatiService.GestioneAppartamenti_TestResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Content>
+    <Content Include="Connected Services\AlloggiatiService\BookingCalendarApi.NETFramework.AlloggiatiService.RicevutaResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Content>
+    <Content Include="Connected Services\AlloggiatiService\BookingCalendarApi.NETFramework.AlloggiatiService.SendResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Content>
+    <Content Include="Connected Services\AlloggiatiService\BookingCalendarApi.NETFramework.AlloggiatiService.TabellaResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Content>
+    <Content Include="Connected Services\AlloggiatiService\BookingCalendarApi.NETFramework.AlloggiatiService.TestResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Content>
+    <Content Include="Connected Services\AlloggiatiService\BookingCalendarApi.NETFramework.AlloggiatiService.TokenInfo.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Content>
+    <None Include="Connected Services\AlloggiatiService\configuration91.svcinfo" />
+    <None Include="Connected Services\AlloggiatiService\configuration.svcinfo" />
+    <None Include="Connected Services\AlloggiatiService\Reference.svcmap">
+      <Generator>WCF Proxy Generator</Generator>
+      <LastGenOutput>Reference.cs</LastGenOutput>
+    </None>
+    <Content Include="Connected Services\C59Service\BookingCalendarApi.NETFramework.C59Service.c59WSPO.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Content>
+    <Content Include="Connected Services\C59Service\BookingCalendarApi.NETFramework.C59Service.inviaC59FullResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Content>
+    <Content Include="Connected Services\C59Service\BookingCalendarApi.NETFramework.C59Service.inviaC59Response.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Content>
+    <Content Include="Connected Services\C59Service\BookingCalendarApi.NETFramework.C59Service.listaStruttureResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Content>
+    <Content Include="Connected Services\C59Service\BookingCalendarApi.NETFramework.C59Service.movimentiC59.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Content>
+    <Content Include="Connected Services\C59Service\BookingCalendarApi.NETFramework.C59Service.struttura.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Content>
+    <Content Include="Connected Services\C59Service\BookingCalendarApi.NETFramework.C59Service.ultimoC59Response.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Content>
+    <None Include="Connected Services\C59Service\configuration91.svcinfo" />
+    <None Include="Connected Services\C59Service\configuration.svcinfo" />
+    <None Include="Connected Services\C59Service\Reference.svcmap">
+      <Generator>WCF Proxy Generator</Generator>
+      <LastGenOutput>Reference.cs</LastGenOutput>
+    </None>
     <Content Include="favicon.ico" />
     <Content Include="Global.asax" />
     <Content Include="Web.config" />
@@ -220,7 +317,16 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <None Include="Connected Services\AlloggiatiService\service.wsdl" />
+    <None Include="Connected Services\C59Service\c59service.wsdl" />
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadata Include="Connected Services\" />
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadataStorage Include="Connected Services\AlloggiatiService\" />
+    <WCFMetadataStorage Include="Connected Services\C59Service\" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
