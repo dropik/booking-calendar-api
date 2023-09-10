@@ -69,8 +69,8 @@ namespace BookingCalendarApi.Services
                                 DocType = docType,
                                 DocNumber = guest.DocNumber,
                                 DocIssuer = guest.DocCity != null
-                                    ? _placeConverter.GetPlaceCodeByDescription(guest.DocCity) ?? (guest.DocCountry != null ? _nationConverter.GetCodeByIso(guest.DocCountry) : default(ulong?))
-                                    : guest.DocCountry != null ? _nationConverter.GetCodeByIso(guest.DocCountry) : default(ulong?)
+                                    ? _placeConverter.GetPlaceCodeByDescription(guest.DocCity) ?? (guest.DocCountry != null ? _nationConverter.GetCodeByIso(guest.DocCountry) : default(long?))
+                                    : guest.DocCountry != null ? _nationConverter.GetCodeByIso(guest.DocCountry) : default(long?)
                             };
                         }));
 

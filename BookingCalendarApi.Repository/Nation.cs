@@ -2,15 +2,17 @@
 {
     public class Nation
     {
-        public Nation(string iso, ulong code, string description)
+        public string Iso { get; set; } = "";
+        public long Code { get; set; }
+        public string Description { get; set; } = "";
+
+        public Nation() { }
+
+        public Nation(string iso, long code, string description)
         {
             Iso = iso;
             Code = code;
             Description = description;
         }
-
-        public string Iso { get; set; } = "";
-        public ulong Code { get; set; }
-        public string Description { get; set; } = "";
     }
 }

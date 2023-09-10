@@ -11,7 +11,7 @@ namespace BookingCalendarApi.Models.AlloggiatiService
         private string _name = "";
         private DocumentType? _documentType;
         private string _documentNumber;
-        private ulong? _documentIssuer;
+        private long? _documentIssuer;
 
         public AccomodatedType Type { get; set; }
         public DateTime Arrival { get; set; }
@@ -40,10 +40,10 @@ namespace BookingCalendarApi.Models.AlloggiatiService
         }
         public Gender Sex { get; set; }
         public DateTime BirthDate { get; set; }
-        public ulong? PlaceOfBirth { get; set; }
+        public long? PlaceOfBirth { get; set; }
         public string ProvinceOfBirth { get; set; }
-        public ulong StateOfBirth { get; set; }
-        public ulong Citizenship { get; set; }
+        public long StateOfBirth { get; set; }
+        public long Citizenship { get; set; }
         public DocumentType? DocType
         {
             get => _documentType;
@@ -54,7 +54,7 @@ namespace BookingCalendarApi.Models.AlloggiatiService
             get => _documentNumber;
             set => _documentNumber = SetIfNotMember(value);
         }
-        public ulong? DocIssuer
+        public long? DocIssuer
         {
             get => _documentIssuer;
             set => _documentIssuer = SetIfNotMember(value);

@@ -1,3 +1,4 @@
+using BookingCalendarApi.Repository.NETFramework;
 using System.Web;
 using System.Web.Http;
 using System.Web.Mvc;
@@ -11,6 +12,10 @@ namespace BookingCalendarApi.NETFramework
             AreaRegistration.RegisterAllAreas();
             GlobalConfiguration.Configure(WebApiConfig.Register);
             FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);
+            using (var context = new BookingCalendarContext())
+            {
+
+            }
         }
     }
 }

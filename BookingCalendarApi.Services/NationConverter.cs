@@ -14,7 +14,7 @@ namespace BookingCalendarApi.Services
             _nations = context.Nations;
         }
 
-        public ulong GetCodeByIso(string iso)
+        public long GetCodeByIso(string iso)
         {
             var foundCodeEntry = _nations
                 .SingleOrDefault(nation => nation.Iso == iso)

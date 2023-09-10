@@ -1,20 +1,17 @@
-﻿using System.Collections.Generic;
-using System.Data.Entity;
+﻿using System.Data.Entity.Migrations;
 
-namespace BookingCalendarApi.Repository.NETFramework.Configurations
+namespace BookingCalendarApi.Repository.NETFramework.Migrations
 {
-    public class Seeding : CreateDatabaseIfNotExists<BookingCalendarContext>
+    internal sealed class Configuration : DbMigrationsConfiguration<BookingCalendarContext>
     {
-        protected override void Seed(BookingCalendarContext context)
+        public Configuration()
         {
-            SeedNations(context);
-            base.Seed(context);
+            AutomaticMigrationsEnabled = false;
         }
 
-        private void SeedNations(BookingCalendarContext context)
+        protected override void Seed(BookingCalendarContext context)
         {
-            context.Nations.AddRange(new List<Nation>()
-            {
+            context.Nations.AddOrUpdate(
                 new Nation("AD", 100000202, "ANDORRA"),
                 new Nation("AE", 100000322, "EMIRATI ARABI UNITI"),
                 new Nation("AF", 100000301, "AFGHANISTAN"),
@@ -264,8 +261,8 @@ namespace BookingCalendarApi.Repository.NETFramework.Configurations
                 new Nation("YT", 100000774, "FRANCIA"),                     // belongs to France
                 new Nation("ZA", 100000467, "SUD AFRICA"),
                 new Nation("ZM", 100000464, "ZAMBIA"),
-                new Nation("ZW", 100000465, "ZIMBABWE"),
-            });
+                new Nation("ZW", 100000465, "ZIMBABWE")
+            );
         }
     }
 }

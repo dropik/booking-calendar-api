@@ -2,6 +2,6 @@
 {
     public interface IPlaceConverter
     {
-        ulong? GetPlaceCodeByDescription(string description);
+        long? GetPlaceCodeByDescription(string description);
     }
 }

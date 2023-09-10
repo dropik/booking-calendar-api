@@ -13,7 +13,7 @@ namespace BookingCalendarApi.Services
             _places = context.Places;
         }
 
-        public ulong? GetPlaceCodeByDescription(string description)
+        public long? GetPlaceCodeByDescription(string description)
         {
             var formattedDescriptionQuery = description
                 .Select(c =>
