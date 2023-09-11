@@ -1,4 +1,5 @@
 ﻿using BookingCalendarApi.Models.Requests;
+using BookingCalendarApi.NETFramework.Filters;
 using BookingCalendarApi.Services;
 using System.IO;
 using System.Net.Http;
@@ -9,7 +10,7 @@ using System.Web.Http;
 namespace BookingCalendarApi.Controllers
 {
     [Route("api/v1/police")]
-    [Authorize]
+    [JwtAuthentication]
     public class PoliceController : ApiController
     {
         private readonly IPoliceService _service;

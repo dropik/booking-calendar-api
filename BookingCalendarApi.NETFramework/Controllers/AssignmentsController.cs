@@ -1,12 +1,13 @@
 ﻿using BookingCalendarApi.Models.Requests;
+using BookingCalendarApi.NETFramework.Filters;
 using BookingCalendarApi.Services;
 using System.Threading.Tasks;
 using System.Web.Http;
 
 namespace BookingCalendarApi.Controllers
 {
-    [Route("/api/v1/assignments")]
-    [Authorize]
+    [Route("api/v1/assignments")]
+    [JwtAuthentication]
     public class AssignmentsController : ApiController
     {
         private readonly IAssignmentsService _service;

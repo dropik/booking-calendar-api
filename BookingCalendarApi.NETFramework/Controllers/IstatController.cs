@@ -1,4 +1,5 @@
 ﻿using BookingCalendarApi.Models.DTO;
+using BookingCalendarApi.NETFramework.Filters;
 using BookingCalendarApi.Services;
 using System.Threading.Tasks;
 using System.Web.Http;
@@ -6,7 +7,7 @@ using System.Web.Http;
 namespace BookingCalendarApi.Controllers
 {
     [Route("api/v1/istat")]
-    [Authorize]
+    [JwtAuthentication]
     public class IstatController : ApiController
     {
         private readonly IIstatService _service;

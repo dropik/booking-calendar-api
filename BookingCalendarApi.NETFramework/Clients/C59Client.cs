@@ -4,7 +4,7 @@ using BookingCalendarApi.Services;
 using System.Text.Json;
 using System.Threading.Tasks;
 
-namespace BookingCalendarApi.Clients
+namespace BookingCalendarApi.NETFramework.Clients
 {
     public class C59Client : IC59Client
     {

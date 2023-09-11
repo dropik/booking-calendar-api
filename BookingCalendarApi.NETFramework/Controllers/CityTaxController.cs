@@ -1,11 +1,12 @@
-﻿using BookingCalendarApi.Services;
+﻿using BookingCalendarApi.NETFramework.Filters;
+using BookingCalendarApi.Services;
 using System.Threading.Tasks;
 using System.Web.Http;
 
 namespace BookingCalendarApi.Controllers
 {
     [Route("api/v1/city-tax")]
-    [Authorize]
+    [JwtAuthentication]
     public class CityTaxController : ApiController
     {
         private readonly ICityTaxService _service;

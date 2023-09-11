@@ -1,4 +1,5 @@
-﻿using BookingCalendarApi.Repository;
+﻿using BookingCalendarApi.NETFramework.Filters;
+using BookingCalendarApi.Repository;
 using BookingCalendarApi.Services;
 using System.Threading.Tasks;
 using System.Web.Http;
@@ -6,7 +7,7 @@ using System.Web.Http;
 namespace BookingCalendarApi.Controllers
 {
     [Route("api/v1/rooms")]
-    [Authorize]
+    [JwtAuthentication]
     public class RoomsController : ApiController
     {
         private readonly IRoomsService _service;
