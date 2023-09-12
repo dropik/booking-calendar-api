@@ -6,7 +6,7 @@ using System.Web.Http;
 
 namespace BookingCalendarApi.Controllers
 {
-    [Route("api/v1/auth")]
+    [RoutePrefix("api/v1/auth")]
     public class AuthController : ApiController
     {
         private readonly IAuthService _service;

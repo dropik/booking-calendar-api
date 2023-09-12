@@ -7,6 +7,7 @@ namespace BookingCalendarApi.Repository.NETFramework.Configurations
     {
         public StructureConfiguration()
         {
+            ToTable("structures");
             HasKey(s => s.Id);
             Property(s => s.Name).IsRequired().HasMaxLength(PropertyDefaults.MAX_NAME_LENGTH);
         }

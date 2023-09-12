@@ -6,6 +6,7 @@ namespace BookingCalendarApi.Repository.NETFramework.Configurations
     {
         public RoomAssignmentConfiguration()
         {
+            ToTable("room_assignments");
             HasKey(a => a.Id);
             HasRequired(a => a.Room).WithMany().HasForeignKey(a => a.RoomId).WillCascadeOnDelete();
         }

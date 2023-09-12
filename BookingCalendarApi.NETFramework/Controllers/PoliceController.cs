@@ -9,7 +9,7 @@ using System.Web.Http;
 
 namespace BookingCalendarApi.Controllers
 {
-    [Route("api/v1/police")]
+    [RoutePrefix("api/v1/police")]
     [JwtAuthentication]
     public class PoliceController : ApiController
     {

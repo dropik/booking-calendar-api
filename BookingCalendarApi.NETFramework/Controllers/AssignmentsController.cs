@@ -6,7 +6,7 @@ using System.Web.Http;
 
 namespace BookingCalendarApi.Controllers
 {
-    [Route("api/v1/assignments")]
+    [RoutePrefix("api/v1/assignments")]
     [JwtAuthentication]
     public class AssignmentsController : ApiController
     {

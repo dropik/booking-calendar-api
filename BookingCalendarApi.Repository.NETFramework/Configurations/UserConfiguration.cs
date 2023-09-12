@@ -7,6 +7,8 @@ namespace BookingCalendarApi.Repository.NETFramework.Configurations
     {
         public UserConfiguration()
         {
+            ToTable("users");
+
             HasKey(u => u.Id);
 
             Property(u => u.StructureId).IsRequired();

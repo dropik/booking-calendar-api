@@ -1,4 +1,5 @@
-﻿using BookingCalendarApi.Models.Configurations;
+﻿using BookingCalendarApi.Controllers;
+using BookingCalendarApi.Models.Configurations;
 using BookingCalendarApi.NETFramework.AlloggiatiService;
 using BookingCalendarApi.NETFramework.C59Service;
 using BookingCalendarApi.NETFramework.Clients;
@@ -52,6 +53,18 @@ namespace BookingCalendarApi.NETFramework
                 credentials.Password = ConfigurationManager.AppSettings["C59Service_Password"];
                 credentials.Struttura = long.Parse(ConfigurationManager.AppSettings["C59Service_Struttura"]);
             });
+
+            // controllers
+            services.AddTransient<AssignmentsController>();
+            services.AddTransient<AuthController>();
+            services.AddTransient<BookingsController>();
+            services.AddTransient<CityTaxController>();
+            services.AddTransient<ClientsController>();
+            services.AddTransient<FloorsController>();
+            services.AddTransient<IstatController>();
+            services.AddTransient<PoliceController>();
+            services.AddTransient<RoomsController>();
+            services.AddTransient<UsersController>();
 
             // scoped services
             services.AddScoped(p => HttpContext.Current.User as ClaimsPrincipal);

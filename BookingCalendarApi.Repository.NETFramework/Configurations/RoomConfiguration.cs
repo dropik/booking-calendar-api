@@ -6,6 +6,8 @@ namespace BookingCalendarApi.Repository.NETFramework.Configurations
     {
         public RoomConfiguration()
         {
+            ToTable("rooms");
+
             HasKey(r => r.Id);
 
             Property(r => r.Number).IsRequired();

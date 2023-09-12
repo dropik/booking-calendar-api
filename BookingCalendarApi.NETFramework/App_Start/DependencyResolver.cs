@@ -7,22 +7,23 @@ namespace BookingCalendarApi.NETFramework
 {
     public class DependencyResolver : IDependencyResolver
     {
-        private readonly ServiceProvider _provider;
+        private readonly IServiceProvider _provider;
+        private IServiceScope _scope;
 
-        public DependencyResolver(ServiceProvider provider)
+        public DependencyResolver(IServiceProvider provider)
         {
             _provider = provider;
         }
 
         public IDependencyScope BeginScope()
         {
-            var scope = _provider.CreateScope();
-            return new Scope(scope.ServiceProvider);
+            _scope = _provider.CreateScope();
+            return new DependencyResolver(_scope.ServiceProvider);
         }
 
         public void Dispose()
         {
-            _provider.Dispose();
+            _scope?.Dispose();
             GC.SuppressFinalize(this);
         }
 
@@ -34,31 +35,6 @@ namespace BookingCalendarApi.NETFramework
         public IEnumerable<object> GetServices(Type serviceType)
         {
             return _provider.GetServices(serviceType);
-        }
-
-        private class Scope : IDependencyScope
-        {
-            private readonly IServiceProvider _provider;
-
-            public Scope(IServiceProvider provider)
-            {
-                _provider = provider;
-            }
-
-            public void Dispose()
-            {
-                GC.SuppressFinalize(this);
-            }
-
-            public object GetService(Type serviceType)
-            {
-                return _provider.GetService(serviceType);
-            }
-
-            public IEnumerable<object> GetServices(Type serviceType)
-            {
-                return _provider.GetServices(serviceType);
-            }
         }
     }
 }

@@ -6,6 +6,7 @@ namespace BookingCalendarApi.Repository.NETFramework.Configurations
     {
         public NationConfiguration()
         {
+            ToTable("nations");
             HasKey(n => n.Iso);
             Property(n => n.Code).IsRequired();
             Property(n => n.Description).IsRequired();

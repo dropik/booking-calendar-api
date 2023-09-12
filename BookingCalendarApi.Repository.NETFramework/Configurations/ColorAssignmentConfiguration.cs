@@ -6,6 +6,8 @@ namespace BookingCalendarApi.Repository.NETFramework.Configurations
     {
         public ColorAssignmentConfiguration()
         {
+            ToTable("color_assignments");
+
             HasKey(a => a.BookingId);
             Property(a => a.Color).IsRequired();
         }
