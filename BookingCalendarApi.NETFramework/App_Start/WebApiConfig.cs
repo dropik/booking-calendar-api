@@ -14,6 +14,7 @@ using System.Configuration;
 using System.Security.Claims;
 using System.Web;
 using System.Web.Http;
+using System.Web.Http.Cors;
 
 namespace BookingCalendarApi.NETFramework
 {
@@ -21,6 +22,8 @@ namespace BookingCalendarApi.NETFramework
     {
         public static void Register(HttpConfiguration config)
         {
+            config.EnableCors(new EnableCorsAttribute(origins: "http://localhost:3000", headers: "*", methods: "*"));
+
             // filters
             config.Filters.Add(new ExceptionFilter());
 
