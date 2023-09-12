@@ -18,6 +18,7 @@ namespace BookingCalendarApi.Controllers
         }
 
         [HttpPost]
+        [Route("")]
         public async Task<IHttpActionResult> SetAssignments([FromBody] AssignmentsRequest request)
         {
             await _service.Set(request);

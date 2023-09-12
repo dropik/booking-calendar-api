@@ -17,6 +17,7 @@ namespace BookingCalendarApi.Controllers
         }
 
         [HttpGet]
+        [Route("")]
         public async Task<IHttpActionResult> Get(string from, string to)
         {
             return Ok(await _service.Get(from, to));

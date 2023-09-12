@@ -18,6 +18,7 @@ namespace BookingCalendarApi.Controllers
         }
 
         [HttpGet]
+        [Route("")]
         public async Task<IHttpActionResult> GetAll()
         {
             return Ok(await _service.GetAll());
@@ -31,6 +32,7 @@ namespace BookingCalendarApi.Controllers
         }
 
         [HttpPost]
+        [Route("")]
         public async Task<IHttpActionResult> Post(Room room)
         {
             var result = await _service.Create(room);
