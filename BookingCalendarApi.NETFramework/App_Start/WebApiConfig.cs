@@ -54,6 +54,8 @@ namespace BookingCalendarApi.NETFramework
                 credentials.Struttura = long.Parse(ConfigurationManager.AppSettings["C59Service_Struttura"]);
             });
 
+            services.AddDbContext<BookingCalendarContext>();
+
             // controllers
             services.AddTransient<AssignmentsController>();
             services.AddTransient<AuthController>();
@@ -73,7 +75,6 @@ namespace BookingCalendarApi.NETFramework
             services.AddScoped<DataContext>();
 
             // transient services
-            services.AddTransient((provider) => new BookingCalendarContext("BookingCalendarContext"));
             services.AddTransient<IRepository, Repository.NETFramework.Repository>();
             services.AddTransient<IAuthService, AuthService>();
             services.AddTransient<IUserService, UserService>();

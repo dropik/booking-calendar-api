@@ -51,7 +51,8 @@ namespace BookingCalendarApi.Repository.NETFramework
         public async Task SaveChangesAsync()
         {
             await _context.SaveChangesAsync();
-            foreach (var entry in _context.ChangeTracker.Entries())
+            var entries = _context.ChangeTracker.Entries().ToList();
+            foreach (var entry in entries)
             {
                 entry.State = EntityState.Detached;
             }
