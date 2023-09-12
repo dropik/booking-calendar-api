@@ -9,7 +9,7 @@ using BookingCalendarApi.Repository.NETFramework;
 using BookingCalendarApi.Services;
 
 using Microsoft.Extensions.DependencyInjection;
-
+using Newtonsoft.Json.Serialization;
 using System.Configuration;
 using System.Security.Claims;
 using System.Web;
@@ -97,6 +97,11 @@ namespace BookingCalendarApi.NETFramework
             services.AddTransient<ITrackedRecordsComposer, TrackedRecordsComposer>();
 
             config.DependencyResolver = new DependencyResolver(services.BuildServiceProvider());
+
+            config.Formatters.JsonFormatter.SerializerSettings.ContractResolver = new DefaultContractResolver
+            {
+                NamingStrategy = new CamelCaseNamingStrategy(),
+            };
 
             // Route dell'API Web
             config.MapHttpAttributeRoutes();
