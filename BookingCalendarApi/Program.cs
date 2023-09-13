@@ -76,7 +76,7 @@ builder.Services.AddDbContext<BookingCalendarContext>((options) =>
 
 // scoped services
 builder.Services.AddHttpContextAccessor();
-builder.Services.AddScoped(s => s.GetService<IHttpContextAccessor>()!.HttpContext!.User);
+builder.Services.AddScoped<IUserClaimsProvider, UserClaimsProvider>();
 builder.Services.AddScoped<IIperbooking, Iperbooking>();
 builder.Services.AddScoped<IAlloggiatiServiceSession, AlloggiatiServiceSession>();
 builder.Services.AddScoped<DataContext>();

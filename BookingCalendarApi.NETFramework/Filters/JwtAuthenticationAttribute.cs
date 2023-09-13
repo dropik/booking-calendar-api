@@ -1,11 +1,11 @@
 ﻿using Microsoft.IdentityModel.Tokens;
+
 using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.IdentityModel.Tokens.Jwt;
 using System.Net.Http.Headers;
 using System.Security.Claims;
-using System.Security.Principal;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -47,6 +47,24 @@ namespace BookingCalendarApi.NETFramework.Filters
             context.Principal = principal;
         }
 
+        private Task<ClaimsPrincipal> AuthenticateJwtToken(string token)
+        {
+            if (ValidateToken(token, out var username))
+            {
+                var claims = new List<Claim>
+                {
+                    new Claim(ClaimTypes.Name, username)
+                };
+
+                var identity = new ClaimsIdentity(claims, "Jwt");
+                var user = new ClaimsPrincipal(identity);
+
+                return Task.FromResult(user);
+            }
+
+            return Task.FromResult<ClaimsPrincipal>(null);
+        }
+
         private static bool ValidateToken(string token, out string username)
         {
             username = null;
@@ -71,29 +89,6 @@ namespace BookingCalendarApi.NETFramework.Filters
             }
 
             return true;
-        }
-
-        protected Task<IPrincipal> AuthenticateJwtToken(string token)
-        {
-            if (ValidateToken(token, out var username))
-            {
-                var claims = new List<Claim>
-                {
-                    new Claim(ClaimTypes.Name, username)
-                };
-
-                var identity = new ClaimsIdentity(claims, "Jwt");
-                IPrincipal user = new ClaimsPrincipal(identity);
-
-                return Task.FromResult(user);
-            }
-
-            return Task.FromResult<IPrincipal>(null);
-        }
-
-        public Task ChallengeAsync(HttpAuthenticationChallengeContext context, CancellationToken cancellationToken)
-        {
-            return Task.CompletedTask;
         }
 
         private static ClaimsPrincipal GetPrincipal(string token)
@@ -128,6 +123,11 @@ namespace BookingCalendarApi.NETFramework.Filters
             {
                 return null;
             }
+        }
+
+        public Task ChallengeAsync(HttpAuthenticationChallengeContext context, CancellationToken cancellationToken)
+        {
+            return Task.CompletedTask;
         }
     }
 }

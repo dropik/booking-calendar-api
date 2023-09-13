@@ -74,6 +74,8 @@ namespace BookingCalendarApi.NETFramework
             services.AddTransient<UsersController>();
 
             // scoped services
+            services.AddScoped(p => new User());
+            services.AddScoped<IUserClaimsProvider, UserClaimsProvider>();
             services.AddScoped<IIperbooking, Iperbooking>();
             services.AddScoped<IAlloggiatiServiceSession, AlloggiatiServiceSession>();
             services.AddScoped<DataContext>();

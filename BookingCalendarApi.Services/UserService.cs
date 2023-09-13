@@ -2,20 +2,19 @@
 using BookingCalendarApi.Models.Responses;
 using BookingCalendarApi.Repository;
 using System.Linq;
-using System.Security.Claims;
 using System.Threading.Tasks;
 
 namespace BookingCalendarApi.Services
 {
     public class UserService : IUserService
     {
-        private readonly ClaimsPrincipal _user;
+        private readonly IUserClaimsProvider _userClaimsProvider;
         private readonly IRepository _repository;
         private readonly IIperbooking _iperbooking;
 
-        public UserService(ClaimsPrincipal user, IRepository repository, IIperbooking iperbooking)
+        public UserService(IUserClaimsProvider userClaimsProvider, IRepository repository, IIperbooking iperbooking)
         {
-            _user = user;
+            _userClaimsProvider = userClaimsProvider;
             _repository = repository;
             _iperbooking = iperbooking;
         }
@@ -24,7 +23,7 @@ namespace BookingCalendarApi.Services
         {
             var result = new CurrentUserResponse();
 
-            var username = _user.Identity?.Name ?? "";
+            var username = _userClaimsProvider.User.Identity?.Name ?? "";
             var user = await _repository.SingleOrDefaultAsync(_repository.Users.Where(u => u.Username == username))
                 ?? throw new BookingCalendarException(BCError.NOT_FOUND, "Unable to find current user");
 
@@ -46,9 +45,15 @@ namespace BookingCalendarApi.Services
                 .SelectMany(group => group.Rates)
                 .ToList();
 
-            result.Floors = await _repository.ToListAsync(_repository.Floors
-                .Include(floor => floor.Rooms
-                    .OrderBy(room => room.Id)));
+            result.Floors = await _repository.ToListAsync(_repository.Floors.Include(floor => floor.Rooms));
+            result.Floors = result.Floors
+                .Select(f =>
+                {
+                    f.Rooms = f.Rooms.OrderBy(r => r.Id).ToList();
+                    return f;
+                })
+                .OrderBy(f => f.Id)
+                .ToList();
 
             return result;
         }

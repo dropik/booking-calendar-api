@@ -312,6 +312,7 @@
     <Compile Include="Migrations\BookingCalendarContextModelSnapshot.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Repository.cs" />
+    <Compile Include="UserClaimsProvider.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Connected Services\AlloggiatiService\BookingCalendarApi.NETFramework.AlloggiatiService.Authentication_TestResponse.datasource">
