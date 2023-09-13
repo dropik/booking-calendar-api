@@ -3,12 +3,14 @@ using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.IdentityModel.Tokens.Jwt;
+using System.Net.Http.Headers;
 using System.Security.Claims;
 using System.Security.Principal;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Web.Http.Filters;
+using System.Web.Http.Results;
 
 namespace BookingCalendarApi.NETFramework.Filters
 {
@@ -29,7 +31,7 @@ namespace BookingCalendarApi.NETFramework.Filters
 
             if (string.IsNullOrEmpty(authorization.Parameter))
             {
-                context.ActionContext.Response.StatusCode = System.Net.HttpStatusCode.Unauthorized;
+                context.ErrorResult = new UnauthorizedResult(new List<AuthenticationHeaderValue>() { new AuthenticationHeaderValue("Bearer") }, context.Request);
                 return;
             }
 
@@ -38,12 +40,11 @@ namespace BookingCalendarApi.NETFramework.Filters
 
             if (principal == null)
             {
-                context.ActionContext.Response.StatusCode = System.Net.HttpStatusCode.Unauthorized;
+                context.ErrorResult = new UnauthorizedResult(new List<AuthenticationHeaderValue>() { new AuthenticationHeaderValue("Bearer") }, context.Request);
+                return;
             }
-            else
-            {
-                context.Principal = principal;
-            }
+            
+            context.Principal = principal;
         }
 
         private static bool ValidateToken(string token, out string username)

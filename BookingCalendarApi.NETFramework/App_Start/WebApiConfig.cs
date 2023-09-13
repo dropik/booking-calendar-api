@@ -9,7 +9,9 @@ using BookingCalendarApi.Repository.NETFramework;
 using BookingCalendarApi.Services;
 
 using Microsoft.Extensions.DependencyInjection;
+
 using Newtonsoft.Json.Serialization;
+
 using System.Configuration;
 using System.Security.Claims;
 using System.Web;
@@ -72,12 +74,12 @@ namespace BookingCalendarApi.NETFramework
             services.AddTransient<UsersController>();
 
             // scoped services
-            services.AddScoped(p => HttpContext.Current.User as ClaimsPrincipal);
             services.AddScoped<IIperbooking, Iperbooking>();
             services.AddScoped<IAlloggiatiServiceSession, AlloggiatiServiceSession>();
             services.AddScoped<DataContext>();
 
             // transient services
+            services.AddTransient(p => HttpContext.Current.User as ClaimsPrincipal);
             services.AddTransient<IRepository, Repository.NETFramework.Repository>();
             services.AddTransient<IAuthService, AuthService>();
             services.AddTransient<IUserService, UserService>();

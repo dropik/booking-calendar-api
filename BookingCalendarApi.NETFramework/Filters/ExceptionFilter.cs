@@ -10,8 +10,11 @@ namespace BookingCalendarApi.NETFramework.Filters
     {
         public override void OnException(HttpActionExecutedContext context)
         {
-            context.Response.StatusCode = HttpStatusCode.InternalServerError;
-            context.Response.Content = new StringContent(context.Exception.Message);
+            context.Response = new HttpResponseMessage
+            {
+                StatusCode = HttpStatusCode.InternalServerError,
+                Content = new StringContent(context.Exception.Message)
+            };
 
             if (context.Exception is BookingCalendarException bcException)
             {
