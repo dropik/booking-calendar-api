@@ -25,7 +25,7 @@ namespace BookingCalendarApi.Controllers
         }
 
         [HttpGet]
-        [Route("{id}")]
+        [Route("{id}", Name = "GetRoom")]
         public async Task<IHttpActionResult> Get(long id)
         {
             return Ok(await _service.Get(id));
@@ -36,7 +36,7 @@ namespace BookingCalendarApi.Controllers
         public async Task<IHttpActionResult> Post(Room room)
         {
             var result = await _service.Create(room);
-            return CreatedAtRoute("api/v1/rooms/{id}", new { id = result.Id }, result);
+            return CreatedAtRoute("GetRoom", new { id = result.Id }, result);
         }
 
         [HttpPut]
