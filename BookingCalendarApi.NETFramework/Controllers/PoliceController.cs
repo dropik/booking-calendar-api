@@ -25,8 +25,11 @@ namespace BookingCalendarApi.Controllers
         public async Task<IHttpActionResult> GetRicevuta(string date)
         {
             var result = await _service.GetRicevuta(date);
-            ActionContext.Response.StatusCode = System.Net.HttpStatusCode.OK;
-            ActionContext.Response.Content = new StreamContent(new MemoryStream(result.Pdf));
+            ActionContext.Response = new HttpResponseMessage
+            {
+                StatusCode = System.Net.HttpStatusCode.OK,
+                Content = new StreamContent(new MemoryStream(result.Pdf))
+            };
             ActionContext.Response.Content.Headers.ContentType = new MediaTypeHeaderValue("application/pdf");
             ActionContext.Response.Content.Headers.ContentLength = result.Pdf.Length;
             if (ContentDispositionHeaderValue.TryParse($"inline; filename={result.FileName}", out ContentDispositionHeaderValue contentDisposition))
@@ -45,6 +48,7 @@ namespace BookingCalendarApi.Controllers
         }
 
         [HttpPost]
+        [Route("")]
         public async Task<IHttpActionResult> SendAsync(PoliceSendRequest request)
         {
             await _service.Send(request);
