@@ -11,9 +11,18 @@ using BookingCalendarApi.Services;
 using Microsoft.Extensions.DependencyInjection;
 
 using Newtonsoft.Json.Serialization;
-
+using System;
 using System.Configuration;
+using System.IO;
+using System.Net;
+using System.Net.Http;
+using System.Net.Http.Formatting;
+using System.Net.Http.Headers;
 using System.Security.Claims;
+using System.Text;
+using System.Text.Json;
+using System.Threading;
+using System.Threading.Tasks;
 using System.Web;
 using System.Web.Http;
 using System.Web.Http.Cors;
@@ -105,13 +114,69 @@ namespace BookingCalendarApi.NETFramework
 
             config.DependencyResolver = new DependencyResolver(services.BuildServiceProvider());
 
-            config.Formatters.JsonFormatter.SerializerSettings.ContractResolver = new DefaultContractResolver
-            {
-                NamingStrategy = new CamelCaseNamingStrategy(),
-            };
+            config.Formatters.Remove(config.Formatters.JsonFormatter);
+            config.Formatters.Remove(config.Formatters.XmlFormatter);
+            config.Formatters.Add(new JsonFormatter());
 
             // Route dell'API Web
             config.MapHttpAttributeRoutes();
+        }
+
+        private class JsonFormatter : MediaTypeFormatter
+        {
+            private readonly JsonSerializerOptions _options = new JsonSerializerOptions()
+            {
+                PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
+                DefaultIgnoreCondition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingNull,
+            };
+
+            public JsonFormatter()
+            {
+                SupportedMediaTypes.Add(new MediaTypeHeaderValue("application/json"));
+                SupportedEncodings.Add(new UTF8Encoding(encoderShouldEmitUTF8Identifier: false));
+            }
+
+            public override bool CanReadType(Type type)
+            {
+                return true;
+            }
+
+            public override bool CanWriteType(Type type)
+            {
+                return true;
+            }
+
+            public override MediaTypeFormatter GetPerRequestFormatterInstance(Type type, HttpRequestMessage request, MediaTypeHeaderValue mediaType)
+            {
+                return this;
+            }
+
+            public override async Task<object> ReadFromStreamAsync(Type type, Stream readStream, HttpContent content, IFormatterLogger formatterLogger)
+            {
+                return await JsonSerializer.DeserializeAsync(readStream, type, _options);
+            }
+
+            public override async Task<object> ReadFromStreamAsync(Type type, Stream readStream, HttpContent content, IFormatterLogger formatterLogger, CancellationToken cancellationToken)
+            {
+                return await JsonSerializer.DeserializeAsync(readStream, type, _options, cancellationToken);
+            }
+
+            public override IRequiredMemberSelector RequiredMemberSelector { get => base.RequiredMemberSelector; set => base.RequiredMemberSelector = value; }
+
+            public override void SetDefaultContentHeaders(Type type, HttpContentHeaders headers, MediaTypeHeaderValue mediaType)
+            {
+                headers.ContentType = new MediaTypeHeaderValue("application/json");
+            }
+
+            public override async Task WriteToStreamAsync(Type type, object value, Stream writeStream, HttpContent content, TransportContext transportContext)
+            {
+                await JsonSerializer.SerializeAsync(writeStream, value, type, _options);
+            }
+
+            public override async Task WriteToStreamAsync(Type type, object value, Stream writeStream, HttpContent content, TransportContext transportContext, CancellationToken cancellationToken)
+            {
+                await JsonSerializer.SerializeAsync(writeStream, value, type, _options, cancellationToken);
+            }
         }
     }
 }
