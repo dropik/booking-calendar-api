@@ -214,7 +214,7 @@
   </wsdl:binding>
   <wsdl:service name="c59service">
     <wsdl:port name="EC59ServiceEndpointPort" binding="tns:c59serviceSoapBinding">
-      <soap:address location="http://172.20.2.68:22080/c59service" />
+      <soap:address location="https://dtu.provincia.tn.it/c59service" />
     </wsdl:port>
   </wsdl:service>
 </wsdl:definitions>

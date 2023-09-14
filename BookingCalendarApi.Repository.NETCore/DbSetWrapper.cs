@@ -5,7 +5,7 @@ using System.Linq.Expressions;
 
 namespace BookingCalendarApi.Repository.NETCore
 {
-    public class DbSetWrapper<TEntity> : IDbSet<TEntity>
+    public class DbSetWrapper<TEntity> : IDbSet<TEntity>, IAsyncEnumerable<TEntity>
         where TEntity : class
     {
         private readonly DbSet<TEntity> _entities;
@@ -33,6 +33,11 @@ namespace BookingCalendarApi.Repository.NETCore
         IEnumerator IEnumerable.GetEnumerator()
         {
             return _entities.AsQueryable().GetEnumerator();
+        }
+
+        public IAsyncEnumerator<TEntity> GetAsyncEnumerator(CancellationToken cancellationToken = default)
+        {
+            return _entities.AsAsyncEnumerable().GetAsyncEnumerator(cancellationToken);
         }
     }
 }
