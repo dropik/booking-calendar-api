@@ -4,10 +4,11 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
+using System.Threading;
 
 namespace BookingCalendarApi.Repository.NETFramework
 {
-    public class DbSetWrapper<TEntity> : Common.IDbSet<TEntity>
+    public class DbSetWrapper<TEntity> : DbSet<TEntity>, Common.IDbSet<TEntity>, IAsyncEnumerable<TEntity>
         where TEntity : class
     {
         private readonly DbSet<TEntity> _entities;
@@ -35,6 +36,11 @@ namespace BookingCalendarApi.Repository.NETFramework
         IEnumerator IEnumerable.GetEnumerator()
         {
             return _entities.AsQueryable().GetEnumerator();
+        }
+
+        public IAsyncEnumerator<TEntity> GetAsyncEnumerator(CancellationToken cancellationToken = default)
+        {
+            return _entities.AsAsyncEnumerable().GetAsyncEnumerator();
         }
     }
 }
