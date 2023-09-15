@@ -1,8 +1,11 @@
 using AlloggiatiService;
 
 using BookingCalendarApi;
+using BookingCalendarApi.Clients;
 using BookingCalendarApi.Filters;
 using BookingCalendarApi.Models.Configurations;
+using BookingCalendarApi.Repository;
+using BookingCalendarApi.Repository.NETCore;
 using BookingCalendarApi.Services;
 
 using C59Service;
@@ -17,6 +20,9 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddOptions();
 builder.Services.Configure<JWT>(builder.Configuration.GetSection("JWT"));
+builder.Services.Configure<BookingCalendarApi.Models.Iperbooking.Auth>(builder.Configuration.GetSection("Iperbooking"));
+builder.Services.Configure<BookingCalendarApi.Models.AlloggiatiService.Credentials>(builder.Configuration.GetSection("AlloggiatiService"));
+builder.Services.Configure<BookingCalendarApi.Models.C59Service.Credentials>(builder.Configuration.GetSection("C59Service"));
 
 builder.Services.AddAuthentication(options =>
 {
@@ -70,12 +76,13 @@ builder.Services.AddDbContext<BookingCalendarContext>((options) =>
 
 // scoped services
 builder.Services.AddHttpContextAccessor();
-builder.Services.AddScoped(s => s.GetService<IHttpContextAccessor>()!.HttpContext!.User);
+builder.Services.AddScoped<IUserClaimsProvider, UserClaimsProvider>();
 builder.Services.AddScoped<IIperbooking, Iperbooking>();
 builder.Services.AddScoped<IAlloggiatiServiceSession, AlloggiatiServiceSession>();
 builder.Services.AddScoped<DataContext>();
 
 // transient services
+builder.Services.AddTransient<IRepository, Repository>();
 builder.Services.AddTransient<IAuthService, AuthService>();
 builder.Services.AddTransient<IUserService, UserService>();
 builder.Services.AddTransient<IBookingsService, BookingsService>();
@@ -87,9 +94,11 @@ builder.Services.AddTransient<IIstatService, IstatService>();
 builder.Services.AddTransient<IPoliceService, PoliceService>();
 builder.Services.AddTransient<IRoomsService, RoomsService>();
 builder.Services.AddTransient<IAssignedBookingComposer, AssignedBookingComposer>();
+builder.Services.AddTransient<IPoliceClient, PoliceClient>();
 builder.Services.AddTransient<IServiceSoap, ServiceSoapClient>();
 builder.Services.AddTransient<IAssignedBookingWithGuestsProvider, AssignedBookingWithGuestsProvider>();
 builder.Services.AddTransient<EC59ServiceEndpoint, EC59ServiceEndpointClient>();
+builder.Services.AddTransient<IC59Client, C59Client>();
 builder.Services.AddTransient<IPlaceConverter, PlaceConverter>();
 builder.Services.AddTransient<INationConverter, NationConverter>();
 builder.Services.AddTransient<ITrackedRecordsComposer, TrackedRecordsComposer>();
