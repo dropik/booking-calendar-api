@@ -24,4 +24,9 @@
     <ProjectReference Include="..\BookingCalendarApi.Repository\BookingCalendarApi.Repository.csproj" />
   </ItemGroup>
 
+	<ItemGroup>
+		<Compile Include="..\BookingCalendarApi.NETFramework\Configurations\*.cs" LinkBase="Configurations" />
+		<Compile Include="..\BookingCalendarApi.NETFramework\BookingCalendarContext.cs" LinkBase="" />
+	</ItemGroup>
+
 </Project>

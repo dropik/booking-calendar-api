@@ -2,7 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-namespace BookingCalendarApi.Repository.NETFramework.Configurations
+namespace BookingCalendarApi.Repository.Configurations
 {
     public class RoomConfiguration : IEntityTypeConfiguration<Room>
     {

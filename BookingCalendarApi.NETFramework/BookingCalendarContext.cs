@@ -1,13 +1,14 @@
-﻿using BookingCalendarApi.Repository.NETFramework.Configurations;
+﻿using BookingCalendarApi.Repository.Configurations;
 using Microsoft.EntityFrameworkCore;
-using System.Configuration;
 
-namespace BookingCalendarApi.Repository.NETFramework
+#if !NET
+using System.Configuration;
+#endif
+
+namespace BookingCalendarApi.Repository
 {
     public class BookingCalendarContext : DbContext
     {
-        public BookingCalendarContext() { }
-
         public DbSet<Structure> Structures => Set<Structure>();
         public DbSet<User> Users => Set<User>();
         public DbSet<UserRefreshToken> UserRefreshTokens => Set<UserRefreshToken>();
@@ -16,12 +17,6 @@ namespace BookingCalendarApi.Repository.NETFramework
         public DbSet<Room> Rooms => Set<Room>();
         public DbSet<RoomAssignment> RoomAssignments => Set<RoomAssignment>();
         public DbSet<ColorAssignment> ColorAssignments => Set<ColorAssignment>();
-
-        protected override void OnConfiguring(DbContextOptionsBuilder options)
-        {
-            options.UseMySql(
-                ConfigurationManager.AppSettings["DB_ConnectionString"]);
-        }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
@@ -35,5 +30,17 @@ namespace BookingCalendarApi.Repository.NETFramework
             builder.ApplyConfiguration(new RoomAssignmentConfiguration());
             builder.ApplyConfiguration(new ColorAssignmentConfiguration());
         }
+
+        public BookingCalendarContext() { }
+
+#if NET
+        public BookingCalendarContext(DbContextOptions<BookingCalendarContext> options) : base(options) { }
+#else
+        protected override void OnConfiguring(DbContextOptionsBuilder options)
+        {
+            options.UseMySql(
+                ConfigurationManager.AppSettings["DB_ConnectionString"]);
+        }
+#endif
     }
 }
