@@ -55,6 +55,7 @@ dotnet run
 ## Changelog
 
 ### v1.6.0
+- Added support for .NET Framework 4.
 - Introduced JWT authentication.
 - Placed user related and structure data into single /users/current endpoint.
 - Removed the concept of session.
