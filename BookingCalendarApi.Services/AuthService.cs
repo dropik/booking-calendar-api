@@ -22,6 +22,8 @@ namespace BookingCalendarApi.Services
         private readonly IRepository _repository;
         private readonly JWT _jwt;
 
+        private const string REFRESH_TOKEN_CLAIM = "RTId";
+
         public AuthService(IRepository repository, IOptions<JWT> jwt)
         {
             _repository = repository;
@@ -72,12 +74,20 @@ namespace BookingCalendarApi.Services
                 return null;
             }
             var identityName = principal.Identity.Name;
-            var userRefreshToken = await _repository.SingleOrDefaultAsync(_repository.UserRefreshTokens.Where(u => u.RefreshToken == request.RefreshToken && u.Username == identityName));
-            if (userRefreshToken == null)
+            long refreshTokenId = 0;
+            try
+            {
+                refreshTokenId = long.Parse(principal.Claims.FirstOrDefault(c => c.Type == REFRESH_TOKEN_CLAIM)?.Value ?? "0");
+            }
+            catch (Exception)
             {
                 return null;
             }
-            if (userRefreshToken.ExpiresAt < DateTime.UtcNow)
+            var userRefreshToken = await _repository.SingleOrDefaultAsync(_repository.UserRefreshTokens.Where(u => u.Id == refreshTokenId));
+            if (userRefreshToken == null
+                || userRefreshToken.RefreshToken != request.RefreshToken
+                || userRefreshToken.Username != identityName
+                || userRefreshToken.ExpiresAt < DateTime.UtcNow)
             {
                 return null;
             }
@@ -87,17 +97,17 @@ namespace BookingCalendarApi.Services
 
         private async Task<TokenResponse> GenerateTokens(string username)
         {
-            var accessToken = GenerateAccessToken(username);
             var refreshToken = await GenerateRefreshToken(username);
+            var accessToken = GenerateAccessToken(username, refreshToken);
 
             return new TokenResponse
             {
                 AccessToken = accessToken,
-                RefreshToken = refreshToken,
+                RefreshToken = refreshToken.RefreshToken,
             };
         }
 
-        private string GenerateAccessToken(string username)
+        private string GenerateAccessToken(string username, UserRefreshToken userRefreshToken)
         {
             var tokenHandler = new JwtSecurityTokenHandler();
             var tokenKey = Encoding.UTF8.GetBytes(_jwt.Key);
@@ -107,6 +117,7 @@ namespace BookingCalendarApi.Services
                 Subject = new ClaimsIdentity(new Claim[]
                 {
                     new Claim(ClaimTypes.Name, username),
+                    new Claim(REFRESH_TOKEN_CLAIM, userRefreshToken.Id.ToString()),
                 }),
                 Expires = DateTime.UtcNow.AddMinutes(_jwt.AccessTokenExpirationMinutes),
                 SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(tokenKey), SecurityAlgorithms.HmacSha256Signature),
@@ -115,7 +126,7 @@ namespace BookingCalendarApi.Services
             return tokenHandler.WriteToken(accessToken);
         }
 
-        private async Task<string> GenerateRefreshToken(string username)
+        private async Task<UserRefreshToken> GenerateRefreshToken(string username)
         {
             var randomNumber = new byte[128];
             using (var rng = RandomNumberGenerator.Create())
@@ -123,15 +134,14 @@ namespace BookingCalendarApi.Services
                 rng.GetBytes(randomNumber);
                 var token = Convert.ToBase64String(randomNumber);
 
-                _repository.Add(new Repository.UserRefreshToken()
+                var result = _repository.Add(new UserRefreshToken()
                 {
                     RefreshToken = token,
                     Username = username,
                     ExpiresAt = DateTime.UtcNow.AddMinutes(_jwt.RefreshTokenExpirationMinutes),
                 });
                 await _repository.SaveChangesAsync();
-
-                return token;
+                return result;
             }
         }
     }

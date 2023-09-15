@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using BookingCalendarApi.Repository.Common;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace BookingCalendarApi.Repository.NETCore.Configurations
@@ -8,8 +9,10 @@ namespace BookingCalendarApi.Repository.NETCore.Configurations
         public void Configure(EntityTypeBuilder<Nation> builder)
         {
             builder.HasKey(n => n.Iso);
+
+            builder.Property(n => n.Iso).HasMaxLength(PropertyDefaults.ISO_NATION_LENGTH);
             builder.Property(n => n.Code).IsRequired();
-            builder.Property(n => n.Description).IsRequired();
+            builder.Property(n => n.Description).IsRequired().HasMaxLength(PropertyDefaults.MAX_NAME_LENGTH);
 
             builder
                 .HasData(

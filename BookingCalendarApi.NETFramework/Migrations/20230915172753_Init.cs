@@ -12,8 +12,8 @@ namespace BookingCalendarApi.NETFramework.Migrations
                 name: "ColorAssignments",
                 columns: table => new
                 {
-                    BookingId = table.Column<string>(nullable: false),
-                    Color = table.Column<string>(nullable: false)
+                    BookingId = table.Column<string>(maxLength: 128, nullable: false),
+                    Color = table.Column<string>(maxLength: 100, nullable: false)
                 },
                 constraints: table =>
                 {
@@ -26,7 +26,7 @@ namespace BookingCalendarApi.NETFramework.Migrations
                 {
                     Id = table.Column<long>(nullable: false)
                         .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
-                    Name = table.Column<string>(nullable: false)
+                    Name = table.Column<string>(maxLength: 100, nullable: false)
                 },
                 constraints: table =>
                 {
@@ -37,9 +37,9 @@ namespace BookingCalendarApi.NETFramework.Migrations
                 name: "Nations",
                 columns: table => new
                 {
-                    Iso = table.Column<string>(nullable: false),
+                    Iso = table.Column<string>(maxLength: 2, nullable: false),
                     Code = table.Column<long>(nullable: false),
-                    Description = table.Column<string>(nullable: false)
+                    Description = table.Column<string>(maxLength: 100, nullable: false)
                 },
                 constraints: table =>
                 {
@@ -63,13 +63,15 @@ namespace BookingCalendarApi.NETFramework.Migrations
                 name: "UserRefreshTokens",
                 columns: table => new
                 {
-                    RefreshToken = table.Column<string>(nullable: false),
-                    Username = table.Column<string>(nullable: false),
+                    Id = table.Column<long>(nullable: false)
+                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
+                    RefreshToken = table.Column<string>(type: "text", nullable: false),
+                    Username = table.Column<string>(maxLength: 100, nullable: false),
                     ExpiresAt = table.Column<DateTime>(nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_UserRefreshTokens", x => x.RefreshToken);
+                    table.PrimaryKey("PK_UserRefreshTokens", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -79,8 +81,8 @@ namespace BookingCalendarApi.NETFramework.Migrations
                     Id = table.Column<long>(nullable: false)
                         .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
                     FloorId = table.Column<long>(nullable: false),
-                    Number = table.Column<string>(nullable: false),
-                    Type = table.Column<string>(nullable: false)
+                    Number = table.Column<string>(maxLength: 10, nullable: false),
+                    Type = table.Column<string>(maxLength: 100, nullable: false)
                 },
                 constraints: table =>
                 {
@@ -101,7 +103,7 @@ namespace BookingCalendarApi.NETFramework.Migrations
                         .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
                     StructureId = table.Column<long>(nullable: false),
                     Username = table.Column<string>(maxLength: 100, nullable: false),
-                    PasswordHash = table.Column<string>(nullable: false),
+                    PasswordHash = table.Column<string>(type: "varchar(128) character set utf8", nullable: false),
                     VisibleName = table.Column<string>(maxLength: 100, nullable: true)
                 },
                 constraints: table =>
@@ -119,7 +121,7 @@ namespace BookingCalendarApi.NETFramework.Migrations
                 name: "RoomAssignments",
                 columns: table => new
                 {
-                    Id = table.Column<string>(nullable: false),
+                    Id = table.Column<string>(maxLength: 128, nullable: false),
                     RoomId = table.Column<long>(nullable: false)
                 },
                 constraints: table =>

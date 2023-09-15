@@ -22,8 +22,8 @@ namespace BookingCalendarApi.Repository
         Task<TEntity> SingleAsync<TEntity>(IQueryable<TEntity> entities);
         Task<TEntity> SingleOrDefaultAsync<TEntity>(IQueryable<TEntity> entities);
         Task<bool> AnyAsync<TEntity>(IQueryable<TEntity> entities);
-        void Add(object entity);
-        void Update(object entity);
+        TEntity Add<TEntity>(TEntity entity) where TEntity : class;
+        TEntity Update<TEntity>(TEntity entity) where TEntity : class;
         void Remove(object entity);
         Task SaveChangesAsync();
     }

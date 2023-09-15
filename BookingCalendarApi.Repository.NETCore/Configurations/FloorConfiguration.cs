@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using BookingCalendarApi.Repository.Common;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace BookingCalendarApi.Repository.NETCore.Configurations
@@ -8,15 +9,8 @@ namespace BookingCalendarApi.Repository.NETCore.Configurations
         public void Configure(EntityTypeBuilder<Floor> builder)
         {
             builder.HasKey(f => f.Id);
-
-            builder.Property(f => f.Name).IsRequired();
-
-            builder
-                .HasMany(f => f.Rooms)
-                .WithOne()
-                .HasForeignKey(r => r.FloorId)
-                .IsRequired()
-                .OnDelete(DeleteBehavior.Cascade);
+            builder.Property(f => f.Name).IsRequired().HasMaxLength(PropertyDefaults.MAX_NAME_LENGTH);
+            builder.HasMany(f => f.Rooms).WithOne().HasForeignKey(r => r.FloorId).IsRequired().OnDelete(DeleteBehavior.Cascade);
         }
     }
 }

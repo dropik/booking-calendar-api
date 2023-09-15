@@ -316,9 +316,9 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\20230912201010_Init.cs" />
-    <Compile Include="Migrations\20230912201010_Init.designer.cs">
-      <DependentUpon>20230912201010_Init.cs</DependentUpon>
+    <Compile Include="Migrations\20230915172753_Init.cs" />
+    <Compile Include="Migrations\20230915172753_Init.designer.cs">
+      <DependentUpon>20230915172753_Init.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\BookingCalendarContextModelSnapshot.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -441,6 +441,7 @@
     <WCFMetadataStorage Include="Connected Services\AlloggiatiService\" />
     <WCFMetadataStorage Include="Connected Services\C59Service\" />
   </ItemGroup>
+  <ItemGroup />
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>

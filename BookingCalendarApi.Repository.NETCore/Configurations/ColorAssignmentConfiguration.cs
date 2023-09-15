@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using BookingCalendarApi.Repository.Common;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace BookingCalendarApi.Repository.NETCore.Configurations
@@ -8,7 +9,8 @@ namespace BookingCalendarApi.Repository.NETCore.Configurations
         public void Configure(EntityTypeBuilder<ColorAssignment> builder)
         {
             builder.HasKey(a => a.BookingId);
-            builder.Property(a => a.Color).IsRequired();
+            builder.Property(a => a.BookingId).HasMaxLength(PropertyDefaults.MAX_ID_LENGTH);
+            builder.Property(a => a.Color).IsRequired().HasMaxLength(PropertyDefaults.MAX_NAME_LENGTH);
         }
     }
 }

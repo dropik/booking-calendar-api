@@ -22,11 +22,13 @@ namespace BookingCalendarApi.Repository.NETCore.Migrations
             modelBuilder.Entity("BookingCalendarApi.Repository.ColorAssignment", b =>
                 {
                     b.Property<string>("BookingId")
-                        .HasColumnType("varchar(255)");
+                        .HasMaxLength(128)
+                        .HasColumnType("varchar(128)");
 
                     b.Property<string>("Color")
                         .IsRequired()
-                        .HasColumnType("longtext");
+                        .HasMaxLength(100)
+                        .HasColumnType("varchar(100)");
 
                     b.HasKey("BookingId");
 
@@ -41,7 +43,8 @@ namespace BookingCalendarApi.Repository.NETCore.Migrations
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasColumnType("longtext");
+                        .HasMaxLength(100)
+                        .HasColumnType("varchar(100)");
 
                     b.HasKey("Id");
 
@@ -51,14 +54,16 @@ namespace BookingCalendarApi.Repository.NETCore.Migrations
             modelBuilder.Entity("BookingCalendarApi.Repository.Nation", b =>
                 {
                     b.Property<string>("Iso")
-                        .HasColumnType("varchar(255)");
+                        .HasMaxLength(2)
+                        .HasColumnType("varchar(2)");
 
-                    b.Property<ulong>("Code")
-                        .HasColumnType("bigint unsigned");
+                    b.Property<long>("Code")
+                        .HasColumnType("bigint");
 
                     b.Property<string>("Description")
                         .IsRequired()
-                        .HasColumnType("longtext");
+                        .HasMaxLength(100)
+                        .HasColumnType("varchar(100)");
 
                     b.HasKey("Iso");
 
@@ -68,1501 +73,1501 @@ namespace BookingCalendarApi.Repository.NETCore.Migrations
                         new
                         {
                             Iso = "AD",
-                            Code = 100000202ul,
+                            Code = 100000202L,
                             Description = "ANDORRA"
                         },
                         new
                         {
                             Iso = "AE",
-                            Code = 100000322ul,
+                            Code = 100000322L,
                             Description = "EMIRATI ARABI UNITI"
                         },
                         new
                         {
                             Iso = "AF",
-                            Code = 100000301ul,
+                            Code = 100000301L,
                             Description = "AFGHANISTAN"
                         },
                         new
                         {
                             Iso = "AG",
-                            Code = 100000503ul,
+                            Code = 100000503L,
                             Description = "ANTIGUA E BARBUDA"
                         },
                         new
                         {
                             Iso = "AI",
-                            Code = 100000402ul,
+                            Code = 100000402L,
                             Description = "REGNO UNITO"
                         },
                         new
                         {
                             Iso = "AL",
-                            Code = 100000201ul,
+                            Code = 100000201L,
                             Description = "ALBANIA"
                         },
                         new
                         {
                             Iso = "AM",
-                            Code = 100000358ul,
+                            Code = 100000358L,
                             Description = "ARMENIA"
                         },
                         new
                         {
                             Iso = "AO",
-                            Code = 100000402ul,
+                            Code = 100000402L,
                             Description = "ANGOLA"
                         },
                         new
                         {
                             Iso = "AQ",
-                            Code = 100000733ul,
+                            Code = 100000733L,
                             Description = "ARGENTINA"
                         },
                         new
                         {
                             Iso = "AR",
-                            Code = 100000602ul,
+                            Code = 100000602L,
                             Description = "ARGENTINA"
                         },
                         new
                         {
                             Iso = "AS",
-                            Code = 100000798ul,
+                            Code = 100000798L,
                             Description = "SAMOA"
                         },
                         new
                         {
                             Iso = "AT",
-                            Code = 100000203ul,
+                            Code = 100000203L,
                             Description = "AUSTRIA"
                         },
                         new
                         {
                             Iso = "AU",
-                            Code = 100000701ul,
+                            Code = 100000701L,
                             Description = "AUSTRALIA"
                         },
                         new
                         {
                             Iso = "AW",
-                            Code = 100000358ul,
+                            Code = 100000358L,
                             Description = "PAESI BASSI"
                         },
                         new
                         {
                             Iso = "AX",
-                            Code = 100000223ul,
+                            Code = 100000223L,
                             Description = "FINLANDIA"
                         },
                         new
                         {
                             Iso = "AZ",
-                            Code = 100000359ul,
+                            Code = 100000359L,
                             Description = "AZERBAIGIAN"
                         },
                         new
                         {
                             Iso = "BA",
-                            Code = 100000252ul,
+                            Code = 100000252L,
                             Description = "BOSNIA-ERZEGOVINA"
                         },
                         new
                         {
                             Iso = "BB",
-                            Code = 100000506ul,
+                            Code = 100000506L,
                             Description = "BARBADOS"
                         },
                         new
                         {
                             Iso = "BD",
-                            Code = 100000305ul,
+                            Code = 100000305L,
                             Description = "BANGLADESH"
                         },
                         new
                         {
                             Iso = "BE",
-                            Code = 100000206ul,
+                            Code = 100000206L,
                             Description = "BELGIO"
                         },
                         new
                         {
                             Iso = "BF",
-                            Code = 100000409ul,
+                            Code = 100000409L,
                             Description = "BURKINA-FASO"
                         },
                         new
                         {
                             Iso = "BG",
-                            Code = 100000209ul,
+                            Code = 100000209L,
                             Description = "BULGARIA"
                         },
                         new
                         {
                             Iso = "BH",
-                            Code = 100000304ul,
+                            Code = 100000304L,
                             Description = "BAHREIN"
                         },
                         new
                         {
                             Iso = "BI",
-                            Code = 100000410ul,
+                            Code = 100000410L,
                             Description = "BURUNDI"
                         },
                         new
                         {
                             Iso = "BJ",
-                            Code = 100000406ul,
+                            Code = 100000406L,
                             Description = "BENIN"
                         },
                         new
                         {
                             Iso = "BL",
-                            Code = 100000797ul,
+                            Code = 100000797L,
                             Description = "FRANCIA"
                         },
                         new
                         {
                             Iso = "BM",
-                            Code = 100000406ul,
+                            Code = 100000406L,
                             Description = "REGNO UNITO"
                         },
                         new
                         {
                             Iso = "BN",
-                            Code = 100000309ul,
+                            Code = 100000309L,
                             Description = "BRUNEI"
                         },
                         new
                         {
                             Iso = "BO",
-                            Code = 100000604ul,
+                            Code = 100000604L,
                             Description = "BOLIVIA"
                         },
                         new
                         {
                             Iso = "BQ",
-                            Code = 100000232ul,
+                            Code = 100000232L,
                             Description = "PAESI BASSI"
                         },
                         new
                         {
                             Iso = "BR",
-                            Code = 100000605ul,
+                            Code = 100000605L,
                             Description = "BRASILE"
                         },
                         new
                         {
                             Iso = "BS",
-                            Code = 100000505ul,
+                            Code = 100000505L,
                             Description = "BAHAMAS"
                         },
                         new
                         {
                             Iso = "BT",
-                            Code = 100000306ul,
+                            Code = 100000306L,
                             Description = "BHUTAN"
                         },
                         new
                         {
                             Iso = "BV",
-                            Code = 100000223ul,
+                            Code = 100000223L,
                             Description = "NORVEGIA"
                         },
                         new
                         {
                             Iso = "BW",
-                            Code = 100000408ul,
+                            Code = 100000408L,
                             Description = "BOTSWANA"
                         },
                         new
                         {
                             Iso = "BY",
-                            Code = 100000256ul,
+                            Code = 100000256L,
                             Description = "BIELORUSSIA"
                         },
                         new
                         {
                             Iso = "BZ",
-                            Code = 100000507ul,
+                            Code = 100000507L,
                             Description = "BELIZE"
                         },
                         new
                         {
                             Iso = "CA",
-                            Code = 100000509ul,
+                            Code = 100000509L,
                             Description = "CANADA"
                         },
                         new
                         {
                             Iso = "CC",
-                            Code = 100000223ul,
+                            Code = 100000223L,
                             Description = "AUSTRALIA"
                         },
                         new
                         {
                             Iso = "CD",
-                            Code = 100000998ul,
+                            Code = 100000998L,
                             Description = "REPUBBLICA DEMOCRATICA DEL CONGO (EX ZAIRE)"
                         },
                         new
                         {
                             Iso = "CF",
-                            Code = 100000257ul,
+                            Code = 100000257L,
                             Description = "REPUBBLICA CENTRAFRICANA"
                         },
                         new
                         {
                             Iso = "CG",
-                            Code = 100000257ul,
+                            Code = 100000257L,
                             Description = "CONGO"
                         },
                         new
                         {
                             Iso = "CH",
-                            Code = 100000241ul,
+                            Code = 100000241L,
                             Description = "SVIZZERA"
                         },
                         new
                         {
                             Iso = "CI",
-                            Code = 100000404ul,
+                            Code = 100000404L,
                             Description = "COSTA D'AVORIO"
                         },
                         new
                         {
                             Iso = "CK",
-                            Code = 100000223ul,
+                            Code = 100000223L,
                             Description = "NUOVA ZELANDA"
                         },
                         new
                         {
                             Iso = "CL",
-                            Code = 100000606ul,
+                            Code = 100000606L,
                             Description = "CILE"
                         },
                         new
                         {
                             Iso = "CM",
-                            Code = 100000411ul,
+                            Code = 100000411L,
                             Description = "CAMERUN"
                         },
                         new
                         {
                             Iso = "CN",
-                            Code = 100000606ul,
+                            Code = 100000606L,
                             Description = "REPUBBLICA POPOLARE CINESE"
                         },
                         new
                         {
                             Iso = "CO",
-                            Code = 100000608ul,
+                            Code = 100000608L,
                             Description = "COLOMBIA"
                         },
                         new
                         {
                             Iso = "CR",
-                            Code = 100000404ul,
+                            Code = 100000404L,
                             Description = "COSTARICA"
                         },
                         new
                         {
                             Iso = "CU",
-                            Code = 100000514ul,
+                            Code = 100000514L,
                             Description = "CUBA"
                         },
                         new
                         {
                             Iso = "CV",
-                            Code = 100000413ul,
+                            Code = 100000413L,
                             Description = "CAPO VERDE"
                         },
                         new
                         {
                             Iso = "CW",
-                            Code = 100000514ul,
+                            Code = 100000514L,
                             Description = "PAESI BASSI"
                         },
                         new
                         {
                             Iso = "CX",
-                            Code = 100000223ul,
+                            Code = 100000223L,
                             Description = "AUSTRALIA"
                         },
                         new
                         {
                             Iso = "CY",
-                            Code = 100000315ul,
+                            Code = 100000315L,
                             Description = "CIPRO"
                         },
                         new
                         {
                             Iso = "CZ",
-                            Code = 100000257ul,
+                            Code = 100000257L,
                             Description = "REPUBBLICA CECA"
                         },
                         new
                         {
                             Iso = "DE",
-                            Code = 100000216ul,
+                            Code = 100000216L,
                             Description = "GERMANIA"
                         },
                         new
                         {
                             Iso = "DJ",
-                            Code = 100000424ul,
+                            Code = 100000424L,
                             Description = "GIBUTI"
                         },
                         new
                         {
                             Iso = "DK",
-                            Code = 100000212ul,
+                            Code = 100000212L,
                             Description = "DANIMARCA"
                         },
                         new
                         {
                             Iso = "DM",
-                            Code = 100000515ul,
+                            Code = 100000515L,
                             Description = "DOMINICA"
                         },
                         new
                         {
                             Iso = "DO",
-                            Code = 100000997ul,
+                            Code = 100000997L,
                             Description = "REPUBBLICA DOMINICANA"
                         },
                         new
                         {
                             Iso = "DZ",
-                            Code = 100000401ul,
+                            Code = 100000401L,
                             Description = "ALGERIA"
                         },
                         new
                         {
                             Iso = "EC",
-                            Code = 100000609ul,
+                            Code = 100000609L,
                             Description = "ECUADOR"
                         },
                         new
                         {
                             Iso = "EE",
-                            Code = 100000247ul,
+                            Code = 100000247L,
                             Description = "ESTONIA"
                         },
                         new
                         {
                             Iso = "EG",
-                            Code = 100000419ul,
+                            Code = 100000419L,
                             Description = "EGITTO"
                         },
                         new
                         {
                             Iso = "EH",
-                            Code = 100000533ul,
+                            Code = 100000533L,
                             Description = "MAROCCO"
                         },
                         new
                         {
                             Iso = "ER",
-                            Code = 100000466ul,
+                            Code = 100000466L,
                             Description = "ERITREA"
                         },
                         new
                         {
                             Iso = "ES",
-                            Code = 100000239ul,
+                            Code = 100000239L,
                             Description = "SPAGNA"
                         },
                         new
                         {
                             Iso = "ET",
-                            Code = 100000420ul,
+                            Code = 100000420L,
                             Description = "ETIOPIA"
                         },
                         new
                         {
                             Iso = "FI",
-                            Code = 100000214ul,
+                            Code = 100000214L,
                             Description = "FINLANDIA"
                         },
                         new
                         {
                             Iso = "FJ",
-                            Code = 100000703ul,
+                            Code = 100000703L,
                             Description = "FIGI"
                         },
                         new
                         {
                             Iso = "FK",
-                            Code = 100000223ul,
+                            Code = 100000223L,
                             Description = "REGNO UNITO"
                         },
                         new
                         {
                             Iso = "FM",
-                            Code = 100000311ul,
+                            Code = 100000311L,
                             Description = "MICRONESIA"
                         },
                         new
                         {
                             Iso = "FO",
-                            Code = 100000755ul,
+                            Code = 100000755L,
                             Description = "DANIMARCA"
                         },
                         new
                         {
                             Iso = "FR",
-                            Code = 100000215ul,
+                            Code = 100000215L,
                             Description = "FRANCIA"
                         },
                         new
                         {
                             Iso = "GA",
-                            Code = 100000421ul,
+                            Code = 100000421L,
                             Description = "GABON"
                         },
                         new
                         {
                             Iso = "GB",
-                            Code = 100000219ul,
+                            Code = 100000219L,
                             Description = "REGNO UNITO"
                         },
                         new
                         {
                             Iso = "GD",
-                            Code = 100000519ul,
+                            Code = 100000519L,
                             Description = "GRENADA"
                         },
                         new
                         {
                             Iso = "GE",
-                            Code = 100000360ul,
+                            Code = 100000360L,
                             Description = "GEORGIA"
                         },
                         new
                         {
                             Iso = "GF",
-                            Code = 100000612ul,
+                            Code = 100000612L,
                             Description = "GUYANA"
                         },
                         new
                         {
                             Iso = "GG",
-                            Code = 100000761ul,
+                            Code = 100000761L,
                             Description = "REGNO UNITO"
                         },
                         new
                         {
                             Iso = "GH",
-                            Code = 100000423ul,
+                            Code = 100000423L,
                             Description = "GHANA"
                         },
                         new
                         {
                             Iso = "GI",
-                            Code = 100000326ul,
+                            Code = 100000326L,
                             Description = "REGNO UNITO"
                         },
                         new
                         {
                             Iso = "GL",
-                            Code = 100000758ul,
+                            Code = 100000758L,
                             Description = "DANIMARCA"
                         },
                         new
                         {
                             Iso = "GM",
-                            Code = 100000422ul,
+                            Code = 100000422L,
                             Description = "GAMBIA"
                         },
                         new
                         {
                             Iso = "GN",
-                            Code = 100000425ul,
+                            Code = 100000425L,
                             Description = "GUINEA"
                         },
                         new
                         {
                             Iso = "GP",
-                            Code = 100000759ul,
+                            Code = 100000759L,
                             Description = "FRANCIA"
                         },
                         new
                         {
                             Iso = "GQ",
-                            Code = 100000427ul,
+                            Code = 100000427L,
                             Description = "GUINEA EQUATORIALE"
                         },
                         new
                         {
                             Iso = "GR",
-                            Code = 100000220ul,
+                            Code = 100000220L,
                             Description = "GRECIA"
                         },
                         new
                         {
                             Iso = "GS",
-                            Code = 100000360ul,
+                            Code = 100000360L,
                             Description = "REGNO UNITO"
                         },
                         new
                         {
                             Iso = "GT",
-                            Code = 100000523ul,
+                            Code = 100000523L,
                             Description = "GUATEMALA"
                         },
                         new
                         {
                             Iso = "GU",
-                            Code = 100000760ul,
+                            Code = 100000760L,
                             Description = "STATI UNITI D'AMERICA"
                         },
                         new
                         {
                             Iso = "GW",
-                            Code = 100000427ul,
+                            Code = 100000427L,
                             Description = "GUINEA BISSAU"
                         },
                         new
                         {
                             Iso = "GY",
-                            Code = 100000612ul,
+                            Code = 100000612L,
                             Description = "GUYANA"
                         },
                         new
                         {
                             Iso = "HK",
-                            Code = 110000005ul,
+                            Code = 110000005L,
                             Description = "REPUBBLICA POPOLARE CINESE"
                         },
                         new
                         {
                             Iso = "HM",
-                            Code = 100000223ul,
+                            Code = 100000223L,
                             Description = "AUSTRALIA"
                         },
                         new
                         {
                             Iso = "HN",
-                            Code = 100000525ul,
+                            Code = 100000525L,
                             Description = "HONDURAS"
                         },
                         new
                         {
                             Iso = "HR",
-                            Code = 100000250ul,
+                            Code = 100000250L,
                             Description = "CROAZIA"
                         },
                         new
                         {
                             Iso = "HT",
-                            Code = 100000524ul,
+                            Code = 100000524L,
                             Description = "HAITI"
                         },
                         new
                         {
                             Iso = "HU",
-                            Code = 100000244ul,
+                            Code = 100000244L,
                             Description = "UNGHERIA"
                         },
                         new
                         {
                             Iso = "ID",
-                            Code = 100000331ul,
+                            Code = 100000331L,
                             Description = "INDONESIA"
                         },
                         new
                         {
                             Iso = "IE",
-                            Code = 100000221ul,
+                            Code = 100000221L,
                             Description = "IRLANDA"
                         },
                         new
                         {
                             Iso = "IL",
-                            Code = 100000334ul,
+                            Code = 100000334L,
                             Description = "ISRAELE"
                         },
                         new
                         {
                             Iso = "IM",
-                            Code = 100000223ul,
+                            Code = 100000223L,
                             Description = "REGNO UNITO"
                         },
                         new
                         {
                             Iso = "IN",
-                            Code = 100000330ul,
+                            Code = 100000330L,
                             Description = "INDIA"
                         },
                         new
                         {
                             Iso = "IO",
-                            Code = 100000457ul,
+                            Code = 100000457L,
                             Description = "REGNO UNITO"
                         },
                         new
                         {
                             Iso = "IQ",
-                            Code = 100000333ul,
+                            Code = 100000333L,
                             Description = "IRAQ"
                         },
                         new
                         {
                             Iso = "IR",
-                            Code = 100000332ul,
+                            Code = 100000332L,
                             Description = "IRAN, REPUBBLICA ISLAMICA DEL"
                         },
                         new
                         {
                             Iso = "IS",
-                            Code = 100000223ul,
+                            Code = 100000223L,
                             Description = "ISLANDA"
                         },
                         new
                         {
                             Iso = "IT",
-                            Code = 100000100ul,
+                            Code = 100000100L,
                             Description = "ITALIA"
                         },
                         new
                         {
                             Iso = "JE",
-                            Code = 100000223ul,
+                            Code = 100000223L,
                             Description = "JERSEY, ISOLE"
                         },
                         new
                         {
                             Iso = "JM",
-                            Code = 100000518ul,
+                            Code = 100000518L,
                             Description = "GIAMAICA"
                         },
                         new
                         {
                             Iso = "JO",
-                            Code = 100000327ul,
+                            Code = 100000327L,
                             Description = "GIORDANIA"
                         },
                         new
                         {
                             Iso = "JP",
-                            Code = 100000326ul,
+                            Code = 100000326L,
                             Description = "GIAPPONE"
                         },
                         new
                         {
                             Iso = "KE",
-                            Code = 100000428ul,
+                            Code = 100000428L,
                             Description = "KENIA"
                         },
                         new
                         {
                             Iso = "KG",
-                            Code = 100000361ul,
+                            Code = 100000361L,
                             Description = "KIRGHIZISTAN"
                         },
                         new
                         {
                             Iso = "KH",
-                            Code = 100000310ul,
+                            Code = 100000310L,
                             Description = "CAMBOGIA"
                         },
                         new
                         {
                             Iso = "KI",
-                            Code = 100000708ul,
+                            Code = 100000708L,
                             Description = "KIRIBATI"
                         },
                         new
                         {
                             Iso = "KM",
-                            Code = 100000417ul,
+                            Code = 100000417L,
                             Description = "COMORE"
                         },
                         new
                         {
                             Iso = "KN",
-                            Code = 100000795ul,
+                            Code = 100000795L,
                             Description = "SAINT KITTS E NEVIS"
                         },
                         new
                         {
                             Iso = "KP",
-                            Code = 100000319ul,
+                            Code = 100000319L,
                             Description = "REP.POPOLARE DEMOCRATICA DI COREA (COREA DEL NORD)"
                         },
                         new
                         {
                             Iso = "KR",
-                            Code = 100000320ul,
+                            Code = 100000320L,
                             Description = "REPUBBLICA DI COREA (COREA DEL SUD)"
                         },
                         new
                         {
                             Iso = "KW",
-                            Code = 100000335ul,
+                            Code = 100000335L,
                             Description = "KUWAIT"
                         },
                         new
                         {
                             Iso = "KY",
-                            Code = 100000223ul,
+                            Code = 100000223L,
                             Description = "REGNO UNITO"
                         },
                         new
                         {
                             Iso = "KZ",
-                            Code = 100000356ul,
+                            Code = 100000356L,
                             Description = "KAZAKISTAN"
                         },
                         new
                         {
                             Iso = "LA",
-                            Code = 100000336ul,
+                            Code = 100000336L,
                             Description = "LAOS"
                         },
                         new
                         {
                             Iso = "LB",
-                            Code = 100000337ul,
+                            Code = 100000337L,
                             Description = "LIBANO"
                         },
                         new
                         {
                             Iso = "LC",
-                            Code = 100000532ul,
+                            Code = 100000532L,
                             Description = "SAINT LUCIA"
                         },
                         new
                         {
                             Iso = "LI",
-                            Code = 100000225ul,
+                            Code = 100000225L,
                             Description = "LIECHTENSTEIN"
                         },
                         new
                         {
                             Iso = "LK",
-                            Code = 100000239ul,
+                            Code = 100000239L,
                             Description = "SRI LANKA (CEYLON)"
                         },
                         new
                         {
                             Iso = "LR",
-                            Code = 100000430ul,
+                            Code = 100000430L,
                             Description = "LIBERIA"
                         },
                         new
                         {
                             Iso = "LS",
-                            Code = 100000429ul,
+                            Code = 100000429L,
                             Description = "LESOTHO"
                         },
                         new
                         {
                             Iso = "LT",
-                            Code = 100000249ul,
+                            Code = 100000249L,
                             Description = "LITUANIA"
                         },
                         new
                         {
                             Iso = "LU",
-                            Code = 100000226ul,
+                            Code = 100000226L,
                             Description = "LUSSEMBURGO"
                         },
                         new
                         {
                             Iso = "LV",
-                            Code = 100000248ul,
+                            Code = 100000248L,
                             Description = "LETTONIA"
                         },
                         new
                         {
                             Iso = "LY",
-                            Code = 100000431ul,
+                            Code = 100000431L,
                             Description = "LIBIA"
                         },
                         new
                         {
                             Iso = "MA",
-                            Code = 100000436ul,
+                            Code = 100000436L,
                             Description = "MAROCCO"
                         },
                         new
                         {
                             Iso = "MC",
-                            Code = 100000234ul,
+                            Code = 100000234L,
                             Description = "MONACO"
                         },
                         new
                         {
                             Iso = "MD",
-                            Code = 100000254ul,
+                            Code = 100000254L,
                             Description = "MOLDOVA"
                         },
                         new
                         {
                             Iso = "ME",
-                            Code = 100001001ul,
+                            Code = 100001001L,
                             Description = "MONTENEGRO"
                         },
                         new
                         {
                             Iso = "MF",
-                            Code = 100000797ul,
+                            Code = 100000797L,
                             Description = "FRANCIA"
                         },
                         new
                         {
                             Iso = "MG",
-                            Code = 100000432ul,
+                            Code = 100000432L,
                             Description = "MADAGASCAR"
                         },
                         new
                         {
                             Iso = "MH",
-                            Code = 100000223ul,
+                            Code = 100000223L,
                             Description = "MARSHALL"
                         },
                         new
                         {
                             Iso = "MK",
-                            Code = 100000253ul,
+                            Code = 100000253L,
                             Description = "MACEDONIA (EX REPUBBLICA JUGOSLAVA)"
                         },
                         new
                         {
                             Iso = "ML",
-                            Code = 100000435ul,
+                            Code = 100000435L,
                             Description = "MALI"
                         },
                         new
                         {
                             Iso = "MM",
-                            Code = 100000256ul,
+                            Code = 100000256L,
                             Description = "MYANMAR"
                         },
                         new
                         {
                             Iso = "MN",
-                            Code = 100000341ul,
+                            Code = 100000341L,
                             Description = "MONGOLIA"
                         },
                         new
                         {
                             Iso = "MO",
-                            Code = 110000003ul,
+                            Code = 110000003L,
                             Description = "REPUBBLICA POPOLARE CINESE"
                         },
                         new
                         {
                             Iso = "MP",
-                            Code = 100000223ul,
+                            Code = 100000223L,
                             Description = "STATI UNITI D'AMERICA"
                         },
                         new
                         {
                             Iso = "MQ",
-                            Code = 100000773ul,
+                            Code = 100000773L,
                             Description = "FRANCIA"
                         },
                         new
                         {
                             Iso = "MR",
-                            Code = 100000437ul,
+                            Code = 100000437L,
                             Description = "MAURITANIA"
                         },
                         new
                         {
                             Iso = "MS",
-                            Code = 100000777ul,
+                            Code = 100000777L,
                             Description = "REGNO UNITO"
                         },
                         new
                         {
                             Iso = "MT",
-                            Code = 100000227ul,
+                            Code = 100000227L,
                             Description = "MALTA"
                         },
                         new
                         {
                             Iso = "MU",
-                            Code = 100000437ul,
+                            Code = 100000437L,
                             Description = "MAURITIUS"
                         },
                         new
                         {
                             Iso = "MV",
-                            Code = 100000339ul,
+                            Code = 100000339L,
                             Description = "MALDIVE"
                         },
                         new
                         {
                             Iso = "MW",
-                            Code = 100000434ul,
+                            Code = 100000434L,
                             Description = "MALAWI"
                         },
                         new
                         {
                             Iso = "MX",
-                            Code = 100000527ul,
+                            Code = 100000527L,
                             Description = "MESSICO"
                         },
                         new
                         {
                             Iso = "MY",
-                            Code = 100000767ul,
+                            Code = 100000767L,
                             Description = "MALAYSIA"
                         },
                         new
                         {
                             Iso = "MZ",
-                            Code = 100000440ul,
+                            Code = 100000440L,
                             Description = "MOZAMBICO"
                         },
                         new
                         {
                             Iso = "NA",
-                            Code = 100000441ul,
+                            Code = 100000441L,
                             Description = "NAMIBIA"
                         },
                         new
                         {
                             Iso = "NC",
-                            Code = 100000780ul,
+                            Code = 100000780L,
                             Description = "FRANCIA"
                         },
                         new
                         {
                             Iso = "NE",
-                            Code = 100000442ul,
+                            Code = 100000442L,
                             Description = "NIGER"
                         },
                         new
                         {
                             Iso = "NF",
-                            Code = 100000223ul,
+                            Code = 100000223L,
                             Description = "AUSTRALIA"
                         },
                         new
                         {
                             Iso = "NG",
-                            Code = 100000443ul,
+                            Code = 100000443L,
                             Description = "NIGERIA"
                         },
                         new
                         {
                             Iso = "NI",
-                            Code = 100000529ul,
+                            Code = 100000529L,
                             Description = "NICARAGUA"
                         },
                         new
                         {
                             Iso = "NL",
-                            Code = 100000232ul,
+                            Code = 100000232L,
                             Description = "PAESI BASSI"
                         },
                         new
                         {
                             Iso = "NO",
-                            Code = 100000231ul,
+                            Code = 100000231L,
                             Description = "NORVEGIA"
                         },
                         new
                         {
                             Iso = "NP",
-                            Code = 100000342ul,
+                            Code = 100000342L,
                             Description = "NEPAL"
                         },
                         new
                         {
                             Iso = "NR",
-                            Code = 100000715ul,
+                            Code = 100000715L,
                             Description = "NAURU"
                         },
                         new
                         {
                             Iso = "NU",
-                            Code = 100000443ul,
+                            Code = 100000443L,
                             Description = "NUOVA ZELANDA"
                         },
                         new
                         {
                             Iso = "NZ",
-                            Code = 100000719ul,
+                            Code = 100000719L,
                             Description = "NUOVA ZELANDA"
                         },
                         new
                         {
                             Iso = "OM",
-                            Code = 100000343ul,
+                            Code = 100000343L,
                             Description = "OMAN"
                         },
                         new
                         {
                             Iso = "PA",
-                            Code = 100000530ul,
+                            Code = 100000530L,
                             Description = "PANAMA"
                         },
                         new
                         {
                             Iso = "PE",
-                            Code = 100000615ul,
+                            Code = 100000615L,
                             Description = "PERU'"
                         },
                         new
                         {
                             Iso = "PF",
-                            Code = 100000787ul,
+                            Code = 100000787L,
                             Description = "FRANCIA"
                         },
                         new
                         {
                             Iso = "PG",
-                            Code = 100000530ul,
+                            Code = 100000530L,
                             Description = "PAPUA NUOVA GUINEA"
                         },
                         new
                         {
                             Iso = "PH",
-                            Code = 100000323ul,
+                            Code = 100000323L,
                             Description = "FILIPPINE"
                         },
                         new
                         {
                             Iso = "PK",
-                            Code = 100000344ul,
+                            Code = 100000344L,
                             Description = "PAKISTAN"
                         },
                         new
                         {
                             Iso = "PL",
-                            Code = 100000233ul,
+                            Code = 100000233L,
                             Description = "POLONIA"
                         },
                         new
                         {
                             Iso = "PM",
-                            Code = 100000797ul,
+                            Code = 100000797L,
                             Description = "FRANCIA"
                         },
                         new
                         {
                             Iso = "PN",
-                            Code = 100000223ul,
+                            Code = 100000223L,
                             Description = "REGNO UNITO"
                         },
                         new
                         {
                             Iso = "PR",
-                            Code = 100000233ul,
+                            Code = 100000233L,
                             Description = "STATI UNITI D'AMERICA"
                         },
                         new
                         {
                             Iso = "PS",
-                            Code = 100000536ul,
+                            Code = 100000536L,
                             Description = "PAKISTAN"
                         },
                         new
                         {
                             Iso = "PT",
-                            Code = 100000234ul,
+                            Code = 100000234L,
                             Description = "PORTOGALLO"
                         },
                         new
                         {
                             Iso = "PW",
-                            Code = 100000344ul,
+                            Code = 100000344L,
                             Description = "PALAU"
                         },
                         new
                         {
                             Iso = "PY",
-                            Code = 100000614ul,
+                            Code = 100000614L,
                             Description = "PARAGUAY"
                         },
                         new
                         {
                             Iso = "QA",
-                            Code = 100000345ul,
+                            Code = 100000345L,
                             Description = "QATAR"
                         },
                         new
                         {
                             Iso = "RE",
-                            Code = 100000765ul,
+                            Code = 100000765L,
                             Description = "FRANCIA"
                         },
                         new
                         {
                             Iso = "RO",
-                            Code = 100000235ul,
+                            Code = 100000235L,
                             Description = "ROMANIA"
                         },
                         new
                         {
                             Iso = "RS",
-                            Code = 100001000ul,
+                            Code = 100001000L,
                             Description = "SERBIA REPUBBLICA DI"
                         },
                         new
                         {
                             Iso = "RU",
-                            Code = 100000245ul,
+                            Code = 100000245L,
                             Description = "FEDERAZIONE RUSSA"
                         },
                         new
                         {
                             Iso = "RW",
-                            Code = 100000446ul,
+                            Code = 100000446L,
                             Description = "RUANDA"
                         },
                         new
                         {
                             Iso = "SA",
-                            Code = 100000302ul,
+                            Code = 100000302L,
                             Description = "ARABIA SAUDITA"
                         },
                         new
                         {
                             Iso = "SB",
-                            Code = 100000223ul,
+                            Code = 100000223L,
                             Description = "SALOMONE"
                         },
                         new
                         {
                             Iso = "SC",
-                            Code = 100001000ul,
+                            Code = 100001000L,
                             Description = "SEYCHELLES"
                         },
                         new
                         {
                             Iso = "SD",
-                            Code = 100000455ul,
+                            Code = 100000455L,
                             Description = "SUDAN"
                         },
                         new
                         {
                             Iso = "SE",
-                            Code = 100000240ul,
+                            Code = 100000240L,
                             Description = "SVEZIA"
                         },
                         new
                         {
                             Iso = "SG",
-                            Code = 100000346ul,
+                            Code = 100000346L,
                             Description = "SINGAPORE"
                         },
                         new
                         {
                             Iso = "SH",
-                            Code = 100000799ul,
+                            Code = 100000799L,
                             Description = "REGNO UNITO"
                         },
                         new
                         {
                             Iso = "SI",
-                            Code = 100000251ul,
+                            Code = 100000251L,
                             Description = "SLOVENIA"
                         },
                         new
                         {
                             Iso = "SJ",
-                            Code = 100000616ul,
+                            Code = 100000616L,
                             Description = "NORVEGIA"
                         },
                         new
                         {
                             Iso = "SK",
-                            Code = 100000348ul,
+                            Code = 100000348L,
                             Description = "REPUBBLICA SLOVACCA"
                         },
                         new
                         {
                             Iso = "SL",
-                            Code = 100000451ul,
+                            Code = 100000451L,
                             Description = "SIERRA LEONE"
                         },
                         new
                         {
                             Iso = "SM",
-                            Code = 100000236ul,
+                            Code = 100000236L,
                             Description = "SAN MARINO"
                         },
                         new
                         {
                             Iso = "SN",
-                            Code = 100000450ul,
+                            Code = 100000450L,
                             Description = "SENEGAL"
                         },
                         new
                         {
                             Iso = "SO",
-                            Code = 100000453ul,
+                            Code = 100000453L,
                             Description = "SOMALIA"
                         },
                         new
                         {
                             Iso = "SR",
-                            Code = 100000616ul,
+                            Code = 100000616L,
                             Description = "SURINAME"
                         },
                         new
                         {
                             Iso = "SS",
-                            Code = 100000455ul,
+                            Code = 100000455L,
                             Description = "SUD SUDAN, REPUBBLICA DEL"
                         },
                         new
                         {
                             Iso = "ST",
-                            Code = 100000448ul,
+                            Code = 100000448L,
                             Description = "SAO TOME' E PRINCIPE"
                         },
                         new
                         {
                             Iso = "SV",
-                            Code = 100000517ul,
+                            Code = 100000517L,
                             Description = "EL SALVADOR"
                         },
                         new
                         {
                             Iso = "SX",
-                            Code = 100000346ul,
+                            Code = 100000346L,
                             Description = "PAESI BASSI"
                         },
                         new
                         {
                             Iso = "SY",
-                            Code = 100000348ul,
+                            Code = 100000348L,
                             Description = "SIRIA"
                         },
                         new
                         {
                             Iso = "SZ",
-                            Code = 100000456ul,
+                            Code = 100000456L,
                             Description = "SWAZILAND"
                         },
                         new
                         {
                             Iso = "TC",
-                            Code = 100000223ul,
+                            Code = 100000223L,
                             Description = "REGNO UNITO"
                         },
                         new
                         {
                             Iso = "TD",
-                            Code = 100000415ul,
+                            Code = 100000415L,
                             Description = "CIAD"
                         },
                         new
                         {
                             Iso = "TF",
-                            Code = 100000457ul,
+                            Code = 100000457L,
                             Description = "FRANCIA"
                         },
                         new
                         {
                             Iso = "TG",
-                            Code = 100000458ul,
+                            Code = 100000458L,
                             Description = "TOGO"
                         },
                         new
                         {
                             Iso = "TH",
-                            Code = 100000349ul,
+                            Code = 100000349L,
                             Description = "THAILANDIA"
                         },
                         new
                         {
                             Iso = "TJ",
-                            Code = 100000362ul,
+                            Code = 100000362L,
                             Description = "TAGIKISTAN"
                         },
                         new
                         {
                             Iso = "TK",
-                            Code = 100000806ul,
+                            Code = 100000806L,
                             Description = "NUOVA ZELANDA"
                         },
                         new
                         {
                             Iso = "TL",
-                            Code = 100000805ul,
+                            Code = 100000805L,
                             Description = "TIMOR ORIENTALE"
                         },
                         new
                         {
                             Iso = "TM",
-                            Code = 100000364ul,
+                            Code = 100000364L,
                             Description = "TURKMENISTAN"
                         },
                         new
                         {
                             Iso = "TN",
-                            Code = 100000460ul,
+                            Code = 100000460L,
                             Description = "TUNISIA"
                         },
                         new
                         {
                             Iso = "TO",
-                            Code = 100000730ul,
+                            Code = 100000730L,
                             Description = "TONGA"
                         },
                         new
                         {
                             Iso = "TR",
-                            Code = 100000351ul,
+                            Code = 100000351L,
                             Description = "TURCHIA"
                         },
                         new
                         {
                             Iso = "TT",
-                            Code = 100000617ul,
+                            Code = 100000617L,
                             Description = "TRINIDAD E TOBAGO"
                         },
                         new
                         {
                             Iso = "TV",
-                            Code = 100000731ul,
+                            Code = 100000731L,
                             Description = "TUVALU"
                         },
                         new
                         {
                             Iso = "TW",
-                            Code = 100000998ul,
+                            Code = 100000998L,
                             Description = "TAIWAN"
                         },
                         new
                         {
                             Iso = "TZ",
-                            Code = 100000457ul,
+                            Code = 100000457L,
                             Description = "TANZANIA"
                         },
                         new
                         {
                             Iso = "UA",
-                            Code = 100000243ul,
+                            Code = 100000243L,
                             Description = "UCRAINA"
                         },
                         new
                         {
                             Iso = "UG",
-                            Code = 100000461ul,
+                            Code = 100000461L,
                             Description = "UGANDA"
                         },
                         new
                         {
                             Iso = "UK",
-                            Code = 100000219ul,
+                            Code = 100000219L,
                             Description = "REGNO UNITO"
                         },
                         new
                         {
                             Iso = "UM",
-                            Code = 100000223ul,
+                            Code = 100000223L,
                             Description = "STATI UNITI D'AMERICA"
                         },
                         new
                         {
                             Iso = "US",
-                            Code = 100000536ul,
+                            Code = 100000536L,
                             Description = "STATI UNITI D'AMERICA"
                         },
                         new
                         {
                             Iso = "UY",
-                            Code = 100000618ul,
+                            Code = 100000618L,
                             Description = "URUGUAY"
                         },
                         new
                         {
                             Iso = "UZ",
-                            Code = 100000357ul,
+                            Code = 100000357L,
                             Description = "UZBEKISTAN"
                         },
                         new
                         {
                             Iso = "VA",
-                            Code = 100000246ul,
+                            Code = 100000246L,
                             Description = "SANTA SEDE"
                         },
                         new
                         {
                             Iso = "VC",
-                            Code = 100000797ul,
+                            Code = 100000797L,
                             Description = "S. VINCENT E GRENADINE"
                         },
                         new
                         {
                             Iso = "VE",
-                            Code = 100000619ul,
+                            Code = 100000619L,
                             Description = "VENEZUELA"
                         },
                         new
                         {
                             Iso = "VG",
-                            Code = 100000764ul,
+                            Code = 100000764L,
                             Description = "REGNO UNITO"
                         },
                         new
                         {
                             Iso = "VI",
-                            Code = 100000764ul,
+                            Code = 100000764L,
                             Description = "STATI UNITI D'AMERICA"
                         },
                         new
                         {
                             Iso = "VN",
-                            Code = 100000353ul,
+                            Code = 100000353L,
                             Description = "VIETNAM"
                         },
                         new
                         {
                             Iso = "VU",
-                            Code = 100000732ul,
+                            Code = 100000732L,
                             Description = "VANUATU"
                         },
                         new
                         {
                             Iso = "WF",
-                            Code = 100000815ul,
+                            Code = 100000815L,
                             Description = "FRANCIA"
                         },
                         new
                         {
                             Iso = "WS",
-                            Code = 100000727ul,
+                            Code = 100000727L,
                             Description = "SAMOA"
                         },
                         new
                         {
                             Iso = "YE",
-                            Code = 100000354ul,
+                            Code = 100000354L,
                             Description = "YEMEN"
                         },
                         new
                         {
                             Iso = "YT",
-                            Code = 100000774ul,
+                            Code = 100000774L,
                             Description = "FRANCIA"
                         },
                         new
                         {
                             Iso = "ZA",
-                            Code = 100000467ul,
+                            Code = 100000467L,
                             Description = "SUD AFRICA"
                         },
                         new
                         {
                             Iso = "ZM",
-                            Code = 100000464ul,
+                            Code = 100000464L,
                             Description = "ZAMBIA"
                         },
                         new
                         {
                             Iso = "ZW",
-                            Code = 100000465ul,
+                            Code = 100000465L,
                             Description = "ZIMBABWE"
                         });
                 });
@@ -1578,11 +1583,13 @@ namespace BookingCalendarApi.Repository.NETCore.Migrations
 
                     b.Property<string>("Number")
                         .IsRequired()
-                        .HasColumnType("longtext");
+                        .HasMaxLength(10)
+                        .HasColumnType("varchar(10)");
 
                     b.Property<string>("Type")
                         .IsRequired()
-                        .HasColumnType("longtext");
+                        .HasMaxLength(100)
+                        .HasColumnType("varchar(100)");
 
                     b.HasKey("Id");
 
@@ -1594,7 +1601,8 @@ namespace BookingCalendarApi.Repository.NETCore.Migrations
             modelBuilder.Entity("BookingCalendarApi.Repository.RoomAssignment", b =>
                 {
                     b.Property<string>("Id")
-                        .HasColumnType("varchar(255)");
+                        .HasMaxLength(128)
+                        .HasColumnType("varchar(128)");
 
                     b.Property<long>("RoomId")
                         .HasColumnType("bigint");
@@ -1630,7 +1638,7 @@ namespace BookingCalendarApi.Repository.NETCore.Migrations
 
                     b.Property<string>("PasswordHash")
                         .IsRequired()
-                        .HasColumnType("longtext");
+                        .HasColumnType("varchar(128)");
 
                     b.Property<long>("StructureId")
                         .HasColumnType("bigint");
@@ -1656,17 +1664,23 @@ namespace BookingCalendarApi.Repository.NETCore.Migrations
 
             modelBuilder.Entity("BookingCalendarApi.Repository.UserRefreshToken", b =>
                 {
-                    b.Property<string>("RefreshToken")
-                        .HasColumnType("varchar(255)");
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint");
 
                     b.Property<DateTime>("ExpiresAt")
                         .HasColumnType("datetime(6)");
 
+                    b.Property<string>("RefreshToken")
+                        .IsRequired()
+                        .HasColumnType("text");
+
                     b.Property<string>("Username")
                         .IsRequired()
-                        .HasColumnType("longtext");
+                        .HasMaxLength(100)
+                        .HasColumnType("varchar(100)");
 
-                    b.HasKey("RefreshToken");
+                    b.HasKey("Id");
 
                     b.ToTable("UserRefreshTokens");
                 });
@@ -1682,20 +1696,24 @@ namespace BookingCalendarApi.Repository.NETCore.Migrations
 
             modelBuilder.Entity("BookingCalendarApi.Repository.RoomAssignment", b =>
                 {
-                    b.HasOne("BookingCalendarApi.Repository.Room", null)
+                    b.HasOne("BookingCalendarApi.Repository.Room", "Room")
                         .WithMany()
                         .HasForeignKey("RoomId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("Room");
                 });
 
             modelBuilder.Entity("BookingCalendarApi.Repository.User", b =>
                 {
-                    b.HasOne("BookingCalendarApi.Repository.Structure", null)
+                    b.HasOne("BookingCalendarApi.Repository.Structure", "Structure")
                         .WithMany()
                         .HasForeignKey("StructureId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
+
+                    b.Navigation("Structure");
                 });
 
             modelBuilder.Entity("BookingCalendarApi.Repository.Floor", b =>

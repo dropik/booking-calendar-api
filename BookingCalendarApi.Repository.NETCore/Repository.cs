@@ -37,13 +37,14 @@ namespace BookingCalendarApi.Repository.NETCore
         public async Task<bool> AnyAsync<TEntity>(IQueryable<TEntity> entities)
             => await entities.AnyAsync();
 
-        public void Add(object entity)
-            => _context.Add(entity);
+        public TEntity Add<TEntity>(TEntity entity) where TEntity : class
+            => _context.Add(entity).Entity;
 
-        public void Update(object entity)
+        public TEntity Update<TEntity>(TEntity entity) where TEntity : class
         {
-            _context.Attach(entity);
-            _context.Entry(entity).State = EntityState.Modified;
+            var entry = _context.Attach(entity);
+            entry.State = EntityState.Modified;
+            return entry.Entity;
         }
 
         public void Remove(object entity)

@@ -12,7 +12,7 @@ namespace BookingCalendarApi.Repository.NETFramework.Configurations
 
             builder.Property(u => u.StructureId).IsRequired();
             builder.Property(u => u.Username).IsRequired().HasMaxLength(PropertyDefaults.MAX_NAME_LENGTH);
-            builder.Property(u => u.PasswordHash).IsRequired();
+            builder.Property(u => u.PasswordHash).IsRequired().HasColumnType($"varchar({PropertyDefaults.MAX_PASSWORD_HASH_LENGTH}) character set utf8");
             builder.Property(u => u.VisibleName).IsRequired(false).HasMaxLength(PropertyDefaults.MAX_NAME_LENGTH);
 
             builder.HasOne(u => u.Structure).WithMany().HasForeignKey(u => u.StructureId).OnDelete(DeleteBehavior.Restrict);
