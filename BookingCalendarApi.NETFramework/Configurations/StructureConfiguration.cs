@@ -10,6 +10,8 @@ namespace BookingCalendarApi.Repository.Configurations
         {
             builder.HasKey(s => s.Id);
             builder.Property(s => s.Name).IsRequired().HasMaxLength(PropertyDefaults.MAX_NAME_LENGTH);
+
+            builder.HasData(new Structure() { Id = Structure.MASTER_ID, Name = "Master Hotel" });
         }
     }
 }

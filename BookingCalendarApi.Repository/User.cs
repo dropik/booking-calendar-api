@@ -4,6 +4,8 @@ namespace BookingCalendarApi.Repository
 {
     public class User
     {
+        public const int MASTER_ID = -1;
+
         public long Id { get; set; }
         public long StructureId { get; set; }
         [JsonIgnore]
@@ -11,5 +13,6 @@ namespace BookingCalendarApi.Repository
         public string Username { get; set; } = "";
         public string PasswordHash { get; set; } = "";
         public string VisibleName { get; set; } = "";
+        public bool IsAdmin { get; set; }
     }
 }

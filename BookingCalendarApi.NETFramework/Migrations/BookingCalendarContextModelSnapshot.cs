@@ -1626,6 +1626,13 @@ namespace BookingCalendarApi.NETFramework.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Structures");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = -1L,
+                            Name = "Master Hotel"
+                        });
                 });
 
             modelBuilder.Entity("BookingCalendarApi.Repository.User", b =>
@@ -1633,6 +1640,11 @@ namespace BookingCalendarApi.NETFramework.Migrations
                     b.Property<long>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("bigint");
+
+                    b.Property<bool>("IsAdmin")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("tinyint(1)")
+                        .HasDefaultValue(false);
 
                     b.Property<string>("PasswordHash")
                         .IsRequired()
@@ -1658,6 +1670,17 @@ namespace BookingCalendarApi.NETFramework.Migrations
                         .IsUnique();
 
                     b.ToTable("Users");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = -1L,
+                            IsAdmin = true,
+                            PasswordHash = "",
+                            StructureId = -1L,
+                            Username = "master@bookingcalendar.com",
+                            VisibleName = "Master"
+                        });
                 });
 
             modelBuilder.Entity("BookingCalendarApi.Repository.UserRefreshToken", b =>
