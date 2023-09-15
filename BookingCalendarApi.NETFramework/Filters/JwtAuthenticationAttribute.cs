@@ -49,13 +49,8 @@ namespace BookingCalendarApi.NETFramework.Filters
 
         private Task<ClaimsPrincipal> AuthenticateJwtToken(string token)
         {
-            if (ValidateToken(token, out var username))
+            if (ValidateToken(token, out var claims))
             {
-                var claims = new List<Claim>
-                {
-                    new Claim(ClaimTypes.Name, username)
-                };
-
                 var identity = new ClaimsIdentity(claims, "Jwt");
                 var user = new ClaimsPrincipal(identity);
 
@@ -65,9 +60,9 @@ namespace BookingCalendarApi.NETFramework.Filters
             return Task.FromResult<ClaimsPrincipal>(null);
         }
 
-        private static bool ValidateToken(string token, out string username)
+        private static bool ValidateToken(string token, out List<Claim> claims)
         {
-            username = null;
+            claims = new List<Claim>();
 
             var simplePrinciple = GetPrincipal(token);
             if (!(simplePrinciple?.Identity is ClaimsIdentity identity))
@@ -80,13 +75,15 @@ namespace BookingCalendarApi.NETFramework.Filters
                 return false;
             }
 
-            var usernameClaim = identity.FindFirst(ClaimTypes.Name);
-            username = usernameClaim?.Value;
-
+            var username = identity.FindFirst(ClaimTypes.Name)?.Value;
             if (string.IsNullOrEmpty(username))
             {
                 return false;
             }
+
+            var role = identity.FindFirst(ClaimTypes.Role)?.Value ?? "";
+            claims.Add(new Claim(ClaimTypes.Name, username));
+            claims.Add(new Claim(ClaimTypes.Role, role));
 
             return true;
         }

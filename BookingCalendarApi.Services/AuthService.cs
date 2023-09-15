@@ -45,7 +45,7 @@ namespace BookingCalendarApi.Services
                 return null;
             }
 
-            return await GenerateTokens(user.Username);
+            return await GenerateTokens(user);
         }
 
         public async Task<TokenResponse> GetToken(RefreshTokenRequest request)
@@ -91,14 +91,15 @@ namespace BookingCalendarApi.Services
             {
                 return null;
             }
+            var user = await _repository.SingleOrDefaultAsync(_repository.Users.Where(u => u.Username == identityName));
 
-            return await GenerateTokens(identityName);
+            return await GenerateTokens(user);
         }
 
-        private async Task<TokenResponse> GenerateTokens(string username)
+        private async Task<TokenResponse> GenerateTokens(User user)
         {
-            var refreshToken = await GenerateRefreshToken(username);
-            var accessToken = GenerateAccessToken(username, refreshToken);
+            var refreshToken = await GenerateRefreshToken(user.Username);
+            var accessToken = GenerateAccessToken(user, refreshToken);
 
             return new TokenResponse
             {
@@ -107,7 +108,7 @@ namespace BookingCalendarApi.Services
             };
         }
 
-        private string GenerateAccessToken(string username, UserRefreshToken userRefreshToken)
+        private string GenerateAccessToken(User user, UserRefreshToken userRefreshToken)
         {
             var tokenHandler = new JwtSecurityTokenHandler();
             var tokenKey = Encoding.UTF8.GetBytes(_jwt.Key);
@@ -116,12 +117,16 @@ namespace BookingCalendarApi.Services
                 Issuer = _jwt.Issuer,
                 Subject = new ClaimsIdentity(new Claim[]
                 {
-                    new Claim(ClaimTypes.Name, username),
+                    new Claim(ClaimTypes.Name, user.Username),
                     new Claim(REFRESH_TOKEN_CLAIM, userRefreshToken.Id.ToString()),
                 }),
                 Expires = DateTime.UtcNow.AddMinutes(_jwt.AccessTokenExpirationMinutes),
                 SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(tokenKey), SecurityAlgorithms.HmacSha256Signature),
             };
+            if (user.IsAdmin)
+            {
+                tokenDescriptor.Subject.AddClaim(new Claim(ClaimTypes.Role, User.ADMIN_ROLE));
+            }
             var accessToken = tokenHandler.CreateToken(tokenDescriptor);
             return tokenHandler.WriteToken(accessToken);
         }
