@@ -54,6 +54,19 @@ builder.Services.AddAuthentication(options =>
     };
 });
 
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy(
+        name: "CorsPolicy",
+        policy =>
+        {
+            policy
+                .WithOrigins(builder.Configuration.GetValue<string>("FrontendUrl"))
+                .AllowAnyHeader()
+                .AllowAnyMethod();
+        });
+});
+
 builder.Services
     .AddControllers(options =>
     {
@@ -104,6 +117,8 @@ builder.Services.AddTransient<INationConverter, NationConverter>();
 builder.Services.AddTransient<ITrackedRecordsComposer, TrackedRecordsComposer>();
 
 var app = builder.Build();
+
+app.UseCors("CorsPolicy");
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())

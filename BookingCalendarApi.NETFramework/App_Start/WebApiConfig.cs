@@ -5,12 +5,10 @@ using BookingCalendarApi.NETFramework.C59Service;
 using BookingCalendarApi.NETFramework.Clients;
 using BookingCalendarApi.NETFramework.Filters;
 using BookingCalendarApi.Repository;
-using BookingCalendarApi.Repository.NETFramework;
 using BookingCalendarApi.Services;
 
 using Microsoft.Extensions.DependencyInjection;
 
-using Newtonsoft.Json.Serialization;
 using System;
 using System.Configuration;
 using System.IO;
@@ -33,7 +31,7 @@ namespace BookingCalendarApi.NETFramework
     {
         public static void Register(HttpConfiguration config)
         {
-            config.EnableCors(new EnableCorsAttribute(origins: "http://localhost:3000", headers: "*", methods: "*"));
+            config.EnableCors(new EnableCorsAttribute(origins: ConfigurationManager.AppSettings["FrontendUrl"], headers: "*", methods: "*"));
 
             // filters
             config.Filters.Add(new ExceptionFilter());
