@@ -1,6 +1,11 @@
 ﻿using BookingCalendarApi.Models.Exceptions;
+using BookingCalendarApi.Models.Requests;
 using BookingCalendarApi.Models.Responses;
 using BookingCalendarApi.Repository;
+
+using Microsoft.AspNetCore.Identity;
+
+using System;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -19,9 +24,48 @@ namespace BookingCalendarApi.Services
             _iperbooking = iperbooking;
         }
 
-        public async Task<CurrentUserResponse> GetCurrentUser()
+        public async Task<CreatedResult> Create(CreateUserRequest request)
         {
-            var result = new CurrentUserResponse();
+            if (request == null)
+            {
+                throw new ArgumentNullException(nameof(request));
+            }
+            if (string.IsNullOrWhiteSpace(request.Username))
+            {
+                throw new ArgumentException("Username must not be empty", nameof(request));
+            }
+            if (string.IsNullOrWhiteSpace(request.Password))
+            {
+                throw new ArgumentException("Password must not be empty", nameof(request));
+            }
+
+            var existingUser = await _repository.SingleOrDefaultAsync(_repository.Users.Where(u => u.Username == request.Username));
+            if (existingUser != null)
+            {
+                throw new BookingCalendarException(BCError.DUPLICATE_DATA, "A user with following username already exists");
+            }
+
+            var passwordHasher = new PasswordHasher<string>();
+            var passwordHash = passwordHasher.HashPassword(request.Username, request.Password);
+            var user = new User()
+            {
+                StructureId = request.StructureId,
+                Username = request.Username,
+                PasswordHash = passwordHash,
+                VisibleName = request.VisibleName,
+                IsAdmin = false,
+            };
+            user = _repository.Add(user);
+            await _repository.SaveChangesAsync();
+            return new CreatedResult
+            {
+                Id = user.Id,
+            };
+        }
+
+        public async Task<UserResponse> GetCurrentUser()
+        {
+            var result = new UserResponse();
 
             var username = _userClaimsProvider.User.Identity?.Name ?? "";
             var user = await _repository.SingleOrDefaultAsync(_repository.Users.Where(u => u.Username == username))
@@ -55,6 +99,15 @@ namespace BookingCalendarApi.Services
                 .OrderBy(f => f.Id)
                 .ToList();
 
+            return result;
+        }
+
+        public async Task<UserResponse> Get(long id)
+        {
+            var result = new UserResponse();
+            var user = await _repository.SingleAsync(_repository.Users.Where(u => u.Id == id));
+            result.Username = user.Username;
+            result.VisibleName = user.VisibleName;
             return result;
         }
     }

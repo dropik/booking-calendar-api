@@ -37,7 +37,8 @@ namespace BookingCalendarApi.Filters
                         bcException.ErrorCode == BCError.POLICE_SERVICE_ERROR ||
                         bcException.ErrorCode == BCError.IPERBOOKING_ERROR ||
                         bcException.ErrorCode == BCError.ISTAT_ERROR ||
-                        bcException.ErrorCode == BCError.MISSING_NATION)
+                        bcException.ErrorCode == BCError.MISSING_NATION ||
+                        bcException.ErrorCode == BCError.DUPLICATE_DATA)
                     {
                         context.HttpContext.Response.StatusCode = (int)HttpStatusCode.BadRequest;
                     }

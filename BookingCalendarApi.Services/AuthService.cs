@@ -1,4 +1,5 @@
 ﻿using BookingCalendarApi.Models.Configurations;
+using BookingCalendarApi.Models.Exceptions;
 using BookingCalendarApi.Models.Requests;
 using BookingCalendarApi.Models.Responses;
 using BookingCalendarApi.Repository;

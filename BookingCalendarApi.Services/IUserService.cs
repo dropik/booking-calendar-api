@@ -1,10 +1,13 @@
-﻿using BookingCalendarApi.Models.Responses;
+﻿using BookingCalendarApi.Models.Requests;
+using BookingCalendarApi.Models.Responses;
 using System.Threading.Tasks;
 
 namespace BookingCalendarApi.Services
 {
     public interface IUserService
     {
-        Task<CurrentUserResponse> GetCurrentUser();
+        Task<CreatedResult> Create(CreateUserRequest request);
+        Task<UserResponse> GetCurrentUser();
+        Task<UserResponse> Get(long id);
     }
 }

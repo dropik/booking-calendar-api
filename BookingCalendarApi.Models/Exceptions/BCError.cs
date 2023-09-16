@@ -8,6 +8,7 @@
         public const int ID_CHANGE_ATTEMPT = 2;
         public const int MISSING_ORIGIN_DATA = 3;
         public const int CONNECTION_ERROR = 4;
+        public const int DUPLICATE_DATA = 5;
 
         // domain errors
         public const int MAX_STAY_EXCEEDED = 100;

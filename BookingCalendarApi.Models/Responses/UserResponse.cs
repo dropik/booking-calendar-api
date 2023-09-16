@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 namespace BookingCalendarApi.Models.Responses
 {
-    public class CurrentUserResponse
+    public class UserResponse
     {
         public string Username { get; set; } = "";
         public string VisibleName { get; set; } = "";
