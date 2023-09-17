@@ -52,6 +52,10 @@ namespace BookingCalendarApi.NETFramework
                 jwt.AccessTokenExpirationMinutes = int.Parse(ConfigurationManager.AppSettings["JWT_AccessTokenExpirationMinutes"]);
                 jwt.RefreshTokenExpirationMinutes = int.Parse(ConfigurationManager.AppSettings["JWT_RefreshTokenExpirationMinutes"]);
             });
+            services.Configure<ApiSettings>(apiSettings =>
+            {
+                apiSettings.Environment = (Models.Configurations.Environment)Enum.Parse(typeof(Models.Configurations.Environment), ConfigurationManager.AppSettings["Environment"]);
+            });
 
             services.AddDbContext<BookingCalendarContext>();
 

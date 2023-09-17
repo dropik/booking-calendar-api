@@ -1,8 +1,11 @@
 ﻿using BookingCalendarApi.Models.Clients.C59;
+using BookingCalendarApi.Models.Configurations;
 using BookingCalendarApi.Models.DTO;
 using BookingCalendarApi.Models.Exceptions;
 using BookingCalendarApi.Repository;
 using BookingCalendarApi.Repository.Extensions;
+
+using Microsoft.Extensions.Options;
 
 using System;
 using System.Collections.Generic;
@@ -18,13 +21,20 @@ namespace BookingCalendarApi.Services
         private readonly IAssignedBookingWithGuestsProvider _bookingsProvider;
         private readonly IRepository _repository;
         private readonly IC59Client _c59Client;
+        private readonly ApiSettings _apiSettings;
 
-        public IstatService(IStructureService structureService, IAssignedBookingWithGuestsProvider bookingsProvider, IRepository context, IC59Client c59Client)
+        public IstatService(
+            IStructureService structureService,
+            IAssignedBookingWithGuestsProvider bookingsProvider,
+            IRepository context,
+            IC59Client c59Client,
+            IOptions<ApiSettings> apiSettings)
         {
             _structureService = structureService;
             _bookingsProvider = bookingsProvider;
             _repository = context;
             _c59Client = c59Client;
+            _apiSettings = apiSettings.Value;
         }
 
         public async Task<IstatMovementsDTO> GetMovements()
@@ -163,7 +173,10 @@ namespace BookingCalendarApi.Services
                     },
                 };
 
-                await _c59Client.InviaC59FullAsync(c59Request);
+                if (_apiSettings.Environment == Models.Configurations.Environment.Production)
+                {
+                    await _c59Client.InviaC59FullAsync(c59Request);
+                }
             }
             catch (FaultException exception)
             {

@@ -1,9 +1,12 @@
-﻿using BookingCalendarApi.Models.Iperbooking.Bookings;
+﻿using BookingCalendarApi.Models.Configurations;
+using BookingCalendarApi.Models.Iperbooking.Bookings;
 using BookingCalendarApi.Models.Iperbooking.Guests;
 using BookingCalendarApi.Models.Requests;
 using BookingCalendarApi.Models.Responses;
 using BookingCalendarApi.Repository;
 using BookingCalendarApi.Repository.Extensions;
+
+using Microsoft.Extensions.Options;
 
 using System;
 using System.Collections.Generic;
@@ -19,6 +22,7 @@ namespace BookingCalendarApi.Services
         private readonly DataContext _dataContext;
         private readonly ITrackedRecordsComposer _trackedRecordsComposer;
         private readonly IRepository _repository;
+        private readonly ApiSettings _apiSettings;
 
         private List<AssignedBooking<Guest>> AssignedBookingsWithGuests { get; set; } = new List<AssignedBooking<Guest>>();
 
@@ -27,13 +31,15 @@ namespace BookingCalendarApi.Services
             IAssignedBookingWithGuestsProvider bookingWithGuestsProvider,
             DataContext dataContext,
             ITrackedRecordsComposer trackedRecordsComposer,
-            IRepository repository)
+            IRepository repository,
+            IOptions<ApiSettings> apiSettings)
         {
             _session = session;
             _bookingWithGuestsProvider = bookingWithGuestsProvider;
             _dataContext = dataContext;
             _trackedRecordsComposer = trackedRecordsComposer;
             _repository = repository;
+            _apiSettings = apiSettings.Value;
         }
 
         public async Task<PoliceRicevutaResponse> GetRicevuta(string date)
@@ -59,7 +65,11 @@ namespace BookingCalendarApi.Services
             await _session.Open();
             var records = await ComposeRecords(request.Date);
             await _session.SendData(records, true);        // test it first
-            await _session.SendData(records, false);       // if no exception occured - send
+
+            if (_apiSettings.Environment == Models.Configurations.Environment.Production)
+            {
+                await _session.SendData(records, false);       // if no exception occured - send
+            }
         }
 
         public async Task<List<string>> GetProvinces()
