@@ -1,6 +1,6 @@
 ﻿using BookingCalendarApi.Models.Configurations;
 using BookingCalendarApi.Models.Exceptions;
-using BookingCalendarApi.Models.Requests;
+using BookingCalendarApi.Models.Requests.Users;
 using BookingCalendarApi.Models.Responses;
 using BookingCalendarApi.Repository;
 using BookingCalendarApi.Repository.Extensions;
@@ -89,7 +89,7 @@ namespace BookingCalendarApi.Services
                         (roomRate, rateGroup) => new { name = roomRate.RoomName, rateGroup })
                     .SelectMany(
                         roomRate => roomRate.rateGroup.Rates.Take(1),
-                        (roomRate, rate) => new RoomTypeResponse(roomRate.name, rate.MinOccupancy, rate.MaxOccupancy))
+                        (roomRate, rate) => new RoomType(roomRate.name, rate.MinOccupancy, rate.MaxOccupancy))
                     .ToList();
                 result.RoomRates = roomRates
                     .SelectMany(rate => rate.RateGroups)
@@ -118,6 +118,36 @@ namespace BookingCalendarApi.Services
             result.Username = user.Username;
             result.VisibleName = user.VisibleName;
             return result;
+        }
+
+        public async Task UpdateVisibleName(UpdateVisibleNameRequest request)
+        {
+            var username = _userClaimsProvider.User.Identity?.Name ?? "";
+            var user = await _repository.Users.SingleOrDefaultAsync(u => u.Username == username)
+                ?? throw new BookingCalendarException(BCError.NOT_FOUND, "Unable to find current user");
+
+            user.VisibleName = request.VisibleName;
+
+            _repository.Update(user);
+            await _repository.SaveChangesAsync();
+        }
+
+        public async Task UpdatePassword(UpdatePasswordRequest request)
+        {
+            var username = _userClaimsProvider.User.Identity?.Name ?? "";
+            var user = await _repository.Users.SingleOrDefaultAsync(u => u.Username == username)
+                ?? throw new BookingCalendarException(BCError.NOT_FOUND, "Unable to find current user");
+
+            var passwordHasher = new PasswordHasher<string>();
+            var verifyOldPasswordResult = passwordHasher.VerifyHashedPassword(username, user.PasswordHash, request.OldPassword);
+            if (verifyOldPasswordResult != PasswordVerificationResult.Success)
+            {
+                throw new BookingCalendarException(BCError.AUTHENTICATION_ERROR, "Old password is not correct");
+            }
+
+            user.PasswordHash = passwordHasher.HashPassword(username, request.NewPassword);
+            _repository.Update(user);
+            await _repository.SaveChangesAsync();
         }
     }
 }

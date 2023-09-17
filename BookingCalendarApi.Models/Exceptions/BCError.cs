@@ -9,6 +9,7 @@
         public const int MISSING_ORIGIN_DATA = 3;
         public const int CONNECTION_ERROR = 4;
         public const int DUPLICATE_DATA = 5;
+        public const int AUTHENTICATION_ERROR = 6;
 
         // domain errors
         public const int MAX_STAY_EXCEEDED = 100;

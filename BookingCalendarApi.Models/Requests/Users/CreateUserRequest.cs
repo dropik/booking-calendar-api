@@ -1,4 +1,4 @@
-﻿namespace BookingCalendarApi.Models.Requests
+﻿namespace BookingCalendarApi.Models.Requests.Users
 {
     public class CreateUserRequest
     {

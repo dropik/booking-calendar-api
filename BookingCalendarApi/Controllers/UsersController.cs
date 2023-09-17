@@ -1,6 +1,7 @@
-﻿using BookingCalendarApi.Models.Requests;
+﻿using BookingCalendarApi.Models.Requests.Users;
 using BookingCalendarApi.Models.Responses;
 using BookingCalendarApi.Services;
+
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -37,6 +38,20 @@ namespace BookingCalendarApi.Controllers
         public async Task<ActionResult<UserResponse>> Get(long id)
         {
             return Ok(await _service.Get(id));
+        }
+
+        [HttpPatch("current/visible-name")]
+        public async Task<IActionResult> UpdateVisibleName([FromBody] UpdateVisibleNameRequest request)
+        {
+            await _service.UpdateVisibleName(request);
+            return Ok();
+        }
+
+        [HttpPatch("current/password")]
+        public async Task<IActionResult> UpdatePassword([FromBody] UpdatePasswordRequest request)
+        {
+            await _service.UpdatePassword(request);
+            return Ok();
         }
     }
 }
