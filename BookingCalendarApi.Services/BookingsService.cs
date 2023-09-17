@@ -1,9 +1,9 @@
 ﻿using BookingCalendarApi.Models.Exceptions;
 using BookingCalendarApi.Models.Iperbooking.Bookings;
-using BookingCalendarApi.Models.Iperbooking.Guests;
 using BookingCalendarApi.Models.Responses;
 using BookingCalendarApi.Repository;
 using BookingCalendarApi.Repository.Extensions;
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,9 +16,6 @@ namespace BookingCalendarApi.Services
         private readonly IIperbooking _iperbooking;
         private readonly IRepository _repository;
 
-        private List<Booking> Bookings { get; set; } = new List<Booking>();
-        private GuestsResponse GuestsResponse { get; set; } = new GuestsResponse();
-
         public BookingsService(IIperbooking iperbooking, IRepository repository)
         {
             _iperbooking = iperbooking;
@@ -30,11 +27,10 @@ namespace BookingCalendarApi.Services
             var fromDate = DateTime.ParseExact(from, "yyyy-MM-dd", null);
             var arrivalFrom = fromDate.AddDays(-15).ToString("yyyy-MM-dd");
             var arrivalTo = fromDate.AddDays(15).ToString("yyyy-MM-dd");
-            await Task.WhenAll(
-                FetchBookings(arrivalFrom, arrivalTo, exactPeriod: true),
-                FetchGuests(id)
-            );
-            var booking = Bookings.SelectById(id);
+            var bookings = await _iperbooking.GetBookings(arrivalFrom, arrivalTo, exactPeriod: true);
+            var guests = await _iperbooking.GetGuests(id);
+
+            var booking = bookings.SelectById(id);
 
             var query = (from b in booking
                          join color in _repository.ColorAssignments on b.BookingNumber.ToString() equals color.BookingId into gj
@@ -54,7 +50,7 @@ namespace BookingCalendarApi.Services
                             Status = join.Booking.Status,
                             Color = join.Color?.Color,
                             Tiles = (from room in @join.Booking.Rooms
-                            join reservation in GuestsResponse.Reservations on @join.Booking.BookingNumber equals reservation.ReservationId
+                            join reservation in guests.Reservations on @join.Booking.BookingNumber equals reservation.ReservationId
                                      join assignment in _repository.RoomAssignments on $"{room.StayId}-{room.Arrival}-{room.Departure}" equals assignment.Id into gj
                                      from assignment in gj.DefaultIfEmpty()
                                      select new { Room = room, Reservation = reservation, Assignment = assignment })
@@ -124,9 +120,8 @@ namespace BookingCalendarApi.Services
 
         public async Task<List<BookingResponse<uint>>> GetByPeriod(string from, string to)
         {
-            await FetchBookings(from, to);
-
-            var bookings = Bookings.SelectInRange(from, to, true);
+            var loadedBookings = await _iperbooking.GetBookings(from, to);
+            var bookings = loadedBookings.SelectInRange(from, to, true);
 
             var bookingNumbers = bookings.Select(b => b.BookingNumber.ToString()).ToList();
             var colorAssignments = await (from ca in _repository.ColorAssignments
@@ -178,16 +173,6 @@ namespace BookingCalendarApi.Services
                 .ToList();
 
             return bookingsWithGuestsCount;
-        }
-
-        private async Task FetchBookings(string from, string to, bool exactPeriod = false)
-        {
-            Bookings = await _iperbooking.GetBookings(from, to, exactPeriod);
-        }
-
-        private async Task FetchGuests(string id)
-        {
-            GuestsResponse = await _iperbooking.GetGuests(id);
         }
     }
 }

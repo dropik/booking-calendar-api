@@ -1,6 +1,4 @@
 ﻿using BookingCalendarApi.Models.Configurations;
-using BookingCalendarApi.Models.Iperbooking.Bookings;
-using BookingCalendarApi.Models.Iperbooking.Guests;
 using BookingCalendarApi.Models.Requests;
 using BookingCalendarApi.Models.Responses;
 using BookingCalendarApi.Repository;
@@ -23,8 +21,6 @@ namespace BookingCalendarApi.Services
         private readonly ITrackedRecordsComposer _trackedRecordsComposer;
         private readonly IRepository _repository;
         private readonly ApiSettings _apiSettings;
-
-        private List<AssignedBooking<Guest>> AssignedBookingsWithGuests { get; set; } = new List<AssignedBooking<Guest>>();
 
         public PoliceService(
             IAlloggiatiServiceSession session,
@@ -86,26 +82,14 @@ namespace BookingCalendarApi.Services
 
         private async Task<List<string>> ComposeRecords(string date)
         {
-            await Task.WhenAll(
-                ContextBoundStuff(date),
-                FetchPlaces()
-            );
+            _dataContext.Nations.AddRange(await _repository.Nations.ToListAsync());
+            _dataContext.Places.AddRange(await _session.GetPlaces());
+            var assignedBookingsWithGuests = await _bookingWithGuestsProvider.Get(date);
 
-            return AssignedBookingsWithGuests
+            return assignedBookingsWithGuests
                 .SelectByArrival(DateTime.ParseExact(date, "yyyy-MM-dd", null))
                 .UseComposer(_trackedRecordsComposer)
                 .ToList();
-        }
-
-        private async Task ContextBoundStuff(string date)
-        {
-            AssignedBookingsWithGuests = await _bookingWithGuestsProvider.Get(date);
-            _dataContext.Nations.AddRange(await _repository.Nations.ToListAsync());
-        }
-
-        private async Task FetchPlaces()
-        {
-            _dataContext.Places.AddRange(await _session.GetPlaces());
         }
     }
 }
