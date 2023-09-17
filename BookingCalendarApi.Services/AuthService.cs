@@ -2,6 +2,7 @@
 using BookingCalendarApi.Models.Requests;
 using BookingCalendarApi.Models.Responses;
 using BookingCalendarApi.Repository;
+using BookingCalendarApi.Repository.Extensions;
 
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Options;
@@ -30,7 +31,7 @@ namespace BookingCalendarApi.Services
 
         public async Task<TokenResponse> GetToken(TokenRequest request)
         {
-            var user = await _repository.SingleOrDefaultAsync( _repository.Users.Where(u => u.Username == request.Username));
+            var user = await _repository.Users.SingleOrDefaultAsync(u => u.Username == request.Username);
             if (user == null)
             {
                 return null;
@@ -81,7 +82,7 @@ namespace BookingCalendarApi.Services
             {
                 return null;
             }
-            var userRefreshToken = await _repository.SingleOrDefaultAsync(_repository.UserRefreshTokens.Where(u => u.Id == refreshTokenId));
+            var userRefreshToken = await _repository.UserRefreshTokens.SingleOrDefaultAsync(u => u.Id == refreshTokenId);
             if (userRefreshToken == null
                 || userRefreshToken.RefreshToken != request.RefreshToken
                 || userRefreshToken.Username != identityName
@@ -89,7 +90,7 @@ namespace BookingCalendarApi.Services
             {
                 return null;
             }
-            var user = await _repository.SingleOrDefaultAsync(_repository.Users.Where(u => u.Username == identityName));
+            var user = await _repository.Users.SingleOrDefaultAsync(u => u.Username == identityName);
 
             return await GenerateTokens(user);
         }

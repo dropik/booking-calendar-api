@@ -2,6 +2,7 @@
 using BookingCalendarApi.Models.DTO;
 using BookingCalendarApi.Models.Exceptions;
 using BookingCalendarApi.Repository;
+using BookingCalendarApi.Repository.Extensions;
 
 using System;
 using System.Collections.Generic;
@@ -41,7 +42,7 @@ namespace BookingCalendarApi.Services
                     .OrderBy(item => item.DataMovimentazione.ToString("yyyy-MM-dd"))
                     .First();
 
-                var nations = await _repository.ToListAsync(_repository.Nations);
+                var nations = await _repository.Nations.ToListAsync();
 
                 var date = lastUpload.DataMovimentazione.AddDays(1);
 
@@ -176,8 +177,8 @@ namespace BookingCalendarApi.Services
 
         public async Task<List<string>> GetCountries()
         {
-            var countries = await _repository.ToListAsync(from nation in _repository.Nations
-                                                          select nation.Description);
+            var countries = await (from nation in _repository.Nations
+                                   select nation.Description).ToListAsync();
             return countries.Distinct().Select(c => DecapitalizeCountryName(c)).OrderBy(c => c).ToList();
         }
 

@@ -2,6 +2,7 @@
 using BookingCalendarApi.Models.Iperbooking.Bookings;
 using BookingCalendarApi.Models.Requests;
 using BookingCalendarApi.Repository;
+using BookingCalendarApi.Repository.Extensions;
 
 using System;
 using System.Collections.Generic;
@@ -54,7 +55,7 @@ namespace BookingCalendarApi.Services
             {
                 var bookingId = bookingColorPair.Key;
                 var color = bookingColorPair.Value;
-                var assignment = await _repository.SingleOrDefaultAsync(_repository.ColorAssignments.Where(a => a.BookingId == bookingId));
+                var assignment = await _repository.ColorAssignments.SingleOrDefaultAsync(a => a.BookingId == bookingId);
                 if (assignment != null && assignment.BookingId == bookingId)
                 {
                     assignment.Color = color;
@@ -81,9 +82,9 @@ namespace BookingCalendarApi.Services
 
             var ids = statuses.Select(s => s.Key).ToList();
 
-            var assignments = await _repository.ToListAsync(from assignment in _repository.RoomAssignments
-                                                           where ids.Contains(assignment.Id)
-                                                           select assignment);
+            var assignments = await (from assignment in _repository.RoomAssignments
+                                     where ids.Contains(assignment.Id)
+                                     select assignment).ToListAsync();
 
             // removing assignments of bookings that were cancelled
             for (var i = 0; i < assignments.Count; i++)
@@ -155,10 +156,9 @@ namespace BookingCalendarApi.Services
 
             // saving assignments
             var requestedIds = rooms.Select(r => r.Key).ToList();
-            var modifiedAssignments = await _repository.ToDictionaryAsync(from assignment in _repository.RoomAssignments
-                                                                          where requestedIds.Contains(assignment.Id)
-                                                                          select assignment,
-                                                                          assignment => assignment.Id);
+            var modifiedAssignments = await (from assignment in _repository.RoomAssignments
+                                             where requestedIds.Contains(assignment.Id)
+                                             select assignment).ToDictionaryAsync(assignment => assignment.Id);
 
             foreach (var tileRoomPair in rooms)
             {

@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using BookingCalendarApi.Repository.Common;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -6,21 +7,19 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Threading;
 
-namespace BookingCalendarApi.Repository.NETFramework
+namespace BookingCalendarApi.Repository
 {
-    public class DbSetWrapper<TEntity> : DbSet<TEntity>, Common.IDbSet<TEntity>, IAsyncEnumerable<TEntity>
+    public class DbSetWrapper<TEntity> : IDbSet<TEntity>, IAsyncEnumerable<TEntity>
         where TEntity : class
     {
         private readonly DbSet<TEntity> _entities;
+        private readonly long _currentStructureId;
 
-        public DbSetWrapper(DbSet<TEntity> entities)
+        public DbSetWrapper(DbSet<TEntity> entities, long currentStructureId)
         {
             _entities = entities;
+            _currentStructureId = currentStructureId;
         }
-
-        public IQueryable<TEntity> Include<TProperty>(Expression<Func<TEntity, TProperty>> fieldSelector)
-            where TProperty : class
-            => _entities.Include(fieldSelector);
 
         public Type ElementType => _entities.AsQueryable().ElementType;
 
@@ -42,5 +41,15 @@ namespace BookingCalendarApi.Repository.NETFramework
         {
             return _entities.AsAsyncEnumerable().GetAsyncEnumerator();
         }
+
+        //private IQueryable<TEntity> GetQueryable()
+        //{
+        //    var query = _entities.AsQueryable();
+        //    if (typeof(IStructureData).IsAssignableFrom(typeof(TEntity)))
+        //    {
+        //        query = query.Where(e => ((IStructureData)e).StructureId == _currentStructureId).AsQueryable();
+        //    }
+        //    return query;
+        //}
     }
 }

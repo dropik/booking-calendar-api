@@ -3,6 +3,7 @@ using BookingCalendarApi.Models.Exceptions;
 using BookingCalendarApi.Models.Requests;
 using BookingCalendarApi.Models.Responses;
 using BookingCalendarApi.Repository;
+using BookingCalendarApi.Repository.Extensions;
 
 using Microsoft.AspNetCore.Identity;
 
@@ -40,7 +41,7 @@ namespace BookingCalendarApi.Services
                 throw new ArgumentException("Password must not be empty", nameof(request));
             }
 
-            var existingUser = await _repository.SingleOrDefaultAsync(_repository.Users.Where(u => u.Username == request.Username));
+            var existingUser = await _repository.Users.SingleOrDefaultAsync(u => u.Username == request.Username);
             if (existingUser != null)
             {
                 throw new BookingCalendarException(BCError.DUPLICATE_DATA, "A user with following username already exists");
@@ -69,32 +70,35 @@ namespace BookingCalendarApi.Services
             var result = new UserResponse();
 
             var username = _userClaimsProvider.User.Identity?.Name ?? "";
-            var user = await _repository.SingleOrDefaultAsync(_repository.Users.Where(u => u.Username == username))
+            var user = await _repository.Users.SingleOrDefaultAsync(u => u.Username == username)
                 ?? throw new BookingCalendarException(BCError.NOT_FOUND, "Unable to find current user");
 
             result.Username = user.Username;
             result.VisibleName = user.VisibleName;
 
             var structureId = long.Parse(_userClaimsProvider.User.Claims.FirstOrDefault(c => c.Type == JWT.STRUCTURE_CLAIM)?.Value ?? "0");
-            var structure = await _repository.SingleAsync(_repository.Structures.Where(s => s.Id == structureId));
+            var structure = await _repository.Structures.SingleAsync(s => s.Id == structureId);
             result.Structure = structure.Name;
 
-            var roomRates = await _iperbooking.GetRoomRates();
-            result.RoomTypes = roomRates
-                .SelectMany(
-                    roomRate => roomRate.RateGroups.Take(1),
-                    (roomRate, rateGroup) => new { name = roomRate.RoomName, rateGroup })
-                .SelectMany(
-                    roomRate => roomRate.rateGroup.Rates.Take(1),
-                    (roomRate, rate) => new RoomTypeResponse(roomRate.name, rate.MinOccupancy, rate.MaxOccupancy))
-                .ToList();
+            try
+            {
+                var roomRates = await _iperbooking.GetRoomRates();
+                result.RoomTypes = roomRates
+                    .SelectMany(
+                        roomRate => roomRate.RateGroups.Take(1),
+                        (roomRate, rateGroup) => new { name = roomRate.RoomName, rateGroup })
+                    .SelectMany(
+                        roomRate => roomRate.rateGroup.Rates.Take(1),
+                        (roomRate, rate) => new RoomTypeResponse(roomRate.name, rate.MinOccupancy, rate.MaxOccupancy))
+                    .ToList();
+                result.RoomRates = roomRates
+                    .SelectMany(rate => rate.RateGroups)
+                    .SelectMany(group => group.Rates)
+                    .ToList();
+            }
+            catch (Exception) { }
 
-            result.RoomRates = roomRates
-                .SelectMany(rate => rate.RateGroups)
-                .SelectMany(group => group.Rates)
-                .ToList();
-
-            result.Floors = await _repository.ToListAsync(_repository.Floors.Include(floor => floor.Rooms));
+            result.Floors = await _repository.Floors.Include(floor => floor.Rooms).ToListAsync();
             result.Floors = result.Floors
                 .Select(f =>
                 {
@@ -110,7 +114,7 @@ namespace BookingCalendarApi.Services
         public async Task<UserResponse> Get(long id)
         {
             var result = new UserResponse();
-            var user = await _repository.SingleAsync(_repository.Users.Where(u => u.Id == id));
+            var user = await _repository.Users.SingleAsync(u => u.Id == id);
             result.Username = user.Username;
             result.VisibleName = user.VisibleName;
             return result;

@@ -311,6 +311,8 @@
     <Compile Include="Controllers\RoomsController.cs" />
     <Compile Include="Controllers\UsersController.cs" />
     <Compile Include="DbSetWrapper.cs" />
+    <Compile Include="EFCore3QueryWrapper.cs" />
+    <Compile Include="EFCore3QueryWrapperFactory.cs" />
     <Compile Include="Filters\AdminAttribute.cs" />
     <Compile Include="Filters\ExceptionFilter.cs" />
     <Compile Include="Filters\JwtAuthenticationAttribute.cs" />

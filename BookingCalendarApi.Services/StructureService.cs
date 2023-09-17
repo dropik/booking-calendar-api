@@ -1,6 +1,7 @@
 ﻿using BookingCalendarApi.Models.Configurations;
 using BookingCalendarApi.Models.Iperbooking;
 using BookingCalendarApi.Repository;
+using BookingCalendarApi.Repository.Extensions;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -57,7 +58,7 @@ namespace BookingCalendarApi.Services
             if (CurrentStructure != null) return;
 
             var structureId = long.Parse(_claimsProvider.User.Claims.First(c => c.Type == JWT.STRUCTURE_CLAIM).Value);
-            CurrentStructure = await _repository.SingleAsync(_repository.Structures.Where(s => s.Id == structureId));
+            CurrentStructure = await _repository.Structures.SingleAsync(s => s.Id == structureId);
         }
     }
 }

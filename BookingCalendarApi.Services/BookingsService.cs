@@ -3,7 +3,7 @@ using BookingCalendarApi.Models.Iperbooking.Bookings;
 using BookingCalendarApi.Models.Iperbooking.Guests;
 using BookingCalendarApi.Models.Responses;
 using BookingCalendarApi.Repository;
-
+using BookingCalendarApi.Repository.Extensions;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -128,8 +128,20 @@ namespace BookingCalendarApi.Services
 
             var bookings = Bookings.SelectInRange(from, to, true);
 
+            var bookingNumbers = bookings.Select(b => b.BookingNumber.ToString()).ToList();
+            var colorAssignments = await (from ca in _repository.ColorAssignments
+                                          where bookingNumbers.Contains(ca.BookingId)
+                                          select ca).ToListAsync();
+
+            var roomIds = bookings
+                .SelectMany(b => b.Rooms, (b, r) => $"{r.StayId}-{r.Arrival}-{r.Departure}")
+                .ToList();
+            var roomAssignments = await (from ra in _repository.RoomAssignments
+                                         where roomIds.Contains(ra.Id)
+                                         select ra).ToListAsync();
+
             var bookingsWithColors = from booking in bookings
-                                     join color in _repository.ColorAssignments on booking.BookingNumber.ToString() equals color.BookingId into gj
+                                     join color in colorAssignments on booking.BookingNumber.ToString() equals color.BookingId into gj
                                      from color in gj.DefaultIfEmpty()
                                      select new { Booking = booking, Color = color };
 
@@ -147,7 +159,7 @@ namespace BookingCalendarApi.Services
                     Status = join.Booking.Status,
                     Color = join.Color?.Color,
                     Tiles = (from room in @join.Booking.Rooms
-                             join assignment in _repository.RoomAssignments on $"{room.StayId}-{room.Arrival}-{room.Departure}" equals assignment.Id into gj
+                             join assignment in roomAssignments on $"{room.StayId}-{room.Arrival}-{room.Departure}" equals assignment.Id into gj
                              from assignment in gj.DefaultIfEmpty()
                              select new { Room = room, Assignment = assignment })
                                      .ToList()

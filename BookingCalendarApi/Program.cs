@@ -5,6 +5,7 @@ using BookingCalendarApi.Clients;
 using BookingCalendarApi.Filters;
 using BookingCalendarApi.Models.Configurations;
 using BookingCalendarApi.Repository;
+using BookingCalendarApi.Repository.Common;
 using BookingCalendarApi.Repository.NETCore;
 using BookingCalendarApi.Services;
 
@@ -83,6 +84,9 @@ builder.Services.AddDbContext<BookingCalendarContext>((options) =>
         new MySqlServerVersion(new Version(8, 0, 29))
     )
 );
+
+// setting this factory for specyfing to use EF Core 6
+QueryWrapperFactory.Current = new EFCore6QueryWrapperFactory();
 
 // scoped services
 builder.Services.AddHttpContextAccessor();

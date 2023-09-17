@@ -3,6 +3,7 @@ using BookingCalendarApi.Models.Iperbooking.Guests;
 using BookingCalendarApi.Models.Requests;
 using BookingCalendarApi.Models.Responses;
 using BookingCalendarApi.Repository;
+using BookingCalendarApi.Repository.Extensions;
 
 using System;
 using System.Collections.Generic;
@@ -89,7 +90,7 @@ namespace BookingCalendarApi.Services
         private async Task ContextBoundStuff(string date)
         {
             AssignedBookingsWithGuests = await _bookingWithGuestsProvider.Get(date);
-            _dataContext.Nations.AddRange(await _repository.ToListAsync(_repository.Nations));
+            _dataContext.Nations.AddRange(await _repository.Nations.ToListAsync());
         }
 
         private async Task FetchPlaces()

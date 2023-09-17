@@ -1,5 +1,6 @@
 ﻿using BookingCalendarApi.Models.Exceptions;
 using BookingCalendarApi.Repository;
+using BookingCalendarApi.Repository.Extensions;
 
 using System.Collections.Generic;
 using System.Linq;
@@ -18,14 +19,15 @@ namespace BookingCalendarApi.Services
 
         public async Task<List<Floor>> GetAll()
         {
-            return await _repository.ToListAsync(_repository.Floors
+            return await _repository.Floors
                 .Include(floor => floor.Rooms
-                    .OrderBy(room => room.Id)));
+                    .OrderBy(room => room.Id))
+                .ToListAsync();
         }
 
         public async Task<Floor> Get(long id)
         {
-            var floor = await _repository.SingleAsync(_repository.Floors.Where(f => f.Id == id));
+            var floor = await _repository.Floors.SingleAsync(f => f.Id == id);
             return floor;
         }
 
@@ -38,7 +40,7 @@ namespace BookingCalendarApi.Services
 
         public async Task<Floor> Update(long id, Floor floor)
         {
-            if (!await _repository.AnyAsync(_repository.Floors.Where(f => f.Id == id)))
+            if (!await _repository.Floors.AnyAsync(f => f.Id == id))
             {
                 throw new BookingCalendarException(BCError.NOT_FOUND, "Floor not found.");
             }

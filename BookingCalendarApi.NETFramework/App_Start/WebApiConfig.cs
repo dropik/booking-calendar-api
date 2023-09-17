@@ -5,6 +5,8 @@ using BookingCalendarApi.NETFramework.C59Service;
 using BookingCalendarApi.NETFramework.Clients;
 using BookingCalendarApi.NETFramework.Filters;
 using BookingCalendarApi.Repository;
+using BookingCalendarApi.Repository.Common;
+using BookingCalendarApi.Repository.NETFramework;
 using BookingCalendarApi.Services;
 
 using Microsoft.Extensions.DependencyInjection;
@@ -35,6 +37,9 @@ namespace BookingCalendarApi.NETFramework
 
             // filters
             config.Filters.Add(new ExceptionFilter());
+
+            // Configuring query wrapper for support EF Core 3
+            QueryWrapperFactory.Current = new EFCore3QueryWrapperFactory();
 
             // Servizi e configurazione dell'API Web
             var services = new ServiceCollection();

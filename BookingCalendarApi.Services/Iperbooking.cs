@@ -16,50 +16,56 @@ namespace BookingCalendarApi.Services
     {
         private readonly IStructureService _structureService;
 
+        private const string GET_ROOM_RATES_URL = "https://api.iperbooking.net/v1/GetRoomRates.cfm?idhotel={0}&username={1}&password={2}&format=json";
+        private const string GET_BOOKINGS_URL = "https://api.iperbooking.net/v1/GetBookings.cfm?idhotel={0}&username={1}&password={2}&format=json&arrivalfrom={3}&arrivalto={4}";
+        private const string GET_GUESTS_URL = "https://api.Iperbooking.net/v1/GetGuests.cfm";
+
+        private const string UNABLE_GET_DATA_MESSAGE = "Unable to get data from Iperbooking";
+        private const string FAILED_ESTABLISH_CONNECTION_MESSAGE = "Failed estalish connection with Iperbooking: {0}";
+
         public Iperbooking(IStructureService structureService)
         {
             _structureService = structureService;
         }
 
-        public async Task<IEnumerable<RoomRateRoom>> GetRoomRates()
+        public async Task<List<RoomRateRoom>> GetRoomRates()
         {
             var auth = await _structureService.GetIperbookingCredentials();
-            var url = $"https://api.iperbooking.net/v1/GetRoomRates.cfm?idhotel={auth.IdHotel}&username={auth.Username}&password={auth.Password}&format=json";
+            var url = string.Format(GET_ROOM_RATES_URL, auth.IdHotel, auth.Username, auth.Password);
             try
             {
                 using (HttpClient client = new HttpClient())
                 {
                     using (HttpResponseMessage response = await client.GetAsync(url))
                     {
+                        if (!response.IsSuccessStatusCode)
+                        {
+                            throw new BookingCalendarException(BCError.IPERBOOKING_ERROR, UNABLE_GET_DATA_MESSAGE);
+                        }
+
                         using (HttpContent content = response.Content)
                         {
+                            var data = await content.ReadAsStringAsync()
+                                ?? throw new BookingCalendarException(BCError.IPERBOOKING_ERROR, UNABLE_GET_DATA_MESSAGE);
 
-                            var data = await content.ReadAsStringAsync();
-                            if (data != null)
+                            try
                             {
-                                var poco = JsonSerializer.Deserialize<ICollection<RoomRateRoom>>(data, new JsonSerializerOptions()
+                                var poco = JsonSerializer.Deserialize<List<RoomRateRoom>>(data, new JsonSerializerOptions()
                                 {
                                     PropertyNameCaseInsensitive = true
                                 });
-                                if (poco != null)
-                                {
-                                    return poco;
-                                }
-                                else
-                                {
-                                    throw new BookingCalendarException(BCError.IPERBOOKING_ERROR, "Cannot deserialize fetched iperbooking data");
-                                }
+                                return poco ?? throw new BookingCalendarException(BCError.IPERBOOKING_ERROR, UNABLE_GET_DATA_MESSAGE);
                             }
-                            else
+                            catch (Exception)
                             {
-                                throw new BookingCalendarException(BCError.IPERBOOKING_ERROR, "Fetched empty data from iperbooking");
+                                throw new BookingCalendarException(BCError.IPERBOOKING_ERROR, UNABLE_GET_DATA_MESSAGE);
                             }
                         }
                     }
                 }
             } catch(HttpRequestException exception)
             {
-                throw new BookingCalendarException(BCError.CONNECTION_ERROR, $"Failed estalish connection with Iperbooking: {exception.Message}");
+                throw new BookingCalendarException(BCError.CONNECTION_ERROR, string.Format(FAILED_ESTABLISH_CONNECTION_MESSAGE, exception.Message));
             }
         }
 
@@ -78,42 +84,40 @@ namespace BookingCalendarApi.Services
             var arrivalTo = toDate.ToString("yyyyMMdd");
 
             var auth = await _structureService.GetIperbookingCredentials();
-            var url = $"https://api.iperbooking.net/v1/GetBookings.cfm?idhotel={auth.IdHotel}&username={auth.Username}&password={auth.Password}&format=json&arrivalfrom={arrivalFrom}&arrivalto={arrivalTo}";
+            var url = string.Format(GET_BOOKINGS_URL, auth.IdHotel, auth.Username, auth.Password, arrivalFrom, arrivalTo);
             try
             {
                 using (HttpClient client = new HttpClient())
                 {
                     using (HttpResponseMessage response = await client.GetAsync(url))
                     {
+                        if (!response.IsSuccessStatusCode)
+                        {
+                            throw new BookingCalendarException(BCError.IPERBOOKING_ERROR, UNABLE_GET_DATA_MESSAGE);
+                        }
+
                         using (HttpContent content = response.Content)
                         {
-
-                            var data = await content.ReadAsStringAsync();
-                            if (data != null)
+                            var data = await content.ReadAsStringAsync()
+                                ?? throw new BookingCalendarException(BCError.IPERBOOKING_ERROR, UNABLE_GET_DATA_MESSAGE);
+                            try
                             {
                                 var poco = JsonSerializer.Deserialize<List<Booking>>(data, new JsonSerializerOptions()
                                 {
                                     PropertyNameCaseInsensitive = true
                                 });
-                                if (poco != null)
-                                {
-                                    return poco;
-                                }
-                                else
-                                {
-                                    throw new BookingCalendarException(BCError.IPERBOOKING_ERROR, "Cannot deserialize fetched iperbooking data");
-                                }
+                                return poco ?? throw new BookingCalendarException(BCError.IPERBOOKING_ERROR, UNABLE_GET_DATA_MESSAGE);
                             }
-                            else
+                            catch (Exception)
                             {
-                                throw new BookingCalendarException(BCError.IPERBOOKING_ERROR, "Fetched empty data from iperbooking");
+                                throw new BookingCalendarException(BCError.IPERBOOKING_ERROR, UNABLE_GET_DATA_MESSAGE);
                             }
                         }
                     }
                 }
             } catch(HttpRequestException exception)
             {
-                throw new BookingCalendarException(BCError.CONNECTION_ERROR, $"Failed estalish connection with Iperbooking: {exception.Message}");
+                throw new BookingCalendarException(BCError.CONNECTION_ERROR, string.Format(FAILED_ESTABLISH_CONNECTION_MESSAGE, exception.Message));
             }
         }
 
@@ -125,33 +129,32 @@ namespace BookingCalendarApi.Services
                 var requestData = new GuestsRequest(int.Parse(auth.IdHotel), auth.Username, auth.Password, reservationId);
                 var json = JsonSerializer.Serialize(requestData);
                 var body = new StringContent(json, Encoding.UTF8, "application/json");
-                var url = "https://api.iperbooking.net/v1/GetGuests.cfm";
 
                 using (HttpClient client = new HttpClient())
                 {
-                    using (var response = await client.PostAsync(url, body))
+                    using (var response = await client.PostAsync(GET_GUESTS_URL, body))
                     {
+                        if (!response.IsSuccessStatusCode)
+                        {
+                            throw new BookingCalendarException(BCError.IPERBOOKING_ERROR, UNABLE_GET_DATA_MESSAGE);
+                        }
+
                         using (var content = response.Content)
                         {
-                            var data = await content.ReadAsStringAsync();
-                            if (data != null)
+                            var data = await content.ReadAsStringAsync()
+                                ?? throw new BookingCalendarException(BCError.IPERBOOKING_ERROR, UNABLE_GET_DATA_MESSAGE);
+
+                            try
                             {
                                 var poco = JsonSerializer.Deserialize<GuestsResponse>(data, new JsonSerializerOptions()
                                 {
                                     PropertyNameCaseInsensitive = true
                                 });
-                                if (poco != null)
-                                {
-                                    return poco;
-                                }
-                                else
-                                {
-                                    throw new BookingCalendarException(BCError.IPERBOOKING_ERROR, "Cannot deserialize fetched iperbooking data");
-                                }
+                                return poco ?? throw new BookingCalendarException(BCError.IPERBOOKING_ERROR, UNABLE_GET_DATA_MESSAGE);
                             }
-                            else
+                            catch (Exception)
                             {
-                                throw new BookingCalendarException(BCError.IPERBOOKING_ERROR, "Fetched empty data from iperbooking");
+                                throw new BookingCalendarException(BCError.IPERBOOKING_ERROR, UNABLE_GET_DATA_MESSAGE);
                             }
                         }
                     }
@@ -159,7 +162,7 @@ namespace BookingCalendarApi.Services
             }
             catch (HttpRequestException exception)
             {
-                throw new BookingCalendarException(BCError.CONNECTION_ERROR, $"Failed estalish connection with Iperbooking: {exception.Message}");
+                throw new BookingCalendarException(BCError.CONNECTION_ERROR, string.Format(FAILED_ESTABLISH_CONNECTION_MESSAGE, exception.Message));
             }
         }
     }

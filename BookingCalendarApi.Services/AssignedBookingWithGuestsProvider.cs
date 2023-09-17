@@ -1,6 +1,7 @@
 ﻿using BookingCalendarApi.Models.Iperbooking.Bookings;
 using BookingCalendarApi.Models.Iperbooking.Guests;
 using BookingCalendarApi.Repository;
+using BookingCalendarApi.Repository.Extensions;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -43,9 +44,7 @@ namespace BookingCalendarApi.Services
                     (booking, room) => $"{room.StayId}-{room.Arrival}-{room.Departure}"
             );
 
-            _dataContext.RoomAssignments.AddRange(
-                await _repository.ToListAsync(
-                    _repository.RoomAssignments.Where(assignment => stayIds.Contains(assignment.Id))));
+            _dataContext.RoomAssignments.AddRange(await _repository.RoomAssignments.Where(assignment => stayIds.Contains(assignment.Id)).ToListAsync());
 
             var assignedBookings = bookings
                 .UseComposer(_assignedBookingComposer)

@@ -1,6 +1,8 @@
 ﻿using BookingCalendarApi.Models.Iperbooking.Bookings;
 using BookingCalendarApi.Models.Responses;
 using BookingCalendarApi.Repository;
+using BookingCalendarApi.Repository.Extensions;
+
 using System;
 using System.Linq;
 using System.Threading.Tasks;
@@ -30,7 +32,7 @@ namespace BookingCalendarApi.Services
 
         public async Task<CityTaxResponse> Get(string from, string to)
         {
-            _dataContext.RoomAssignments.AddRange(await _repository.ToListAsync(_repository.RoomAssignments));
+            _dataContext.RoomAssignments.AddRange(await _repository.RoomAssignments.ToListAsync());
 
             var bookings = (await _iperbooking.GetBookings(from, to))
                 .ExcludeCancelled()
