@@ -31,7 +31,6 @@
 	<ItemGroup>
 		<Compile Include="..\BookingCalendarApi.NETFramework\Configurations\*.cs" LinkBase="Configurations" />
 		<Compile Include="..\BookingCalendarApi.NETFramework\BookingCalendarContext.cs" LinkBase="" />
-		<Compile Include="..\BookingCalendarApi.NETFramework\DbSetWrapper.cs" LinkBase="" />
 	</ItemGroup>
 
 </Project>

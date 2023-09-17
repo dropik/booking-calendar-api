@@ -1,4 +1,5 @@
 ﻿using BookingCalendarApi.Models.Configurations;
+using BookingCalendarApi.Repository.Common;
 using BookingCalendarApi.Services;
 using Microsoft.EntityFrameworkCore;
 using System.Linq;
@@ -19,14 +20,14 @@ namespace BookingCalendarApi.Repository.NETFramework
 
         private long CurrentStructureId => long.Parse(_claimsProvider.User.Claims.FirstOrDefault(c => c.Type == JWT.STRUCTURE_CLAIM)?.Value ?? "0");
 
-        public Common.IDbSet<Structure> Structures => new DbSetWrapper<Structure>(_context.Structures, CurrentStructureId);
-        public Common.IDbSet<User> Users => new DbSetWrapper<User>(_context.Users, CurrentStructureId);
-        public Common.IDbSet<UserRefreshToken> UserRefreshTokens => new DbSetWrapper<UserRefreshToken>(_context.UserRefreshTokens, CurrentStructureId);
-        public Common.IDbSet<Nation> Nations => new DbSetWrapper<Nation>(_context.Nations, CurrentStructureId);
-        public Common.IDbSet<Floor> Floors => new DbSetWrapper<Floor>(_context.Floors, CurrentStructureId);
-        public Common.IDbSet<Room> Rooms => new DbSetWrapper<Room>(_context.Rooms, CurrentStructureId);
-        public Common.IDbSet<RoomAssignment> RoomAssignments => new DbSetWrapper<RoomAssignment>(_context.RoomAssignments, CurrentStructureId);
-        public Common.IDbSet<ColorAssignment> ColorAssignments => new DbSetWrapper<ColorAssignment>(_context.ColorAssignments, CurrentStructureId);
+        public IQueryable<Structure> Structures => GetQueryable<Structure>();
+        public IQueryable<User> Users => GetQueryable<User>();
+        public IQueryable<UserRefreshToken> UserRefreshTokens => GetQueryable<UserRefreshToken>();
+        public IQueryable<Nation> Nations => GetQueryable<Nation>();
+        public IQueryable<Floor> Floors => GetQueryable<Floor>();
+        public IQueryable<Room> Rooms => GetQueryable<Room>();
+        public IQueryable<RoomAssignment> RoomAssignments => GetQueryable<RoomAssignment>();
+        public IQueryable<ColorAssignment> ColorAssignments => GetQueryable<ColorAssignment>();
 
         public TEntity Add<TEntity>(TEntity entity) where TEntity : class
         {
@@ -53,6 +54,16 @@ namespace BookingCalendarApi.Repository.NETFramework
             {
                 entry.State = EntityState.Detached;
             }
+        }
+
+        private IQueryable<TEntity> GetQueryable<TEntity>() where TEntity : class
+        {
+            var query = _context.Set<TEntity>().AsQueryable();
+            if (typeof(IStructureData).IsAssignableFrom(typeof(TEntity)))
+            {
+                query = query.Where(e => ((IStructureData)e).StructureId == CurrentStructureId);
+            }
+            return query;
         }
     }
 }

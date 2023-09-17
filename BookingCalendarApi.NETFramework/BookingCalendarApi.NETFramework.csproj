@@ -310,7 +310,6 @@
     <Compile Include="Controllers\PoliceController.cs" />
     <Compile Include="Controllers\RoomsController.cs" />
     <Compile Include="Controllers\UsersController.cs" />
-    <Compile Include="DbSetWrapper.cs" />
     <Compile Include="EFCore3QueryWrapper.cs" />
     <Compile Include="EFCore3QueryWrapperFactory.cs" />
     <Compile Include="Filters\AdminAttribute.cs" />

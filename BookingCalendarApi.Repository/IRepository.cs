@@ -1,18 +1,18 @@
-﻿using System.Threading.Tasks;
-using BookingCalendarApi.Repository.Common;
+﻿using System.Linq;
+using System.Threading.Tasks;
 
 namespace BookingCalendarApi.Repository
 {
     public interface IRepository
     {
-        IDbSet<Structure> Structures { get; }
-        IDbSet<User> Users { get; }
-        IDbSet<UserRefreshToken> UserRefreshTokens { get; }
-        IDbSet<Nation> Nations { get; }
-        IDbSet<Floor> Floors { get; }
-        IDbSet<Room> Rooms { get; }
-        IDbSet<RoomAssignment> RoomAssignments { get; }
-        IDbSet<ColorAssignment> ColorAssignments { get; }
+        IQueryable<Structure> Structures { get; }
+        IQueryable<User> Users { get; }
+        IQueryable<UserRefreshToken> UserRefreshTokens { get; }
+        IQueryable<Nation> Nations { get; }
+        IQueryable<Floor> Floors { get; }
+        IQueryable<Room> Rooms { get; }
+        IQueryable<RoomAssignment> RoomAssignments { get; }
+        IQueryable<ColorAssignment> ColorAssignments { get; }
 
         TEntity Add<TEntity>(TEntity entity) where TEntity : class;
         TEntity Update<TEntity>(TEntity entity) where TEntity : class;
