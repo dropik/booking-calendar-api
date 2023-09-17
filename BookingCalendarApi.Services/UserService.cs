@@ -1,4 +1,5 @@
-﻿using BookingCalendarApi.Models.Exceptions;
+﻿using BookingCalendarApi.Models.Configurations;
+using BookingCalendarApi.Models.Exceptions;
 using BookingCalendarApi.Models.Requests;
 using BookingCalendarApi.Models.Responses;
 using BookingCalendarApi.Repository;
@@ -73,6 +74,10 @@ namespace BookingCalendarApi.Services
 
             result.Username = user.Username;
             result.VisibleName = user.VisibleName;
+
+            var structureId = long.Parse(_userClaimsProvider.User.Claims.FirstOrDefault(c => c.Type == JWT.STRUCTURE_CLAIM)?.Value ?? "0");
+            var structure = await _repository.SingleAsync(_repository.Structures.Where(s => s.Id == structureId));
+            result.Structure = structure.Name;
 
             var roomRates = await _iperbooking.GetRoomRates();
             result.RoomTypes = roomRates

@@ -1,4 +1,5 @@
-﻿using Microsoft.IdentityModel.Tokens;
+﻿using BookingCalendarApi.Models.Configurations;
+using Microsoft.IdentityModel.Tokens;
 
 using System;
 using System.Collections.Generic;
@@ -81,9 +82,9 @@ namespace BookingCalendarApi.NETFramework.Filters
                 return false;
             }
 
-            var role = identity.FindFirst(ClaimTypes.Role)?.Value ?? "";
             claims.Add(new Claim(ClaimTypes.Name, username));
-            claims.Add(new Claim(ClaimTypes.Role, role));
+            claims.Add(new Claim(ClaimTypes.Role, identity.FindFirst(ClaimTypes.Role)?.Value ?? ""));
+            claims.Add(new Claim(JWT.STRUCTURE_CLAIM, identity.FindFirst(JWT.STRUCTURE_CLAIM)?.Value ?? ""));
 
             return true;
         }

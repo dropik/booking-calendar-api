@@ -1,5 +1,4 @@
 ﻿using BookingCalendarApi.Models.Configurations;
-using BookingCalendarApi.Models.Exceptions;
 using BookingCalendarApi.Models.Requests;
 using BookingCalendarApi.Models.Responses;
 using BookingCalendarApi.Repository;
@@ -22,8 +21,6 @@ namespace BookingCalendarApi.Services
     {
         private readonly IRepository _repository;
         private readonly JWT _jwt;
-
-        private const string REFRESH_TOKEN_CLAIM = "RTId";
 
         public AuthService(IRepository repository, IOptions<JWT> jwt)
         {
@@ -78,7 +75,7 @@ namespace BookingCalendarApi.Services
             long refreshTokenId = 0;
             try
             {
-                refreshTokenId = long.Parse(principal.Claims.FirstOrDefault(c => c.Type == REFRESH_TOKEN_CLAIM)?.Value ?? "0");
+                refreshTokenId = long.Parse(principal.Claims.FirstOrDefault(c => c.Type == JWT.REFRESH_TOKEN_CLAIM)?.Value ?? "0");
             }
             catch (Exception)
             {
@@ -119,7 +116,8 @@ namespace BookingCalendarApi.Services
                 Subject = new ClaimsIdentity(new Claim[]
                 {
                     new Claim(ClaimTypes.Name, user.Username),
-                    new Claim(REFRESH_TOKEN_CLAIM, userRefreshToken.Id.ToString()),
+                    new Claim(JWT.REFRESH_TOKEN_CLAIM, userRefreshToken.Id.ToString()),
+                    new Claim(JWT.STRUCTURE_CLAIM, user.StructureId.ToString()),
                 }),
                 Expires = DateTime.UtcNow.AddMinutes(_jwt.AccessTokenExpirationMinutes),
                 SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(tokenKey), SecurityAlgorithms.HmacSha256Signature),
