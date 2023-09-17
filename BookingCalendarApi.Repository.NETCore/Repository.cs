@@ -27,10 +27,20 @@ namespace BookingCalendarApi.Repository.NETCore
         public IQueryable<ColorAssignment> ColorAssignments => GetQueryable<ColorAssignment>();
 
         public TEntity Add<TEntity>(TEntity entity) where TEntity : class
-            => _context.Add(entity).Entity;
+        {
+            if (typeof(IStructureData).IsAssignableFrom(typeof(TEntity)))
+            {
+                ((IStructureData)entity).StructureId = CurrentStructureId;
+            }
+            return _context.Add(entity).Entity;
+        }
 
         public TEntity Update<TEntity>(TEntity entity) where TEntity : class
         {
+            if (typeof(IStructureData).IsAssignableFrom(typeof(TEntity)))
+            {
+                ((IStructureData)entity).StructureId = CurrentStructureId;
+            }
             var entry = _context.Attach(entity);
             entry.State = EntityState.Modified;
             return entry.Entity;

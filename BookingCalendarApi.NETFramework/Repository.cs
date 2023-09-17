@@ -31,6 +31,10 @@ namespace BookingCalendarApi.Repository.NETFramework
 
         public TEntity Add<TEntity>(TEntity entity) where TEntity : class
         {
+            if (typeof(IStructureData).IsAssignableFrom(typeof(TEntity)))
+            {
+                ((IStructureData)entity).StructureId = CurrentStructureId;
+            }
             var entry = _context.Add(entity);
             entry.State = EntityState.Added;
             return entry.Entity;
@@ -38,6 +42,10 @@ namespace BookingCalendarApi.Repository.NETFramework
 
         public TEntity Update<TEntity>(TEntity entity) where TEntity : class
         {
+            if (typeof(IStructureData).IsAssignableFrom(typeof(TEntity)))
+            {
+                ((IStructureData)entity).StructureId = CurrentStructureId;
+            }
             var entry = _context.Entry(entity);
             entry.State = EntityState.Modified;
             return entry.Entity;
