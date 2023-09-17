@@ -58,6 +58,7 @@ dotnet run
 - Added support for .NET Framework 4.
 - Introduced JWT authentication and role based authorization (only admin supported for now).
 - Introduced structure which contains all its API secrets.
+- Separating data at repository level which belongs to the structrue of the current user.
 - Placed user related and structure data into single /users/current endpoint.
 - Removed the concept of session.
 - Collapsed assignments into single resource.
