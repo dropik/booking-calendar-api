@@ -329,6 +329,10 @@
     <Compile Include="Migrations\20230917074647_AddStructureSecrets.designer.cs">
       <DependentUpon>20230917074647_AddStructureSecrets.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\20230917084437_C59StrutturaLong.cs" />
+    <Compile Include="Migrations\20230917084437_C59StrutturaLong.designer.cs">
+      <DependentUpon>20230917084437_C59StrutturaLong.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\BookingCalendarContextModelSnapshot.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Repository.cs" />

@@ -47,24 +47,6 @@ namespace BookingCalendarApi.NETFramework
                 jwt.AccessTokenExpirationMinutes = int.Parse(ConfigurationManager.AppSettings["JWT_AccessTokenExpirationMinutes"]);
                 jwt.RefreshTokenExpirationMinutes = int.Parse(ConfigurationManager.AppSettings["JWT_RefreshTokenExpirationMinutes"]);
             });
-            services.Configure<Models.Iperbooking.Auth>(auth =>
-            {
-                auth.IdHotel = ConfigurationManager.AppSettings["Iperbooking_IdHotel"];
-                auth.Username = ConfigurationManager.AppSettings["Iperbooking_Username"];
-                auth.Password = ConfigurationManager.AppSettings["Iperbooking_Password"];
-            });
-            services.Configure<Models.AlloggiatiService.Credentials>(credentials =>
-            {
-                credentials.Utente = ConfigurationManager.AppSettings["AlloggiatiService_Utente"];
-                credentials.Password = ConfigurationManager.AppSettings["AlloggiatiService_Password"];
-                credentials.WsKey = ConfigurationManager.AppSettings["AlloggiatiService_WsKey"];
-            });
-            services.Configure<Models.C59Service.Credentials>(credentials =>
-            {
-                credentials.Username = ConfigurationManager.AppSettings["C59Service_Username"];
-                credentials.Password = ConfigurationManager.AppSettings["C59Service_Password"];
-                credentials.Struttura = long.Parse(ConfigurationManager.AppSettings["C59Service_Struttura"]);
-            });
 
             services.AddDbContext<BookingCalendarContext>();
 
@@ -81,11 +63,11 @@ namespace BookingCalendarApi.NETFramework
             services.AddTransient<UsersController>();
 
             // scoped services
-            services.AddScoped(p => new User());
             services.AddScoped<IUserClaimsProvider, UserClaimsProvider>();
             services.AddScoped<IIperbooking, Iperbooking>();
             services.AddScoped<IAlloggiatiServiceSession, AlloggiatiServiceSession>();
             services.AddScoped<DataContext>();
+            services.AddScoped<IStructureService, StructureService>();
 
             // transient services
             services.AddTransient(p => HttpContext.Current.User as ClaimsPrincipal);

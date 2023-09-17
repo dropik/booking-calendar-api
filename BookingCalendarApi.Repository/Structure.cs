@@ -20,6 +20,6 @@
         // C59 credentials
         public string C59Username { get; set; } = "";
         public string C59Password { get; set; } = "";
-        public string C59Struttura { get; set; } = "";
+        public long C59Struttura { get; set; }
     }
 }

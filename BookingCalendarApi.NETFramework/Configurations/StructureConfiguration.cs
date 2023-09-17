@@ -21,9 +21,9 @@ namespace BookingCalendarApi.Repository.Configurations
 
             builder.Property(s => s.C59Username).IsRequired(false).HasMaxLength(PropertyDefaults.MAX_NAME_LENGTH);
             builder.Property(s => s.C59Password).IsRequired(false).HasMaxLength(PropertyDefaults.MAX_PASSWORD_LENGTH);
-            builder.Property(s => s.C59Struttura).IsRequired(false).HasMaxLength(PropertyDefaults.MAX_CODE_LENGTH);
+            builder.Property(s => s.C59Struttura).HasDefaultValue(0);
 
-            builder.HasData(new Structure() { Id = Structure.MASTER_ID, Name = "Master Hotel" });
+            builder.HasData(new Structure() { Id = Structure.MASTER_ID, Name = "Master Hotel", C59Struttura = 0 });
         }
     }
 }

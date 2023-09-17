@@ -1,10 +1,7 @@
 ﻿using BookingCalendarApi.Models.Exceptions;
-using BookingCalendarApi.Models.Iperbooking;
 using BookingCalendarApi.Models.Iperbooking.Bookings;
 using BookingCalendarApi.Models.Iperbooking.Guests;
 using BookingCalendarApi.Models.Iperbooking.RoomRates;
-
-using Microsoft.Extensions.Options;
 
 using System;
 using System.Collections.Generic;
@@ -17,16 +14,17 @@ namespace BookingCalendarApi.Services
 {
     public class Iperbooking : IIperbooking
     {
-        private readonly Auth _auth;
+        private readonly IStructureService _structureService;
 
-        public Iperbooking(IOptions<Auth> auth)
+        public Iperbooking(IStructureService structureService)
         {
-            _auth = auth.Value;
+            _structureService = structureService;
         }
 
         public async Task<IEnumerable<RoomRateRoom>> GetRoomRates()
         {
-            var url = $"https://api.iperbooking.net/v1/GetRoomRates.cfm?idhotel={_auth.IdHotel}&username={_auth.Username}&password={_auth.Password}&format=json";
+            var auth = await _structureService.GetIperbookingCredentials();
+            var url = $"https://api.iperbooking.net/v1/GetRoomRates.cfm?idhotel={auth.IdHotel}&username={auth.Username}&password={auth.Password}&format=json";
             try
             {
                 using (HttpClient client = new HttpClient())
@@ -79,7 +77,8 @@ namespace BookingCalendarApi.Services
             var arrivalFrom = fromDate.ToString("yyyyMMdd");
             var arrivalTo = toDate.ToString("yyyyMMdd");
 
-            var url = $"https://api.iperbooking.net/v1/GetBookings.cfm?idhotel={_auth.IdHotel}&username={_auth.Username}&password={_auth.Password}&format=json&arrivalfrom={arrivalFrom}&arrivalto={arrivalTo}";
+            var auth = await _structureService.GetIperbookingCredentials();
+            var url = $"https://api.iperbooking.net/v1/GetBookings.cfm?idhotel={auth.IdHotel}&username={auth.Username}&password={auth.Password}&format=json&arrivalfrom={arrivalFrom}&arrivalto={arrivalTo}";
             try
             {
                 using (HttpClient client = new HttpClient())
@@ -122,7 +121,8 @@ namespace BookingCalendarApi.Services
         {
             try
             {
-                var requestData = new GuestsRequest(int.Parse(_auth.IdHotel), _auth.Username, _auth.Password, reservationId);
+                var auth = await _structureService.GetIperbookingCredentials();
+                var requestData = new GuestsRequest(int.Parse(auth.IdHotel), auth.Username, auth.Password, reservationId);
                 var json = JsonSerializer.Serialize(requestData);
                 var body = new StringContent(json, Encoding.UTF8, "application/json");
                 var url = "https://api.iperbooking.net/v1/GetGuests.cfm";

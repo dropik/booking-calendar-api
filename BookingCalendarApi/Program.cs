@@ -20,9 +20,6 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddOptions();
 builder.Services.Configure<JWT>(builder.Configuration.GetSection("JWT"));
-builder.Services.Configure<BookingCalendarApi.Models.Iperbooking.Auth>(builder.Configuration.GetSection("Iperbooking"));
-builder.Services.Configure<BookingCalendarApi.Models.AlloggiatiService.Credentials>(builder.Configuration.GetSection("AlloggiatiService"));
-builder.Services.Configure<BookingCalendarApi.Models.C59Service.Credentials>(builder.Configuration.GetSection("C59Service"));
 
 builder.Services.AddAuthentication(options =>
 {
@@ -93,6 +90,7 @@ builder.Services.AddScoped<IUserClaimsProvider, UserClaimsProvider>();
 builder.Services.AddScoped<IIperbooking, Iperbooking>();
 builder.Services.AddScoped<IAlloggiatiServiceSession, AlloggiatiServiceSession>();
 builder.Services.AddScoped<DataContext>();
+builder.Services.AddScoped<IStructureService, StructureService>();
 
 // transient services
 builder.Services.AddTransient<IRepository, Repository>();

@@ -1,10 +1,7 @@
-﻿using BookingCalendarApi.Models.C59Service;
-using BookingCalendarApi.Models.Clients.C59;
+﻿using BookingCalendarApi.Models.Clients.C59;
 using BookingCalendarApi.Models.DTO;
 using BookingCalendarApi.Models.Exceptions;
 using BookingCalendarApi.Repository;
-
-using Microsoft.Extensions.Options;
 
 using System;
 using System.Collections.Generic;
@@ -16,14 +13,14 @@ namespace BookingCalendarApi.Services
 {
     public class IstatService : IIstatService
     {
-        private readonly Credentials _credentials;
+        private readonly IStructureService _structureService;
         private readonly IAssignedBookingWithGuestsProvider _bookingsProvider;
         private readonly IRepository _repository;
         private readonly IC59Client _c59Client;
 
-        public IstatService(IOptions<Credentials> credentials, IAssignedBookingWithGuestsProvider bookingsProvider, IRepository context, IC59Client c59Client)
+        public IstatService(IStructureService structureService, IAssignedBookingWithGuestsProvider bookingsProvider, IRepository context, IC59Client c59Client)
         {
-            _credentials = credentials.Value;
+            _structureService = structureService;
             _bookingsProvider = bookingsProvider;
             _repository = context;
             _c59Client = c59Client;
@@ -33,11 +30,12 @@ namespace BookingCalendarApi.Services
         {
             try
             {
+                var credentials = await _structureService.GetC59Credentials();
                 var lastUploadResponse = await _c59Client.UltimoC59Async(new UltimoC59Request()
                 {
-                    Username = _credentials.Username,
-                    Password = _credentials.Password,
-                    Struttura = _credentials.Struttura,
+                    Username = credentials.Username,
+                    Password = credentials.Password,
+                    Struttura = credentials.Struttura,
                 });
                 var lastUpload = lastUploadResponse.@Return.ElencoC59
                     .OrderBy(item => item.DataMovimentazione.ToString("yyyy-MM-dd"))
@@ -143,11 +141,12 @@ namespace BookingCalendarApi.Services
                     })
                     .ToList();
 
+                var credentials = await _structureService.GetC59Credentials();
                 var c59Request = new InviaC59FullRequest()
                 {
-                    Username = _credentials.Username,
-                    Password = _credentials.Password,
-                    Struttura = _credentials.Struttura,
+                    Username = credentials.Username,
+                    Password = credentials.Password,
+                    Struttura = credentials.Struttura,
                     C59 = new C59WSPO()
                     {
                         DataMovimentazione = DateTime.ParseExact(movements.Date, "yyyy-MM-dd", null),

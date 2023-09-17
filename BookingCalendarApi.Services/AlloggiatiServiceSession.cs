@@ -15,14 +15,14 @@ namespace BookingCalendarApi.Services
 {
     public class AlloggiatiServiceSession : IAlloggiatiServiceSession
     {
-        private readonly Credentials _credentials;
+        private readonly IStructureService _structureService;
         private readonly IPoliceClient _policeClient;
 
         private string Token { get; set; } = "";
 
-        public AlloggiatiServiceSession(Microsoft.Extensions.Options.IOptions<Credentials> credentials, IPoliceClient policeClient)
+        public AlloggiatiServiceSession(IStructureService structureService, IPoliceClient policeClient)
         {
-            _credentials = credentials.Value;
+            _structureService = structureService;
             _policeClient = policeClient;
         }
 
@@ -30,13 +30,14 @@ namespace BookingCalendarApi.Services
         {
             try
             {
+                var credentials = await _structureService.GetAlloggiatiServiceCredentials();
                 var response = await _policeClient.GenerateTokenAsync(new Models.Clients.Police.GenerateTokenRequest()
                 {
                     Body = new Models.Clients.Police.GenerateTokenRequestBody()
                     {
-                        Utente = _credentials.Utente,
-                        Password = _credentials.Password,
-                        WsKey = _credentials.WsKey,
+                        Utente = credentials.Utente,
+                        Password = credentials.Password,
+                        WsKey = credentials.WsKey,
                     }
                 });
                 if (!response.Body.Result.Esito)
@@ -59,13 +60,14 @@ namespace BookingCalendarApi.Services
 
             try
             {
+                var credentials = await _structureService.GetAlloggiatiServiceCredentials();
                 if (test)
                 {
                     var response = await _policeClient.TestAsync(new Models.Clients.Police.TestRequest()
                     {
                         Body = new Models.Clients.Police.TestRequestBody()
                         {
-                            Utente = _credentials.Utente,
+                            Utente = credentials.Utente,
                             Token = Token,
                             ElencoSchedine = array,
                         }
@@ -88,7 +90,7 @@ namespace BookingCalendarApi.Services
                     {
                         Body = new Models.Clients.Police.SendRequestBody()
                         {
-                            Utente = _credentials.Utente,
+                            Utente = credentials.Utente,
                             Token = Token,
                             ElencoSchedine = array,
                         }
@@ -116,11 +118,12 @@ namespace BookingCalendarApi.Services
         {
             try
             {
+                var credentials = await _structureService.GetAlloggiatiServiceCredentials();
                 var response = await _policeClient.RicevutaAsync(new Models.Clients.Police.RicevutaRequest()
                 {
                     Body = new Models.Clients.Police.RicevutaRequestBody()
                     {
-                        Utente = _credentials.Utente,
+                        Utente = credentials.Utente,
                         Token = Token,
                         Data = date,
                     }
@@ -156,11 +159,12 @@ namespace BookingCalendarApi.Services
         {
             try
             {
+                var credentials = await _structureService.GetAlloggiatiServiceCredentials();
                 var response = await _policeClient.TabellaAsync(new Models.Clients.Police.TabellaRequest()
                 {
                     Body = new Models.Clients.Police.TabellaRequestBody()
                     {
-                        Utente = _credentials.Utente,
+                        Utente = credentials.Utente,
                         Token = Token,
                         Tipo = tipoTabella
                     }

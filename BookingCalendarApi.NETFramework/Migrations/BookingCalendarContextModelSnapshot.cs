@@ -1634,9 +1634,10 @@ namespace BookingCalendarApi.NETFramework.Migrations
                         .HasColumnType("varchar(32) CHARACTER SET utf8mb4")
                         .HasMaxLength(32);
 
-                    b.Property<string>("C59Struttura")
-                        .HasColumnType("varchar(16) CHARACTER SET utf8mb4")
-                        .HasMaxLength(16);
+                    b.Property<long>("C59Struttura")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint")
+                        .HasDefaultValue(0L);
 
                     b.Property<string>("C59Username")
                         .HasColumnType("varchar(100) CHARACTER SET utf8mb4")
@@ -1671,7 +1672,7 @@ namespace BookingCalendarApi.NETFramework.Migrations
                             ASUtente = "",
                             ASWsKey = "",
                             C59Password = "",
-                            C59Struttura = "",
+                            C59Struttura = 0L,
                             C59Username = "",
                             IperbookingHotel = "",
                             IperbookingPassword = "",
