@@ -32,7 +32,7 @@ namespace BookingCalendarApi.Repository.NETCore.Migrations
 
                     b.HasKey("BookingId");
 
-                    b.ToTable("ColorAssignments");
+                    b.ToTable("ColorAssignments", (string)null);
                 });
 
             modelBuilder.Entity("BookingCalendarApi.Repository.Floor", b =>
@@ -48,7 +48,7 @@ namespace BookingCalendarApi.Repository.NETCore.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Floors");
+                    b.ToTable("Floors", (string)null);
                 });
 
             modelBuilder.Entity("BookingCalendarApi.Repository.Nation", b =>
@@ -67,7 +67,7 @@ namespace BookingCalendarApi.Repository.NETCore.Migrations
 
                     b.HasKey("Iso");
 
-                    b.ToTable("Nations");
+                    b.ToTable("Nations", (string)null);
 
                     b.HasData(
                         new
@@ -1595,7 +1595,7 @@ namespace BookingCalendarApi.Repository.NETCore.Migrations
 
                     b.HasIndex("FloorId");
 
-                    b.ToTable("Rooms");
+                    b.ToTable("Rooms", (string)null);
                 });
 
             modelBuilder.Entity("BookingCalendarApi.Repository.RoomAssignment", b =>
@@ -1611,7 +1611,7 @@ namespace BookingCalendarApi.Repository.NETCore.Migrations
 
                     b.HasIndex("RoomId");
 
-                    b.ToTable("RoomAssignments");
+                    b.ToTable("RoomAssignments", (string)null);
                 });
 
             modelBuilder.Entity("BookingCalendarApi.Repository.Structure", b =>
@@ -1620,6 +1620,42 @@ namespace BookingCalendarApi.Repository.NETCore.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("bigint");
 
+                    b.Property<string>("ASPassword")
+                        .HasMaxLength(32)
+                        .HasColumnType("varchar(32)");
+
+                    b.Property<string>("ASUtente")
+                        .HasMaxLength(100)
+                        .HasColumnType("varchar(100)");
+
+                    b.Property<string>("ASWsKey")
+                        .HasMaxLength(128)
+                        .HasColumnType("varchar(128)");
+
+                    b.Property<string>("C59Password")
+                        .HasMaxLength(32)
+                        .HasColumnType("varchar(32)");
+
+                    b.Property<string>("C59Struttura")
+                        .HasMaxLength(16)
+                        .HasColumnType("varchar(16)");
+
+                    b.Property<string>("C59Username")
+                        .HasMaxLength(100)
+                        .HasColumnType("varchar(100)");
+
+                    b.Property<string>("IperbookingHotel")
+                        .HasMaxLength(16)
+                        .HasColumnType("varchar(16)");
+
+                    b.Property<string>("IperbookingPassword")
+                        .HasMaxLength(32)
+                        .HasColumnType("varchar(32)");
+
+                    b.Property<string>("IperbookingUsername")
+                        .HasMaxLength(100)
+                        .HasColumnType("varchar(100)");
+
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(100)
@@ -1627,12 +1663,21 @@ namespace BookingCalendarApi.Repository.NETCore.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Structures");
+                    b.ToTable("Structures", (string)null);
 
                     b.HasData(
                         new
                         {
                             Id = -1L,
+                            ASPassword = "",
+                            ASUtente = "",
+                            ASWsKey = "",
+                            C59Password = "",
+                            C59Struttura = "",
+                            C59Username = "",
+                            IperbookingHotel = "",
+                            IperbookingPassword = "",
+                            IperbookingUsername = "",
                             Name = "Master Hotel"
                         });
                 });
@@ -1671,14 +1716,14 @@ namespace BookingCalendarApi.Repository.NETCore.Migrations
                     b.HasIndex("Username")
                         .IsUnique();
 
-                    b.ToTable("Users");
+                    b.ToTable("Users", (string)null);
 
                     b.HasData(
                         new
                         {
                             Id = -1L,
                             IsAdmin = true,
-                            PasswordHash = "AQAAAAEAACcQAAAAEKj8wlDDnH96Fswbkk6d78gsd9rwMc/sRb0rzzN+4TSR7RDJOi+XR5vZAlPNu64NcQ==",
+                            PasswordHash = "",
                             StructureId = -1L,
                             Username = "master@bookingcalendar.com",
                             VisibleName = "Master"
@@ -1705,7 +1750,7 @@ namespace BookingCalendarApi.Repository.NETCore.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("UserRefreshTokens");
+                    b.ToTable("UserRefreshTokens", (string)null);
                 });
 
             modelBuilder.Entity("BookingCalendarApi.Repository.Room", b =>

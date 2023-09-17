@@ -325,6 +325,10 @@
     <Compile Include="Migrations\20230915192246_AddMasterUser.designer.cs">
       <DependentUpon>20230915192246_AddMasterUser.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\20230917074647_AddStructureSecrets.cs" />
+    <Compile Include="Migrations\20230917074647_AddStructureSecrets.designer.cs">
+      <DependentUpon>20230917074647_AddStructureSecrets.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\BookingCalendarContextModelSnapshot.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Repository.cs" />

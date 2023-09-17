@@ -8,5 +8,7 @@
         public const int MAX_ROOM_NUMBER_LENGTH = 10;
         public const int MAX_PASSWORD_HASH_LENGTH = 128;
         public const int MAX_TOKEN_LENGTH = 512;
+        public const int MAX_CODE_LENGTH = 16;
+        public const int MAX_PASSWORD_LENGTH = 32;
     }
 }
