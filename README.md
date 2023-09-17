@@ -57,6 +57,7 @@ dotnet run
 ### v1.6.0
 - Added support for .NET Framework 4.
 - Introduced JWT authentication and role based authorization (only admin supported for now).
+- Introduced structure which contains all its API secrets.
 - Placed user related and structure data into single /users/current endpoint.
 - Removed the concept of session.
 - Collapsed assignments into single resource.
