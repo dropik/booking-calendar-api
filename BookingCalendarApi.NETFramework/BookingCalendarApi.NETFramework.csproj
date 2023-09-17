@@ -333,6 +333,10 @@
     <Compile Include="Migrations\20230917084437_C59StrutturaLong.designer.cs">
       <DependentUpon>20230917084437_C59StrutturaLong.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\20230917090942_LinkEverythingToStructure.cs" />
+    <Compile Include="Migrations\20230917090942_LinkEverythingToStructure.designer.cs">
+      <DependentUpon>20230917090942_LinkEverythingToStructure.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\BookingCalendarContextModelSnapshot.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Repository.cs" />

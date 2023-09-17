@@ -28,7 +28,14 @@ namespace BookingCalendarApi.NETFramework.Migrations
                         .HasColumnType("varchar(100) CHARACTER SET utf8mb4")
                         .HasMaxLength(100);
 
+                    b.Property<long>("StructureId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint")
+                        .HasDefaultValue(1L);
+
                     b.HasKey("BookingId");
+
+                    b.HasIndex("StructureId");
 
                     b.ToTable("ColorAssignments");
                 });
@@ -44,7 +51,14 @@ namespace BookingCalendarApi.NETFramework.Migrations
                         .HasColumnType("varchar(100) CHARACTER SET utf8mb4")
                         .HasMaxLength(100);
 
+                    b.Property<long>("StructureId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint")
+                        .HasDefaultValue(1L);
+
                     b.HasKey("Id");
+
+                    b.HasIndex("StructureId");
 
                     b.ToTable("Floors");
                 });
@@ -1584,6 +1598,11 @@ namespace BookingCalendarApi.NETFramework.Migrations
                         .HasColumnType("varchar(10) CHARACTER SET utf8mb4")
                         .HasMaxLength(10);
 
+                    b.Property<long>("StructureId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint")
+                        .HasDefaultValue(1L);
+
                     b.Property<string>("Type")
                         .IsRequired()
                         .HasColumnType("varchar(100) CHARACTER SET utf8mb4")
@@ -1592,6 +1611,8 @@ namespace BookingCalendarApi.NETFramework.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("FloorId");
+
+                    b.HasIndex("StructureId");
 
                     b.ToTable("Rooms");
                 });
@@ -1605,9 +1626,16 @@ namespace BookingCalendarApi.NETFramework.Migrations
                     b.Property<long>("RoomId")
                         .HasColumnType("bigint");
 
+                    b.Property<long>("StructureId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint")
+                        .HasDefaultValue(1L);
+
                     b.HasKey("Id");
 
                     b.HasIndex("RoomId");
+
+                    b.HasIndex("StructureId");
 
                     b.ToTable("RoomAssignments");
                 });
@@ -1752,12 +1780,36 @@ namespace BookingCalendarApi.NETFramework.Migrations
                     b.ToTable("UserRefreshTokens");
                 });
 
+            modelBuilder.Entity("BookingCalendarApi.Repository.ColorAssignment", b =>
+                {
+                    b.HasOne("BookingCalendarApi.Repository.Structure", "Structure")
+                        .WithMany()
+                        .HasForeignKey("StructureId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("BookingCalendarApi.Repository.Floor", b =>
+                {
+                    b.HasOne("BookingCalendarApi.Repository.Structure", "Structure")
+                        .WithMany()
+                        .HasForeignKey("StructureId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+                });
+
             modelBuilder.Entity("BookingCalendarApi.Repository.Room", b =>
                 {
                     b.HasOne("BookingCalendarApi.Repository.Floor", null)
                         .WithMany("Rooms")
                         .HasForeignKey("FloorId")
                         .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("BookingCalendarApi.Repository.Structure", "Structure")
+                        .WithMany()
+                        .HasForeignKey("StructureId")
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
                 });
 
@@ -1767,6 +1819,12 @@ namespace BookingCalendarApi.NETFramework.Migrations
                         .WithMany()
                         .HasForeignKey("RoomId")
                         .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("BookingCalendarApi.Repository.Structure", "Structure")
+                        .WithMany()
+                        .HasForeignKey("StructureId")
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
                 });
 

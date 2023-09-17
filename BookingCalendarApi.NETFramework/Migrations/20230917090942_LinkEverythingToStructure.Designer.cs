@@ -3,32 +3,32 @@ using System;
 using BookingCalendarApi.Repository;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
-#nullable disable
-
-namespace BookingCalendarApi.Repository.NETCore.Migrations
+namespace BookingCalendarApi.NETFramework.Migrations
 {
     [DbContext(typeof(BookingCalendarContext))]
-    partial class BookingCalendarContextModelSnapshot : ModelSnapshot
+    [Migration("20230917090942_LinkEverythingToStructure")]
+    partial class LinkEverythingToStructure
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "6.0.21")
+                .HasAnnotation("ProductVersion", "3.1.32")
                 .HasAnnotation("Relational:MaxIdentifierLength", 64);
 
             modelBuilder.Entity("BookingCalendarApi.Repository.ColorAssignment", b =>
                 {
                     b.Property<string>("BookingId")
-                        .HasMaxLength(128)
-                        .HasColumnType("varchar(128)");
+                        .HasColumnType("varchar(128) CHARACTER SET utf8mb4")
+                        .HasMaxLength(128);
 
                     b.Property<string>("Color")
                         .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("varchar(100)");
+                        .HasColumnType("varchar(100) CHARACTER SET utf8mb4")
+                        .HasMaxLength(100);
 
                     b.Property<long>("StructureId")
                         .ValueGeneratedOnAdd()
@@ -50,8 +50,8 @@ namespace BookingCalendarApi.Repository.NETCore.Migrations
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("varchar(100)");
+                        .HasColumnType("varchar(100) CHARACTER SET utf8mb4")
+                        .HasMaxLength(100);
 
                     b.Property<long>("StructureId")
                         .ValueGeneratedOnAdd()
@@ -68,16 +68,16 @@ namespace BookingCalendarApi.Repository.NETCore.Migrations
             modelBuilder.Entity("BookingCalendarApi.Repository.Nation", b =>
                 {
                     b.Property<string>("Iso")
-                        .HasMaxLength(2)
-                        .HasColumnType("varchar(2)");
+                        .HasColumnType("varchar(2) CHARACTER SET utf8mb4")
+                        .HasMaxLength(2);
 
                     b.Property<long>("Code")
                         .HasColumnType("bigint");
 
                     b.Property<string>("Description")
                         .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("varchar(100)");
+                        .HasColumnType("varchar(100) CHARACTER SET utf8mb4")
+                        .HasMaxLength(100);
 
                     b.HasKey("Iso");
 
@@ -1597,8 +1597,8 @@ namespace BookingCalendarApi.Repository.NETCore.Migrations
 
                     b.Property<string>("Number")
                         .IsRequired()
-                        .HasMaxLength(10)
-                        .HasColumnType("varchar(10)");
+                        .HasColumnType("varchar(10) CHARACTER SET utf8mb4")
+                        .HasMaxLength(10);
 
                     b.Property<long>("StructureId")
                         .ValueGeneratedOnAdd()
@@ -1607,8 +1607,8 @@ namespace BookingCalendarApi.Repository.NETCore.Migrations
 
                     b.Property<string>("Type")
                         .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("varchar(100)");
+                        .HasColumnType("varchar(100) CHARACTER SET utf8mb4")
+                        .HasMaxLength(100);
 
                     b.HasKey("Id");
 
@@ -1622,8 +1622,8 @@ namespace BookingCalendarApi.Repository.NETCore.Migrations
             modelBuilder.Entity("BookingCalendarApi.Repository.RoomAssignment", b =>
                 {
                     b.Property<string>("Id")
-                        .HasMaxLength(128)
-                        .HasColumnType("varchar(128)");
+                        .HasColumnType("varchar(128) CHARACTER SET utf8mb4")
+                        .HasMaxLength(128);
 
                     b.Property<long>("RoomId")
                         .HasColumnType("bigint");
@@ -1649,20 +1649,20 @@ namespace BookingCalendarApi.Repository.NETCore.Migrations
                         .HasColumnType("bigint");
 
                     b.Property<string>("ASPassword")
-                        .HasMaxLength(32)
-                        .HasColumnType("varchar(32)");
+                        .HasColumnType("varchar(32) CHARACTER SET utf8mb4")
+                        .HasMaxLength(32);
 
                     b.Property<string>("ASUtente")
-                        .HasMaxLength(100)
-                        .HasColumnType("varchar(100)");
+                        .HasColumnType("varchar(100) CHARACTER SET utf8mb4")
+                        .HasMaxLength(100);
 
                     b.Property<string>("ASWsKey")
-                        .HasMaxLength(128)
-                        .HasColumnType("varchar(128)");
+                        .HasColumnType("varchar(128) CHARACTER SET utf8mb4")
+                        .HasMaxLength(128);
 
                     b.Property<string>("C59Password")
-                        .HasMaxLength(32)
-                        .HasColumnType("varchar(32)");
+                        .HasColumnType("varchar(32) CHARACTER SET utf8mb4")
+                        .HasMaxLength(32);
 
                     b.Property<long>("C59Struttura")
                         .ValueGeneratedOnAdd()
@@ -1670,25 +1670,25 @@ namespace BookingCalendarApi.Repository.NETCore.Migrations
                         .HasDefaultValue(0L);
 
                     b.Property<string>("C59Username")
-                        .HasMaxLength(100)
-                        .HasColumnType("varchar(100)");
+                        .HasColumnType("varchar(100) CHARACTER SET utf8mb4")
+                        .HasMaxLength(100);
 
                     b.Property<string>("IperbookingHotel")
-                        .HasMaxLength(16)
-                        .HasColumnType("varchar(16)");
+                        .HasColumnType("varchar(16) CHARACTER SET utf8mb4")
+                        .HasMaxLength(16);
 
                     b.Property<string>("IperbookingPassword")
-                        .HasMaxLength(32)
-                        .HasColumnType("varchar(32)");
+                        .HasColumnType("varchar(32) CHARACTER SET utf8mb4")
+                        .HasMaxLength(32);
 
                     b.Property<string>("IperbookingUsername")
-                        .HasMaxLength(100)
-                        .HasColumnType("varchar(100)");
+                        .HasColumnType("varchar(100) CHARACTER SET utf8mb4")
+                        .HasMaxLength(100);
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("varchar(100)");
+                        .HasColumnType("varchar(100) CHARACTER SET utf8mb4")
+                        .HasMaxLength(100);
 
                     b.HasKey("Id");
 
@@ -1724,19 +1724,19 @@ namespace BookingCalendarApi.Repository.NETCore.Migrations
 
                     b.Property<string>("PasswordHash")
                         .IsRequired()
-                        .HasColumnType("varchar(128)");
+                        .HasColumnType("varchar(128) character set utf8");
 
                     b.Property<long>("StructureId")
                         .HasColumnType("bigint");
 
                     b.Property<string>("Username")
                         .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("varchar(100)");
+                        .HasColumnType("varchar(100) CHARACTER SET utf8mb4")
+                        .HasMaxLength(100);
 
                     b.Property<string>("VisibleName")
-                        .HasMaxLength(100)
-                        .HasColumnType("varchar(100)");
+                        .HasColumnType("varchar(100) CHARACTER SET utf8mb4")
+                        .HasMaxLength(100);
 
                     b.HasKey("Id");
 
@@ -1774,8 +1774,8 @@ namespace BookingCalendarApi.Repository.NETCore.Migrations
 
                     b.Property<string>("Username")
                         .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("varchar(100)");
+                        .HasColumnType("varchar(100) CHARACTER SET utf8mb4")
+                        .HasMaxLength(100);
 
                     b.HasKey("Id");
 
@@ -1789,8 +1789,6 @@ namespace BookingCalendarApi.Repository.NETCore.Migrations
                         .HasForeignKey("StructureId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
-
-                    b.Navigation("Structure");
                 });
 
             modelBuilder.Entity("BookingCalendarApi.Repository.Floor", b =>
@@ -1800,8 +1798,6 @@ namespace BookingCalendarApi.Repository.NETCore.Migrations
                         .HasForeignKey("StructureId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
-
-                    b.Navigation("Structure");
                 });
 
             modelBuilder.Entity("BookingCalendarApi.Repository.Room", b =>
@@ -1817,8 +1813,6 @@ namespace BookingCalendarApi.Repository.NETCore.Migrations
                         .HasForeignKey("StructureId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
-
-                    b.Navigation("Structure");
                 });
 
             modelBuilder.Entity("BookingCalendarApi.Repository.RoomAssignment", b =>
@@ -1834,10 +1828,6 @@ namespace BookingCalendarApi.Repository.NETCore.Migrations
                         .HasForeignKey("StructureId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
-
-                    b.Navigation("Room");
-
-                    b.Navigation("Structure");
                 });
 
             modelBuilder.Entity("BookingCalendarApi.Repository.User", b =>
@@ -1847,13 +1837,6 @@ namespace BookingCalendarApi.Repository.NETCore.Migrations
                         .HasForeignKey("StructureId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
-
-                    b.Navigation("Structure");
-                });
-
-            modelBuilder.Entity("BookingCalendarApi.Repository.Floor", b =>
-                {
-                    b.Navigation("Rooms");
                 });
 #pragma warning restore 612, 618
         }
