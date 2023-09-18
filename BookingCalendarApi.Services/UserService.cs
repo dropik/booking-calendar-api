@@ -134,6 +134,11 @@ namespace BookingCalendarApi.Services
 
         public async Task UpdatePassword(UpdatePasswordRequest request)
         {
+            if (request == null)
+            {
+                throw new ArgumentNullException(nameof(request));
+            }
+
             var username = _userClaimsProvider.User.Identity?.Name ?? "";
             var user = await _repository.Users.SingleOrDefaultAsync(u => u.Username == username)
                 ?? throw new BookingCalendarException(BCError.NOT_FOUND, "Unable to find current user");
@@ -143,6 +148,11 @@ namespace BookingCalendarApi.Services
             if (verifyOldPasswordResult != PasswordVerificationResult.Success)
             {
                 throw new BookingCalendarException(BCError.AUTHENTICATION_ERROR, "Old password is not correct");
+            }
+
+            if (request.NewPassword == null)
+            {
+                throw new BookingCalendarException(BCError.PARAMETER_REQUIRED, "New password must be provided");
             }
 
             user.PasswordHash = passwordHasher.HashPassword(username, request.NewPassword);

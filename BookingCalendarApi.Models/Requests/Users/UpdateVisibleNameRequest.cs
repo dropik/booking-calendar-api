@@ -2,6 +2,6 @@
 {
     public class UpdateVisibleNameRequest
     {
-        public string VisibleName { get; set; } = "";
+        public string VisibleName { get; set; }
     }
 }
