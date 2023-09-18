@@ -3,6 +3,7 @@ using BookingCalendarApi.Models.Configurations;
 using BookingCalendarApi.NETFramework.AlloggiatiService;
 using BookingCalendarApi.NETFramework.C59Service;
 using BookingCalendarApi.NETFramework.Clients;
+using BookingCalendarApi.NETFramework.Controllers;
 using BookingCalendarApi.NETFramework.Filters;
 using BookingCalendarApi.Repository;
 using BookingCalendarApi.Repository.Common;
@@ -70,6 +71,7 @@ namespace BookingCalendarApi.NETFramework
             services.AddTransient<PoliceController>();
             services.AddTransient<RoomsController>();
             services.AddTransient<UsersController>();
+            services.AddTransient<StructuresController>();
 
             // scoped services
             services.AddScoped<IUserClaimsProvider, UserClaimsProvider>();

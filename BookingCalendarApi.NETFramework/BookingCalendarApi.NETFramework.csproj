@@ -312,6 +312,7 @@
     <Compile Include="Controllers\IstatController.cs" />
     <Compile Include="Controllers\PoliceController.cs" />
     <Compile Include="Controllers\RoomsController.cs" />
+    <Compile Include="Controllers\StructuresController.cs" />
     <Compile Include="Controllers\UsersController.cs" />
     <Compile Include="EFCore3QueryWrapper.cs" />
     <Compile Include="EFCore3QueryWrapperFactory.cs" />
