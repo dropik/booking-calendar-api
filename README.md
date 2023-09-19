@@ -62,6 +62,7 @@ dotnet run
 - Placed user related and structure data into single /users/current endpoint.
 - Removed the concept of session.
 - Collapsed assignments into single resource.
+- Fixed collision detection.
 
 #### *Versions skipped up to 1.6 to sync with frontend*
 
