@@ -151,6 +151,7 @@ namespace BookingCalendarApi.Services
                     {
                         throw new BookingCalendarException(BCError.ROOMS_COLLISION, $"Collision between tiles {currentItem.Id} and {nextItem.Id} detected on room id {group.Key}. Reverting...");
                     }
+                    currentItem = nextItem;
                 }
             }
 
