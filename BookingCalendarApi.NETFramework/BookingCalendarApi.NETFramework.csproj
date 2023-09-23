@@ -44,6 +44,7 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+	  <IntermediateOutputPath>C:\montipallidi-build</IntermediateOutputPath>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Fastenshtein, Version=1.0.0.8, Culture=neutral, processorArchitecture=MSIL">
