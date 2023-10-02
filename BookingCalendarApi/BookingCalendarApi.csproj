@@ -1,28 +1,31 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk.Web">
   <PropertyGroup>
     <TargetFramework>net6.0</TargetFramework>
-	<VersionPrefix>1.2.8</VersionPrefix>
+	<VersionPrefix>1.6.0</VersionPrefix>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
     <UserSecretsId>67d4e5b9-fe21-41af-8eeb-a59a485a5764</UserSecretsId>
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="Fastenshtein" Version="1.0.0.8" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="6.0.9" />
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="6.0.21" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="6.0.21">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="6.0.9" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.4.0" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="6.0.9" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="6.0.9" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="6.0.9" />
-    <PackageReference Include="Pomelo.EntityFrameworkCore.MySql" Version="6.0.2" />
-    <PackageReference Include="Sylvan.Data" Version="0.2.7" />
-    <PackageReference Include="Sylvan.Data.Csv" Version="1.2.3" />
     <PackageReference Include="System.Formats.Cbor" Version="6.0.0" />
     <PackageReference Include="System.ServiceModel.Duplex" Version="4.8.*" />
     <PackageReference Include="System.ServiceModel.Federation" Version="4.8.*" />
     <PackageReference Include="System.ServiceModel.Http" Version="4.8.*" />
     <PackageReference Include="System.ServiceModel.NetTcp" Version="4.8.*" />
     <PackageReference Include="System.ServiceModel.Security" Version="4.8.*" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\BookingCalendarApi.Models\BookingCalendarApi.Models.csproj" />
+    <ProjectReference Include="..\BookingCalendarApi.Repository.NETCore\BookingCalendarApi.Repository.NETCore.csproj" />
+    <ProjectReference Include="..\BookingCalendarApi.Repository\BookingCalendarApi.Repository.csproj" />
+    <ProjectReference Include="..\BookingCalendarApi.Services\BookingCalendarApi.Services.csproj" />
   </ItemGroup>
   <ProjectExtensions>
     <VisualStudio>

@@ -1,11 +1,13 @@
-﻿using BookingCalendarApi.Models.Entities;
+﻿using BookingCalendarApi.Repository;
 using BookingCalendarApi.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace BookingCalendarApi.Controllers
 {
     [Route("api/v1/floors")]
     [ApiController]
+    [Authorize]
     public class FloorsController : ControllerBase
     {
         private readonly IFloorsService _service;
