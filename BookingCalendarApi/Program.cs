@@ -23,7 +23,9 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Configuration.AddSystemsManager(config =>
 {
-    config.Path = "/booking-calendar/";
+    string version = System.Environment.GetEnvironmentVariable("AWS_LAMBDA_FUNCTION_VERSION") ?? "";
+    string stage = version.ToLower() == "$latest" ? "Dev" : "Prod";
+    config.Path = $"/booking-calendar/{stage}/";
     config.ReloadAfter = TimeSpan.FromMinutes(5);
     config.Optional = false;
 });

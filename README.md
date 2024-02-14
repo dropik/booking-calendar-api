@@ -46,6 +46,9 @@ provided. To configure those, from settings page in the app go to *Chiavi API* a
 
 ## Changelog
 
+### v1.6.2
+- Configured stage selection in AWS environment.
+
 ### v1.6.1
 - Added support for hosting on AWS Lambda.
 
