@@ -46,6 +46,9 @@ provided. To configure those, from settings page in the app go to *Chiavi API* a
 
 ## Changelog
 
+### v1.6.1
+- Added support for hosting on AWS Lambda.
+
 ### v1.6.0
 - Added support for .NET Framework 4.
 - Introduced JWT authentication and role based authorization (only admin supported for now).
