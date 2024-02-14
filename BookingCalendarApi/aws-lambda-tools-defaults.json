@@ -1,0 +1,21 @@
+
+{
+    "region" : "eu-central-1",
+    "profile" : "painkiller",
+    "configuration" : "Release",
+    "framework"     : "net6.0",
+    "function-name" : "booking-calendar-api",
+    "function-description" : "REST API serverless backend for Booking Calendar App",
+    "package-type"         : "Zip",
+    "function-handler"     : "BookingCalendarApi",
+    "function-memory-size" : 3008,
+    "function-role"        : "arn:aws:iam::027892245062:role/lambda_exec_booking-calendar-api",
+    "function-timeout"     : 30,
+    "function-runtime"     : "dotnet6",
+    "function-architecture" : "arm64",
+    "function-subnets"      : "",
+    "function-security-groups" : "",
+    "tracing-mode"             : "PassThrough",
+    "environment-variables"    : "",
+    "image-tag"                : ""
+}

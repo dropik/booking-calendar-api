@@ -15,13 +15,28 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 
+using Serilog;
+
 using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
 
+builder.Configuration.AddSystemsManager(config =>
+{
+    config.Path = "/booking-calendar/";
+    config.ReloadAfter = TimeSpan.FromMinutes(5);
+    config.Optional = false;
+});
+
+Log.Logger = new LoggerConfiguration().ReadFrom.Configuration(builder.Configuration).CreateLogger();
+
 builder.Services.AddOptions();
 builder.Services.Configure<JWT>(builder.Configuration.GetSection("JWT"));
 builder.Services.Configure<ApiSettings>(builder.Configuration.GetSection("ApiSettings"));
+
+builder.Services.AddAWSLambdaHosting(LambdaEventSource.RestApi);
+
+builder.Services.AddSerilog();
 
 builder.Services.AddAuthentication(options =>
 {
@@ -119,7 +134,14 @@ builder.Services.AddTransient<IPlaceConverter, PlaceConverter>();
 builder.Services.AddTransient<INationConverter, NationConverter>();
 builder.Services.AddTransient<ITrackedRecordsComposer, TrackedRecordsComposer>();
 
+builder.Host.UseSerilog((context, services, configuration) =>
+{
+    configuration.WriteTo.Console();
+});
+
 var app = builder.Build();
+
+app.UseSerilogRequestLogging();
 
 app.UseCors("CorsPolicy");
 
