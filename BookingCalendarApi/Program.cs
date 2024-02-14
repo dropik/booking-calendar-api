@@ -25,7 +25,7 @@ builder.Configuration.AddSystemsManager(config =>
 {
     string version = System.Environment.GetEnvironmentVariable("AWS_LAMBDA_FUNCTION_VERSION") ?? "";
     string stage = version.ToLower() == "$latest" ? "Dev" : "Prod";
-    config.Path = $"/booking-calendar/Dev/";
+    config.Path = $"/booking-calendar/{stage}/";
     config.ReloadAfter = TimeSpan.FromMinutes(5);
     config.Optional = false;
 });
