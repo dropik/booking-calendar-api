@@ -1,0 +1,1059 @@
+[
+ {
+  "file": "BookingCalendarApi.Services/Iperbooking.cs",
+  "find": "private const string GET_ROOM_RATES_URL = \"GetRoomRates.cfm?idhotel={0}&username={1}&password={2}&format=json\";",
+  "replace": "private const string GET_ROOM_RATES_URL = \"GetRoomRates.cfm?idhotel={0}&username={1}&password={2}\";",
+  "tests": "IperbookingTests"
+ },
+ {
+  "file": "BookingCalendarApi.Services/Iperbooking.cs",
+  "find": "private const string GET_BOOKINGS_URL = \"GetBookings.cfm?idhotel={0}&username={1}&password={2}&format=json&arrivalfrom={3}&arrivalto={4}\";",
+  "replace": "private const string GET_BOOKINGS_URL = \"GetBookings.cfm?idhotel={0}&username={1}&password={2}&format=json&arrivalfrom={3}&arrivalto={3}\";",
+  "tests": "IperbookingTests"
+ },
+ {
+  "file": "BookingCalendarApi.Services/Iperbooking.cs",
+  "find": "private const string GET_GUESTS_URL = \"GetGuests.cfm\";",
+  "replace": "private const string GET_GUESTS_URL = \"GetGuest.cfm\";",
+  "tests": "IperbookingTests"
+ },
+ {
+  "file": "BookingCalendarApi.Services/Iperbooking.cs",
+  "find": "string.Format(GET_ROOM_RATES_URL, auth.IdHotel, auth.Username, auth.Password)",
+  "replace": "string.Format(GET_ROOM_RATES_URL, auth.IdHotel, auth.Username, auth.Username)",
+  "tests": "IperbookingTests"
+ },
+ {
+  "file": "BookingCalendarApi.Services/Iperbooking.cs",
+  "find": "if (!exactPeriod)",
+  "replace": "if (exactPeriod)",
+  "tests": "IperbookingTests"
+ },
+ {
+  "file": "BookingCalendarApi.Services/Iperbooking.cs",
+  "find": "fromDate = fromDate.AddDays(-30);",
+  "replace": "fromDate = fromDate.AddDays(-29);",
+  "tests": "IperbookingTests"
+ },
+ {
+  "file": "BookingCalendarApi.Services/Iperbooking.cs",
+  "find": "toDate = toDate.AddDays(30);",
+  "replace": "toDate = toDate.AddDays(29);",
+  "tests": "IperbookingTests"
+ },
+ {
+  "file": "BookingCalendarApi.Services/Iperbooking.cs",
+  "find": "var arrivalFrom = fromDate.ToString(\"yyyyMMdd\");",
+  "replace": "var arrivalFrom = fromDate.ToString(\"yyyy-MM-dd\");",
+  "tests": "IperbookingTests"
+ },
+ {
+  "file": "BookingCalendarApi.Services/Iperbooking.cs",
+  "find": "var arrivalTo = toDate.ToString(\"yyyyMMdd\");",
+  "replace": "var arrivalTo = toDate.ToString(\"yyyy-MM-dd\");",
+  "tests": "IperbookingTests"
+ },
+ {
+  "file": "BookingCalendarApi.Services/Iperbooking.cs",
+  "find": "string.Format(GET_BOOKINGS_URL, auth.IdHotel, auth.Username, auth.Password, arrivalFrom, arrivalTo)",
+  "replace": "string.Format(GET_BOOKINGS_URL, auth.IdHotel, auth.Username, auth.Password, arrivalTo, arrivalFrom)",
+  "tests": "IperbookingTests"
+ },
+ {
+  "file": "BookingCalendarApi.Services/Iperbooking.cs",
+  "find": "new GuestsRequest(int.Parse(auth.IdHotel), auth.Username, auth.Password, reservationId)",
+  "replace": "new GuestsRequest(int.Parse(auth.IdHotel), auth.Username, auth.Password, \"\")",
+  "tests": "IperbookingTests"
+ },
+ {
+  "file": "BookingCalendarApi.Services/Iperbooking.cs",
+  "find": "new StringContent(json, Encoding.UTF8, \"application/json\")",
+  "replace": "new StringContent(json, Encoding.UTF8, \"text/plain\")",
+  "tests": "IperbookingTests"
+ },
+ {
+  "file": "BookingCalendarApi.Services/Iperbooking.cs",
+  "find": "await _client.PostAsync(GET_GUESTS_URL, body)",
+  "replace": "await _client.PutAsync(GET_GUESTS_URL, body)",
+  "tests": "IperbookingTests"
+ },
+ {
+  "file": "BookingCalendarApi.Services/Iperbooking.cs",
+  "find": "if (!response.IsSuccessStatusCode)",
+  "replace": "if (false)",
+  "tests": "IperbookingTests",
+  "occurrence": 1
+ },
+ {
+  "file": "BookingCalendarApi.Services/Iperbooking.cs",
+  "find": "if (!response.IsSuccessStatusCode)",
+  "replace": "if (false)",
+  "tests": "IperbookingTests",
+  "occurrence": 2
+ },
+ {
+  "file": "BookingCalendarApi.Services/Iperbooking.cs",
+  "find": "if (!response.IsSuccessStatusCode)",
+  "replace": "if (false)",
+  "tests": "IperbookingTests",
+  "occurrence": 3
+ },
+ {
+  "file": "BookingCalendarApi.Services/Iperbooking.cs",
+  "find": "PropertyNameCaseInsensitive = true",
+  "replace": "PropertyNameCaseInsensitive = false",
+  "tests": "IperbookingTests",
+  "occurrence": 1
+ },
+ {
+  "file": "BookingCalendarApi.Services/Iperbooking.cs",
+  "find": "PropertyNameCaseInsensitive = true",
+  "replace": "PropertyNameCaseInsensitive = false",
+  "tests": "IperbookingTests",
+  "occurrence": 2
+ },
+ {
+  "file": "BookingCalendarApi.Services/Iperbooking.cs",
+  "find": "PropertyNameCaseInsensitive = true",
+  "replace": "PropertyNameCaseInsensitive = false",
+  "tests": "IperbookingTests",
+  "occurrence": 3
+ },
+ {
+  "file": "BookingCalendarApi.Services/Iperbooking.cs",
+  "find": "return poco ?? throw new BookingCalendarException(BCError.IPERBOOKING_ERROR, UNABLE_GET_DATA_MESSAGE);",
+  "replace": "return poco;",
+  "tests": "IperbookingTests",
+  "occurrence": 1
+ },
+ {
+  "file": "BookingCalendarApi.Services/Iperbooking.cs",
+  "find": "return poco ?? throw new BookingCalendarException(BCError.IPERBOOKING_ERROR, UNABLE_GET_DATA_MESSAGE);",
+  "replace": "return poco;",
+  "tests": "IperbookingTests",
+  "occurrence": 2
+ },
+ {
+  "file": "BookingCalendarApi.Services/Iperbooking.cs",
+  "find": "return poco ?? throw new BookingCalendarException(BCError.IPERBOOKING_ERROR, UNABLE_GET_DATA_MESSAGE);",
+  "replace": "return poco;",
+  "tests": "IperbookingTests",
+  "occurrence": 3
+ },
+ {
+  "file": "BookingCalendarApi.Services/Iperbooking.cs",
+  "find": "catch (Exception)\n                        {\n                            throw new BookingCalendarException(BCError.IPERBOOKING_ERROR",
+  "replace": "catch (ArgumentException)\n                        {\n                            throw new BookingCalendarException(BCError.IPERBOOKING_ERROR",
+  "tests": "IperbookingTests",
+  "occurrence": 1
+ },
+ {
+  "file": "BookingCalendarApi.Services/Iperbooking.cs",
+  "find": "catch (Exception)\n                        {\n                            throw new BookingCalendarException(BCError.IPERBOOKING_ERROR",
+  "replace": "catch (ArgumentException)\n                        {\n                            throw new BookingCalendarException(BCError.IPERBOOKING_ERROR",
+  "tests": "IperbookingTests",
+  "occurrence": 2
+ },
+ {
+  "file": "BookingCalendarApi.Services/Iperbooking.cs",
+  "find": "catch (Exception)\n                        {\n                            throw new BookingCalendarException(BCError.IPERBOOKING_ERROR",
+  "replace": "catch (ArgumentException)\n                        {\n                            throw new BookingCalendarException(BCError.IPERBOOKING_ERROR",
+  "tests": "IperbookingTests",
+  "occurrence": 3
+ },
+ {
+  "file": "BookingCalendarApi.Services/Iperbooking.cs",
+  "find": "} catch(HttpRequestException exception)",
+  "replace": "} catch(TaskCanceledException exception)",
+  "tests": "IperbookingTests",
+  "occurrence": 1
+ },
+ {
+  "file": "BookingCalendarApi.Services/Iperbooking.cs",
+  "find": "} catch(HttpRequestException exception)",
+  "replace": "} catch(TaskCanceledException exception)",
+  "tests": "IperbookingTests",
+  "occurrence": 2
+ },
+ {
+  "file": "BookingCalendarApi.Services/Iperbooking.cs",
+  "find": "catch (HttpRequestException exception)",
+  "replace": "catch (TaskCanceledException exception)",
+  "tests": "IperbookingTests"
+ },
+ {
+  "file": "BookingCalendarApi.Services/Iperbooking.cs",
+  "find": "string.Format(FAILED_ESTABLISH_CONNECTION_MESSAGE, exception.Message)",
+  "replace": "FAILED_ESTABLISH_CONNECTION_MESSAGE",
+  "tests": "IperbookingTests",
+  "occurrence": 1
+ },
+ {
+  "file": "BookingCalendarApi.Services/Iperbooking.cs",
+  "find": "BCError.CONNECTION_ERROR",
+  "replace": "BCError.IPERBOOKING_ERROR",
+  "tests": "IperbookingTests",
+  "occurrence": 2
+ },
+ {
+  "file": "BookingCalendarApi.Services/Iperbooking.cs",
+  "find": "BCError.CONNECTION_ERROR",
+  "replace": "BCError.IPERBOOKING_ERROR",
+  "tests": "IperbookingTests",
+  "occurrence": 3
+ },
+ {
+  "file": "BookingCalendarApi.Services/AlloggiatiServiceSession.cs",
+  "find": "Utente = credentials.Utente,\n                        Password = credentials.Password,",
+  "replace": "Utente = credentials.Password,\n                        Password = credentials.Password,",
+  "tests": "AlloggiatiServiceSessionTests"
+ },
+ {
+  "file": "BookingCalendarApi.Services/AlloggiatiServiceSession.cs",
+  "find": "Password = credentials.Password,\n                        WsKey",
+  "replace": "Password = \"\",\n                        WsKey",
+  "tests": "AlloggiatiServiceSessionTests"
+ },
+ {
+  "file": "BookingCalendarApi.Services/AlloggiatiServiceSession.cs",
+  "find": "WsKey = credentials.WsKey,",
+  "replace": "WsKey = \"\",",
+  "tests": "AlloggiatiServiceSessionTests"
+ },
+ {
+  "file": "BookingCalendarApi.Services/AlloggiatiServiceSession.cs",
+  "find": "if (!response.Body.Result.Esito)",
+  "replace": "if (false)",
+  "tests": "AlloggiatiServiceSessionTests"
+ },
+ {
+  "file": "BookingCalendarApi.Services/AlloggiatiServiceSession.cs",
+  "find": "throw new BookingCalendarException(BCError.POLICE_SERVICE_ERROR, response.Body.Result.ErroreDettaglio);",
+  "replace": "throw new BookingCalendarException(BCError.POLICE_SERVICE_ERROR, \"\");",
+  "tests": "AlloggiatiServiceSessionTests"
+ },
+ {
+  "file": "BookingCalendarApi.Services/AlloggiatiServiceSession.cs",
+  "find": "Token = response.Body.GenerateTokenResult.Token;",
+  "replace": "",
+  "tests": "AlloggiatiServiceSessionTests"
+ },
+ {
+  "file": "BookingCalendarApi.Services/AlloggiatiServiceSession.cs",
+  "find": "if (test)",
+  "replace": "if (!test)",
+  "tests": "AlloggiatiServiceSessionTests"
+ },
+ {
+  "file": "BookingCalendarApi.Services/AlloggiatiServiceSession.cs",
+  "find": "array.AddRange(data);",
+  "replace": "",
+  "tests": "AlloggiatiServiceSessionTests"
+ },
+ {
+  "file": "BookingCalendarApi.Services/AlloggiatiServiceSession.cs",
+  "find": "if (!response.Body.TestResult.Esito)",
+  "replace": "if (false)",
+  "tests": "AlloggiatiServiceSessionTests"
+ },
+ {
+  "file": "BookingCalendarApi.Services/AlloggiatiServiceSession.cs",
+  "find": "BCError.POLICE_SERVICE_ERROR, response.Body.TestResult.ErroreDettaglio",
+  "replace": "BCError.POLICE_SERVICE_ERROR, \"\"",
+  "tests": "AlloggiatiServiceSessionTests"
+ },
+ {
+  "file": "BookingCalendarApi.Services/AlloggiatiServiceSession.cs",
+  "find": "if (!result.Esito)",
+  "replace": "if (false)",
+  "tests": "AlloggiatiServiceSessionTests",
+  "occurrence": 1
+ },
+ {
+  "file": "BookingCalendarApi.Services/AlloggiatiServiceSession.cs",
+  "find": "if (!result.Esito)",
+  "replace": "if (false)",
+  "tests": "AlloggiatiServiceSessionTests",
+  "occurrence": 2
+ },
+ {
+  "file": "BookingCalendarApi.Services/AlloggiatiServiceSession.cs",
+  "find": "BCError.POLICE_SERVICE_ERROR, result.ErroreDettaglio",
+  "replace": "BCError.POLICE_SERVICE_ERROR, \"\"",
+  "tests": "AlloggiatiServiceSessionTests",
+  "occurrence": 1
+ },
+ {
+  "file": "BookingCalendarApi.Services/AlloggiatiServiceSession.cs",
+  "find": "BCError.POLICE_SERVICE_ERROR, result.ErroreDettaglio",
+  "replace": "BCError.POLICE_SERVICE_ERROR, \"\"",
+  "tests": "AlloggiatiServiceSessionTests",
+  "occurrence": 2
+ },
+ {
+  "file": "BookingCalendarApi.Services/AlloggiatiServiceSession.cs",
+  "find": "if (!response.Body.SendResult.Esito)",
+  "replace": "if (false)",
+  "tests": "AlloggiatiServiceSessionTests"
+ },
+ {
+  "file": "BookingCalendarApi.Services/AlloggiatiServiceSession.cs",
+  "find": "BCError.POLICE_SERVICE_ERROR, response.Body.SendResult.ErroreDettaglio",
+  "replace": "BCError.POLICE_SERVICE_ERROR, \"\"",
+  "tests": "AlloggiatiServiceSessionTests"
+ },
+ {
+  "file": "BookingCalendarApi.Services/AlloggiatiServiceSession.cs",
+  "find": "Token = Token,\n                            ElencoSchedine = array,",
+  "replace": "Token = \"\",\n                            ElencoSchedine = array,",
+  "tests": "AlloggiatiServiceSessionTests",
+  "occurrence": 1
+ },
+ {
+  "file": "BookingCalendarApi.Services/AlloggiatiServiceSession.cs",
+  "find": "Token = Token,\n                            ElencoSchedine = array,",
+  "replace": "Token = \"\",\n                            ElencoSchedine = array,",
+  "tests": "AlloggiatiServiceSessionTests",
+  "occurrence": 2
+ },
+ {
+  "file": "BookingCalendarApi.Services/AlloggiatiServiceSession.cs",
+  "find": "Utente = credentials.Utente,\n                            Token = Token,\n                            ElencoSchedine",
+  "replace": "Utente = \"\",\n                            Token = Token,\n                            ElencoSchedine",
+  "tests": "AlloggiatiServiceSessionTests",
+  "occurrence": 1
+ },
+ {
+  "file": "BookingCalendarApi.Services/AlloggiatiServiceSession.cs",
+  "find": "Utente = credentials.Utente,\n                            Token = Token,\n                            ElencoSchedine",
+  "replace": "Utente = \"\",\n                            Token = Token,\n                            ElencoSchedine",
+  "tests": "AlloggiatiServiceSessionTests",
+  "occurrence": 2
+ },
+ {
+  "file": "BookingCalendarApi.Services/AlloggiatiServiceSession.cs",
+  "find": "Data = date,",
+  "replace": "",
+  "tests": "AlloggiatiServiceSessionTests"
+ },
+ {
+  "file": "BookingCalendarApi.Services/AlloggiatiServiceSession.cs",
+  "find": "Token = Token,\n                        Data",
+  "replace": "Token = \"\",\n                        Data",
+  "tests": "AlloggiatiServiceSessionTests"
+ },
+ {
+  "file": "BookingCalendarApi.Services/AlloggiatiServiceSession.cs",
+  "find": "Utente = credentials.Utente,\n                        Token = Token,\n                        Data",
+  "replace": "Utente = \"\",\n                        Token = Token,\n                        Data",
+  "tests": "AlloggiatiServiceSessionTests"
+ },
+ {
+  "file": "BookingCalendarApi.Services/AlloggiatiServiceSession.cs",
+  "find": "if (!response.Body.RicevutaResult.Esito)",
+  "replace": "if (false)",
+  "tests": "AlloggiatiServiceSessionTests"
+ },
+ {
+  "file": "BookingCalendarApi.Services/AlloggiatiServiceSession.cs",
+  "find": "BCError.POLICE_SERVICE_ERROR, response.Body.RicevutaResult.ErroreDettaglio",
+  "replace": "BCError.POLICE_SERVICE_ERROR, \"\"",
+  "tests": "AlloggiatiServiceSessionTests"
+ },
+ {
+  "file": "BookingCalendarApi.Services/AlloggiatiServiceSession.cs",
+  "find": "return response.Body.PDF;",
+  "replace": "return new byte[0];",
+  "tests": "AlloggiatiServiceSessionTests"
+ },
+ {
+  "file": "BookingCalendarApi.Services/AlloggiatiServiceSession.cs",
+  "find": "await GetTable(Models.Clients.Police.TipoTabella.Luoghi);",
+  "replace": "await GetTable(Models.Clients.Police.TipoTabella.Tipi_Documento);",
+  "tests": "AlloggiatiServiceSessionTests"
+ },
+ {
+  "file": "BookingCalendarApi.Services/AlloggiatiServiceSession.cs",
+  "find": "result = csvReader.GetRecords<Place>().ToList();",
+  "replace": "",
+  "tests": "AlloggiatiServiceSessionTests"
+ },
+ {
+  "file": "BookingCalendarApi.Services/AlloggiatiServiceSession.cs",
+  "find": "Token = Token,\n                        Tipo",
+  "replace": "Token = \"\",\n                        Tipo",
+  "tests": "AlloggiatiServiceSessionTests"
+ },
+ {
+  "file": "BookingCalendarApi.Services/AlloggiatiServiceSession.cs",
+  "find": "Utente = credentials.Utente,\n                        Token = Token,\n                        Tipo",
+  "replace": "Utente = \"\",\n                        Token = Token,\n                        Tipo",
+  "tests": "AlloggiatiServiceSessionTests"
+ },
+ {
+  "file": "BookingCalendarApi.Services/AlloggiatiServiceSession.cs",
+  "find": "if (!response.Body.TabellaResult.Esito)",
+  "replace": "if (false)",
+  "tests": "AlloggiatiServiceSessionTests"
+ },
+ {
+  "file": "BookingCalendarApi.Services/AlloggiatiServiceSession.cs",
+  "find": "BCError.POLICE_SERVICE_ERROR, response.Body.TabellaResult.ErroreDettaglio",
+  "replace": "BCError.POLICE_SERVICE_ERROR, \"\"",
+  "tests": "AlloggiatiServiceSessionTests"
+ },
+ {
+  "file": "BookingCalendarApi.Services/AlloggiatiServiceSession.cs",
+  "find": "catch (CommunicationException exception)",
+  "replace": "catch (TimeoutException exception)",
+  "tests": "AlloggiatiServiceSessionTests",
+  "occurrence": 1
+ },
+ {
+  "file": "BookingCalendarApi.Services/AlloggiatiServiceSession.cs",
+  "find": "catch (CommunicationException exception)",
+  "replace": "catch (TimeoutException exception)",
+  "tests": "AlloggiatiServiceSessionTests",
+  "occurrence": 2
+ },
+ {
+  "file": "BookingCalendarApi.Services/AlloggiatiServiceSession.cs",
+  "find": "catch (CommunicationException exception)",
+  "replace": "catch (TimeoutException exception)",
+  "tests": "AlloggiatiServiceSessionTests",
+  "occurrence": 3
+ },
+ {
+  "file": "BookingCalendarApi.Services/AlloggiatiServiceSession.cs",
+  "find": "catch (CommunicationException exception)",
+  "replace": "catch (TimeoutException exception)",
+  "tests": "AlloggiatiServiceSessionTests",
+  "occurrence": 4
+ },
+ {
+  "file": "BookingCalendarApi.Services/AlloggiatiServiceSession.cs",
+  "find": "BCError.CONNECTION_ERROR, $\"Failed establish connection to police service: {exception.Message}\"",
+  "replace": "BCError.CONNECTION_ERROR, \"\"",
+  "tests": "AlloggiatiServiceSessionTests",
+  "occurrence": 1
+ },
+ {
+  "file": "BookingCalendarApi.Services/AlloggiatiServiceSession.cs",
+  "find": "BCError.CONNECTION_ERROR",
+  "replace": "BCError.SERVER_ERROR",
+  "tests": "AlloggiatiServiceSessionTests",
+  "occurrence": 2
+ },
+ {
+  "file": "BookingCalendarApi.Services/AlloggiatiServiceSession.cs",
+  "find": "BCError.CONNECTION_ERROR",
+  "replace": "BCError.SERVER_ERROR",
+  "tests": "AlloggiatiServiceSessionTests",
+  "occurrence": 3
+ },
+ {
+  "file": "BookingCalendarApi.Services/AlloggiatiServiceSession.cs",
+  "find": "BCError.CONNECTION_ERROR",
+  "replace": "BCError.SERVER_ERROR",
+  "tests": "AlloggiatiServiceSessionTests",
+  "occurrence": 4
+ },
+ {
+  "file": "BookingCalendarApi.Services/IstatService.cs",
+  "find": "Username = credentials.Username,\n                    Password = credentials.Password,\n                    Struttura = credentials.Struttura,\n                });",
+  "replace": "Username = credentials.Username,\n                    Password = credentials.Password,\n                });",
+  "tests": "IstatServiceTests"
+ },
+ {
+  "file": "BookingCalendarApi.Services/IstatService.cs",
+  "find": ".OrderBy(item => item.DataMovimentazione.ToString(\"yyyy-MM-dd\"))",
+  "replace": "",
+  "tests": "IstatServiceTests",
+  "skip": "behaviour with several uploads is unclear: ascending order picks the oldest upload (reported as suspicious)"
+ },
+ {
+  "file": "BookingCalendarApi.Services/IstatService.cs",
+  "find": "var date = lastUpload.DataMovimentazione.AddDays(1);",
+  "replace": "var date = lastUpload.DataMovimentazione;",
+  "tests": "IstatServiceTests"
+ },
+ {
+  "file": "BookingCalendarApi.Services/IstatService.cs",
+  "find": "_bookingsProvider.Get(date.ToString(\"yyyy-MM-dd\"), date.AddDays(1).ToString(\"yyyy-MM-dd\"), exactPeriod: false)",
+  "replace": "_bookingsProvider.Get(date.ToString(\"yyyy-MM-dd\"), date.AddDays(1).ToString(\"yyyy-MM-dd\"), exactPeriod: true)",
+  "tests": "IstatServiceTests"
+ },
+ {
+  "file": "BookingCalendarApi.Services/IstatService.cs",
+  "find": "_bookingsProvider.Get(date.ToString(\"yyyy-MM-dd\"), date.AddDays(1).ToString(\"yyyy-MM-dd\"),",
+  "replace": "_bookingsProvider.Get(date.ToString(\"yyyy-MM-dd\"), date.AddDays(2).ToString(\"yyyy-MM-dd\"),",
+  "tests": "IstatServiceTests"
+ },
+ {
+  "file": "BookingCalendarApi.Services/IstatService.cs",
+  "find": "var prevTotal = lastUpload.TotalePresenti;",
+  "replace": "var prevTotal = 0;",
+  "tests": "IstatServiceTests"
+ },
+ {
+  "file": "BookingCalendarApi.Services/IstatService.cs",
+  "find": ".Where(room => room.Arrival == dateStr || room.Departure == dateStr)",
+  "replace": ".Where(room => room.Arrival == dateStr)",
+  "tests": "IstatServiceTests"
+ },
+ {
+  "file": "BookingCalendarApi.Services/IstatService.cs",
+  "find": ".Where(room => room.Arrival == dateStr || room.Departure == dateStr)",
+  "replace": ".Where(room => room.Departure == dateStr)",
+  "tests": "IstatServiceTests"
+ },
+ {
+  "file": "BookingCalendarApi.Services/IstatService.cs",
+  "find": ".Where(room => room.Arrival == dateStr || room.Departure == dateStr)",
+  "replace": "",
+  "tests": "IstatServiceTests"
+ },
+ {
+  "file": "BookingCalendarApi.Services/IstatService.cs",
+  "find": "guest.BirthCountry != null &&\n",
+  "replace": "true &&\n",
+  "tests": "IstatServiceTests"
+ },
+ {
+  "file": "BookingCalendarApi.Services/IstatService.cs",
+  "find": "guest.BirthCountry.Trim() != \"\" &&",
+  "replace": "guest.BirthCountry != \"\" &&",
+  "tests": "IstatServiceTests"
+ },
+ {
+  "file": "BookingCalendarApi.Services/IstatService.cs",
+  "find": "((guest.BirthCountry != \"IT\") || (guest.BirthCounty != null && guest.BirthCounty.Trim() != \"\"))",
+  "replace": "true",
+  "tests": "IstatServiceTests"
+ },
+ {
+  "file": "BookingCalendarApi.Services/IstatService.cs",
+  "find": "(guest.BirthCounty != null && guest.BirthCounty.Trim() != \"\")",
+  "replace": "(guest.BirthCounty != null)",
+  "tests": "IstatServiceTests"
+ },
+ {
+  "file": "BookingCalendarApi.Services/IstatService.cs",
+  "find": "IsItaly = guest.BirthCountry == \"IT\",",
+  "replace": "IsItaly = true,",
+  "tests": "IstatServiceTests"
+ },
+ {
+  "file": "BookingCalendarApi.Services/IstatService.cs",
+  "find": "Targa = guest.BirthCountry == \"IT\"\n                                ? guest.BirthCounty",
+  "replace": "Targa = guest.BirthCountry == \"IT\"\n                                ? guest.BirthCountry",
+  "tests": "IstatServiceTests"
+ },
+ {
+  "file": "BookingCalendarApi.Services/IstatService.cs",
+  "find": "nations.SingleOrDefault(nation => nation.Iso == guest.BirthCountry)?.Description ?? \"\"",
+  "replace": "nations.SingleOrDefault(nation => nation.Iso == guest.BirthCountry)?.Description ?? \"-\"",
+  "tests": "IstatServiceTests"
+ },
+ {
+  "file": "BookingCalendarApi.Services/IstatService.cs",
+  "find": "DecapitalizeCountryName(nations.SingleOrDefault",
+  "replace": "(nations.SingleOrDefault",
+  "tests": "IstatServiceTests"
+ },
+ {
+  "file": "BookingCalendarApi.Services/IstatService.cs",
+  "find": ".GroupBy(guest => guest.Targa)",
+  "replace": ".GroupBy(guest => guest.IsItaly)",
+  "tests": "IstatServiceTests"
+ },
+ {
+  "file": "BookingCalendarApi.Services/IstatService.cs",
+  "find": "Targa = group.Key,",
+  "replace": "Targa = group.First().Targa.ToLower(),",
+  "tests": "IstatServiceTests"
+ },
+ {
+  "file": "BookingCalendarApi.Services/IstatService.cs",
+  "find": "Arrivi = group.Where(item => item.Arrival == dateStr).Count(),",
+  "replace": "Arrivi = group.Count(),",
+  "tests": "IstatServiceTests"
+ },
+ {
+  "file": "BookingCalendarApi.Services/IstatService.cs",
+  "find": "Partenze = group.Where(item => item.Departure == dateStr).Count()",
+  "replace": "Partenze = group.Count()",
+  "tests": "IstatServiceTests"
+ },
+ {
+  "file": "BookingCalendarApi.Services/IstatService.cs",
+  "find": "Date = date.ToString(\"yyyy-MM-dd\"),",
+  "replace": "Date = date.ToString(\"yyyyMMdd\"),",
+  "tests": "IstatServiceTests"
+ },
+ {
+  "file": "BookingCalendarApi.Services/IstatService.cs",
+  "find": "catch (FaultException exception)\n            {\n                throw new BookingCalendarException(BCError.ISTAT_ERROR, $\"Error occured while retreiving data from ISTAT: {exception.Message}\");",
+  "replace": "catch (FaultException exception)\n            {\n                throw new BookingCalendarException(BCError.CONNECTION_ERROR, \"\");",
+  "tests": "IstatServiceTests"
+ },
+ {
+  "file": "BookingCalendarApi.Services/IstatService.cs",
+  "find": "BCError.CONNECTION_ERROR, $\"Failed establish connection with ISTAT service: {exception.Message}\");",
+  "replace": "BCError.SERVER_ERROR, \"\");",
+  "tests": "IstatServiceTests",
+  "occurrence": 1
+ },
+ {
+  "file": "BookingCalendarApi.Services/IstatService.cs",
+  "find": "var totalArrived = movements.Movements.Sum(movement => movement.Arrivi);",
+  "replace": "var totalArrived = movements.Movements.Max(movement => movement.Arrivi);",
+  "tests": "IstatServiceTests"
+ },
+ {
+  "file": "BookingCalendarApi.Services/IstatService.cs",
+  "find": "var totalDepartured = movements.Movements.Sum(movement => movement.Partenze);",
+  "replace": "var totalDepartured = movements.Movements.Max(movement => movement.Partenze);",
+  "tests": "IstatServiceTests"
+ },
+ {
+  "file": "BookingCalendarApi.Services/IstatService.cs",
+  "find": "var total = movements.PrevTotal + totalArrived - totalDepartured;",
+  "replace": "var total = movements.PrevTotal + totalArrived;",
+  "tests": "IstatServiceTests"
+ },
+ {
+  "file": "BookingCalendarApi.Services/IstatService.cs",
+  "find": "var total = movements.PrevTotal + totalArrived - totalDepartured;",
+  "replace": "var total = totalArrived - totalDepartured;",
+  "tests": "IstatServiceTests"
+ },
+ {
+  "file": "BookingCalendarApi.Services/IstatService.cs",
+  "find": "if (movements.Movements.GroupBy(m => m.Targa).Any(g => g.Count() > 1))",
+  "replace": "if (false)",
+  "tests": "IstatServiceTests"
+ },
+ {
+  "file": "BookingCalendarApi.Services/IstatService.cs",
+  "find": "if (movement.Arrivi < 0)",
+  "replace": "if (movement.Arrivi < -1)",
+  "tests": "IstatServiceTests"
+ },
+ {
+  "file": "BookingCalendarApi.Services/IstatService.cs",
+  "find": "if (movement.Partenze < 0)",
+  "replace": "if (movement.Partenze < -1)",
+  "tests": "IstatServiceTests"
+ },
+ {
+  "file": "BookingCalendarApi.Services/IstatService.cs",
+  "find": "if (movement.Arrivi == 0 && movement.Partenze == 0)",
+  "replace": "if (movement.Arrivi == 0 || movement.Partenze == 0)",
+  "tests": "IstatServiceTests"
+ },
+ {
+  "file": "BookingCalendarApi.Services/IstatService.cs",
+  "find": "if (movement.Arrivi == 0 && movement.Partenze == 0)",
+  "replace": "if (false)",
+  "tests": "IstatServiceTests"
+ },
+ {
+  "file": "BookingCalendarApi.Services/IstatService.cs",
+  "find": "Italia = m.Italia,",
+  "replace": "Italia = true,",
+  "tests": "IstatServiceTests"
+ },
+ {
+  "file": "BookingCalendarApi.Services/IstatService.cs",
+  "find": "Targa = m.Targa.ToUpperInvariant(),",
+  "replace": "Targa = m.Targa,",
+  "tests": "IstatServiceTests"
+ },
+ {
+  "file": "BookingCalendarApi.Services/IstatService.cs",
+  "find": "Arrivi = m.Arrivi,",
+  "replace": "Arrivi = 0,",
+  "tests": "IstatServiceTests"
+ },
+ {
+  "file": "BookingCalendarApi.Services/IstatService.cs",
+  "find": "Partenze = m.Partenze,",
+  "replace": "Partenze = 0,",
+  "tests": "IstatServiceTests"
+ },
+ {
+  "file": "BookingCalendarApi.Services/IstatService.cs",
+  "find": "Username = credentials.Username,\n                    Password = credentials.Password,\n                    Struttura = credentials.Struttura,\n                    C59",
+  "replace": "Username = credentials.Password,\n                    Password = credentials.Username,\n                    Struttura = 0,\n                    C59",
+  "tests": "IstatServiceTests"
+ },
+ {
+  "file": "BookingCalendarApi.Services/IstatService.cs",
+  "find": "DataMovimentazione = DateTime.ParseExact(movements.Date, \"yyyy-MM-dd\", null),",
+  "replace": "DataMovimentazione = DateTime.Today,",
+  "tests": "IstatServiceTests"
+ },
+ {
+  "file": "BookingCalendarApi.Services/IstatService.cs",
+  "find": "DataMovimentazioneSpecified = true,",
+  "replace": "DataMovimentazioneSpecified = false,",
+  "tests": "IstatServiceTests"
+ },
+ {
+  "file": "BookingCalendarApi.Services/IstatService.cs",
+  "find": "EsercizioAperto = true,",
+  "replace": "EsercizioAperto = false,",
+  "tests": "IstatServiceTests"
+ },
+ {
+  "file": "BookingCalendarApi.Services/IstatService.cs",
+  "find": "TotaleArrivi = totalArrived,",
+  "replace": "TotaleArrivi = 0,",
+  "tests": "IstatServiceTests"
+ },
+ {
+  "file": "BookingCalendarApi.Services/IstatService.cs",
+  "find": "TotalePartenze = totalDepartured,",
+  "replace": "TotalePartenze = 0,",
+  "tests": "IstatServiceTests"
+ },
+ {
+  "file": "BookingCalendarApi.Services/IstatService.cs",
+  "find": "TotalePresenti = total,",
+  "replace": "TotalePresenti = 0,",
+  "tests": "IstatServiceTests"
+ },
+ {
+  "file": "BookingCalendarApi.Services/IstatService.cs",
+  "find": "UnitaAbitativeDisponibili = 11,",
+  "replace": "UnitaAbitativeDisponibili = 10,",
+  "tests": "IstatServiceTests"
+ },
+ {
+  "file": "BookingCalendarApi.Services/IstatService.cs",
+  "find": "UnitaAbitativeOccupate = 0,",
+  "replace": "UnitaAbitativeOccupate = 1,",
+  "tests": "IstatServiceTests"
+ },
+ {
+  "file": "BookingCalendarApi.Services/IstatService.cs",
+  "find": "Movimenti = movements.Movements.ToArray(),",
+  "replace": "Movimenti = new MovimentoWSPO[0],",
+  "tests": "IstatServiceTests"
+ },
+ {
+  "file": "BookingCalendarApi.Services/IstatService.cs",
+  "find": "if (_apiSettings.Environment == Models.Configurations.Environment.Production)",
+  "replace": "if (true)",
+  "tests": "IstatServiceTests"
+ },
+ {
+  "file": "BookingCalendarApi.Services/IstatService.cs",
+  "find": "if (_apiSettings.Environment == Models.Configurations.Environment.Production)",
+  "replace": "if (false)",
+  "tests": "IstatServiceTests"
+ },
+ {
+  "file": "BookingCalendarApi.Services/IstatService.cs",
+  "find": "BCError.ISTAT_ERROR, $\"Error occured while sending data to ISTAT: {exception.Message}\"",
+  "replace": "BCError.CONNECTION_ERROR, \"\"",
+  "tests": "IstatServiceTests"
+ },
+ {
+  "file": "BookingCalendarApi.Services/IstatService.cs",
+  "find": "BCError.CONNECTION_ERROR, $\"Failed establish connection with ISTAT service: {exception.Message}\");",
+  "replace": "BCError.SERVER_ERROR, \"\");",
+  "tests": "IstatServiceTests",
+  "occurrence": 2
+ },
+ {
+  "file": "BookingCalendarApi.Services/IstatService.cs",
+  "find": "return countries.Distinct().Select(c => DecapitalizeCountryName(c)).OrderBy(c => c).ToList();",
+  "replace": "return countries.Select(c => DecapitalizeCountryName(c)).OrderBy(c => c).ToList();",
+  "tests": "IstatServiceTests",
+  "skip": "equivalent here: nation descriptions are unique in the repository used by the tests; Distinct only matters for duplicated descriptions"
+ },
+ {
+  "file": "BookingCalendarApi.Services/IstatService.cs",
+  "find": "return countries.Distinct().Select(c => DecapitalizeCountryName(c)).OrderBy(c => c).ToList();",
+  "replace": "return countries.Distinct().Select(c => DecapitalizeCountryName(c)).ToList();",
+  "tests": "IstatServiceTests"
+ },
+ {
+  "file": "BookingCalendarApi.Services/IstatService.cs",
+  "find": "if (name.Length <= 3)",
+  "replace": "if (name.Length <= 2)",
+  "tests": "IstatServiceTests"
+ },
+ {
+  "file": "BookingCalendarApi.Services/IstatService.cs",
+  "find": "if (name.Length <= 3)",
+  "replace": "if (name.Length < 3)",
+  "tests": "IstatServiceTests"
+ },
+ {
+  "file": "BookingCalendarApi.Services/IstatService.cs",
+  "find": "if (item == \"E\")",
+  "replace": "if (item == \"X\")",
+  "tests": "IstatServiceTests"
+ },
+ {
+  "file": "BookingCalendarApi.Services/IstatService.cs",
+  "find": "result += \"e \";",
+  "replace": "result += \"E \";",
+  "tests": "IstatServiceTests"
+ },
+ {
+  "file": "BookingCalendarApi.Services/IstatService.cs",
+  "find": "result += $\"{item[0]}{item.Substring(1).ToLowerInvariant()} \";",
+  "replace": "result += $\"{item} \";",
+  "tests": "IstatServiceTests"
+ },
+ {
+  "file": "BookingCalendarApi.Services/IstatService.cs",
+  "find": "result = result.Remove(result.Length - 1);",
+  "replace": "",
+  "tests": "IstatServiceTests"
+ },
+ {
+  "file": "BookingCalendarApi.Services/IstatService.cs",
+  "find": "result += \"'\";",
+  "replace": "result += \"\";",
+  "tests": "IstatServiceTests"
+ },
+ {
+  "file": "BookingCalendarApi.Services/IstatService.cs",
+  "find": "result += $\"'{$\"{item[0]}\".ToUpperInvariant()}{item.Substring(1)}\";",
+  "replace": "result += $\"'{item}\";",
+  "tests": "IstatServiceTests"
+ },
+ {
+  "file": "BookingCalendarApi.Services/IstatService.cs",
+  "find": "result += \".\";",
+  "replace": "result += \"\";",
+  "tests": "IstatServiceTests"
+ },
+ {
+  "file": "BookingCalendarApi.Services/IstatService.cs",
+  "find": "result += $\".{$\"{item[0]}\".ToUpperInvariant()}{item.Substring(1)}\";",
+  "replace": "result += $\".{item}\";",
+  "tests": "IstatServiceTests"
+ },
+ {
+  "file": "BookingCalendarApi.Services/PoliceService.cs",
+  "find": "await _session.Open();\n            var pdf",
+  "replace": "var pdf",
+  "tests": "PoliceServiceTests"
+ },
+ {
+  "file": "BookingCalendarApi.Services/PoliceService.cs",
+  "find": "DateTime.ParseExact(date, \"yyyy-MM-dd\", null));\n            return new PoliceRicevutaResponse",
+  "replace": "DateTime.Today);\n            return new PoliceRicevutaResponse",
+  "tests": "PoliceServiceTests"
+ },
+ {
+  "file": "BookingCalendarApi.Services/PoliceService.cs",
+  "find": "Pdf = pdf,",
+  "replace": "",
+  "tests": "PoliceServiceTests"
+ },
+ {
+  "file": "BookingCalendarApi.Services/PoliceService.cs",
+  "find": "FileName = $\"polizia-ricevuta-{date}.pdf\",",
+  "replace": "FileName = $\"ricevuta-{date}.pdf\",",
+  "tests": "PoliceServiceTests"
+ },
+ {
+  "file": "BookingCalendarApi.Services/PoliceService.cs",
+  "find": "await _session.Open();\n            var records = await ComposeRecords(request.Date);\n            await _session.SendData(records, true);\n        }",
+  "replace": "var records = await ComposeRecords(request.Date);\n            await _session.SendData(records, true);\n        }",
+  "tests": "PoliceServiceTests"
+ },
+ {
+  "file": "BookingCalendarApi.Services/PoliceService.cs",
+  "find": "await _session.SendData(records, true);\n        }",
+  "replace": "await _session.SendData(records, false);\n        }",
+  "tests": "PoliceServiceTests"
+ },
+ {
+  "file": "BookingCalendarApi.Services/PoliceService.cs",
+  "find": "await _session.SendData(records, true);        // test it first",
+  "replace": "",
+  "tests": "PoliceServiceTests"
+ },
+ {
+  "file": "BookingCalendarApi.Services/PoliceService.cs",
+  "find": "await _session.SendData(records, false);       // if no exception occured - send",
+  "replace": "",
+  "tests": "PoliceServiceTests"
+ },
+ {
+  "file": "BookingCalendarApi.Services/PoliceService.cs",
+  "find": "if (_apiSettings.Environment == Models.Configurations.Environment.Production)",
+  "replace": "if (true)",
+  "tests": "PoliceServiceTests"
+ },
+ {
+  "file": "BookingCalendarApi.Services/PoliceService.cs",
+  "find": "await _session.Open();\n            var records = await ComposeRecords(request.Date);\n            await _session.SendData(records, true);        // test",
+  "replace": "var records = await ComposeRecords(request.Date);\n            await _session.SendData(records, true);        // test",
+  "tests": "PoliceServiceTests"
+ },
+ {
+  "file": "BookingCalendarApi.Services/PoliceService.cs",
+  "find": "await _session.Open();\n            var places",
+  "replace": "var places",
+  "tests": "PoliceServiceTests"
+ },
+ {
+  "file": "BookingCalendarApi.Services/PoliceService.cs",
+  "find": ".Distinct()\n",
+  "replace": "",
+  "tests": "PoliceServiceTests"
+ },
+ {
+  "file": "BookingCalendarApi.Services/PoliceService.cs",
+  "find": ".Except(new List<string>() { \"ES\" })",
+  "replace": "",
+  "tests": "PoliceServiceTests"
+ },
+ {
+  "file": "BookingCalendarApi.Services/PoliceService.cs",
+  "find": ".OrderBy(p => p)",
+  "replace": "",
+  "tests": "PoliceServiceTests"
+ },
+ {
+  "file": "BookingCalendarApi.Services/PoliceService.cs",
+  "find": "_dataContext.Nations.AddRange(await _repository.Nations.ToListAsync());",
+  "replace": "",
+  "tests": "PoliceServiceTests"
+ },
+ {
+  "file": "BookingCalendarApi.Services/PoliceService.cs",
+  "find": "_dataContext.Places.AddRange(await _session.GetPlaces());",
+  "replace": "",
+  "tests": "PoliceServiceTests"
+ },
+ {
+  "file": "BookingCalendarApi.Services/PoliceService.cs",
+  "find": ".SelectByArrival(DateTime.ParseExact(date, \"yyyy-MM-dd\", null))",
+  "replace": "",
+  "tests": "PoliceServiceTests"
+ },
+ {
+  "file": "BookingCalendarApi.Services/PoliceService.cs",
+  "find": "var assignedBookingsWithGuests = await _bookingWithGuestsProvider.Get(date);",
+  "replace": "var assignedBookingsWithGuests = await _bookingWithGuestsProvider.Get(date, date);",
+  "tests": "PoliceServiceTests"
+ },
+ {
+  "file": "BookingCalendarApi.Services/AssignedBookingWithGuestsProvider.cs",
+  "find": "to = DateTime.ParseExact(from, \"yyyy-MM-dd\", null).AddDays(1).ToString(\"yyyy-MM-dd\");",
+  "replace": "to = from;",
+  "tests": "AssignedBookingWithGuestsProviderTests"
+ },
+ {
+  "file": "BookingCalendarApi.Services/AssignedBookingWithGuestsProvider.cs",
+  "find": "if (to == null)",
+  "replace": "if (to != null)",
+  "tests": "AssignedBookingWithGuestsProviderTests"
+ },
+ {
+  "file": "BookingCalendarApi.Services/AssignedBookingWithGuestsProvider.cs",
+  "find": "(await _iperbooking.GetBookings(from, to, exactPeriod))",
+  "replace": "(await _iperbooking.GetBookings(from, to, true))",
+  "tests": "AssignedBookingWithGuestsProviderTests"
+ },
+ {
+  "file": "BookingCalendarApi.Services/AssignedBookingWithGuestsProvider.cs",
+  "find": ".ExcludeCancelled();",
+  "replace": ";",
+  "tests": "AssignedBookingWithGuestsProviderTests"
+ },
+ {
+  "file": "BookingCalendarApi.Services/AssignedBookingWithGuestsProvider.cs",
+  "find": "(booking, room) => $\"{room.StayId}-{room.Arrival}-{room.Departure}\"",
+  "replace": "(booking, room) => $\"{room.StayId}\"",
+  "tests": "AssignedBookingWithGuestsProviderTests"
+ },
+ {
+  "file": "BookingCalendarApi.Services/AssignedBookingWithGuestsProvider.cs",
+  "find": "_repository.RoomAssignments.Where(assignment => stayIds.Contains(assignment.Id))",
+  "replace": "_repository.RoomAssignments",
+  "tests": "AssignedBookingWithGuestsProviderTests"
+ },
+ {
+  "file": "BookingCalendarApi.Services/AssignedBookingWithGuestsProvider.cs",
+  "find": ".ExcludeNotAssigned();\n",
+  "replace": ";\n",
+  "tests": "AssignedBookingWithGuestsProviderTests"
+ },
+ {
+  "file": "BookingCalendarApi.Services/AssignedBookingWithGuestsProvider.cs",
+  "find": "bookingIds += $\"{booking.Booking.BookingNumber},\";",
+  "replace": "bookingIds += $\"{booking.Booking.BookingNumber}\";",
+  "tests": "AssignedBookingWithGuestsProviderTests"
+ },
+ {
+  "file": "BookingCalendarApi.Services/AssignedBookingWithGuestsProvider.cs",
+  "find": "RoomId = room.RoomId,",
+  "replace": "",
+  "tests": "AssignedBookingWithGuestsProviderTests"
+ },
+ {
+  "file": "BookingCalendarApi.Services/AssignedBookingWithGuestsProvider.cs",
+  "find": "stayId: room.StayId,",
+  "replace": "stayId: 0,",
+  "tests": "AssignedBookingWithGuestsProviderTests"
+ },
+ {
+  "file": "BookingCalendarApi.Services/AssignedBookingWithGuestsProvider.cs",
+  "find": "roomName: room.RoomName,",
+  "replace": "roomName: \"\",",
+  "tests": "AssignedBookingWithGuestsProviderTests"
+ },
+ {
+  "file": "BookingCalendarApi.Services/AssignedBookingWithGuestsProvider.cs",
+  "find": "arrival: room.Arrival,",
+  "replace": "arrival: room.Departure,",
+  "tests": "AssignedBookingWithGuestsProviderTests"
+ },
+ {
+  "file": "BookingCalendarApi.Services/AssignedBookingWithGuestsProvider.cs",
+  "find": "departure: room.Departure,",
+  "replace": "departure: room.Arrival,",
+  "tests": "AssignedBookingWithGuestsProviderTests"
+ },
+ {
+  "file": "BookingCalendarApi.Services/AssignedBookingWithGuestsProvider.cs",
+  "find": "rateId: room.RateId)",
+  "replace": "rateId: \"\")",
+  "tests": "AssignedBookingWithGuestsProviderTests"
+ },
+ {
+  "file": "BookingCalendarApi.Services/AssignedBookingWithGuestsProvider.cs",
+  "find": ".Where(guest => guest.ReservationRoomId == room.StayId)",
+  "replace": "",
+  "tests": "AssignedBookingWithGuestsProviderTests"
+ },
+ {
+  "file": "BookingCalendarApi.Services/AssignedBookingWithGuestsProvider.cs",
+  "find": ".Where(guest => guest.FirstName != \"\")",
+  "replace": "",
+  "tests": "AssignedBookingWithGuestsProviderTests"
+ },
+ {
+  "file": "BookingCalendarApi.Services/AssignedBookingWithGuestsProvider.cs",
+  "find": ".Where(room => room.Guests.Any())",
+  "replace": "",
+  "tests": "AssignedBookingWithGuestsProviderTests"
+ },
+ {
+  "file": "BookingCalendarApi.Services/AssignedBookingWithGuestsProvider.cs",
+  "find": ".Where(booking => booking.Rooms.Any())",
+  "replace": "",
+  "tests": "AssignedBookingWithGuestsProviderTests"
+ }
+]

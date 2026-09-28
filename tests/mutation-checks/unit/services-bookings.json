@@ -1,0 +1,836 @@
+[
+ {
+  "file": "BookingCalendarApi.Services/AssignmentsService.cs",
+  "find": "if (request == null)\n            {\n                return;",
+  "replace": "if (request == null)\n            {\n                request = new AssignmentsRequest();",
+  "tests": "AssignmentsServiceTests"
+ },
+ {
+  "file": "BookingCalendarApi.Services/AssignmentsService.cs",
+  "find": "request.Colors = new Dictionary<string, string>();",
+  "replace": "request.Colors = null;",
+  "tests": "AssignmentsServiceTests"
+ },
+ {
+  "file": "BookingCalendarApi.Services/AssignmentsService.cs",
+  "find": "request.Rooms = new Dictionary<string, long?>();",
+  "replace": "request.Rooms = null;",
+  "tests": "AssignmentsServiceTests"
+ },
+ {
+  "file": "BookingCalendarApi.Services/AssignmentsService.cs",
+  "find": "await AddColors(request.Colors);",
+  "replace": "",
+  "tests": "AssignmentsServiceTests"
+ },
+ {
+  "file": "BookingCalendarApi.Services/AssignmentsService.cs",
+  "find": "await AddRooms(request.Rooms);",
+  "replace": "",
+  "tests": "AssignmentsServiceTests"
+ },
+ {
+  "file": "BookingCalendarApi.Services/AssignmentsService.cs",
+  "find": "await _repository.SaveChangesAsync();",
+  "replace": "",
+  "tests": "AssignmentsServiceTests"
+ },
+ {
+  "file": "BookingCalendarApi.Services/AssignmentsService.cs",
+  "find": "if (colors == null || colors.Count == 0)",
+  "replace": "if (colors == null || colors.Count >= 0)",
+  "tests": "AssignmentsServiceTests"
+ },
+ {
+  "file": "BookingCalendarApi.Services/AssignmentsService.cs",
+  "find": "if (assignment != null && assignment.BookingId == bookingId)",
+  "replace": "if (assignment != null)",
+  "tests": "AssignmentsServiceTests",
+  "skip": "equivalent: the assignment was queried by BookingId == bookingId"
+ },
+ {
+  "file": "BookingCalendarApi.Services/AssignmentsService.cs",
+  "find": "assignment.Color = color;",
+  "replace": "",
+  "tests": "AssignmentsServiceTests"
+ },
+ {
+  "file": "BookingCalendarApi.Services/AssignmentsService.cs",
+  "find": "_repository.Add(new ColorAssignment() { BookingId = bookingId, Color = color });",
+  "replace": "",
+  "tests": "AssignmentsServiceTests"
+ },
+ {
+  "file": "BookingCalendarApi.Services/AssignmentsService.cs",
+  "find": "if (rooms == null || rooms.Count == 0)",
+  "replace": "if (rooms == null || rooms.Count >= 0)",
+  "tests": "AssignmentsServiceTests"
+ },
+ {
+  "file": "BookingCalendarApi.Services/AssignmentsService.cs",
+  "find": "if (statuses[assignment.Id] == BookingStatus.Cancelled)",
+  "replace": "if (statuses[assignment.Id] != BookingStatus.Cancelled)",
+  "tests": "AssignmentsServiceTests"
+ },
+ {
+  "file": "BookingCalendarApi.Services/AssignmentsService.cs",
+  "find": "assignments.RemoveAt(i);\n",
+  "replace": "",
+  "tests": "AssignmentsServiceTests"
+ },
+ {
+  "file": "BookingCalendarApi.Services/AssignmentsService.cs",
+  "find": "_repository.Remove(assignment);\n                    i--;",
+  "replace": "i--;",
+  "tests": "AssignmentsServiceTests"
+ },
+ {
+  "file": "BookingCalendarApi.Services/AssignmentsService.cs",
+  "find": ".Where(booking => booking.Status != BookingStatus.Cancelled)",
+  "replace": "",
+  "tests": "AssignmentsServiceTests"
+ },
+ {
+  "file": "BookingCalendarApi.Services/AssignmentsService.cs",
+  "find": "if (roomId == null)\n                    {\n                        roomOccupations.Remove(tileId);",
+  "replace": "if (roomId == null)\n                    {\n                        ",
+  "tests": "AssignmentsServiceTests"
+ },
+ {
+  "file": "BookingCalendarApi.Services/AssignmentsService.cs",
+  "find": "roomOccupations[tileId] = new { Id = tileId, RoomId = roomId.Value, value.Arrival, value.Departure };",
+  "replace": "",
+  "tests": "AssignmentsServiceTests"
+ },
+ {
+  "file": "BookingCalendarApi.Services/AssignmentsService.cs",
+  "find": "roomOccupations.Add(tileId, new { Id = tileId, RoomId = roomId.Value, Arrival = tileIdSplit[1], Departure = tileIdSplit[2] });",
+  "replace": "",
+  "tests": "AssignmentsServiceTests"
+ },
+ {
+  "file": "BookingCalendarApi.Services/AssignmentsService.cs",
+  "find": ".OrderBy(occupation => occupation.Value.Arrival)",
+  "replace": "",
+  "tests": "AssignmentsServiceTests"
+ },
+ {
+  "file": "BookingCalendarApi.Services/AssignmentsService.cs",
+  "find": ".GroupBy(occupation => occupation.Value.RoomId,",
+  "replace": ".GroupBy(occupation => 0L,",
+  "tests": "AssignmentsServiceTests"
+ },
+ {
+  "file": "BookingCalendarApi.Services/AssignmentsService.cs",
+  "find": "if (nextArrival < currentDeparture)",
+  "replace": "if (nextArrival <= currentDeparture)",
+  "tests": "AssignmentsServiceTests"
+ },
+ {
+  "file": "BookingCalendarApi.Services/AssignmentsService.cs",
+  "find": "if (nextArrival < currentDeparture)",
+  "replace": "if (false)",
+  "tests": "AssignmentsServiceTests"
+ },
+ {
+  "file": "BookingCalendarApi.Services/AssignmentsService.cs",
+  "find": "BCError.ROOMS_COLLISION",
+  "replace": "BCError.SERVER_ERROR",
+  "tests": "AssignmentsServiceTests"
+ },
+ {
+  "file": "BookingCalendarApi.Services/AssignmentsService.cs",
+  "find": "currentItem = nextItem;",
+  "replace": "",
+  "tests": "AssignmentsServiceTests"
+ },
+ {
+  "file": "BookingCalendarApi.Services/AssignmentsService.cs",
+  "find": "if (roomId == null)\n                    {\n                        _repository.Remove(assignment);",
+  "replace": "if (roomId == null)\n                    {\n                        ",
+  "tests": "AssignmentsServiceTests"
+ },
+ {
+  "file": "BookingCalendarApi.Services/AssignmentsService.cs",
+  "find": "assignment.RoomId = roomId.Value;\n                        _repository.Update(assignment);",
+  "replace": "",
+  "tests": "AssignmentsServiceTests"
+ },
+ {
+  "file": "BookingCalendarApi.Services/AssignmentsService.cs",
+  "find": "assignment = new RoomAssignment() { Id = tileId, RoomId = roomId.Value };\n                    _repository.Add(assignment);",
+  "replace": "",
+  "tests": "AssignmentsServiceTests"
+ },
+ {
+  "file": "BookingCalendarApi.Services/AssignmentsService.cs",
+  "find": "var firstArrival = assignmentPeriods.OrderBy(p => p.From).First().From;",
+  "replace": "var firstArrival = assignmentPeriods.First().From;",
+  "tests": "AssignmentsServiceTests"
+ },
+ {
+  "file": "BookingCalendarApi.Services/AssignmentsService.cs",
+  "find": "var lastDeparture = assignmentPeriods.OrderBy(p => p.To).Last().To;",
+  "replace": "var lastDeparture = assignmentPeriods.First().To;",
+  "tests": "AssignmentsServiceTests"
+ },
+ {
+  "file": "BookingCalendarApi.Services/AssignmentsService.cs",
+  "find": "return await _iperbooking.GetBookings(arrivalFrom, arrivalTo);",
+  "replace": "return await _iperbooking.GetBookings(arrivalFrom, arrivalTo, true);",
+  "tests": "AssignmentsServiceTests"
+ },
+ {
+  "file": "BookingCalendarApi.Services/BookingsService.cs",
+  "find": "fromDate.AddDays(-15)",
+  "replace": "fromDate.AddDays(-14)",
+  "tests": "BookingsServiceTests"
+ },
+ {
+  "file": "BookingCalendarApi.Services/BookingsService.cs",
+  "find": "fromDate.AddDays(15)",
+  "replace": "fromDate.AddDays(14)",
+  "tests": "BookingsServiceTests"
+ },
+ {
+  "file": "BookingCalendarApi.Services/BookingsService.cs",
+  "find": "var bookings = await _iperbooking.GetBookings(arrivalFrom, arrivalTo, exactPeriod: true);",
+  "replace": "var bookings = await _iperbooking.GetBookings(arrivalFrom, arrivalTo);",
+  "tests": "BookingsServiceTests"
+ },
+ {
+  "file": "BookingCalendarApi.Services/BookingsService.cs",
+  "find": "var booking = bookings.SelectById(id);",
+  "replace": "var booking = bookings;",
+  "tests": "BookingsServiceTests"
+ },
+ {
+  "file": "BookingCalendarApi.Services/BookingsService.cs",
+  "find": "from color in gj.DefaultIfEmpty()\n                         select new { Booking = b, Color = color }",
+  "replace": "from color in gj\n                         select new { Booking = b, Color = color }",
+  "tests": "BookingsServiceTests"
+ },
+ {
+  "file": "BookingCalendarApi.Services/BookingsService.cs",
+  "find": "name: $\"{join.Booking.FirstName} {join.Booking.LastName}\",",
+  "replace": "name: join.Booking.LastName,",
+  "tests": "BookingsServiceTests",
+  "occurrence": 1
+ },
+ {
+  "file": "BookingCalendarApi.Services/BookingsService.cs",
+  "find": "lastModified: join.Booking.LastModified,",
+  "replace": "lastModified: \"\",",
+  "tests": "BookingsServiceTests",
+  "occurrence": 1
+ },
+ {
+  "file": "BookingCalendarApi.Services/BookingsService.cs",
+  "find": "from: DateTime.ParseExact(join.Booking.Rooms.OrderBy(room => room.Arrival).First().Arrival",
+  "replace": "from: DateTime.ParseExact(join.Booking.Rooms.First().Arrival",
+  "tests": "BookingsServiceTests",
+  "occurrence": 1
+ },
+ {
+  "file": "BookingCalendarApi.Services/BookingsService.cs",
+  "find": "to: DateTime.ParseExact(join.Booking.Rooms.OrderBy(room => room.Departure).Last().Departure",
+  "replace": "to: DateTime.ParseExact(join.Booking.Rooms.Last().Departure",
+  "tests": "BookingsServiceTests",
+  "occurrence": 1
+ },
+ {
+  "file": "BookingCalendarApi.Services/BookingsService.cs",
+  "find": "deposit: join.Booking.Deposit,",
+  "replace": "deposit: 0,",
+  "tests": "BookingsServiceTests",
+  "occurrence": 1
+ },
+ {
+  "file": "BookingCalendarApi.Services/BookingsService.cs",
+  "find": "depositConfirmed: join.Booking.DepositConfirmed,",
+  "replace": "depositConfirmed: false,",
+  "tests": "BookingsServiceTests",
+  "occurrence": 1
+ },
+ {
+  "file": "BookingCalendarApi.Services/BookingsService.cs",
+  "find": "isBankTransfer: join.Booking.PaymentMethod == BookingPaymentMethod.BT)",
+  "replace": "isBankTransfer: join.Booking.PaymentMethod != BookingPaymentMethod.BT)",
+  "tests": "BookingsServiceTests",
+  "occurrence": 1
+ },
+ {
+  "file": "BookingCalendarApi.Services/BookingsService.cs",
+  "find": "Status = join.Booking.Status,",
+  "replace": "",
+  "tests": "BookingsServiceTests",
+  "occurrence": 1
+ },
+ {
+  "file": "BookingCalendarApi.Services/BookingsService.cs",
+  "find": "Color = join.Color?.Color,",
+  "replace": "",
+  "tests": "BookingsServiceTests",
+  "occurrence": 1
+ },
+ {
+  "file": "BookingCalendarApi.Services/BookingsService.cs",
+  "find": "join assignment in _repository.RoomAssignments on $\"{room.StayId}-{room.Arrival}-{room.Departure}\" equals assignment.Id into gj",
+  "replace": "join assignment in _repository.RoomAssignments on $\"{room.StayId}\" equals assignment.Id into gj",
+  "tests": "BookingsServiceTests"
+ },
+ {
+  "file": "BookingCalendarApi.Services/BookingsService.cs",
+  "find": "id: $\"{x.Room.StayId}-{x.Room.Arrival}-{x.Room.Departure}\",",
+  "replace": "id: $\"{x.Room.StayId}\",",
+  "tests": "BookingsServiceTests",
+  "occurrence": 1
+ },
+ {
+  "file": "BookingCalendarApi.Services/BookingsService.cs",
+  "find": "from: DateTime.ParseExact(x.Room.Arrival, \"yyyyMMdd\", null).ToString(\"yyyy-MM-dd\"),",
+  "replace": "from: x.Room.Arrival,",
+  "tests": "BookingsServiceTests",
+  "occurrence": 1
+ },
+ {
+  "file": "BookingCalendarApi.Services/BookingsService.cs",
+  "find": "nights: Convert.ToUInt32((DateTime.ParseExact(x.Room.Departure, \"yyyyMMdd\", null) - DateTime.ParseExact(x.Room.Arrival, \"yyyyMMdd\", null)).Days),",
+  "replace": "nights: 1,",
+  "tests": "BookingsServiceTests",
+  "occurrence": 1
+ },
+ {
+  "file": "BookingCalendarApi.Services/BookingsService.cs",
+  "find": "roomType: x.Room.RoomName,",
+  "replace": "roomType: \"\",",
+  "tests": "BookingsServiceTests",
+  "occurrence": 1
+ },
+ {
+  "file": "BookingCalendarApi.Services/BookingsService.cs",
+  "find": "rateId: x.Room.RateId,",
+  "replace": "rateId: \"\",",
+  "tests": "BookingsServiceTests",
+  "occurrence": 1
+ },
+ {
+  "file": "BookingCalendarApi.Services/BookingsService.cs",
+  "find": ".Where(guest => guest.ReservationRoomId == x.Room.StayId)",
+  "replace": "",
+  "tests": "BookingsServiceTests"
+ },
+ {
+  "file": "BookingCalendarApi.Services/BookingsService.cs",
+  "find": "bookingId: x.Reservation.ReservationId.ToString(),",
+  "replace": "bookingId: \"\",",
+  "tests": "BookingsServiceTests"
+ },
+ {
+  "file": "BookingCalendarApi.Services/BookingsService.cs",
+  "find": "name: guest.FirstName,",
+  "replace": "name: guest.LastName,",
+  "tests": "BookingsServiceTests"
+ },
+ {
+  "file": "BookingCalendarApi.Services/BookingsService.cs",
+  "find": "surname: guest.LastName,",
+  "replace": "surname: guest.FirstName,",
+  "tests": "BookingsServiceTests"
+ },
+ {
+  "file": "BookingCalendarApi.Services/BookingsService.cs",
+  "find": "id: guest.GuestId,",
+  "replace": "id: \"\",",
+  "tests": "BookingsServiceTests"
+ },
+ {
+  "file": "BookingCalendarApi.Services/BookingsService.cs",
+  "find": "guest.BirthDate.Trim() != string.Empty ? DateTime.ParseExact(guest.BirthDate, \"yyyyMMdd\", null).ToString(\"yyyy-MM-dd\") : \"\"",
+  "replace": "guest.BirthDate",
+  "tests": "BookingsServiceTests"
+ },
+ {
+  "file": "BookingCalendarApi.Services/BookingsService.cs",
+  "find": "PlaceOfBirth = guest.BirthCity,",
+  "replace": "",
+  "tests": "BookingsServiceTests"
+ },
+ {
+  "file": "BookingCalendarApi.Services/BookingsService.cs",
+  "find": "ProvinceOfBirth = guest.BirthCounty,",
+  "replace": "",
+  "tests": "BookingsServiceTests"
+ },
+ {
+  "file": "BookingCalendarApi.Services/BookingsService.cs",
+  "find": "StateOfBirth = guest.BirthCountry",
+  "replace": "",
+  "tests": "BookingsServiceTests"
+ },
+ {
+  "file": "BookingCalendarApi.Services/BookingsService.cs",
+  "find": "RoomId = x.Assignment?.RoomId",
+  "replace": "RoomId = null",
+  "tests": "BookingsServiceTests",
+  "occurrence": 1
+ },
+ {
+  "file": "BookingCalendarApi.Services/BookingsService.cs",
+  "find": "if (!query.Any())",
+  "replace": "if (false)",
+  "tests": "BookingsServiceTests"
+ },
+ {
+  "file": "BookingCalendarApi.Services/BookingsService.cs",
+  "find": "BCError.NOT_FOUND",
+  "replace": "BCError.SERVER_ERROR",
+  "tests": "BookingsServiceTests"
+ },
+ {
+  "file": "BookingCalendarApi.Services/BookingsService.cs",
+  "find": "var definedName = name ?? \"\";",
+  "replace": "var definedName = name;",
+  "tests": "BookingsServiceTests"
+ },
+ {
+  "file": "BookingCalendarApi.Services/BookingsService.cs",
+  "find": "(await _iperbooking.GetBookings(from, to))\n                .SelectInRange(from, to)",
+  "replace": "(await _iperbooking.GetBookings(from, to))",
+  "tests": "BookingsServiceTests"
+ },
+ {
+  "file": "BookingCalendarApi.Services/BookingsService.cs",
+  "find": ".SelectByName(definedName);",
+  "replace": ";",
+  "tests": "BookingsServiceTests"
+ },
+ {
+  "file": "BookingCalendarApi.Services/BookingsService.cs",
+  "find": "occupations: Convert.ToUInt32(join.Booking.Rooms.Count)",
+  "replace": "occupations: 1",
+  "tests": "BookingsServiceTests"
+ },
+ {
+  "file": "BookingCalendarApi.Services/BookingsService.cs",
+  "find": "Color = join.Color?.Color\n",
+  "replace": "\n",
+  "tests": "BookingsServiceTests"
+ },
+ {
+  "file": "BookingCalendarApi.Services/BookingsService.cs",
+  "find": "Status = join.Booking.Status,\n                    Color = join.Color?.Color\n",
+  "replace": "Color = join.Color?.Color\n",
+  "tests": "BookingsServiceTests"
+ },
+ {
+  "file": "BookingCalendarApi.Services/BookingsService.cs",
+  "find": "id: join.Booking.BookingNumber.ToString(),\n                    name:",
+  "replace": "id: \"\",\n                    name:",
+  "tests": "BookingsServiceTests",
+  "occurrence": 1
+ },
+ {
+  "file": "BookingCalendarApi.Services/BookingsService.cs",
+  "find": "id: join.Booking.BookingNumber.ToString(),\n                    name:",
+  "replace": "id: \"\",\n                    name:",
+  "tests": "BookingsServiceTests",
+  "occurrence": 2
+ },
+ {
+  "file": "BookingCalendarApi.Services/BookingsService.cs",
+  "find": "id: join.Booking.BookingNumber.ToString(),\n                            name:",
+  "replace": "id: \"\",\n                            name:",
+  "tests": "BookingsServiceTests"
+ },
+ {
+  "file": "BookingCalendarApi.Services/BookingsService.cs",
+  "find": "var bookings = loadedBookings.SelectInRange(from, to, true);",
+  "replace": "var bookings = loadedBookings.SelectInRange(from, to);",
+  "tests": "BookingsServiceTests"
+ },
+ {
+  "file": "BookingCalendarApi.Services/BookingsService.cs",
+  "find": "where bookingNumbers.Contains(ca.BookingId)",
+  "replace": "where true",
+  "tests": "BookingsServiceTests"
+ },
+ {
+  "file": "BookingCalendarApi.Services/BookingsService.cs",
+  "find": "where roomIds.Contains(ra.Id)",
+  "replace": "where false",
+  "tests": "BookingsServiceTests"
+ },
+ {
+  "file": "BookingCalendarApi.Services/BookingsService.cs",
+  "find": "persons: Convert.ToUInt32(x.Room.Guests.Count))",
+  "replace": "persons: 0)",
+  "tests": "BookingsServiceTests"
+ },
+ {
+  "file": "BookingCalendarApi.Services/BookingsService.cs",
+  "find": "RoomId = x.Assignment?.RoomId",
+  "replace": "RoomId = null",
+  "tests": "BookingsServiceTests",
+  "occurrence": 2
+ },
+ {
+  "file": "BookingCalendarApi.Services/BookingsService.cs",
+  "find": "Color = join.Color?.Color,",
+  "replace": "",
+  "tests": "BookingsServiceTests",
+  "occurrence": 2
+ },
+ {
+  "file": "BookingCalendarApi.Services/BookingsService.cs",
+  "find": "from: DateTime.ParseExact(join.Booking.Rooms.OrderBy(room => room.Arrival).First().Arrival",
+  "replace": "from: DateTime.ParseExact(join.Booking.Rooms.First().Arrival",
+  "tests": "BookingsServiceTests",
+  "occurrence": 3
+ },
+ {
+  "file": "BookingCalendarApi.Services/BookingsService.cs",
+  "find": "to: DateTime.ParseExact(join.Booking.Rooms.OrderBy(room => room.Departure).Last().Departure",
+  "replace": "to: DateTime.ParseExact(join.Booking.Rooms.Last().Departure",
+  "tests": "BookingsServiceTests",
+  "occurrence": 3
+ },
+ {
+  "file": "BookingCalendarApi.Services/BookingsService.cs",
+  "find": "deposit: join.Booking.Deposit,",
+  "replace": "deposit: 0,",
+  "tests": "BookingsServiceTests",
+  "occurrence": 2
+ },
+ {
+  "file": "BookingCalendarApi.Services/BookingsService.cs",
+  "find": "depositConfirmed: join.Booking.DepositConfirmed,",
+  "replace": "depositConfirmed: false,",
+  "tests": "BookingsServiceTests",
+  "occurrence": 2
+ },
+ {
+  "file": "BookingCalendarApi.Services/BookingsService.cs",
+  "find": "isBankTransfer: join.Booking.PaymentMethod == BookingPaymentMethod.BT)",
+  "replace": "isBankTransfer: false)",
+  "tests": "BookingsServiceTests",
+  "occurrence": 2
+ },
+ {
+  "file": "BookingCalendarApi.Services/BookingsService.cs",
+  "find": "lastModified: join.Booking.LastModified,",
+  "replace": "lastModified: \"\",",
+  "tests": "BookingsServiceTests",
+  "occurrence": 3
+ },
+ {
+  "file": "BookingCalendarApi.Services/BookingsService.cs",
+  "find": "id: $\"{x.Room.StayId}-{x.Room.Arrival}-{x.Room.Departure}\",",
+  "replace": "id: \"\",",
+  "tests": "BookingsServiceTests",
+  "occurrence": 2
+ },
+ {
+  "file": "BookingCalendarApi.Services/BookingsService.cs",
+  "find": "nights: Convert.ToUInt32((DateTime.ParseExact(x.Room.Departure, \"yyyyMMdd\", null) - DateTime.ParseExact(x.Room.Arrival, \"yyyyMMdd\", null)).Days),",
+  "replace": "nights: 1,",
+  "tests": "BookingsServiceTests",
+  "occurrence": 2
+ },
+ {
+  "file": "BookingCalendarApi.Services/BookingsService.cs",
+  "find": "roomType: x.Room.RoomName,",
+  "replace": "roomType: \"\",",
+  "tests": "BookingsServiceTests",
+  "occurrence": 2
+ },
+ {
+  "file": "BookingCalendarApi.Services/BookingsService.cs",
+  "find": "rateId: x.Room.RateId,",
+  "replace": "rateId: \"\",",
+  "tests": "BookingsServiceTests",
+  "occurrence": 2
+ },
+ {
+  "file": "BookingCalendarApi.Services/ClientsService.cs",
+  "find": "await _iperbooking.GetBookings(from, to, exactPeriod: true);",
+  "replace": "await _iperbooking.GetBookings(from, to);",
+  "tests": "ClientsServiceTests"
+ },
+ {
+  "file": "BookingCalendarApi.Services/ClientsService.cs",
+  "find": "bookingIds += $\"{booking.BookingNumber},\";",
+  "replace": "bookingIds += $\"{booking.BookingNumber}\";",
+  "tests": "ClientsServiceTests"
+ },
+ {
+  "file": "BookingCalendarApi.Services/ClientsService.cs",
+  "find": ".SelectByQuery(query)",
+  "replace": "",
+  "tests": "ClientsServiceTests"
+ },
+ {
+  "file": "BookingCalendarApi.Services/ClientsService.cs",
+  "find": "bookingId: reservation.ReservationId.ToString(),",
+  "replace": "bookingId: \"\",",
+  "tests": "ClientsServiceTests"
+ },
+ {
+  "file": "BookingCalendarApi.Services/ClientsService.cs",
+  "find": "name: guest.FirstName,",
+  "replace": "name: guest.LastName,",
+  "tests": "ClientsServiceTests"
+ },
+ {
+  "file": "BookingCalendarApi.Services/ClientsService.cs",
+  "find": "surname: guest.LastName,",
+  "replace": "surname: guest.FirstName,",
+  "tests": "ClientsServiceTests"
+ },
+ {
+  "file": "BookingCalendarApi.Services/ClientsService.cs",
+  "find": "id: guest.GuestId,",
+  "replace": "id: \"\",",
+  "tests": "ClientsServiceTests"
+ },
+ {
+  "file": "BookingCalendarApi.Services/ClientsService.cs",
+  "find": "guest.BirthDate.Length == 0",
+  "replace": "false",
+  "tests": "ClientsServiceTests"
+ },
+ {
+  "file": "BookingCalendarApi.Services/ClientsService.cs",
+  "find": "DateTime.ParseExact(guest.BirthDate, \"yyyyMMdd\", null).ToString(\"yyyy-MM-dd\")",
+  "replace": "guest.BirthDate",
+  "tests": "ClientsServiceTests"
+ },
+ {
+  "file": "BookingCalendarApi.Services/ClientsService.cs",
+  "find": "bookingName: $\"{booking.FirstName} {booking.LastName}\",",
+  "replace": "bookingName: booking.LastName,",
+  "tests": "ClientsServiceTests"
+ },
+ {
+  "file": "BookingCalendarApi.Services/ClientsService.cs",
+  "find": "booking.Rooms.OrderBy(room => room.Arrival).First().Arrival",
+  "replace": "booking.Rooms.First().Arrival",
+  "tests": "ClientsServiceTests"
+ },
+ {
+  "file": "BookingCalendarApi.Services/ClientsService.cs",
+  "find": "booking.Rooms.OrderBy(room => room.Departure).Last().Departure",
+  "replace": "booking.Rooms.Last().Departure",
+  "tests": "ClientsServiceTests"
+ },
+ {
+  "file": "BookingCalendarApi.Services/ClientsService.cs",
+  "find": "PlaceOfBirth = guest.BirthCity,",
+  "replace": "",
+  "tests": "ClientsServiceTests"
+ },
+ {
+  "file": "BookingCalendarApi.Services/ClientsService.cs",
+  "find": "ProvinceOfBirth = guest.BirthCounty,",
+  "replace": "",
+  "tests": "ClientsServiceTests"
+ },
+ {
+  "file": "BookingCalendarApi.Services/ClientsService.cs",
+  "find": "StateOfBirth = guest.BirthCountry",
+  "replace": "",
+  "tests": "ClientsServiceTests"
+ },
+ {
+  "file": "BookingCalendarApi.Services/ClientsService.cs",
+  "find": "var stayId = tileId.Split('-')[0];",
+  "replace": "var stayId = tileId.Split('-')[1];",
+  "tests": "ClientsServiceTests"
+ },
+ {
+  "file": "BookingCalendarApi.Services/ClientsService.cs",
+  "find": ".SelectByStayId(stayId)",
+  "replace": "",
+  "tests": "ClientsServiceTests"
+ },
+ {
+  "file": "BookingCalendarApi.Services/CityTaxService.cs",
+  "find": "_dataContext.RoomAssignments.AddRange(await _repository.RoomAssignments.ToListAsync());",
+  "replace": "",
+  "tests": "CityTaxServiceTests"
+ },
+ {
+  "file": "BookingCalendarApi.Services/CityTaxService.cs",
+  "find": ".ExcludeCancelled()",
+  "replace": "",
+  "tests": "CityTaxServiceTests"
+ },
+ {
+  "file": "BookingCalendarApi.Services/CityTaxService.cs",
+  "find": ".SelectInRange(from, to);",
+  "replace": ";",
+  "tests": "CityTaxServiceTests"
+ },
+ {
+  "file": "BookingCalendarApi.Services/CityTaxService.cs",
+  "find": "bookingIds += $\"{booking.BookingNumber},\";",
+  "replace": "bookingIds += $\"{booking.BookingNumber}\";",
+  "tests": "CityTaxServiceTests"
+ },
+ {
+  "file": "BookingCalendarApi.Services/CityTaxService.cs",
+  "find": ".ExcludeNotAssigned();",
+  "replace": ";",
+  "tests": "CityTaxServiceTests"
+ },
+ {
+  "file": "BookingCalendarApi.Services/CityTaxService.cs",
+  "find": "stay => stay.StayId, (guest, stay)",
+  "replace": "stay => stay.BookingNumber, (guest, stay)",
+  "tests": "CityTaxServiceTests"
+ },
+ {
+  "file": "BookingCalendarApi.Services/CityTaxService.cs",
+  "find": "if (guest.FirstName == \"\" || guest.BirthDate.Trim() == \"\")",
+  "replace": "if (guest.BirthDate.Trim() == \"\")",
+  "tests": "CityTaxServiceTests"
+ },
+ {
+  "file": "BookingCalendarApi.Services/CityTaxService.cs",
+  "find": "if (guest.FirstName == \"\" || guest.BirthDate.Trim() == \"\")",
+  "replace": "if (guest.FirstName == \"\")",
+  "tests": "CityTaxServiceTests"
+ },
+ {
+  "file": "BookingCalendarApi.Services/CityTaxService.cs",
+  "find": "private const int CHILD_AGE = 14;",
+  "replace": "private const int CHILD_AGE = 13;",
+  "tests": "CityTaxServiceTests"
+ },
+ {
+  "file": "BookingCalendarApi.Services/CityTaxService.cs",
+  "find": "if (age < CHILD_AGE)",
+  "replace": "if (age <= CHILD_AGE)",
+  "tests": "CityTaxServiceTests"
+ },
+ {
+  "file": "BookingCalendarApi.Services/CityTaxService.cs",
+  "find": "guestResult.Children = nights;",
+  "replace": "guestResult.Children = 0;",
+  "tests": "CityTaxServiceTests"
+ },
+ {
+  "file": "BookingCalendarApi.Services/CityTaxService.cs",
+  "find": "guestResult.Standard = Math.Min(nights, 10);",
+  "replace": "guestResult.Standard = Math.Min(nights, 11);",
+  "tests": "CityTaxServiceTests"
+ },
+ {
+  "file": "BookingCalendarApi.Services/CityTaxService.cs",
+  "find": "guestResult.Over10Days = Math.Max(nights - 10, 0);",
+  "replace": "guestResult.Over10Days = Math.Max(nights - 11, 0);",
+  "tests": "CityTaxServiceTests"
+ },
+ {
+  "file": "BookingCalendarApi.Services/CityTaxService.cs",
+  "find": "var cropLeft = Math.Max(",
+  "replace": "var cropLeft = Math.Min(",
+  "tests": "CityTaxServiceTests"
+ },
+ {
+  "file": "BookingCalendarApi.Services/CityTaxService.cs",
+  "find": "guestResult.Children = Math.Max(guestResult.Children - cropLeft, 0);",
+  "replace": "guestResult.Children = guestResult.Children - cropLeft;",
+  "tests": "CityTaxServiceTests"
+ },
+ {
+  "file": "BookingCalendarApi.Services/CityTaxService.cs",
+  "find": "guestResult.Standard -= cropLeft;",
+  "replace": "",
+  "tests": "CityTaxServiceTests"
+ },
+ {
+  "file": "BookingCalendarApi.Services/CityTaxService.cs",
+  "find": "if (guestResult.Standard < 0)",
+  "replace": "if (guestResult.Standard <= -1000)",
+  "tests": "CityTaxServiceTests"
+ },
+ {
+  "file": "BookingCalendarApi.Services/CityTaxService.cs",
+  "find": "guestResult.Over10Days = Math.Max(guestResult.Over10Days + guestResult.Standard, 0);",
+  "replace": "guestResult.Over10Days = guestResult.Over10Days + guestResult.Standard;",
+  "tests": "CityTaxServiceTests"
+ },
+ {
+  "file": "BookingCalendarApi.Services/CityTaxService.cs",
+  "find": "guestResult.Over10Days = Math.Max(guestResult.Over10Days + guestResult.Standard, 0);",
+  "replace": "",
+  "tests": "CityTaxServiceTests"
+ },
+ {
+  "file": "BookingCalendarApi.Services/CityTaxService.cs",
+  "find": "guestResult.Standard = 0;\n",
+  "replace": "",
+  "tests": "CityTaxServiceTests"
+ },
+ {
+  "file": "BookingCalendarApi.Services/CityTaxService.cs",
+  "find": "var cropRight = Math.Max(",
+  "replace": "var cropRight = Math.Min(",
+  "tests": "CityTaxServiceTests"
+ },
+ {
+  "file": "BookingCalendarApi.Services/CityTaxService.cs",
+  "find": "guestResult.Children = Math.Max(guestResult.Children - cropRight, 0);",
+  "replace": "guestResult.Children = guestResult.Children - cropRight;",
+  "tests": "CityTaxServiceTests"
+ },
+ {
+  "file": "BookingCalendarApi.Services/CityTaxService.cs",
+  "find": "guestResult.Over10Days -= cropRight;",
+  "replace": "guestResult.Standard -= cropRight;",
+  "tests": "CityTaxServiceTests"
+ },
+ {
+  "file": "BookingCalendarApi.Services/CityTaxService.cs",
+  "find": "if (guestResult.Over10Days < 0)",
+  "replace": "if (guestResult.Over10Days <= -1000)",
+  "tests": "CityTaxServiceTests"
+ },
+ {
+  "file": "BookingCalendarApi.Services/CityTaxService.cs",
+  "find": "guestResult.Standard = Math.Max(guestResult.Standard + guestResult.Over10Days, 0);",
+  "replace": "guestResult.Standard = guestResult.Standard + guestResult.Over10Days;",
+  "tests": "CityTaxServiceTests"
+ },
+ {
+  "file": "BookingCalendarApi.Services/CityTaxService.cs",
+  "find": "guestResult.Standard = Math.Max(guestResult.Standard + guestResult.Over10Days, 0);",
+  "replace": "",
+  "tests": "CityTaxServiceTests"
+ },
+ {
+  "file": "BookingCalendarApi.Services/CityTaxService.cs",
+  "find": "guestResult.Over10Days = 0;\n",
+  "replace": "",
+  "tests": "CityTaxServiceTests"
+ },
+ {
+  "file": "BookingCalendarApi.Services/CityTaxService.cs",
+  "find": "result.Standard += guestResult.Standard;",
+  "replace": "result.Standard = guestResult.Standard;",
+  "tests": "CityTaxServiceTests"
+ },
+ {
+  "file": "BookingCalendarApi.Services/CityTaxService.cs",
+  "find": "result.Children += guestResult.Children;",
+  "replace": "result.Children = guestResult.Children;",
+  "tests": "CityTaxServiceTests"
+ },
+ {
+  "file": "BookingCalendarApi.Services/CityTaxService.cs",
+  "find": "result.Over10Days += guestResult.Over10Days;",
+  "replace": "result.Over10Days = guestResult.Over10Days;",
+  "tests": "CityTaxServiceTests"
+ }
+]

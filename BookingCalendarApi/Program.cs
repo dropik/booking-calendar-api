@@ -21,14 +21,18 @@ using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Configuration.AddSystemsManager(config =>
+// the "Testing" environment is used by the integration tests, which provide their own configuration
+if (!builder.Environment.IsEnvironment("Testing"))
 {
-    string version = System.Environment.GetEnvironmentVariable("AWS_LAMBDA_FUNCTION_VERSION") ?? "";
-    string stage = version.ToLower() == "$latest" ? "Dev" : "Prod";
-    config.Path = $"/booking-calendar/{stage}/";
-    config.ReloadAfter = TimeSpan.FromMinutes(5);
-    config.Optional = false;
-});
+    builder.Configuration.AddSystemsManager(config =>
+    {
+        string version = System.Environment.GetEnvironmentVariable("AWS_LAMBDA_FUNCTION_VERSION") ?? "";
+        string stage = version.ToLower() == "$latest" ? "Dev" : "Prod";
+        config.Path = $"/booking-calendar/{stage}/";
+        config.ReloadAfter = TimeSpan.FromMinutes(5);
+        config.Optional = false;
+    });
+}
 
 Log.Logger = new LoggerConfiguration().ReadFrom.Configuration(builder.Configuration).CreateLogger();
 
@@ -109,7 +113,10 @@ QueryWrapperFactory.Current = new EFCore6QueryWrapperFactory();
 // scoped services
 builder.Services.AddHttpContextAccessor();
 builder.Services.AddScoped<IUserClaimsProvider, UserClaimsProvider>();
-builder.Services.AddScoped<IIperbooking, Iperbooking>();
+builder.Services.AddHttpClient<IIperbooking, Iperbooking>(client =>
+{
+    client.BaseAddress = new Uri(builder.Configuration["Iperbooking:BaseUrl"] ?? Iperbooking.DEFAULT_BASE_URL);
+});
 builder.Services.AddScoped<IAlloggiatiServiceSession, AlloggiatiServiceSession>();
 builder.Services.AddScoped<DataContext>();
 builder.Services.AddScoped<IStructureService, StructureService>();
@@ -160,3 +167,6 @@ app.UseAuthorization();
 app.MapControllers();
 
 app.Run();
+
+// exposes the entry point to WebApplicationFactory in the integration tests
+public partial class Program { }

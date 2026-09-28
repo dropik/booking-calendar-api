@@ -1,0 +1,699 @@
+[
+ {
+  "file": "BookingCalendarApi.Services/AuthService.cs",
+  "find": "if (user == null)\n            {\n                return null;",
+  "replace": "if (false)\n            {\n                return null;",
+  "tests": "AuthServiceTests"
+ },
+ {
+  "file": "BookingCalendarApi.Services/AuthService.cs",
+  "find": "if (passwordVerificationResult != PasswordVerificationResult.Success)",
+  "replace": "if (passwordVerificationResult == PasswordVerificationResult.Failed && false)",
+  "tests": "AuthServiceTests"
+ },
+ {
+  "file": "BookingCalendarApi.Services/AuthService.cs",
+  "find": "ValidateIssuer = true,",
+  "replace": "ValidateIssuer = false,",
+  "tests": "AuthServiceTests"
+ },
+ {
+  "file": "BookingCalendarApi.Services/AuthService.cs",
+  "find": "ValidateLifetime = false,",
+  "replace": "ValidateLifetime = true,",
+  "tests": "AuthServiceTests"
+ },
+ {
+  "file": "BookingCalendarApi.Services/AuthService.cs",
+  "find": "ValidateIssuerSigningKey = true,",
+  "replace": "ValidateIssuerSigningKey = false,",
+  "tests": "AuthServiceTests"
+ },
+ {
+  "file": "BookingCalendarApi.Services/AuthService.cs",
+  "find": "IssuerSigningKey = new SymmetricSecurityKey(key),",
+  "replace": "IssuerSigningKey = new SymmetricSecurityKey(key), SignatureValidator = (t, p) => new JwtSecurityToken(t),",
+  "tests": "AuthServiceTests"
+ },
+ {
+  "file": "BookingCalendarApi.Services/AuthService.cs",
+  "find": "|| !jwtSecurityToken.Header.Alg.Equals(SecurityAlgorithms.HmacSha256, StringComparison.InvariantCultureIgnoreCase)",
+  "replace": "",
+  "tests": "AuthServiceTests"
+ },
+ {
+  "file": "BookingCalendarApi.Services/AuthService.cs",
+  "find": "if (string.IsNullOrWhiteSpace(principal.Identity?.Name))\n            {\n                return null;",
+  "replace": "if (false)\n            {\n                return null;",
+  "tests": "AuthServiceTests"
+ },
+ {
+  "file": "BookingCalendarApi.Services/AuthService.cs",
+  "find": "catch (Exception)\n            {\n                return null;",
+  "replace": "catch (Exception)\n            {\n                refreshTokenId = 1;",
+  "tests": "AuthServiceTests"
+ },
+ {
+  "file": "BookingCalendarApi.Services/AuthService.cs",
+  "find": "|| userRefreshToken.RefreshToken != request.RefreshToken",
+  "replace": "",
+  "tests": "AuthServiceTests"
+ },
+ {
+  "file": "BookingCalendarApi.Services/AuthService.cs",
+  "find": "|| userRefreshToken.Username != identityName",
+  "replace": "",
+  "tests": "AuthServiceTests"
+ },
+ {
+  "file": "BookingCalendarApi.Services/AuthService.cs",
+  "find": "|| userRefreshToken.ExpiresAt < DateTime.UtcNow)",
+  "replace": ")",
+  "tests": "AuthServiceTests"
+ },
+ {
+  "file": "BookingCalendarApi.Services/AuthService.cs",
+  "find": "userRefreshToken == null\n",
+  "replace": "userRefreshToken == null && false\n",
+  "tests": "AuthServiceTests"
+ },
+ {
+  "file": "BookingCalendarApi.Services/AuthService.cs",
+  "find": "new Claim(ClaimTypes.Name, user.Username),",
+  "replace": "new Claim(ClaimTypes.Name, user.VisibleName),",
+  "tests": "AuthServiceTests"
+ },
+ {
+  "file": "BookingCalendarApi.Services/AuthService.cs",
+  "find": "new Claim(JWT.REFRESH_TOKEN_CLAIM, userRefreshToken.Id.ToString()),",
+  "replace": "new Claim(JWT.REFRESH_TOKEN_CLAIM, \"0\"),",
+  "tests": "AuthServiceTests"
+ },
+ {
+  "file": "BookingCalendarApi.Services/AuthService.cs",
+  "find": "new Claim(JWT.STRUCTURE_CLAIM, user.StructureId.ToString()),",
+  "replace": "new Claim(JWT.STRUCTURE_CLAIM, user.Id.ToString()),",
+  "tests": "AuthServiceTests"
+ },
+ {
+  "file": "BookingCalendarApi.Services/AuthService.cs",
+  "find": "Issuer = _jwt.Issuer,\n",
+  "replace": "Issuer = \"x\",\n",
+  "tests": "AuthServiceTests",
+  "occurrence": 2
+ },
+ {
+  "file": "BookingCalendarApi.Services/AuthService.cs",
+  "find": "Expires = DateTime.UtcNow.AddMinutes(_jwt.AccessTokenExpirationMinutes),",
+  "replace": "Expires = DateTime.UtcNow.AddMinutes(_jwt.RefreshTokenExpirationMinutes),",
+  "tests": "AuthServiceTests"
+ },
+ {
+  "file": "BookingCalendarApi.Services/AuthService.cs",
+  "find": "SecurityAlgorithms.HmacSha256Signature",
+  "replace": "SecurityAlgorithms.HmacSha512Signature",
+  "tests": "AuthServiceTests"
+ },
+ {
+  "file": "BookingCalendarApi.Services/AuthService.cs",
+  "find": "if (user.IsAdmin)",
+  "replace": "if (!user.IsAdmin)",
+  "tests": "AuthServiceTests"
+ },
+ {
+  "file": "BookingCalendarApi.Services/AuthService.cs",
+  "find": "RefreshToken = refreshToken.RefreshToken,",
+  "replace": "RefreshToken = \"\",",
+  "tests": "AuthServiceTests"
+ },
+ {
+  "file": "BookingCalendarApi.Services/AuthService.cs",
+  "find": "var randomNumber = new byte[128];",
+  "replace": "var randomNumber = new byte[64];",
+  "tests": "AuthServiceTests"
+ },
+ {
+  "file": "BookingCalendarApi.Services/AuthService.cs",
+  "find": "rng.GetBytes(randomNumber);",
+  "replace": "",
+  "tests": "AuthServiceTests"
+ },
+ {
+  "file": "BookingCalendarApi.Services/AuthService.cs",
+  "find": "Username = username,\n",
+  "replace": "Username = \"\",\n",
+  "tests": "AuthServiceTests"
+ },
+ {
+  "file": "BookingCalendarApi.Services/AuthService.cs",
+  "find": "ExpiresAt = DateTime.UtcNow.AddMinutes(_jwt.RefreshTokenExpirationMinutes),",
+  "replace": "ExpiresAt = DateTime.UtcNow.AddMinutes(_jwt.AccessTokenExpirationMinutes),",
+  "tests": "AuthServiceTests"
+ },
+ {
+  "file": "BookingCalendarApi.Services/AuthService.cs",
+  "find": "await _repository.SaveChangesAsync();",
+  "replace": "",
+  "tests": "AuthServiceTests"
+ },
+ {
+  "file": "BookingCalendarApi.Services/AuthService.cs",
+  "find": "var user = await _repository.Users.SingleOrDefaultAsync(u => u.Username == identityName);",
+  "replace": "var user = await _repository.Users.SingleOrDefaultAsync(u => u.Username != identityName);",
+  "tests": "AuthServiceTests"
+ },
+ {
+  "file": "BookingCalendarApi.Services/UserService.cs",
+  "find": "if (request == null)\n            {\n                throw new ArgumentNullException(nameof(request));\n            }\n            if (string",
+  "replace": "if (false)\n            {\n                throw new ArgumentNullException(nameof(request));\n            }\n            if (string",
+  "tests": "UserServiceTests"
+ },
+ {
+  "file": "BookingCalendarApi.Services/UserService.cs",
+  "find": "if (string.IsNullOrWhiteSpace(request.Username))",
+  "replace": "if (string.IsNullOrEmpty(request.Username))",
+  "tests": "UserServiceTests"
+ },
+ {
+  "file": "BookingCalendarApi.Services/UserService.cs",
+  "find": "if (string.IsNullOrWhiteSpace(request.Password))",
+  "replace": "if (string.IsNullOrEmpty(request.Password))",
+  "tests": "UserServiceTests"
+ },
+ {
+  "file": "BookingCalendarApi.Services/UserService.cs",
+  "find": "if (existingUser != null)",
+  "replace": "if (existingUser == null)",
+  "tests": "UserServiceTests"
+ },
+ {
+  "file": "BookingCalendarApi.Services/UserService.cs",
+  "find": "BCError.DUPLICATE_DATA",
+  "replace": "BCError.NOT_FOUND",
+  "tests": "UserServiceTests"
+ },
+ {
+  "file": "BookingCalendarApi.Services/UserService.cs",
+  "find": "StructureId = request.StructureId,",
+  "replace": "",
+  "tests": "UserServiceTests"
+ },
+ {
+  "file": "BookingCalendarApi.Services/UserService.cs",
+  "find": "PasswordHash = passwordHash,",
+  "replace": "PasswordHash = request.Password,",
+  "tests": "UserServiceTests"
+ },
+ {
+  "file": "BookingCalendarApi.Services/UserService.cs",
+  "find": "VisibleName = request.VisibleName,",
+  "replace": "",
+  "tests": "UserServiceTests"
+ },
+ {
+  "file": "BookingCalendarApi.Services/UserService.cs",
+  "find": "IsAdmin = false,",
+  "replace": "IsAdmin = true,",
+  "tests": "UserServiceTests"
+ },
+ {
+  "file": "BookingCalendarApi.Services/UserService.cs",
+  "find": "user = _repository.Add(user);\n            await _repository.SaveChangesAsync();",
+  "replace": "user = _repository.Add(user);",
+  "tests": "UserServiceTests"
+ },
+ {
+  "file": "BookingCalendarApi.Services/UserService.cs",
+  "find": "Id = user.Id,",
+  "replace": "Id = 0,",
+  "tests": "UserServiceTests"
+ },
+ {
+  "file": "BookingCalendarApi.Services/UserService.cs",
+  "find": "result.Username = user.Username;\n            result.VisibleName = user.VisibleName;\n\n            var structureId",
+  "replace": "result.VisibleName = user.VisibleName;\n\n            var structureId",
+  "tests": "UserServiceTests"
+ },
+ {
+  "file": "BookingCalendarApi.Services/UserService.cs",
+  "find": "result.VisibleName = user.VisibleName;\n\n            var structureId",
+  "replace": "\n            var structureId",
+  "tests": "UserServiceTests"
+ },
+ {
+  "file": "BookingCalendarApi.Services/UserService.cs",
+  "find": "?? throw new BookingCalendarException(BCError.NOT_FOUND, \"Unable to find current user\");\n\n            result.Username",
+  "replace": "?? throw new BookingCalendarException(BCError.SERVER_ERROR, \"Unable to find current user\");\n\n            result.Username",
+  "tests": "UserServiceTests"
+ },
+ {
+  "file": "BookingCalendarApi.Services/UserService.cs",
+  "find": "s => s.Id == structureId",
+  "replace": "s => s.Id != structureId",
+  "tests": "UserServiceTests"
+ },
+ {
+  "file": "BookingCalendarApi.Services/UserService.cs",
+  "find": "roomRate => roomRate.RateGroups.Take(1),",
+  "replace": "roomRate => roomRate.RateGroups,",
+  "tests": "UserServiceTests"
+ },
+ {
+  "file": "BookingCalendarApi.Services/UserService.cs",
+  "find": "roomRate => roomRate.rateGroup.Rates.Take(1),",
+  "replace": "roomRate => roomRate.rateGroup.Rates,",
+  "tests": "UserServiceTests"
+ },
+ {
+  "file": "BookingCalendarApi.Services/UserService.cs",
+  "find": "new RoomType(roomRate.name, rate.MinOccupancy, rate.MaxOccupancy)",
+  "replace": "new RoomType(roomRate.name, rate.MaxOccupancy, rate.MinOccupancy)",
+  "tests": "UserServiceTests"
+ },
+ {
+  "file": "BookingCalendarApi.Services/UserService.cs",
+  "find": ".SelectMany(rate => rate.RateGroups)\n",
+  "replace": ".SelectMany(rate => rate.RateGroups.Take(1))\n",
+  "tests": "UserServiceTests"
+ },
+ {
+  "file": "BookingCalendarApi.Services/UserService.cs",
+  "find": "catch (Exception) { }",
+  "replace": "catch (ArgumentException) { }",
+  "tests": "UserServiceTests"
+ },
+ {
+  "file": "BookingCalendarApi.Services/UserService.cs",
+  "find": "f.Rooms = f.Rooms.OrderBy(r => r.Id).ToList();",
+  "replace": "",
+  "tests": "UserServiceTests"
+ },
+ {
+  "file": "BookingCalendarApi.Services/UserService.cs",
+  "find": ".OrderBy(f => f.Id)",
+  "replace": "",
+  "tests": "UserServiceTests"
+ },
+ {
+  "file": "BookingCalendarApi.Services/UserService.cs",
+  "find": "u => u.Id == id",
+  "replace": "u => u.Id != id",
+  "tests": "UserServiceTests"
+ },
+ {
+  "file": "BookingCalendarApi.Services/UserService.cs",
+  "find": "result.Username = user.Username;\n            result.VisibleName = user.VisibleName;\n            return result;",
+  "replace": "result.VisibleName = user.VisibleName;\n            return result;",
+  "tests": "UserServiceTests"
+ },
+ {
+  "file": "BookingCalendarApi.Services/UserService.cs",
+  "find": "user.VisibleName = request.VisibleName;\n\n            _repository.Update(user);\n            await _repository.SaveChangesAsync();",
+  "replace": "user.VisibleName = request.VisibleName;",
+  "tests": "UserServiceTests"
+ },
+ {
+  "file": "BookingCalendarApi.Services/UserService.cs",
+  "find": "if (request == null)\n            {\n                throw new ArgumentNullException(nameof(request));\n            }\n\n",
+  "replace": "if (false)\n            {\n                throw new ArgumentNullException(nameof(request));\n            }\n\n",
+  "tests": "UserServiceTests"
+ },
+ {
+  "file": "BookingCalendarApi.Services/UserService.cs",
+  "find": "if (verifyOldPasswordResult != PasswordVerificationResult.Success)",
+  "replace": "if (false)",
+  "tests": "UserServiceTests"
+ },
+ {
+  "file": "BookingCalendarApi.Services/UserService.cs",
+  "find": "BCError.AUTHENTICATION_ERROR",
+  "replace": "BCError.PARAMETER_REQUIRED",
+  "tests": "UserServiceTests"
+ },
+ {
+  "file": "BookingCalendarApi.Services/UserService.cs",
+  "find": "if (request.NewPassword == null)",
+  "replace": "if (false)",
+  "tests": "UserServiceTests"
+ },
+ {
+  "file": "BookingCalendarApi.Services/UserService.cs",
+  "find": "BCError.PARAMETER_REQUIRED, \"New password",
+  "replace": "BCError.SERVER_ERROR, \"New password",
+  "tests": "UserServiceTests"
+ },
+ {
+  "file": "BookingCalendarApi.Services/UserService.cs",
+  "find": "user.PasswordHash = passwordHasher.HashPassword(username, request.NewPassword);",
+  "replace": "",
+  "tests": "UserServiceTests"
+ },
+ {
+  "file": "BookingCalendarApi.Services/UserService.cs",
+  "find": "user.PasswordHash = passwordHasher.HashPassword(username, request.NewPassword);\n            _repository.Update(user);\n            await _repository.SaveChangesAsync();",
+  "replace": "user.PasswordHash = passwordHasher.HashPassword(username, request.NewPassword);",
+  "tests": "UserServiceTests"
+ },
+ {
+  "file": "BookingCalendarApi.Services/UserService.cs",
+  "find": "?? throw new BookingCalendarException(BCError.NOT_FOUND, \"Unable to find current user\");\n\n            user.VisibleName",
+  "replace": "?? new User();\n\n            user.VisibleName",
+  "tests": "UserServiceTests"
+ },
+ {
+  "file": "BookingCalendarApi.Services/UserService.cs",
+  "find": "?? throw new BookingCalendarException(BCError.NOT_FOUND, \"Unable to find current user\");\n\n            var passwordHasher",
+  "replace": "?? new User();\n\n            var passwordHasher",
+  "tests": "UserServiceTests"
+ },
+ {
+  "file": "BookingCalendarApi.Services/StructureService.cs",
+  "find": "IperbookingHotel = iperbooking.IdHotel,",
+  "replace": "IperbookingHotel = \"\",",
+  "tests": "StructureServiceTests"
+ },
+ {
+  "file": "BookingCalendarApi.Services/StructureService.cs",
+  "find": "IperbookingUsername = iperbooking.Username,",
+  "replace": "IperbookingUsername = \"\",",
+  "tests": "StructureServiceTests"
+ },
+ {
+  "file": "BookingCalendarApi.Services/StructureService.cs",
+  "find": "IperbookingPassword = iperbooking.Password,",
+  "replace": "IperbookingPassword = \"\",",
+  "tests": "StructureServiceTests"
+ },
+ {
+  "file": "BookingCalendarApi.Services/StructureService.cs",
+  "find": "ASUtente = police.Utente,",
+  "replace": "ASUtente = \"\",",
+  "tests": "StructureServiceTests"
+ },
+ {
+  "file": "BookingCalendarApi.Services/StructureService.cs",
+  "find": "ASPassword = police.Password,",
+  "replace": "ASPassword = \"\",",
+  "tests": "StructureServiceTests"
+ },
+ {
+  "file": "BookingCalendarApi.Services/StructureService.cs",
+  "find": "ASWsKey = police.WsKey,",
+  "replace": "ASWsKey = \"\",",
+  "tests": "StructureServiceTests"
+ },
+ {
+  "file": "BookingCalendarApi.Services/StructureService.cs",
+  "find": "C59Struttura = istat.Struttura,",
+  "replace": "C59Struttura = 0,",
+  "tests": "StructureServiceTests"
+ },
+ {
+  "file": "BookingCalendarApi.Services/StructureService.cs",
+  "find": "C59Username = istat.Username,",
+  "replace": "C59Username = \"\",",
+  "tests": "StructureServiceTests"
+ },
+ {
+  "file": "BookingCalendarApi.Services/StructureService.cs",
+  "find": "C59Password = istat.Password,",
+  "replace": "C59Password = \"\",",
+  "tests": "StructureServiceTests"
+ },
+ {
+  "file": "BookingCalendarApi.Services/StructureService.cs",
+  "find": "CurrentStructure.IperbookingHotel = request.IperbookingHotel;",
+  "replace": "",
+  "tests": "StructureServiceTests"
+ },
+ {
+  "file": "BookingCalendarApi.Services/StructureService.cs",
+  "find": "CurrentStructure.IperbookingUsername = request.IperbookingUsername;",
+  "replace": "",
+  "tests": "StructureServiceTests"
+ },
+ {
+  "file": "BookingCalendarApi.Services/StructureService.cs",
+  "find": "CurrentStructure.IperbookingPassword = request.IperbookingPassword;",
+  "replace": "",
+  "tests": "StructureServiceTests"
+ },
+ {
+  "file": "BookingCalendarApi.Services/StructureService.cs",
+  "find": "CurrentStructure.ASUtente = request.ASUtente;",
+  "replace": "",
+  "tests": "StructureServiceTests"
+ },
+ {
+  "file": "BookingCalendarApi.Services/StructureService.cs",
+  "find": "CurrentStructure.ASPassword = request.ASPassword;",
+  "replace": "",
+  "tests": "StructureServiceTests"
+ },
+ {
+  "file": "BookingCalendarApi.Services/StructureService.cs",
+  "find": "CurrentStructure.ASWsKey = request.ASWsKey;",
+  "replace": "",
+  "tests": "StructureServiceTests"
+ },
+ {
+  "file": "BookingCalendarApi.Services/StructureService.cs",
+  "find": "CurrentStructure.C59Struttura = request.C59Struttura;",
+  "replace": "",
+  "tests": "StructureServiceTests"
+ },
+ {
+  "file": "BookingCalendarApi.Services/StructureService.cs",
+  "find": "CurrentStructure.C59Username = request.C59Username;",
+  "replace": "",
+  "tests": "StructureServiceTests"
+ },
+ {
+  "file": "BookingCalendarApi.Services/StructureService.cs",
+  "find": "CurrentStructure.C59Password = request.C59Password;",
+  "replace": "",
+  "tests": "StructureServiceTests"
+ },
+ {
+  "file": "BookingCalendarApi.Services/StructureService.cs",
+  "find": "_repository.Update(CurrentStructure);\n            await _repository.SaveChangesAsync();",
+  "replace": "",
+  "tests": "StructureServiceTests"
+ },
+ {
+  "file": "BookingCalendarApi.Services/StructureService.cs",
+  "find": "IdHotel = CurrentStructure.IperbookingHotel,",
+  "replace": "IdHotel = \"\",",
+  "tests": "StructureServiceTests"
+ },
+ {
+  "file": "BookingCalendarApi.Services/StructureService.cs",
+  "find": "Username = CurrentStructure.IperbookingUsername,",
+  "replace": "Username = \"\",",
+  "tests": "StructureServiceTests"
+ },
+ {
+  "file": "BookingCalendarApi.Services/StructureService.cs",
+  "find": "Password = CurrentStructure.IperbookingPassword,",
+  "replace": "Password = \"\",",
+  "tests": "StructureServiceTests"
+ },
+ {
+  "file": "BookingCalendarApi.Services/StructureService.cs",
+  "find": "Utente = CurrentStructure.ASUtente,",
+  "replace": "Utente = \"\",",
+  "tests": "StructureServiceTests"
+ },
+ {
+  "file": "BookingCalendarApi.Services/StructureService.cs",
+  "find": "Password = CurrentStructure.ASPassword,",
+  "replace": "Password = \"\",",
+  "tests": "StructureServiceTests"
+ },
+ {
+  "file": "BookingCalendarApi.Services/StructureService.cs",
+  "find": "WsKey = CurrentStructure.ASWsKey,",
+  "replace": "WsKey = \"\",",
+  "tests": "StructureServiceTests"
+ },
+ {
+  "file": "BookingCalendarApi.Services/StructureService.cs",
+  "find": "Struttura = CurrentStructure.C59Struttura,",
+  "replace": "Struttura = 0,",
+  "tests": "StructureServiceTests"
+ },
+ {
+  "file": "BookingCalendarApi.Services/StructureService.cs",
+  "find": "Username = CurrentStructure.C59Username,",
+  "replace": "Username = \"\",",
+  "tests": "StructureServiceTests"
+ },
+ {
+  "file": "BookingCalendarApi.Services/StructureService.cs",
+  "find": "Password = CurrentStructure.C59Password,",
+  "replace": "Password = \"\",",
+  "tests": "StructureServiceTests"
+ },
+ {
+  "file": "BookingCalendarApi.Services/StructureService.cs",
+  "find": "if (CurrentStructure != null) return;",
+  "replace": "",
+  "tests": "StructureServiceTests"
+ },
+ {
+  "file": "BookingCalendarApi.Services/StructureService.cs",
+  "find": "s => s.Id == structureId",
+  "replace": "s => s.Id != structureId",
+  "tests": "StructureServiceTests"
+ },
+ {
+  "file": "BookingCalendarApi.Services/FloorsService.cs",
+  "find": "_repository.Add(floor);\n            await _repository.SaveChangesAsync();",
+  "replace": "_repository.Add(floor);",
+  "tests": "FloorsServiceTests"
+ },
+ {
+  "file": "BookingCalendarApi.Services/FloorsService.cs",
+  "find": "if (!await _repository.Floors.AnyAsync(f => f.Id == id))",
+  "replace": "if (false)",
+  "tests": "FloorsServiceTests"
+ },
+ {
+  "file": "BookingCalendarApi.Services/FloorsService.cs",
+  "find": "BCError.NOT_FOUND",
+  "replace": "BCError.ID_CHANGE_ATTEMPT",
+  "tests": "FloorsServiceTests"
+ },
+ {
+  "file": "BookingCalendarApi.Services/FloorsService.cs",
+  "find": "if (id != floor.Id)",
+  "replace": "if (false)",
+  "tests": "FloorsServiceTests"
+ },
+ {
+  "file": "BookingCalendarApi.Services/FloorsService.cs",
+  "find": "BCError.ID_CHANGE_ATTEMPT",
+  "replace": "BCError.NOT_FOUND",
+  "tests": "FloorsServiceTests"
+ },
+ {
+  "file": "BookingCalendarApi.Services/FloorsService.cs",
+  "find": "_repository.Update(floor);\n            await _repository.SaveChangesAsync();",
+  "replace": "_repository.Update(floor);",
+  "tests": "FloorsServiceTests"
+ },
+ {
+  "file": "BookingCalendarApi.Services/FloorsService.cs",
+  "find": "_repository.Remove(floor);\n            await _repository.SaveChangesAsync();",
+  "replace": "_repository.Remove(floor);",
+  "tests": "FloorsServiceTests"
+ },
+ {
+  "file": "BookingCalendarApi.Services/FloorsService.cs",
+  "find": "return await Get(floor.Id);\n        }\n\n        public async Task<Floor> Update",
+  "replace": "return floor;\n        }\n\n        public async Task<Floor> Update",
+  "tests": "FloorsServiceTests"
+ },
+ {
+  "file": "BookingCalendarApi.Services/RoomsService.cs",
+  "find": "_repository.Add(room);\n            await _repository.SaveChangesAsync();",
+  "replace": "_repository.Add(room);",
+  "tests": "RoomsServiceTests"
+ },
+ {
+  "file": "BookingCalendarApi.Services/RoomsService.cs",
+  "find": "if (!await _repository.Rooms.AnyAsync(r => r.Id == id))",
+  "replace": "if (false)",
+  "tests": "RoomsServiceTests"
+ },
+ {
+  "file": "BookingCalendarApi.Services/RoomsService.cs",
+  "find": "BCError.NOT_FOUND",
+  "replace": "BCError.ID_CHANGE_ATTEMPT",
+  "tests": "RoomsServiceTests"
+ },
+ {
+  "file": "BookingCalendarApi.Services/RoomsService.cs",
+  "find": "if (id != room.Id)",
+  "replace": "if (false)",
+  "tests": "RoomsServiceTests"
+ },
+ {
+  "file": "BookingCalendarApi.Services/RoomsService.cs",
+  "find": "BCError.ID_CHANGE_ATTEMPT",
+  "replace": "BCError.NOT_FOUND",
+  "tests": "RoomsServiceTests"
+ },
+ {
+  "file": "BookingCalendarApi.Services/RoomsService.cs",
+  "find": "_repository.Update(room);\n            await _repository.SaveChangesAsync();",
+  "replace": "_repository.Update(room);",
+  "tests": "RoomsServiceTests"
+ },
+ {
+  "file": "BookingCalendarApi.Services/RoomsService.cs",
+  "find": "_repository.Remove(room);\n            await _repository.SaveChangesAsync();",
+  "replace": "_repository.Remove(room);",
+  "tests": "RoomsServiceTests"
+ },
+ {
+  "file": "BookingCalendarApi.Services/RoomsService.cs",
+  "find": "return await Get(room.Id);\n        }\n\n        public async Task<Room> Update",
+  "replace": "return room;\n        }\n\n        public async Task<Room> Update",
+  "tests": "RoomsServiceTests"
+ },
+ {
+  "file": "BookingCalendarApi.Services/FloorsService.cs",
+  "find": "var floor = await _repository.Floors.SingleAsync(f => f.Id == id);",
+  "replace": "var floor = await _repository.Floors.SingleAsync(f => f.Id != id);",
+  "tests": "FloorsServiceTests"
+ },
+ {
+  "file": "BookingCalendarApi.Services/FloorsService.cs",
+  "find": "return await _repository.Floors\n",
+  "replace": "return await _repository.Floors.Where(f => f.Id > 1)\n",
+  "tests": "FloorsServiceTests"
+ },
+ {
+  "file": "BookingCalendarApi.Services/RoomsService.cs",
+  "find": "return await _repository.Rooms.ToListAsync();",
+  "replace": "return await _repository.Rooms.Where(r => r.Id > 1).ToListAsync();",
+  "tests": "RoomsServiceTests"
+ },
+ {
+  "file": "BookingCalendarApi.Services/RoomsService.cs",
+  "find": "room => room.Id == id",
+  "replace": "room => room.Id != id",
+  "tests": "RoomsServiceTests"
+ },
+ {
+  "file": "BookingCalendarApi.Services/RoomsService.cs",
+  "find": "await CheckRoomTypeExists(room.Type);\n\n            _repository.Add(room);",
+  "replace": "_repository.Add(room);",
+  "tests": "RoomsServiceTests"
+ },
+ {
+  "file": "BookingCalendarApi.Services/RoomsService.cs",
+  "find": "await CheckRoomTypeExists(room.Type);\n\n            _repository.Update(room);",
+  "replace": "_repository.Update(room);",
+  "tests": "RoomsServiceTests"
+ },
+ {
+  "file": "BookingCalendarApi.Services/RoomsService.cs",
+  "find": "r => r.RoomName == roomType",
+  "replace": "r => r.RoomName != roomType",
+  "tests": "RoomsServiceTests"
+ },
+ {
+  "file": "BookingCalendarApi.Services/RoomsService.cs",
+  "find": "if (!matchedTypes.Any())",
+  "replace": "if (false)",
+  "tests": "RoomsServiceTests"
+ },
+ {
+  "file": "BookingCalendarApi.Services/RoomsService.cs",
+  "find": "BCError.MISSING_ORIGIN_DATA",
+  "replace": "BCError.NOT_FOUND",
+  "tests": "RoomsServiceTests"
+ }
+]

@@ -1,0 +1,460 @@
+[
+ {
+  "file": "BookingCalendarApi.Models/AlloggiatiService/TrackedRecord.cs",
+  "find": "if (value > 30)",
+  "replace": "if (value >= 30)",
+  "tests": "TrackedRecordTests"
+ },
+ {
+  "file": "BookingCalendarApi.Models/AlloggiatiService/TrackedRecord.cs",
+  "find": "BCError.MAX_STAY_EXCEEDED",
+  "replace": "BCError.SERVER_ERROR",
+  "tests": "TrackedRecordTests"
+ },
+ {
+  "file": "BookingCalendarApi.Models/AlloggiatiService/TrackedRecord.cs",
+  "find": "Type == AccomodatedType.FamilyMember || Type == AccomodatedType.GroupMember ? default : value",
+  "replace": "Type == AccomodatedType.FamilyMember ? default : value",
+  "tests": "TrackedRecordTests"
+ },
+ {
+  "file": "BookingCalendarApi.Models/AlloggiatiService/TrackedRecord.cs",
+  "find": "Type == AccomodatedType.FamilyMember || Type == AccomodatedType.GroupMember ? default : value",
+  "replace": "Type == AccomodatedType.GroupMember ? default : value",
+  "tests": "TrackedRecordTests"
+ },
+ {
+  "file": "BookingCalendarApi.Models/AlloggiatiService/TrackedRecord.cs",
+  "find": "Type == AccomodatedType.FamilyMember || Type == AccomodatedType.GroupMember ? default : value",
+  "replace": "value",
+  "tests": "TrackedRecordTests"
+ },
+ {
+  "file": "BookingCalendarApi.Models/AlloggiatiService/TrackedRecord.cs",
+  "find": "Type == AccomodatedType.FamilyMember || Type == AccomodatedType.GroupMember ? default : value",
+  "replace": "default",
+  "tests": "TrackedRecordTests"
+ },
+ {
+  "file": "BookingCalendarApi.Models/AlloggiatiService/TrackedRecord.cs",
+  "find": "set => _documentType = SetIfNotMember(value);",
+  "replace": "set => _documentType = value;",
+  "tests": "TrackedRecordTests"
+ },
+ {
+  "file": "BookingCalendarApi.Models/AlloggiatiService/TrackedRecord.cs",
+  "find": "set => _documentNumber = SetIfNotMember(value);",
+  "replace": "set => _documentNumber = value;",
+  "tests": "TrackedRecordTests"
+ },
+ {
+  "file": "BookingCalendarApi.Models/AlloggiatiService/TrackedRecord.cs",
+  "find": "set => _documentIssuer = SetIfNotMember(value);",
+  "replace": "set => _documentIssuer = value;",
+  "tests": "TrackedRecordTests"
+ },
+ {
+  "file": "BookingCalendarApi.Models/AlloggiatiService/TrackedRecord.cs",
+  "find": "case 'à': return \"A'\";",
+  "replace": "",
+  "tests": "TrackedRecordTests"
+ },
+ {
+  "file": "BookingCalendarApi.Models/AlloggiatiService/TrackedRecord.cs",
+  "find": "case 'ò': return \"O'\";",
+  "replace": "",
+  "tests": "TrackedRecordTests"
+ },
+ {
+  "file": "BookingCalendarApi.Models/AlloggiatiService/TrackedRecord.cs",
+  "find": "case 'è': return \"E'\";",
+  "replace": "",
+  "tests": "TrackedRecordTests"
+ },
+ {
+  "file": "BookingCalendarApi.Models/AlloggiatiService/TrackedRecord.cs",
+  "find": "case 'é': return \"E'\";",
+  "replace": "",
+  "tests": "TrackedRecordTests"
+ },
+ {
+  "file": "BookingCalendarApi.Models/AlloggiatiService/TrackedRecord.cs",
+  "find": "case 'ù': return \"U'\";",
+  "replace": "",
+  "tests": "TrackedRecordTests"
+ },
+ {
+  "file": "BookingCalendarApi.Models/AlloggiatiService/TrackedRecord.cs",
+  "find": "case 'ì': return \"I'\";",
+  "replace": "",
+  "tests": "TrackedRecordTests"
+ },
+ {
+  "file": "BookingCalendarApi.Models/AlloggiatiService/TrackedRecord.cs",
+  "find": "default: return $\"{char.ToUpper(c)}\";",
+  "replace": "default: return $\"{c}\";",
+  "tests": "TrackedRecordTests"
+ },
+ {
+  "file": "BookingCalendarApi.Models/AlloggiatiService/TrackedRecord.cs",
+  "find": "set => _surname = GetSanitizedName(value);",
+  "replace": "set => _surname = value;",
+  "tests": "TrackedRecordTests"
+ },
+ {
+  "file": "BookingCalendarApi.Models/AlloggiatiService/TrackedRecord.cs",
+  "find": "set => _name = GetSanitizedName(value);",
+  "replace": "set => _name = value;",
+  "tests": "TrackedRecordTests"
+ },
+ {
+  "file": "BookingCalendarApi.Services/BookingsExtensions.cs",
+  "find": "- fromDate).Days >= 0",
+  "replace": "- fromDate).Days > 0",
+  "tests": "BookingsExtensionsTests"
+ },
+ {
+  "file": "BookingCalendarApi.Services/BookingsExtensions.cs",
+  "find": "(toDate - DateTime.ParseExact(room.Arrival, \"yyyyMMdd\", null)).Days >= 0",
+  "replace": "(toDate - DateTime.ParseExact(room.Arrival, \"yyyyMMdd\", null)).Days > 0",
+  "tests": "BookingsExtensionsTests"
+ },
+ {
+  "file": "BookingCalendarApi.Services/BookingsExtensions.cs",
+  "find": ">= 0 &&\n",
+  "replace": ">= 0 ||\n",
+  "tests": "BookingsExtensionsTests"
+ },
+ {
+  "file": "BookingCalendarApi.Services/BookingsExtensions.cs",
+  "find": "                    .Any());",
+  "replace": "                    .Count() == booking.Rooms.Count);",
+  "tests": "BookingsExtensionsTests"
+ },
+ {
+  "file": "BookingCalendarApi.Services/BookingsExtensions.cs",
+  "find": "if (autoExtend && rooms.Any())",
+  "replace": "if (autoExtend)",
+  "tests": "BookingsExtensionsTests"
+ },
+ {
+  "file": "BookingCalendarApi.Services/BookingsExtensions.cs",
+  "find": "if (autoExtend && rooms.Any())",
+  "replace": "if (rooms.Any())",
+  "tests": "BookingsExtensionsTests"
+ },
+ {
+  "file": "BookingCalendarApi.Services/BookingsExtensions.cs",
+  "find": "rooms = bookings.ExcludeByRange(fromDate, toDate);\n            }",
+  "replace": "}",
+  "tests": "BookingsExtensionsTests"
+ },
+ {
+  "file": "BookingCalendarApi.Services/BookingsExtensions.cs",
+  "find": "rooms.OrderBy(tile => tile.Arrival).First()",
+  "replace": "rooms.OrderByDescending(tile => tile.Arrival).First()",
+  "tests": "BookingsExtensionsTests"
+ },
+ {
+  "file": "BookingCalendarApi.Services/BookingsExtensions.cs",
+  "find": "rooms.OrderBy(tile => tile.Departure).Last()",
+  "replace": "rooms.OrderBy(tile => tile.Departure).First()",
+  "tests": "BookingsExtensionsTests"
+ },
+ {
+  "file": "BookingCalendarApi.Services/BookingsExtensions.cs",
+  "find": "null).AddDays(1),",
+  "replace": "null).AddDays(0),",
+  "tests": "BookingsExtensionsTests"
+ },
+ {
+  "file": "BookingCalendarApi.Services/BookingsExtensions.cs",
+  "find": "null).AddDays(-1)\n",
+  "replace": "null).AddDays(0)\n",
+  "tests": "BookingsExtensionsTests"
+ },
+ {
+  "file": "BookingCalendarApi.Services/BookingsExtensions.cs",
+  "find": "$\"{booking.FirstName} {booking.LastName}\".ToLower().Contains(name.ToLower())",
+  "replace": "$\"{booking.FirstName} {booking.LastName}\".ToLower().Contains(name)",
+  "tests": "BookingsExtensionsTests"
+ },
+ {
+  "file": "BookingCalendarApi.Services/BookingsExtensions.cs",
+  "find": "$\"{booking.FirstName} {booking.LastName}\".ToLower().Contains(name.ToLower())",
+  "replace": "$\"{booking.FirstName} {booking.LastName}\".Contains(name)",
+  "tests": "BookingsExtensionsTests"
+ },
+ {
+  "file": "BookingCalendarApi.Services/BookingsExtensions.cs",
+  "find": "$\"{booking.FirstName} {booking.LastName}\".ToLower()",
+  "replace": "$\"{booking.LastName} {booking.FirstName}\".ToLower()",
+  "tests": "BookingsExtensionsTests"
+ },
+ {
+  "file": "BookingCalendarApi.Services/BookingsExtensions.cs",
+  "find": "booking.BookingNumber.ToString() == id",
+  "replace": "booking.BookingNumber.ToString().StartsWith(id)",
+  "tests": "BookingsExtensionsTests"
+ },
+ {
+  "file": "BookingCalendarApi.Services/BookingsExtensions.cs",
+  "find": "booking.Status != BookingStatus.Cancelled",
+  "replace": "booking.Status == BookingStatus.New",
+  "tests": "BookingsExtensionsTests"
+ },
+ {
+  "file": "BookingCalendarApi.Services/ClientExtensions.cs",
+  "find": "guest.ReservationRoomId.ToString() == stayId",
+  "replace": "guest.ReservationRoomId.ToString() != stayId",
+  "tests": "ClientExtensionsTests"
+ },
+ {
+  "file": "BookingCalendarApi.Services/ClientExtensions.cs",
+  "find": "guest.FirstName != string.Empty\n                            &&",
+  "replace": "guest.FirstName != string.Empty\n                            ||",
+  "tests": "ClientExtensionsTests"
+ },
+ {
+  "file": "BookingCalendarApi.Services/ClientExtensions.cs",
+  "find": "guest.FirstName != string.Empty\n",
+  "replace": "true\n",
+  "tests": "ClientExtensionsTests"
+ },
+ {
+  "file": "BookingCalendarApi.Services/ClientExtensions.cs",
+  "find": ".ToLower().Contains(query.ToLower())",
+  "replace": ".ToLower().Contains(query)",
+  "tests": "ClientExtensionsTests"
+ },
+ {
+  "file": "BookingCalendarApi.Services/ClientExtensions.cs",
+  "find": "$\"{guest.FirstName} {guest.LastName}\".ToLower()",
+  "replace": "$\"{guest.FirstName}{guest.LastName}\".ToLower()",
+  "tests": "ClientExtensionsTests"
+ },
+ {
+  "file": "BookingCalendarApi.Services/ClientExtensions.cs",
+  "find": "bookingId:      reservation.ReservationId.ToString()",
+  "replace": "bookingId:      guest.GuestId",
+  "tests": "ClientExtensionsTests"
+ },
+ {
+  "file": "BookingCalendarApi.Services/ClientExtensions.cs",
+  "find": "name:           guest.FirstName",
+  "replace": "name:           guest.LastName",
+  "tests": "ClientExtensionsTests"
+ },
+ {
+  "file": "BookingCalendarApi.Services/ClientExtensions.cs",
+  "find": "surname:        guest.LastName",
+  "replace": "surname:        guest.FirstName",
+  "tests": "ClientExtensionsTests"
+ },
+ {
+  "file": "BookingCalendarApi.Services/ClientExtensions.cs",
+  "find": "id:             guest.GuestId",
+  "replace": "id:             \"\"",
+  "tests": "ClientExtensionsTests"
+ },
+ {
+  "file": "BookingCalendarApi.Services/ClientExtensions.cs",
+  "find": "guest.BirthDate.Trim() != \"\"",
+  "replace": "guest.BirthDate != \"\"",
+  "tests": "ClientExtensionsTests"
+ },
+ {
+  "file": "BookingCalendarApi.Services/ClientExtensions.cs",
+  "find": ".ToString(\"yyyy-MM-dd\") : \"\"",
+  "replace": ".ToString(\"dd-MM-yyyy\") : \"\"",
+  "tests": "ClientExtensionsTests"
+ },
+ {
+  "file": "BookingCalendarApi.Services/ClientExtensions.cs",
+  "find": "StateOfBirth = guest.BirthCountry,",
+  "replace": "StateOfBirth = guest.BirthCounty,",
+  "tests": "ClientExtensionsTests"
+ },
+ {
+  "file": "BookingCalendarApi.Services/ClientExtensions.cs",
+  "find": "PlaceOfBirth = guest.BirthCity,",
+  "replace": "PlaceOfBirth = guest.BirthCountry,",
+  "tests": "ClientExtensionsTests"
+ },
+ {
+  "file": "BookingCalendarApi.Services/ClientExtensions.cs",
+  "find": "ProvinceOfBirth = guest.BirthCounty",
+  "replace": "ProvinceOfBirth = guest.BirthCity",
+  "tests": "ClientExtensionsTests"
+ },
+ {
+  "file": "BookingCalendarApi.Services/AssignedBookingExtensions.cs",
+  "find": ".Where(room => room.RoomId != null)",
+  "replace": ".Where(room => true)",
+  "tests": "AssignedBookingExtensionsTests"
+ },
+ {
+  "file": "BookingCalendarApi.Services/AssignedBookingExtensions.cs",
+  "find": ".Where(booking => booking.Rooms.Any());",
+  "replace": ";",
+  "occurrence": 1,
+  "tests": "AssignedBookingExtensionsTests"
+ },
+ {
+  "file": "BookingCalendarApi.Services/AssignedBookingExtensions.cs",
+  "find": ".Where(booking => booking.Rooms.Any());",
+  "replace": ";",
+  "occurrence": 2,
+  "tests": "AssignedBookingExtensionsTests"
+ },
+ {
+  "file": "BookingCalendarApi.Services/AssignedBookingExtensions.cs",
+  "find": "- arrival).Days == 0)",
+  "replace": "- arrival).Days >= 0)",
+  "tests": "AssignedBookingExtensionsTests"
+ },
+ {
+  "file": "BookingCalendarApi.Services/AssignedBookingExtensions.cs",
+  "find": "- arrival).Days == 0)",
+  "replace": "- arrival).Days <= 0)",
+  "tests": "AssignedBookingExtensionsTests"
+ },
+ {
+  "file": "BookingCalendarApi.Services/StayComposerExtensions.cs",
+  "find": "stay.RoomId != null",
+  "replace": "stay.RoomId == null",
+  "tests": "AssignedBookingExtensionsTests"
+ },
+ {
+  "file": "BookingCalendarApi.Services/ComposerExtensions.cs",
+  "find": "return composer.Compose(source);",
+  "replace": "return System.Linq.Enumerable.Empty<TOut>();",
+  "tests": "AssignedBookingExtensionsTests"
+ },
+ {
+  "file": "BookingCalendarApi.Services/AssignedBookingComposer.cs",
+  "find": "room => $\"{room.StayId}-{room.Arrival}-{room.Departure}\"",
+  "replace": "room => $\"{room.StayId}-{room.Arrival}\"",
+  "tests": "AssignedBookingComposerTests"
+ },
+ {
+  "file": "BookingCalendarApi.Services/AssignedBookingComposer.cs",
+  "find": "join => join.Assignments.DefaultIfEmpty()",
+  "replace": "join => join.Assignments",
+  "tests": "AssignedBookingComposerTests"
+ },
+ {
+  "file": "BookingCalendarApi.Services/AssignedBookingComposer.cs",
+  "find": ".GroupBy(roomContainer => roomContainer.Room.StayId)",
+  "replace": ".GroupBy(roomContainer => roomContainer.RoomId ?? 0)",
+  "tests": "AssignedBookingComposerTests"
+ },
+ {
+  "file": "BookingCalendarApi.Services/AssignedBookingComposer.cs",
+  "find": "stayId: roomContainerGroup.Key",
+  "replace": "stayId: 0",
+  "tests": "AssignedBookingComposerTests"
+ },
+ {
+  "file": "BookingCalendarApi.Services/AssignedBookingComposer.cs",
+  "find": "roomName: roomContainerGroup.First().Room.RoomName",
+  "replace": "roomName: roomContainerGroup.Last().Room.RoomName",
+  "tests": "AssignedBookingComposerTests"
+ },
+ {
+  "file": "BookingCalendarApi.Services/AssignedBookingComposer.cs",
+  "find": "arrival: roomContainerGroup.OrderBy(roomContainer => roomContainer.Room.Arrival).First().Room.Arrival",
+  "replace": "arrival: roomContainerGroup.First().Room.Arrival",
+  "tests": "AssignedBookingComposerTests"
+ },
+ {
+  "file": "BookingCalendarApi.Services/AssignedBookingComposer.cs",
+  "find": "departure: roomContainerGroup.OrderBy(roomContainer => roomContainer.Room.Departure).Last().Room.Departure",
+  "replace": "departure: roomContainerGroup.Last().Room.Departure",
+  "tests": "AssignedBookingComposerTests"
+ },
+ {
+  "file": "BookingCalendarApi.Services/AssignedBookingComposer.cs",
+  "find": "rateId: roomContainerGroup.First().Room.RateId",
+  "replace": "rateId: roomContainerGroup.Last().Room.RateId",
+  "tests": "AssignedBookingComposerTests"
+ },
+ {
+  "file": "BookingCalendarApi.Services/AssignedBookingComposer.cs",
+  "find": "Guests = roomContainerGroup.First().Room.Guests",
+  "replace": "Guests = roomContainerGroup.Last().Room.Guests",
+  "tests": "AssignedBookingComposerTests"
+ },
+ {
+  "file": "BookingCalendarApi.Services/AssignedBookingComposer.cs",
+  "find": "RoomId = roomContainerGroup.First().RoomId",
+  "replace": "RoomId = roomContainerGroup.Last().RoomId",
+  "tests": "AssignedBookingComposerTests"
+ },
+ {
+  "file": "BookingCalendarApi.Services/NationConverter.cs",
+  "find": "nation.Iso == iso",
+  "replace": "nation.Iso != iso",
+  "tests": "NationConverterTests"
+ },
+ {
+  "file": "BookingCalendarApi.Services/NationConverter.cs",
+  "find": "BCError.MISSING_NATION",
+  "replace": "BCError.NOT_FOUND",
+  "tests": "NationConverterTests"
+ },
+ {
+  "file": "BookingCalendarApi.Services/PlaceConverter.cs",
+  "find": "case 'à': return \"A'\";",
+  "replace": "case 'à': return \"A\";",
+  "tests": "PlaceConverterTests"
+ },
+ {
+  "file": "BookingCalendarApi.Services/PlaceConverter.cs",
+  "find": "case 'ò': return \"O'\";",
+  "replace": "case 'ò': return \"O\";",
+  "tests": "PlaceConverterTests"
+ },
+ {
+  "file": "BookingCalendarApi.Services/PlaceConverter.cs",
+  "find": "case 'è': return \"E'\";",
+  "replace": "case 'è': return \"E\";",
+  "tests": "PlaceConverterTests"
+ },
+ {
+  "file": "BookingCalendarApi.Services/PlaceConverter.cs",
+  "find": "case 'é': return \"E'\";",
+  "replace": "case 'é': return \"E\";",
+  "tests": "PlaceConverterTests"
+ },
+ {
+  "file": "BookingCalendarApi.Services/PlaceConverter.cs",
+  "find": "case 'ù': return \"U'\";",
+  "replace": "case 'ù': return \"U\";",
+  "tests": "PlaceConverterTests"
+ },
+ {
+  "file": "BookingCalendarApi.Services/PlaceConverter.cs",
+  "find": "case 'ì': return \"I'\";",
+  "replace": "case 'ì': return \"I\";",
+  "tests": "PlaceConverterTests"
+ },
+ {
+  "file": "BookingCalendarApi.Services/PlaceConverter.cs",
+  "find": "default: return $\"{char.ToUpper(c)}\";",
+  "replace": "default: return $\"{c}\";",
+  "tests": "PlaceConverterTests"
+ },
+ {
+  "file": "BookingCalendarApi.Services/PlaceConverter.cs",
+  "find": ".OrderBy(comparison => comparison.Distance)",
+  "replace": ".OrderByDescending(comparison => comparison.Distance)",
+  "tests": "PlaceConverterTests"
+ },
+ {
+  "file": "BookingCalendarApi.Services/AssignedBookingComposer.cs",
+  "find": "            source\n            .Select(",
+  "replace": "            source.Where(booking => booking.Rooms.Any())\n            .Select(",
+  "tests": "AssignedBookingComposerTests"
+ }
+]

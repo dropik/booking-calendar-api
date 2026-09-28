@@ -23,7 +23,10 @@ namespace BookingCalendarApi.Repository.NETCore.Migrations
                 columns: new[] { "Id", "Name" },
                 values: new object[] { -1L, "Master Hotel" });
 
-            var configuration = new ConfigurationBuilder().AddUserSecrets(Assembly.Load("BookingCalendarApi")).Build();
+            var configuration = new ConfigurationBuilder()
+                .AddUserSecrets(Assembly.Load("BookingCalendarApi"))
+                .AddEnvironmentVariables()
+                .Build();
             var password = configuration.GetSection("MasterPassword").Value;
             var passwordHasher = new PasswordHasher<string>();
             var passwordHash = passwordHasher.HashPassword("master@bookingcalendar.com", password);

@@ -75,6 +75,7 @@ namespace BookingCalendarApi.NETFramework
 
             // scoped services
             services.AddScoped<IUserClaimsProvider, UserClaimsProvider>();
+            services.AddSingleton(new HttpClient() { BaseAddress = new Uri(Iperbooking.DEFAULT_BASE_URL) });
             services.AddScoped<IIperbooking, Iperbooking>();
             services.AddScoped<IAlloggiatiServiceSession, AlloggiatiServiceSession>();
             services.AddScoped<DataContext>();

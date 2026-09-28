@@ -1,0 +1,28 @@
+[
+  {"file": "BookingCalendarApi.Models/Utils.cs", "find": "arrivalObj.Day < birthDateObj.Day", "replace": "arrivalObj.Day <= birthDateObj.Day", "tests": "UtilsTests"},
+  {"file": "BookingCalendarApi.Models/Utils.cs", "find": "arrivalObj.Month < birthDateObj.Month", "replace": "arrivalObj.Month <= birthDateObj.Month", "tests": "UtilsTests"},
+  {"file": "BookingCalendarApi.Models/Utils.cs", "find": "birthDateObj.Month == arrivalObj.Month &&", "replace": "birthDateObj.Month != arrivalObj.Month &&", "tests": "UtilsTests"},
+  {"file": "BookingCalendarApi.Models/Utils.cs", "find": "years--;", "replace": "years++;", "tests": "UtilsTests"},
+  {"file": "BookingCalendarApi.Models/Utils.cs", "find": "DateTime.ParseExact(birthDate, \"yyyyMMdd\", null)", "replace": "DateTime.Parse(birthDate)", "tests": "UtilsTests"},
+
+  {"file": "BookingCalendarApi.Models/Exceptions/BookingCalendarException.cs", "find": "return HttpStatusCode.NotFound;", "replace": "return HttpStatusCode.BadRequest;", "tests": "BookingCalendarExceptionTests"},
+  {"file": "BookingCalendarApi.Models/Exceptions/BookingCalendarException.cs", "find": "return HttpStatusCode.RequestTimeout;", "replace": "return HttpStatusCode.BadRequest;", "tests": "BookingCalendarExceptionTests"},
+  {"file": "BookingCalendarApi.Models/Exceptions/BookingCalendarException.cs", "find": "return HttpStatusCode.BadRequest;", "replace": "return HttpStatusCode.InternalServerError;", "tests": "BookingCalendarExceptionTests"},
+  {"file": "BookingCalendarApi.Models/Exceptions/BookingCalendarException.cs", "find": "= BCError.SERVER_ERROR;", "replace": "= BCError.NOT_FOUND;", "tests": "BookingCalendarExceptionTests"},
+  {"file": "BookingCalendarApi.Models/Exceptions/BookingCalendarException.cs", "find": ": this(errorCode, \"\")", "replace": ": this(errorCode, \"error\")", "tests": "BookingCalendarExceptionTests"},
+  {"file": "BookingCalendarApi.Models/Exceptions/BookingCalendarException.cs", "find": "            ErrorCode = errorCode;", "replace": "", "tests": "BookingCalendarExceptionTests"},
+
+  {"file": "BookingCalendarApi.Models/Json/GuestIdConverter.cs", "find": "return reader.GetInt32().ToString();", "replace": "return \"\";", "tests": "JsonConvertersTests"},
+  {"file": "BookingCalendarApi.Models/Json/GuestIdConverter.cs", "find": "return reader.GetString();", "replace": "return \"\";", "tests": "JsonConvertersTests"},
+  {"file": "BookingCalendarApi.Models/Json/GuestIdConverter.cs", "find": "throw new JsonException(\"Unable to read value as string\");", "replace": "return null;", "tests": "JsonConvertersTests"},
+  {"file": "BookingCalendarApi.Models/Json/GuestIdConverter.cs", "find": "writer.WriteNumberValue(parsedInt);", "replace": "writer.WriteStringValue(value);", "tests": "JsonConvertersTests"},
+  {"file": "BookingCalendarApi.Models/Json/GuestIdConverter.cs", "find": "writer.WriteStringValue(\"\");", "replace": "writer.WriteStringValue(value);", "tests": "JsonConvertersTests"},
+  {"file": "BookingCalendarApi.Models/Json/JsonEnumFromStringConverter.cs", "find": "if (reader.TokenType != JsonTokenType.String)", "replace": "if (false)", "tests": "JsonConvertersTests"},
+  {"file": "BookingCalendarApi.Models/Json/JsonEnumFromStringConverter.cs", "find": "Enum.Parse(typeof(TEnum), str, true)", "replace": "Enum.Parse(typeof(TEnum), str, false)", "tests": "JsonConvertersTests"},
+  {"file": "BookingCalendarApi.Models/Json/JsonEnumFromStringConverter.cs", "find": "return default;\n            }", "replace": "throw;\n            }", "tests": "JsonConvertersTests"},
+  {"file": "BookingCalendarApi.Models/Json/JsonEnumFromStringConverter.cs", "find": "writer.WriteStringValue(value.ToString());", "replace": "writer.WriteStringValue(value.ToString().ToLower());", "tests": "JsonConvertersTests"},
+  {"file": "BookingCalendarApi.Models/Json/LowerCaseEnumConverter.cs", "find": "System.Text.Json.JsonNamingPolicy.CamelCase", "replace": "null", "tests": "JsonConvertersTests"},
+  {"file": "BookingCalendarApi.Models/Json/LowerCaseEnumConverter.cs", "find": "CamelCase, false", "replace": "CamelCase, true", "tests": "JsonConvertersTests"},
+  {"file": "BookingCalendarApi.Models/Iperbooking/Bookings/Booking.cs", "find": "[JsonConverter(typeof(JsonStringEnumConverter))]\n        public BookingPaymentMethod", "replace": "public BookingPaymentMethod", "tests": "JsonConvertersTests"},
+  {"file": "BookingCalendarApi.Models/Iperbooking/Guests/Guest.cs", "find": "[JsonConverter(typeof(JsonEnumFromStringConverter<DocumentType>))]", "replace": "", "tests": "JsonConvertersTests"}
+]

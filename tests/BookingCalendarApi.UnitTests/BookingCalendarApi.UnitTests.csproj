@@ -1,0 +1,9 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\BookingCalendarApi.Models\BookingCalendarApi.Models.csproj" />
+    <ProjectReference Include="..\..\BookingCalendarApi.Repository\BookingCalendarApi.Repository.csproj" />
+    <ProjectReference Include="..\..\BookingCalendarApi.Services\BookingCalendarApi.Services.csproj" />
+  </ItemGroup>
+
+</Project>

@@ -1,0 +1,448 @@
+[
+ {
+  "file": "BookingCalendarApi.Services/TrackedRecordsComposer.cs",
+  "find": "if (guest.Gender == Guest.Sex.F)",
+  "replace": "if (guest.Gender != Guest.Sex.F)",
+  "tests": "TrackedRecordsComposerTests"
+ },
+ {
+  "file": "BookingCalendarApi.Services/TrackedRecordsComposer.cs",
+  "find": "sex = Gender.Female;",
+  "replace": "sex = Gender.Male;",
+  "tests": "TrackedRecordsComposerTests"
+ },
+ {
+  "file": "BookingCalendarApi.Services/TrackedRecordsComposer.cs",
+  "find": "docType = DocumentType.Ident;",
+  "replace": "docType = DocumentType.Pasor;",
+  "tests": "TrackedRecordsComposerTests"
+ },
+ {
+  "file": "BookingCalendarApi.Services/TrackedRecordsComposer.cs",
+  "find": "docType = DocumentType.Pasor;",
+  "replace": "docType = DocumentType.Ident;",
+  "tests": "TrackedRecordsComposerTests"
+ },
+ {
+  "file": "BookingCalendarApi.Services/TrackedRecordsComposer.cs",
+  "find": "docType = DocumentType.Paten;",
+  "replace": "docType = DocumentType.Idele;",
+  "tests": "TrackedRecordsComposerTests"
+ },
+ {
+  "file": "BookingCalendarApi.Services/TrackedRecordsComposer.cs",
+  "find": "docType = DocumentType.Idele;",
+  "replace": "docType = DocumentType.Paten;",
+  "tests": "TrackedRecordsComposerTests"
+ },
+ {
+  "file": "BookingCalendarApi.Services/TrackedRecordsComposer.cs",
+  "find": "Arrival = DateTime.ParseExact(room.Arrival",
+  "replace": "Arrival = DateTime.ParseExact(room.Departure",
+  "tests": "TrackedRecordsComposerTests"
+ },
+ {
+  "file": "BookingCalendarApi.Services/TrackedRecordsComposer.cs",
+  "find": "Nights = (ushort)(DateTime.ParseExact(room.Departure, \"yyyyMMdd\", null) - DateTime.ParseExact(room.Arrival, \"yyyyMMdd\", null)).Days,",
+  "replace": "Nights = 1,",
+  "tests": "TrackedRecordsComposerTests"
+ },
+ {
+  "file": "BookingCalendarApi.Services/TrackedRecordsComposer.cs",
+  "find": "Surname = guest.LastName,",
+  "replace": "Surname = guest.FirstName,",
+  "tests": "TrackedRecordsComposerTests"
+ },
+ {
+  "file": "BookingCalendarApi.Services/TrackedRecordsComposer.cs",
+  "find": "Name = guest.FirstName,",
+  "replace": "Name = guest.LastName,",
+  "tests": "TrackedRecordsComposerTests"
+ },
+ {
+  "file": "BookingCalendarApi.Services/TrackedRecordsComposer.cs",
+  "find": "guest.BirthCountry != null && guest.BirthCountry == \"IT\" && guest.BirthCity != null && guest.BirthCity.Trim() != \"\"",
+  "replace": "guest.BirthCountry == \"IT\"",
+  "tests": "TrackedRecordsComposerTests"
+ },
+ {
+  "file": "BookingCalendarApi.Services/TrackedRecordsComposer.cs",
+  "find": "guest.BirthCountry != null && guest.BirthCountry == \"IT\" && guest.BirthCity != null && guest.BirthCity.Trim() != \"\"",
+  "replace": "guest.BirthCountry == \"IT\" && guest.BirthCity != null",
+  "tests": "TrackedRecordsComposerTests"
+ },
+ {
+  "file": "BookingCalendarApi.Services/TrackedRecordsComposer.cs",
+  "find": "guest.BirthCountry != null && guest.BirthCountry == \"IT\" && guest.BirthCity != null && guest.BirthCity.Trim() != \"\"",
+  "replace": "guest.BirthCity != null && guest.BirthCity.Trim() != \"\"",
+  "tests": "TrackedRecordsComposerTests"
+ },
+ {
+  "file": "BookingCalendarApi.Services/TrackedRecordsComposer.cs",
+  "find": "ProvinceOfBirth = guest.BirthCounty,",
+  "replace": "ProvinceOfBirth = \"XX\",",
+  "tests": "TrackedRecordsComposerTests"
+ },
+ {
+  "file": "BookingCalendarApi.Services/TrackedRecordsComposer.cs",
+  "find": "_nationConverter.GetCodeByIso(guest.BirthCountry ?? \"IT\")",
+  "replace": "_nationConverter.GetCodeByIso(guest.Citizenship ?? \"IT\")",
+  "tests": "TrackedRecordsComposerTests"
+ },
+ {
+  "file": "BookingCalendarApi.Services/TrackedRecordsComposer.cs",
+  "find": "_nationConverter.GetCodeByIso(guest.Citizenship ?? \"IT\")",
+  "replace": "_nationConverter.GetCodeByIso(guest.BirthCountry ?? \"IT\")",
+  "tests": "TrackedRecordsComposerTests"
+ },
+ {
+  "file": "BookingCalendarApi.Services/TrackedRecordsComposer.cs",
+  "find": "DocType = docType,",
+  "replace": "DocType = null,",
+  "tests": "TrackedRecordsComposerTests"
+ },
+ {
+  "file": "BookingCalendarApi.Services/TrackedRecordsComposer.cs",
+  "find": "DocNumber = guest.DocNumber,",
+  "replace": "DocNumber = \"X\",",
+  "tests": "TrackedRecordsComposerTests"
+ },
+ {
+  "file": "BookingCalendarApi.Services/TrackedRecordsComposer.cs",
+  "find": "DocIssuer = guest.DocCity != null",
+  "replace": "DocIssuer = guest.DocCity == null",
+  "tests": "TrackedRecordsComposerTests"
+ },
+ {
+  "file": "BookingCalendarApi.Services/TrackedRecordsComposer.cs",
+  "find": "?? (guest.DocCountry != null ? _nationConverter.GetCodeByIso(guest.DocCountry) : default(long?))",
+  "replace": "?? default(long?)",
+  "tests": "TrackedRecordsComposerTests"
+ },
+ {
+  "file": "BookingCalendarApi.Services/TrackedRecordsComposer.cs",
+  "find": ": guest.DocCountry != null ? _nationConverter.GetCodeByIso(guest.DocCountry) : default(long?)",
+  "replace": ": default(long?)",
+  "tests": "TrackedRecordsComposerTests"
+ },
+ {
+  "file": "BookingCalendarApi.Services/TrackedRecordsComposer.cs",
+  "find": "record.StateOfBirth != 100000100 || record.PlaceOfBirth != null && record.ProvinceOfBirth?.Length == 2",
+  "replace": "true",
+  "tests": "TrackedRecordsComposerTests"
+ },
+ {
+  "file": "BookingCalendarApi.Services/TrackedRecordsComposer.cs",
+  "find": "record.StateOfBirth != 100000100 || record.PlaceOfBirth != null && record.ProvinceOfBirth?.Length == 2",
+  "replace": "record.StateOfBirth != 100000100 || record.PlaceOfBirth != null",
+  "tests": "TrackedRecordsComposerTests"
+ },
+ {
+  "file": "BookingCalendarApi.Services/TrackedRecordsComposer.cs",
+  "find": "record.StateOfBirth != 100000100 || record.PlaceOfBirth != null && record.ProvinceOfBirth?.Length == 2",
+  "replace": "record.StateOfBirth != 100000100 || record.ProvinceOfBirth?.Length == 2",
+  "tests": "TrackedRecordsComposerTests"
+ },
+ {
+  "file": "BookingCalendarApi.Services/TrackedRecordsComposer.cs",
+  "find": "record.StateOfBirth != 100000100 || record.PlaceOfBirth != null && record.ProvinceOfBirth?.Length == 2",
+  "replace": "record.PlaceOfBirth != null && record.ProvinceOfBirth?.Length == 2",
+  "tests": "TrackedRecordsComposerTests"
+ },
+ {
+  "file": "BookingCalendarApi.Services/TrackedRecordsComposer.cs",
+  "find": "record.Type == AccomodatedType.SingleGuest && block.Count == 1 ||",
+  "replace": "record.Type == AccomodatedType.SingleGuest ||",
+  "tests": "TrackedRecordsComposerTests",
+  "skip": "equivalent: GuessType assigns SingleGuest only when the block has exactly one record"
+ },
+ {
+  "file": "BookingCalendarApi.Services/TrackedRecordsComposer.cs",
+  "find": "record.Type == AccomodatedType.FamilyHead ||\n",
+  "replace": "false ||\n",
+  "tests": "TrackedRecordsComposerTests"
+ },
+ {
+  "file": "BookingCalendarApi.Services/TrackedRecordsComposer.cs",
+  "find": "record.Type == AccomodatedType.GroupHead\n",
+  "replace": "false\n",
+  "tests": "TrackedRecordsComposerTests"
+ },
+ {
+  "file": "BookingCalendarApi.Services/TrackedRecordsComposer.cs",
+  "find": "block => block.OrderBy(r => r.Type),",
+  "replace": "block => block,",
+  "tests": "TrackedRecordsComposerTests"
+ },
+ {
+  "file": "BookingCalendarApi.Services/TrackedRecordsComposer.cs",
+  "find": "if (recordsBlock.Count() == 1)",
+  "replace": "if (recordsBlock.Count() <= 2)",
+  "tests": "TrackedRecordsComposerTests"
+ },
+ {
+  "file": "BookingCalendarApi.Services/TrackedRecordsComposer.cs",
+  "find": "recordToSolve.Type = AccomodatedType.SingleGuest;",
+  "replace": "recordToSolve.Type = AccomodatedType.GroupHead;",
+  "tests": "TrackedRecordsComposerTests"
+ },
+ {
+  "file": "BookingCalendarApi.Services/TrackedRecordsComposer.cs",
+  "find": "else if (recordsBlock.Where(record => record.Type == AccomodatedType.FamilyHead).Any())",
+  "replace": "else if (false)",
+  "tests": "TrackedRecordsComposerTests"
+ },
+ {
+  "file": "BookingCalendarApi.Services/TrackedRecordsComposer.cs",
+  "find": "recordToSolve.Type = AccomodatedType.FamilyMember;\n",
+  "replace": "recordToSolve.Type = AccomodatedType.GroupMember;\n",
+  "tests": "TrackedRecordsComposerTests"
+ },
+ {
+  "file": "BookingCalendarApi.Services/TrackedRecordsComposer.cs",
+  "find": "else if (recordsBlock.Where(record => record.Type == AccomodatedType.GroupHead).Any())",
+  "replace": "else if (false)",
+  "tests": "TrackedRecordsComposerTests"
+ },
+ {
+  "file": "BookingCalendarApi.Services/TrackedRecordsComposer.cs",
+  "find": "recordToSolve.Type = AccomodatedType.GroupMember;\n",
+  "replace": "recordToSolve.Type = AccomodatedType.FamilyMember;\n",
+  "tests": "TrackedRecordsComposerTests"
+ },
+ {
+  "file": "BookingCalendarApi.Services/TrackedRecordsComposer.cs",
+  "find": "recordToSolve.DocNumber != null &&",
+  "replace": "true &&",
+  "tests": "TrackedRecordsComposerTests"
+ },
+ {
+  "file": "BookingCalendarApi.Services/TrackedRecordsComposer.cs",
+  "find": "recordToSolve.DocIssuer != null &&",
+  "replace": "true &&",
+  "tests": "TrackedRecordsComposerTests"
+ },
+ {
+  "file": "BookingCalendarApi.Services/TrackedRecordsComposer.cs",
+  "find": "recordToSolve.Arrival.ToString(\"yyyyMMdd\")) >= 18;",
+  "replace": "recordToSolve.Arrival.ToString(\"yyyyMMdd\")) > 18;",
+  "tests": "TrackedRecordsComposerTests"
+ },
+ {
+  "file": "BookingCalendarApi.Services/TrackedRecordsComposer.cs",
+  "find": "recordToSolve.Arrival.ToString(\"yyyyMMdd\")) >= 18;",
+  "replace": "recordToSolve.Arrival.ToString(\"yyyyMMdd\")) >= 17;",
+  "tests": "TrackedRecordsComposerTests"
+ },
+ {
+  "file": "BookingCalendarApi.Services/TrackedRecordsComposer.cs",
+  "find": "recordsBlock.Count() == 2 &&",
+  "replace": "recordsBlock.Count() >= 2 &&",
+  "tests": "TrackedRecordsComposerTests"
+ },
+ {
+  "file": "BookingCalendarApi.Services/TrackedRecordsComposer.cs",
+  "find": "recordsBlock.Where(record => record.Sex == Gender.Male).Any() &&",
+  "replace": "true &&",
+  "tests": "TrackedRecordsComposerTests"
+ },
+ {
+  "file": "BookingCalendarApi.Services/TrackedRecordsComposer.cs",
+  "find": "recordsBlock.Where(record => record.Sex == Gender.Female).Any()\n",
+  "replace": "true\n",
+  "tests": "TrackedRecordsComposerTests"
+ },
+ {
+  "file": "BookingCalendarApi.Services/TrackedRecordsComposer.cs",
+  "find": "recordsBlock.Count() > 2 &&",
+  "replace": "recordsBlock.Count() >= 2 &&",
+  "tests": "TrackedRecordsComposerTests"
+ },
+ {
+  "file": "BookingCalendarApi.Services/TrackedRecordsComposer.cs",
+  "find": "recordsBlock.Count() <= 5 &&",
+  "replace": "recordsBlock.Count() <= 6 &&",
+  "tests": "TrackedRecordsComposerTests"
+ },
+ {
+  "file": "BookingCalendarApi.Services/TrackedRecordsComposer.cs",
+  "find": "record.Arrival.ToString(\"yyyyMMdd\")) >= 18).Count() < recordsBlock.Count()",
+  "replace": "record.Arrival.ToString(\"yyyyMMdd\")) >= 18).Count() <= recordsBlock.Count()",
+  "tests": "TrackedRecordsComposerTests"
+ },
+ {
+  "file": "BookingCalendarApi.Services/TrackedRecordsComposer.cs",
+  "find": "recordsBlock.Where(record => record.Surname == recordToSolve.Surname).Count() > 2;",
+  "replace": "recordsBlock.Where(record => record.Surname == recordToSolve.Surname).Count() > 1;",
+  "tests": "TrackedRecordsComposerTests"
+ },
+ {
+  "file": "BookingCalendarApi.Services/TrackedRecordsComposer.cs",
+  "find": "recordsBlock.Where(record => record.Surname == recordToSolve.Surname).Count() > 2;",
+  "replace": "false;",
+  "tests": "TrackedRecordsComposerTests"
+ },
+ {
+  "file": "BookingCalendarApi.Services/TrackedRecordsComposer.cs",
+  "find": "? mightBeFamily ? AccomodatedType.FamilyHead : AccomodatedType.GroupHead",
+  "replace": "? AccomodatedType.FamilyHead",
+  "tests": "TrackedRecordsComposerTests"
+ },
+ {
+  "file": "BookingCalendarApi.Services/TrackedRecordsComposer.cs",
+  "find": "? mightBeFamily ? AccomodatedType.FamilyHead : AccomodatedType.GroupHead",
+  "replace": "? AccomodatedType.GroupHead",
+  "tests": "TrackedRecordsComposerTests"
+ },
+ {
+  "file": "BookingCalendarApi.Services/TrackedRecordsComposer.cs",
+  "find": ": mightBeFamily ? AccomodatedType.FamilyMember : AccomodatedType.GroupMember;",
+  "replace": ": AccomodatedType.GroupMember;",
+  "tests": "TrackedRecordsComposerTests"
+ },
+ {
+  "file": "BookingCalendarApi.Services/TrackedRecordsComposer.cs",
+  "find": ": mightBeFamily ? AccomodatedType.FamilyMember : AccomodatedType.GroupMember;",
+  "replace": ": AccomodatedType.FamilyMember;",
+  "tests": "TrackedRecordsComposerTests"
+ },
+ {
+  "file": "BookingCalendarApi.Services/TrackedRecordsComposer.cs",
+  "find": "$\"{record.Arrival:dd/MM/yyyy}\"",
+  "replace": "$\"{record.Arrival:dd/MM/yy}\"",
+  "tests": "TrackedRecordsComposerTests"
+ },
+ {
+  "file": "BookingCalendarApi.Services/TrackedRecordsComposer.cs",
+  "find": "$\"{record.Nights:D2}\"",
+  "replace": "$\"{record.Nights}\"",
+  "tests": "TrackedRecordsComposerTests"
+ },
+ {
+  "file": "BookingCalendarApi.Services/TrackedRecordsComposer.cs",
+  "find": "record.Surname.PadRight(50, ' ').Substring(0, 50)",
+  "replace": "record.Surname.PadRight(50, ' ')",
+  "tests": "TrackedRecordsComposerTests"
+ },
+ {
+  "file": "BookingCalendarApi.Services/TrackedRecordsComposer.cs",
+  "find": "record.Surname.PadRight(50, ' ').Substring(0, 50)",
+  "replace": "record.Surname.PadLeft(50, ' ').Substring(0, 50)",
+  "tests": "TrackedRecordsComposerTests"
+ },
+ {
+  "file": "BookingCalendarApi.Services/TrackedRecordsComposer.cs",
+  "find": "record.Name.PadRight(30, ' ').Substring(0, 30)",
+  "replace": "record.Name.PadRight(30, ' ')",
+  "tests": "TrackedRecordsComposerTests"
+ },
+ {
+  "file": "BookingCalendarApi.Services/TrackedRecordsComposer.cs",
+  "find": "record.Name.PadRight(30, ' ').Substring(0, 30)",
+  "replace": "record.Name.PadRight(31, ' ').Substring(0, 31)",
+  "tests": "TrackedRecordsComposerTests"
+ },
+ {
+  "file": "BookingCalendarApi.Services/TrackedRecordsComposer.cs",
+  "find": "$\"{record.BirthDate:dd/MM/yyyy}\"",
+  "replace": "$\"{record.BirthDate:MM/dd/yyyy}\"",
+  "tests": "TrackedRecordsComposerTests"
+ },
+ {
+  "file": "BookingCalendarApi.Services/TrackedRecordsComposer.cs",
+  "find": "record.PlaceOfBirth != null ? record.PlaceOfBirth.ToString() : new string(' ', 9)",
+  "replace": "record.PlaceOfBirth != null ? record.PlaceOfBirth.ToString() : new string(' ', 8)",
+  "tests": "TrackedRecordsComposerTests"
+ },
+ {
+  "file": "BookingCalendarApi.Services/TrackedRecordsComposer.cs",
+  "find": "record.ProvinceOfBirth != null && record.ProvinceOfBirth.Length == 2 ? record.ProvinceOfBirth : new string(' ', 2)",
+  "replace": "record.ProvinceOfBirth != null ? record.ProvinceOfBirth : new string(' ', 2)",
+  "tests": "TrackedRecordsComposerTests"
+ },
+ {
+  "file": "BookingCalendarApi.Services/TrackedRecordsComposer.cs",
+  "find": "$\"{record.StateOfBirth}\" +",
+  "replace": "\"\" +",
+  "tests": "TrackedRecordsComposerTests"
+ },
+ {
+  "file": "BookingCalendarApi.Services/TrackedRecordsComposer.cs",
+  "find": "$\"{record.Citizenship}\" +",
+  "replace": "\"\" +",
+  "tests": "TrackedRecordsComposerTests"
+ },
+ {
+  "file": "BookingCalendarApi.Services/TrackedRecordsComposer.cs",
+  "find": "record.DocType.ToString()?.ToUpper()",
+  "replace": "record.DocType.ToString()",
+  "tests": "TrackedRecordsComposerTests"
+ },
+ {
+  "file": "BookingCalendarApi.Services/TrackedRecordsComposer.cs",
+  "find": "record.DocType != null ? record.DocType.ToString()?.ToUpper() : new string(' ', 5)",
+  "replace": "record.DocType != null ? record.DocType.ToString()?.ToUpper() : new string(' ', 4)",
+  "tests": "TrackedRecordsComposerTests",
+  "skip": "unreachable: the composer always maps a document type, DocType is never null"
+ },
+ {
+  "file": "BookingCalendarApi.Services/TrackedRecordsComposer.cs",
+  "find": "record.DocNumber.PadRight(20, ' ') : new string(' ', 20)",
+  "replace": "record.DocNumber.PadRight(19, ' ') : new string(' ', 20)",
+  "tests": "TrackedRecordsComposerTests"
+ },
+ {
+  "file": "BookingCalendarApi.Services/TrackedRecordsComposer.cs",
+  "find": "record.DocNumber.PadRight(20, ' ') : new string(' ', 20)",
+  "replace": "record.DocNumber.PadRight(20, ' ') : new string(' ', 19)",
+  "tests": "TrackedRecordsComposerTests"
+ },
+ {
+  "file": "BookingCalendarApi.Services/TrackedRecordsComposer.cs",
+  "find": "record.DocIssuer != null ? record.DocIssuer.ToString() : new string(' ', 9)",
+  "replace": "record.DocIssuer != null ? record.DocIssuer.ToString() : \"\"",
+  "tests": "TrackedRecordsComposerTests"
+ },
+ {
+  "file": "BookingCalendarApi.Services/TrackedRecordsComposer.cs",
+  "find": "case AccomodatedType.SingleGuest: return \"16\";",
+  "replace": "case AccomodatedType.SingleGuest: return \"20\";",
+  "tests": "TrackedRecordsComposerTests"
+ },
+ {
+  "file": "BookingCalendarApi.Services/TrackedRecordsComposer.cs",
+  "find": "case AccomodatedType.FamilyHead: return \"17\";",
+  "replace": "case AccomodatedType.FamilyHead: return \"20\";",
+  "tests": "TrackedRecordsComposerTests"
+ },
+ {
+  "file": "BookingCalendarApi.Services/TrackedRecordsComposer.cs",
+  "find": "case AccomodatedType.GroupHead: return \"18\";",
+  "replace": "case AccomodatedType.GroupHead: return \"20\";",
+  "tests": "TrackedRecordsComposerTests"
+ },
+ {
+  "file": "BookingCalendarApi.Services/TrackedRecordsComposer.cs",
+  "find": "case AccomodatedType.FamilyMember: return \"19\";",
+  "replace": "case AccomodatedType.FamilyMember: return \"20\";",
+  "tests": "TrackedRecordsComposerTests"
+ },
+ {
+  "file": "BookingCalendarApi.Services/TrackedRecordsComposer.cs",
+  "find": "case AccomodatedType.GroupMember: return \"20\";",
+  "replace": "case AccomodatedType.GroupMember: return \"19\";",
+  "tests": "TrackedRecordsComposerTests"
+ },
+ {
+  "file": "BookingCalendarApi.Services/TrackedRecordsComposer.cs",
+  "find": "case Gender.Male: return \"1\";",
+  "replace": "case Gender.Male: return \"2\";",
+  "tests": "TrackedRecordsComposerTests"
+ },
+ {
+  "file": "BookingCalendarApi.Services/TrackedRecordsComposer.cs",
+  "find": "case Gender.Female: return \"2\";",
+  "replace": "case Gender.Female: return \"1\";",
+  "tests": "TrackedRecordsComposerTests"
+ }
+]
