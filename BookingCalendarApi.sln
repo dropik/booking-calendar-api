@@ -20,6 +20,12 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BookingCalendarApi.Reposito
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BookingCalendarApi.NETFramework", "BookingCalendarApi.NETFramework\BookingCalendarApi.NETFramework.csproj", "{556F64E2-A9EE-4529-95C6-E8DA92E88150}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{79269C54-3165-4F6A-AA86-2BE8F53580D4}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BookingCalendarApi.UnitTests", "tests\BookingCalendarApi.UnitTests\BookingCalendarApi.UnitTests.csproj", "{A36646A1-2A70-4CE3-9E14-401093FB5921}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BookingCalendarApi.IntegrationTests", "tests\BookingCalendarApi.IntegrationTests\BookingCalendarApi.IntegrationTests.csproj", "{82085CB6-05F2-430C-9306-1CB4C2DBDC01}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -50,11 +56,23 @@ Global
 		{556F64E2-A9EE-4529-95C6-E8DA92E88150}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{556F64E2-A9EE-4529-95C6-E8DA92E88150}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{556F64E2-A9EE-4529-95C6-E8DA92E88150}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A36646A1-2A70-4CE3-9E14-401093FB5921}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A36646A1-2A70-4CE3-9E14-401093FB5921}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A36646A1-2A70-4CE3-9E14-401093FB5921}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A36646A1-2A70-4CE3-9E14-401093FB5921}.Release|Any CPU.Build.0 = Release|Any CPU
+		{82085CB6-05F2-430C-9306-1CB4C2DBDC01}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{82085CB6-05F2-430C-9306-1CB4C2DBDC01}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{82085CB6-05F2-430C-9306-1CB4C2DBDC01}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{82085CB6-05F2-430C-9306-1CB4C2DBDC01}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {659A7178-ABFF-4248-BAAF-3BA619CFB0A2}
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{A36646A1-2A70-4CE3-9E14-401093FB5921} = {79269C54-3165-4F6A-AA86-2BE8F53580D4}
+		{82085CB6-05F2-430C-9306-1CB4C2DBDC01} = {79269C54-3165-4F6A-AA86-2BE8F53580D4}
 	EndGlobalSection
 EndGlobal

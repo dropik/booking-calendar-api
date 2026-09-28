@@ -91,7 +91,7 @@ namespace BookingCalendarApi.UnitTests.Services
 
             var act = () => _service.Get("42", "2023-06-11");
 
-            (await act.Should().ThrowAsync<BookingCalendarException>()).Which.ErrorCode.Should().Be(BCError.NOT_FOUND);
+            (await act.Should().ThrowAsync<BookingCalendarException>()).WithMessage("No booking found.").Which.ErrorCode.Should().Be(BCError.NOT_FOUND);
         }
 
         [Fact]

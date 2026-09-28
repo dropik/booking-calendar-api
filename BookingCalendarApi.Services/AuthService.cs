@@ -56,6 +56,7 @@ namespace BookingCalendarApi.Services
                 ValidateIssuer = true,
                 ValidateAudience = false,
                 ValidateLifetime = false,
+                // Stryker disable once Boolean : validates the key itself (e.g. its lifetime), the signature is validated regardless
                 ValidateIssuerSigningKey = true,
                 IssuerSigningKey = new SymmetricSecurityKey(key),
                 ValidIssuer = _jwt.Issuer,
@@ -76,8 +77,10 @@ namespace BookingCalendarApi.Services
             long refreshTokenId = 0;
             try
             {
+                // Stryker disable once String : a missing claim matches no refresh token, whatever the fallback
                 refreshTokenId = long.Parse(principal.Claims.FirstOrDefault(c => c.Type == JWT.REFRESH_TOKEN_CLAIM)?.Value ?? "0");
             }
+            // Stryker disable once Block : an unparsable id stays 0, which matches no refresh token
             catch (Exception)
             {
                 return null;

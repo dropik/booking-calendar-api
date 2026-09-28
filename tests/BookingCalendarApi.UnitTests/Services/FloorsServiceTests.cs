@@ -57,7 +57,7 @@ namespace BookingCalendarApi.UnitTests.Services
         {
             var act = () => _service.Update(99, new Floor { Id = 99, Name = "X" });
 
-            (await act.Should().ThrowAsync<BookingCalendarException>()).Which.ErrorCode.Should().Be(BCError.NOT_FOUND);
+            (await act.Should().ThrowAsync<BookingCalendarException>()).WithMessage("Floor not found.").Which.ErrorCode.Should().Be(BCError.NOT_FOUND);
         }
 
         [Fact]
@@ -65,7 +65,7 @@ namespace BookingCalendarApi.UnitTests.Services
         {
             var act = () => _service.Update(2, new Floor { Id = 1, Name = "Renamed" });
 
-            (await act.Should().ThrowAsync<BookingCalendarException>()).Which.ErrorCode.Should().Be(BCError.ID_CHANGE_ATTEMPT);
+            (await act.Should().ThrowAsync<BookingCalendarException>()).WithMessage("Model id can not be changed.").Which.ErrorCode.Should().Be(BCError.ID_CHANGE_ATTEMPT);
             _repository.Stored<Floor>().Select(f => f.Name).Should().Equal("Ground", "First");
         }
 

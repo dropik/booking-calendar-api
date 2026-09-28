@@ -65,7 +65,9 @@ namespace BookingCalendarApi.UnitTests.Services
         {
             var act = () => _service.Create(new CreateUserRequest { StructureId = 3, Username = username, Password = password });
 
-            await act.Should().ThrowAsync<ArgumentException>();
+            await act.Should().ThrowAsync<ArgumentException>().WithMessage(username is null || username.Trim() == ""
+                ? "Username must not be empty*"
+                : "Password must not be empty*");
             _repository.Stored<User>().Should().HaveCount(2);
         }
 
@@ -74,7 +76,8 @@ namespace BookingCalendarApi.UnitTests.Services
         {
             var act = () => _service.Create(new CreateUserRequest { StructureId = 3, Username = "luigi@hotel.it", Password = "pwd" });
 
-            (await act.Should().ThrowAsync<BookingCalendarException>()).Which.ErrorCode.Should().Be(BCError.DUPLICATE_DATA);
+            (await act.Should().ThrowAsync<BookingCalendarException>()).WithMessage("A user with following username already exists")
+                .Which.ErrorCode.Should().Be(BCError.DUPLICATE_DATA);
             _repository.Stored<User>().Should().HaveCount(2);
         }
 
@@ -139,7 +142,7 @@ namespace BookingCalendarApi.UnitTests.Services
 
             var act = () => service.GetCurrentUser();
 
-            (await act.Should().ThrowAsync<BookingCalendarException>()).Which.ErrorCode.Should().Be(BCError.NOT_FOUND);
+            (await act.Should().ThrowAsync<BookingCalendarException>()).WithMessage("Unable to find current user").Which.ErrorCode.Should().Be(BCError.NOT_FOUND);
         }
 
         [Fact]
@@ -167,7 +170,7 @@ namespace BookingCalendarApi.UnitTests.Services
 
             var act = () => service.UpdateVisibleName(new UpdateVisibleNameRequest { VisibleName = "X" });
 
-            (await act.Should().ThrowAsync<BookingCalendarException>()).Which.ErrorCode.Should().Be(BCError.NOT_FOUND);
+            (await act.Should().ThrowAsync<BookingCalendarException>()).WithMessage("Unable to find current user").Which.ErrorCode.Should().Be(BCError.NOT_FOUND);
         }
 
         [Fact]
@@ -185,7 +188,8 @@ namespace BookingCalendarApi.UnitTests.Services
         {
             var act = () => _service.UpdatePassword(new UpdatePasswordRequest { OldPassword = "wrong", NewPassword = "new-secret" });
 
-            (await act.Should().ThrowAsync<BookingCalendarException>()).Which.ErrorCode.Should().Be(BCError.AUTHENTICATION_ERROR);
+            (await act.Should().ThrowAsync<BookingCalendarException>()).WithMessage("Old password is not correct")
+                .Which.ErrorCode.Should().Be(BCError.AUTHENTICATION_ERROR);
             Verifies(StoredUser("mario@hotel.it"), "old-secret").Should().BeTrue();
         }
 
@@ -194,7 +198,8 @@ namespace BookingCalendarApi.UnitTests.Services
         {
             var act = () => _service.UpdatePassword(new UpdatePasswordRequest { OldPassword = "old-secret", NewPassword = null });
 
-            (await act.Should().ThrowAsync<BookingCalendarException>()).Which.ErrorCode.Should().Be(BCError.PARAMETER_REQUIRED);
+            (await act.Should().ThrowAsync<BookingCalendarException>()).WithMessage("New password must be provided")
+                .Which.ErrorCode.Should().Be(BCError.PARAMETER_REQUIRED);
             Verifies(StoredUser("mario@hotel.it"), "old-secret").Should().BeTrue();
         }
 
@@ -213,7 +218,7 @@ namespace BookingCalendarApi.UnitTests.Services
 
             var act = () => service.UpdatePassword(new UpdatePasswordRequest { OldPassword = "a", NewPassword = "b" });
 
-            (await act.Should().ThrowAsync<BookingCalendarException>()).Which.ErrorCode.Should().Be(BCError.NOT_FOUND);
+            (await act.Should().ThrowAsync<BookingCalendarException>()).WithMessage("Unable to find current user").Which.ErrorCode.Should().Be(BCError.NOT_FOUND);
         }
     }
 }

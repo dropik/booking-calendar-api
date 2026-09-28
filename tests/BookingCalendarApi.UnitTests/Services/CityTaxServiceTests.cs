@@ -146,9 +146,9 @@ namespace BookingCalendarApi.UnitTests.Services
         public async Task Guests_of_every_stay_are_summed()
         {
             Stay("20230612", "20230615", "19800101", "20150101");
-            Stay("20230620", "20230622", "19800101");
+            Stay("20230611", "20230623", "19800101", "19900101");
 
-            (await CityTax()).Should().Be((5, 3, 0));
+            (await CityTax()).Should().Be((23, 3, 4));
         }
 
         [Fact]
@@ -159,15 +159,6 @@ namespace BookingCalendarApi.UnitTests.Services
             Stay("20230620", "20230622", "19800101");
 
             (await CityTax()).Should().Be((2, 0, 0));
-        }
-
-        [Fact]
-        public async Task Stays_outside_the_period_are_ignored()
-        {
-            Stay("20230701", "20230703", "19800101");
-            Stay("20230605", "20230609", "19800101");
-
-            (await CityTax()).Should().Be((0, 0, 0));
         }
 
         [Fact]

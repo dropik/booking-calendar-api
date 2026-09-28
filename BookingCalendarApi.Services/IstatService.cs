@@ -197,6 +197,7 @@ namespace BookingCalendarApi.Services
 
         private static string DecapitalizeCountryName(string name)
         {
+            // Stryker disable once String,Block : nation descriptions are required, never null
             if (name == null)
             {
                 return "";

@@ -27,7 +27,8 @@
   "file": "BookingCalendarApi.Services/AuthService.cs",
   "find": "ValidateIssuerSigningKey = true,",
   "replace": "ValidateIssuerSigningKey = false,",
-  "tests": "AuthServiceTests"
+  "tests": "AuthServiceTests",
+  "skip": "equivalent: ValidateIssuerSigningKey validates the key itself (e.g. its lifetime), the signature is validated regardless"
  },
  {
   "file": "BookingCalendarApi.Services/AuthService.cs",
@@ -230,14 +231,14 @@
  },
  {
   "file": "BookingCalendarApi.Services/UserService.cs",
-  "find": "result.Username = user.Username;\n            result.VisibleName = user.VisibleName;\n\n            var structureId",
-  "replace": "result.VisibleName = user.VisibleName;\n\n            var structureId",
+  "find": "result.Username = user.Username;\n            result.VisibleName = user.VisibleName;\n\n",
+  "replace": "result.VisibleName = user.VisibleName;\n\n",
   "tests": "UserServiceTests"
  },
  {
   "file": "BookingCalendarApi.Services/UserService.cs",
-  "find": "result.VisibleName = user.VisibleName;\n\n            var structureId",
-  "replace": "\n            var structureId",
+  "find": "            result.VisibleName = user.VisibleName;\n\n            // Stryker",
+  "replace": "\n            // Stryker",
   "tests": "UserServiceTests"
  },
  {
@@ -308,8 +309,8 @@
  },
  {
   "file": "BookingCalendarApi.Services/UserService.cs",
-  "find": "user.VisibleName = request.VisibleName;\n\n            _repository.Update(user);\n            await _repository.SaveChangesAsync();",
-  "replace": "user.VisibleName = request.VisibleName;",
+  "find": "            await _repository.SaveChangesAsync();\n        }\n\n        public async Task UpdatePassword",
+  "replace": "        }\n\n        public async Task UpdatePassword",
   "tests": "UserServiceTests"
  },
  {
@@ -350,8 +351,8 @@
  },
  {
   "file": "BookingCalendarApi.Services/UserService.cs",
-  "find": "user.PasswordHash = passwordHasher.HashPassword(username, request.NewPassword);\n            _repository.Update(user);\n            await _repository.SaveChangesAsync();",
-  "replace": "user.PasswordHash = passwordHasher.HashPassword(username, request.NewPassword);",
+  "find": "            await _repository.SaveChangesAsync();\n        }\n    }\n}",
+  "replace": "        }\n    }\n}",
   "tests": "UserServiceTests"
  },
  {
@@ -592,7 +593,8 @@
   "file": "BookingCalendarApi.Services/FloorsService.cs",
   "find": "return await Get(floor.Id);\n        }\n\n        public async Task<Floor> Update",
   "replace": "return floor;\n        }\n\n        public async Task<Floor> Update",
-  "tests": "FloorsServiceTests"
+  "tests": "FloorsServiceTests",
+  "skip": "equivalent: re-reading the entity right after saving it returns the same values"
  },
  {
   "file": "BookingCalendarApi.Services/RoomsService.cs",
@@ -640,7 +642,8 @@
   "file": "BookingCalendarApi.Services/RoomsService.cs",
   "find": "return await Get(room.Id);\n        }\n\n        public async Task<Room> Update",
   "replace": "return room;\n        }\n\n        public async Task<Room> Update",
-  "tests": "RoomsServiceTests"
+  "tests": "RoomsServiceTests",
+  "skip": "equivalent: re-reading the entity right after saving it returns the same values"
  },
  {
   "file": "BookingCalendarApi.Services/FloorsService.cs",

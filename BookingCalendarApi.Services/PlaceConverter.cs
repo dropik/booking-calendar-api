@@ -31,6 +31,7 @@ namespace BookingCalendarApi.Services
                 })
                 .SelectMany(s => s);
 
+            // Stryker disable once String : a different seed shifts the distance to every place by the same amount
             var formattedDescription = "";
             foreach (var c in formattedDescriptionQuery)
             {

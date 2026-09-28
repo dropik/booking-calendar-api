@@ -16,8 +16,10 @@ namespace BookingCalendarApi.Models.Json
             try
             {
                 var str = reader.GetString();
+                // Stryker disable once Conditional : GetString() returns null only for null tokens, which are rejected above
                 return str != null ? (TEnum)Enum.Parse(typeof(TEnum), str, true) : default;
             }
+            // Stryker disable once Block : removing the block still returns the default value
             catch (Exception)
             {
                 return default;

@@ -48,7 +48,8 @@ namespace BookingCalendarApi.UnitTests.Services
         {
             var act = () => _service.Create(new Room { FloorId = 1, Number = "103", Type = "Suite" });
 
-            (await act.Should().ThrowAsync<BookingCalendarException>()).Which.ErrorCode.Should().Be(BCError.MISSING_ORIGIN_DATA);
+            (await act.Should().ThrowAsync<BookingCalendarException>()).WithMessage("Given room type was not found on Iperbooking")
+                .Which.ErrorCode.Should().Be(BCError.MISSING_ORIGIN_DATA);
             _repository.Stored<Room>().Should().HaveCount(2);
         }
 
@@ -67,7 +68,8 @@ namespace BookingCalendarApi.UnitTests.Services
         {
             var act = () => _service.Update(1, new Room { Id = 1, FloorId = 1, Number = "101", Type = "Suite" });
 
-            (await act.Should().ThrowAsync<BookingCalendarException>()).Which.ErrorCode.Should().Be(BCError.MISSING_ORIGIN_DATA);
+            (await act.Should().ThrowAsync<BookingCalendarException>()).WithMessage("Given room type was not found on Iperbooking")
+                .Which.ErrorCode.Should().Be(BCError.MISSING_ORIGIN_DATA);
             _repository.Stored<Room>().Single(r => r.Id == 1).Type.Should().Be("Doppia");
         }
 
@@ -76,7 +78,7 @@ namespace BookingCalendarApi.UnitTests.Services
         {
             var act = () => _service.Update(99, new Room { Id = 99, Type = "Doppia" });
 
-            (await act.Should().ThrowAsync<BookingCalendarException>()).Which.ErrorCode.Should().Be(BCError.NOT_FOUND);
+            (await act.Should().ThrowAsync<BookingCalendarException>()).WithMessage("Room not found.").Which.ErrorCode.Should().Be(BCError.NOT_FOUND);
         }
 
         [Fact]
@@ -84,7 +86,7 @@ namespace BookingCalendarApi.UnitTests.Services
         {
             var act = () => _service.Update(1, new Room { Id = 2, Number = "X", Type = "Doppia" });
 
-            (await act.Should().ThrowAsync<BookingCalendarException>()).Which.ErrorCode.Should().Be(BCError.ID_CHANGE_ATTEMPT);
+            (await act.Should().ThrowAsync<BookingCalendarException>()).WithMessage("Model id can not be changed.").Which.ErrorCode.Should().Be(BCError.ID_CHANGE_ATTEMPT);
             _repository.Stored<Room>().Select(r => r.Number).Should().Equal("101", "102");
         }
 

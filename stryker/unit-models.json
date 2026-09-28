@@ -1,0 +1,26 @@
+{
+  "stryker-config": {
+    "project": "BookingCalendarApi.Models.csproj",
+    "test-projects": [
+      "../tests/BookingCalendarApi.UnitTests/BookingCalendarApi.UnitTests.csproj"
+    ],
+    "coverage-analysis": "perTest",
+    "reporters": [
+      "html",
+      "json",
+      "progress",
+      "cleartext"
+    ],
+    "thresholds": {
+      "high": 90,
+      "low": 80,
+      "break": 80
+    },
+    "mutate": [
+      "**/Utils.cs",
+      "**/Exceptions/*.cs",
+      "**/Json/*.cs",
+      "**/AlloggiatiService/TrackedRecord.cs"
+    ]
+  }
+}

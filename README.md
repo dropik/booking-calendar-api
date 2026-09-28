@@ -44,6 +44,66 @@ your own structure, you can add a user for it by calling **POST api/v1/users** e
  - For actually utilizing the critical features of the API, the credentials for Iperbooking, Portale Alloggiati and ISTAT must be
 provided. To configure those, from settings page in the app go to *Chiavi API* and configure all the required keys.
 
+## Testing
+
+The tests cover the .NET Core stack (the .NET Framework projects share the same services and models). You need the
+.NET 6 SDK; the mutation testing tool additionally needs the .NET 8 runtime.
+
+### Unit tests
+
+```
+dotnet test tests/BookingCalendarApi.UnitTests
+```
+
+Services run against an in-memory `IRepository` that behaves like EF Core (changes are visible only after
+`SaveChangesAsync`, ids are generated on save), external services are replaced with NSubstitute fakes and
+Iperbooking with a stub `HttpMessageHandler`.
+
+### Integration tests
+
+```
+dotnet test tests/BookingCalendarApi.IntegrationTests
+```
+
+The API is hosted in-process (`WebApplicationFactory`, environment `Testing`) on top of a real MySQL 8 database
+created with the EF Core migrations. MySQL is started with Testcontainers, so Docker must be running; to use an
+existing server instead set `TEST_MYSQL_CONNECTION_STRING` (e.g. `Server=localhost;Uid=root;Pwd=root`), every run
+creates and drops its own database. The Alloggiati and C59 SOAP clients are substitutes and Iperbooking is served by
+an in-process fake, so no external service is contacted.
+
+### Mutation testing
+
+Tests are checked with mutation testing, i.e. by verifying that they fail when the code they cover is changed.
+
+[Stryker.NET](https://stryker-mutator.io/docs/stryker-net/introduction/) mutates the code automatically; the build
+fails when the mutation score drops below 80%:
+
+```
+dotnet tool restore
+cd stryker
+dotnet stryker --config-file unit-services.json
+dotnet stryker --config-file unit-models.json
+dotnet stryker --config-file integration-host.json          # slow, uses the integration tests
+dotnet stryker --config-file integration-repository.json    # slow, uses the integration tests
+```
+
+The HTML reports end up in `stryker/StrykerOutput`. Mutants that cannot be killed because they do not change the
+behaviour are disabled in the code with a `// Stryker disable once <mutator> : <reason>` comment.
+
+On top of that, `tests/mutation-checks` contains hand written mutations of the production code together with the
+tests that must catch them. The script applies each mutation to a copy of the repository and checks that it makes a
+test fail, and that every test fails for at least one mutation, so no test is kept that never proved it can fail:
+
+```
+python3 tests/mutation-checks/run.py --workers 4 tests/mutation-checks/unit/*.json tests/mutation-checks/integration/*.json
+```
+
+When a change makes a mutation no longer apply, the script says so: update the mutation to the new code.
+
+All of this runs in GitHub Actions (`.github/workflows/tests.yml`): unit and integration tests and unit mutation
+testing on every push and pull request, the slower integration mutation testing also on pushes to `master` and
+`develop`, and the hand written mutation checks weekly and on demand.
+
 ## Changelog
 
 ### v1.6.2

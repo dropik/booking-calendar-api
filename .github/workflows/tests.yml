@@ -1,0 +1,120 @@
+name: Tests
+
+on:
+  push:
+    branches: [ master, develop ]
+  pull_request:
+  workflow_dispatch:
+  schedule:
+    # weekly run of the slow mutation checks
+    - cron: "17 3 * * 1"
+
+env:
+  DOTNET_NOLOGO: true
+  DOTNET_CLI_TELEMETRY_OPTOUT: true
+
+jobs:
+  unit:
+    name: Unit tests
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: |
+            6.0.x
+            8.0.x
+      - run: dotnet test tests/BookingCalendarApi.UnitTests --collect:"XPlat Code Coverage" --results-directory TestResults/unit
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: unit-coverage
+          path: TestResults/unit/**/coverage.cobertura.xml
+
+  integration:
+    name: Integration tests
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: |
+            6.0.x
+            8.0.x
+      # MySQL 8 is started by Testcontainers through the runner's Docker
+      - run: dotnet test tests/BookingCalendarApi.IntegrationTests --collect:"XPlat Code Coverage" --results-directory TestResults/integration
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: integration-coverage
+          path: TestResults/integration/**/coverage.cobertura.xml
+
+  mutation-unit:
+    name: Mutation testing (unit)
+    needs: unit
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: |
+            6.0.x
+            8.0.x
+      - run: dotnet tool restore
+      # each run fails when the mutation score drops below the "break" threshold of its config
+      - run: dotnet stryker --config-file unit-services.json
+        working-directory: stryker
+      - run: dotnet stryker --config-file unit-models.json
+        working-directory: stryker
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: mutation-report-unit
+          path: stryker/StrykerOutput/**/reports/*
+
+  mutation-integration:
+    name: Mutation testing (integration)
+    needs: integration
+    if: github.event_name != 'pull_request'
+    runs-on: ubuntu-latest
+    services:
+      mysql:
+        image: mysql:8.0
+        env:
+          MYSQL_ROOT_PASSWORD: root
+        ports: [ "3306:3306" ]
+        options: --health-cmd "mysqladmin ping -proot" --health-interval 5s --health-timeout 5s --health-retries 20
+    env:
+      # one shared server instead of a container per test run: every run creates its own database
+      TEST_MYSQL_CONNECTION_STRING: Server=127.0.0.1;Port=3306;Uid=root;Pwd=root
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: |
+            6.0.x
+            8.0.x
+      - run: dotnet tool restore
+      - run: dotnet stryker --config-file integration-host.json
+        working-directory: stryker
+      - run: dotnet stryker --config-file integration-repository.json
+        working-directory: stryker
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: mutation-report-integration
+          path: stryker/StrykerOutput/**/reports/*
+
+  hand-mutations:
+    name: Hand-written mutation checks
+    needs: [ unit, integration ]
+    if: github.event_name == 'schedule' || github.event_name == 'workflow_dispatch'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: |
+            6.0.x
+            8.0.x
+      - run: python3 tests/mutation-checks/run.py --workers 4 tests/mutation-checks/unit/*.json tests/mutation-checks/integration/*.json

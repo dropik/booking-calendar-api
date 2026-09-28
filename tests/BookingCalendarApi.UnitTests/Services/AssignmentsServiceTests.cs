@@ -68,7 +68,8 @@ namespace BookingCalendarApi.UnitTests.Services
         [Fact]
         public async Task Bookings_are_fetched_for_the_period_covered_by_the_tiles()
         {
-            await _service.Set(Rooms((TileB, 1), (TileA, 2)));
+            // the first tile neither arrives first nor departs last
+            await _service.Set(Rooms((TileC, 1), (TileB, 2), (TileA, 3)));
 
             await _iperbooking.Received(1).GetBookings("2023-06-01", "2023-06-08", false);
         }
@@ -118,6 +119,23 @@ namespace BookingCalendarApi.UnitTests.Services
         }
 
         [Fact]
+        public async Task Assignments_of_several_cancelled_bookings_are_all_removed()
+        {
+            _iperbooking.GetBookings(Arg.Any<string>(), Arg.Any<string>(), Arg.Any<bool>()).Returns(new List<Booking>
+            {
+                Booking(10, Room(1, "20230601", "20230605")),
+                Booking(20, "A", "B", BookingStatus.Cancelled, Room(2, "20230605", "20230608")),
+                Booking(30, "A", "B", BookingStatus.Cancelled, Room(3, "20230603", "20230606")),
+            });
+            _repository.Seed(new RoomAssignment { Id = TileB, RoomId = 1 });
+            _repository.Seed(new RoomAssignment { Id = TileC, RoomId = 2 });
+
+            await _service.Set(Rooms((TileA, 3)));
+
+            StoredRooms().Should().Equal(new Dictionary<string, long> { [TileA] = 3 });
+        }
+
+        [Fact]
         public async Task Cancelled_bookings_do_not_collide()
         {
             _iperbooking.GetBookings(Arg.Any<string>(), Arg.Any<string>(), Arg.Any<bool>()).Returns(new List<Booking>
@@ -141,7 +159,9 @@ namespace BookingCalendarApi.UnitTests.Services
                 Rooms = new() { [TileA] = 1, [TileC] = 1 },
             });
 
-            (await act.Should().ThrowAsync<BookingCalendarException>()).Which.ErrorCode.Should().Be(BCError.ROOMS_COLLISION);
+            (await act.Should().ThrowAsync<BookingCalendarException>())
+                .WithMessage($"Collision between tiles {TileA} and {TileC} detected on room id 1. Reverting...")
+                .Which.ErrorCode.Should().Be(BCError.ROOMS_COLLISION);
             _repository.SaveChangesCalls.Should().Be(0);
             _repository.Stored<RoomAssignment>().Should().BeEmpty();
             _repository.Stored<ColorAssignment>().Should().BeEmpty();
@@ -156,6 +176,16 @@ namespace BookingCalendarApi.UnitTests.Services
 
             (await act.Should().ThrowAsync<BookingCalendarException>()).Which.ErrorCode.Should().Be(BCError.ROOMS_COLLISION);
             StoredRooms().Should().Equal(new Dictionary<string, long> { [TileA] = 1 });
+        }
+
+        [Fact]
+        public async Task Collisions_between_later_tiles_of_a_room_are_detected()
+        {
+            var overlappingB = TileId(4, "20230606", "20230609");
+
+            var act = () => _service.Set(Rooms((TileA, 1), (TileB, 1), (overlappingB, 1)));
+
+            (await act.Should().ThrowAsync<BookingCalendarException>()).Which.ErrorCode.Should().Be(BCError.ROOMS_COLLISION);
         }
 
         [Fact]

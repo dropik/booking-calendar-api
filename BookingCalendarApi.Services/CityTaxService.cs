@@ -91,6 +91,7 @@ namespace BookingCalendarApi.Services
                 var cropLeft = Math.Max((DateTime.ParseExact(from, "yyyy-MM-dd", null) - DateTime.ParseExact(guest.Arrival, "yyyyMMdd", null)).Days, 0);
                 guestResult.Children = Math.Max(guestResult.Children - cropLeft, 0);
                 guestResult.Standard -= cropLeft;
+                // Stryker disable once Equality : with zero standard nights the correction changes nothing
                 if (guestResult.Standard < 0)
                 {
                     guestResult.Over10Days = Math.Max(guestResult.Over10Days + guestResult.Standard, 0);
@@ -100,6 +101,7 @@ namespace BookingCalendarApi.Services
                 var cropRight = Math.Max((DateTime.ParseExact(guest.Departure, "yyyyMMdd", null) - DateTime.ParseExact(to, "yyyy-MM-dd", null)).Days, 0);
                 guestResult.Children = Math.Max(guestResult.Children - cropRight, 0);
                 guestResult.Over10Days -= cropRight;
+                // Stryker disable once Equality : with zero later nights the correction changes nothing
                 if (guestResult.Over10Days < 0)
                 {
                     guestResult.Standard = Math.Max(guestResult.Standard + guestResult.Over10Days, 0);

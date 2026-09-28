@@ -1,0 +1,453 @@
+[
+ {
+  "file": "BookingCalendarApi.Repository.NETCore/Repository.cs",
+  "find": "c.Type == \"StructureId\"",
+  "replace": "c.Type == \"Structure\"",
+  "tests": "BookingCalendarApi.IntegrationTests",
+  "project": "tests/BookingCalendarApi.IntegrationTests"
+ },
+ {
+  "file": "BookingCalendarApi.Repository.NETCore/Repository.cs",
+  "find": "query = query.Where(e => ((IStructureData)e).StructureId == CurrentStructureId);",
+  "replace": "",
+  "tests": "BookingCalendarApi.IntegrationTests",
+  "project": "tests/BookingCalendarApi.IntegrationTests"
+ },
+ {
+  "file": "BookingCalendarApi.Repository.NETCore/Repository.cs",
+  "find": "((IStructureData)entity).StructureId = CurrentStructureId;\n            }\n            return _context.Add(entity).Entity;",
+  "replace": "}\n            return _context.Add(entity).Entity;",
+  "tests": "BookingCalendarApi.IntegrationTests",
+  "project": "tests/BookingCalendarApi.IntegrationTests"
+ },
+ {
+  "file": "BookingCalendarApi.Repository.NETCore/Repository.cs",
+  "find": "((IStructureData)entity).StructureId = CurrentStructureId;\n            }\n            var entry",
+  "replace": "}\n            var entry",
+  "tests": "BookingCalendarApi.IntegrationTests",
+  "project": "tests/BookingCalendarApi.IntegrationTests"
+ },
+ {
+  "file": "BookingCalendarApi.Repository.NETCore/Repository.cs",
+  "find": "entry.State = EntityState.Modified;",
+  "replace": "",
+  "tests": "BookingCalendarApi.IntegrationTests",
+  "project": "tests/BookingCalendarApi.IntegrationTests"
+ },
+ {
+  "file": "BookingCalendarApi.Repository.NETCore/Repository.cs",
+  "find": "=> _context.Remove(entity);",
+  "replace": "=> _context.Entry(entity);",
+  "tests": "BookingCalendarApi.IntegrationTests",
+  "project": "tests/BookingCalendarApi.IntegrationTests"
+ },
+ {
+  "file": "BookingCalendarApi.Repository.NETCore/Repository.cs",
+  "find": "await _context.SaveChangesAsync();",
+  "replace": "",
+  "tests": "BookingCalendarApi.IntegrationTests",
+  "project": "tests/BookingCalendarApi.IntegrationTests"
+ },
+ {
+  "file": "BookingCalendarApi.Repository.NETCore/Repository.cs",
+  "find": "entry.State = EntityState.Detached;",
+  "replace": "",
+  "tests": "BookingCalendarApi.IntegrationTests",
+  "project": "tests/BookingCalendarApi.IntegrationTests"
+ },
+ {
+  "file": "BookingCalendarApi.Repository.NETCore/EFCore6QueryWrapper.cs",
+  "find": "return await _query.AnyAsync(predicate);",
+  "replace": "return await _query.AnyAsync();",
+  "tests": "BookingCalendarApi.IntegrationTests",
+  "project": "tests/BookingCalendarApi.IntegrationTests"
+ },
+ {
+  "file": "BookingCalendarApi.Repository.NETCore/EFCore6QueryWrapper.cs",
+  "find": "return await _query.SingleAsync(predicate);",
+  "replace": "return await _query.FirstAsync();",
+  "tests": "BookingCalendarApi.IntegrationTests",
+  "project": "tests/BookingCalendarApi.IntegrationTests"
+ },
+ {
+  "file": "BookingCalendarApi.Repository.NETCore/EFCore6QueryWrapper.cs",
+  "find": "return await _query.SingleOrDefaultAsync(predicate);",
+  "replace": "return await _query.FirstOrDefaultAsync();",
+  "tests": "BookingCalendarApi.IntegrationTests",
+  "project": "tests/BookingCalendarApi.IntegrationTests"
+ },
+ {
+  "file": "BookingCalendarApi.Repository.NETCore/EFCore6QueryWrapper.cs",
+  "find": "return _query.Include(navigation);",
+  "replace": "return _query;",
+  "tests": "BookingCalendarApi.IntegrationTests",
+  "project": "tests/BookingCalendarApi.IntegrationTests"
+ },
+ {
+  "file": "BookingCalendarApi.Repository.NETCore/EFCore6QueryWrapper.cs",
+  "find": "return _query.ToListAsync();",
+  "replace": "return _query.Take(1).ToListAsync();",
+  "tests": "BookingCalendarApi.IntegrationTests",
+  "project": "tests/BookingCalendarApi.IntegrationTests"
+ },
+ {
+  "file": "BookingCalendarApi.Repository.NETCore/EFCore6QueryWrapper.cs",
+  "find": "return await _query.ToDictionaryAsync(keySelector);",
+  "replace": "return new Dictionary<TKey, TEntity>();",
+  "tests": "BookingCalendarApi.IntegrationTests",
+  "project": "tests/BookingCalendarApi.IntegrationTests"
+ },
+ {
+  "file": "BookingCalendarApi/Filters/ExceptionFilter.cs",
+  "find": "context.HttpContext.Response.StatusCode = (int)HttpStatusCode.InternalServerError;",
+  "replace": "context.HttpContext.Response.StatusCode = (int)HttpStatusCode.BadRequest;",
+  "tests": "BookingCalendarApi.IntegrationTests",
+  "project": "tests/BookingCalendarApi.IntegrationTests"
+ },
+ {
+  "file": "BookingCalendarApi/Filters/ExceptionFilter.cs",
+  "find": "context.ExceptionHandled = true;",
+  "replace": "",
+  "tests": "BookingCalendarApi.IntegrationTests",
+  "project": "tests/BookingCalendarApi.IntegrationTests",
+  "skip": "equivalent: MVC treats the exception as handled as soon as the filter sets a Result"
+ },
+ {
+  "file": "BookingCalendarApi/Filters/ExceptionFilter.cs",
+  "find": "context.Result = new ObjectResult(context.Exception.Message);",
+  "replace": "context.Result = new ObjectResult(\"\");",
+  "tests": "BookingCalendarApi.IntegrationTests",
+  "project": "tests/BookingCalendarApi.IntegrationTests"
+ },
+ {
+  "file": "BookingCalendarApi/Filters/ExceptionFilter.cs",
+  "find": "context.HttpContext.Response.StatusCode = (int)bcException.GetStatusCode();",
+  "replace": "",
+  "tests": "BookingCalendarApi.IntegrationTests",
+  "project": "tests/BookingCalendarApi.IntegrationTests"
+ },
+ {
+  "file": "BookingCalendarApi/Filters/ExceptionFilter.cs",
+  "find": "context.Result = new ObjectResult(new { bcException.ErrorCode, bcException.Message });",
+  "replace": "context.Result = new ObjectResult(new { bcException.Message });",
+  "tests": "BookingCalendarApi.IntegrationTests",
+  "project": "tests/BookingCalendarApi.IntegrationTests"
+ },
+ {
+  "file": "BookingCalendarApi/Filters/ExceptionFilter.cs",
+  "find": "context.Result = new ObjectResult(new { bcException.ErrorCode, bcException.Message });",
+  "replace": "context.Result = new ObjectResult(new { bcException.ErrorCode });",
+  "tests": "BookingCalendarApi.IntegrationTests",
+  "project": "tests/BookingCalendarApi.IntegrationTests"
+ },
+ {
+  "file": "BookingCalendarApi/Clients/PoliceClient.cs",
+  "find": "PropertyNameCaseInsensitive = true,",
+  "replace": "PropertyNameCaseInsensitive = false,",
+  "tests": "BookingCalendarApi.IntegrationTests",
+  "project": "tests/BookingCalendarApi.IntegrationTests"
+ },
+ {
+  "file": "BookingCalendarApi/Clients/PoliceClient.cs",
+  "find": "IncludeFields = true,",
+  "replace": "IncludeFields = false,",
+  "tests": "BookingCalendarApi.IntegrationTests",
+  "project": "tests/BookingCalendarApi.IntegrationTests"
+ },
+ {
+  "file": "BookingCalendarApi/Clients/C59Client.cs",
+  "find": "PropertyNameCaseInsensitive = true,",
+  "replace": "PropertyNameCaseInsensitive = false,",
+  "tests": "BookingCalendarApi.IntegrationTests",
+  "project": "tests/BookingCalendarApi.IntegrationTests"
+ },
+ {
+  "file": "BookingCalendarApi/Clients/C59Client.cs",
+  "find": "IncludeFields = true,",
+  "replace": "IncludeFields = false,",
+  "tests": "BookingCalendarApi.IntegrationTests",
+  "project": "tests/BookingCalendarApi.IntegrationTests"
+ },
+ {
+  "file": "BookingCalendarApi/Clients/C59Client.cs",
+  "find": "await _service.inviaC59FullAsync(JsonSerializer.Deserialize<inviaC59Full>(JsonSerializer.Serialize(request, _deepCopyOptions), _deepCopyOptions));",
+  "replace": "await _service.inviaC59FullAsync(new inviaC59Full());",
+  "tests": "BookingCalendarApi.IntegrationTests",
+  "project": "tests/BookingCalendarApi.IntegrationTests"
+ },
+ {
+  "file": "BookingCalendarApi/UserClaimsProvider.cs",
+  "find": "public ClaimsPrincipal User => _contextAccessor.HttpContext!.User;",
+  "replace": "public ClaimsPrincipal User => new ClaimsPrincipal(new ClaimsIdentity());",
+  "tests": "BookingCalendarApi.IntegrationTests",
+  "project": "tests/BookingCalendarApi.IntegrationTests"
+ },
+ {
+  "file": "BookingCalendarApi/Program.cs",
+  "find": "if (!builder.Environment.IsEnvironment(\"Testing\"))",
+  "replace": "if (true)",
+  "tests": "BookingCalendarApi.IntegrationTests",
+  "project": "tests/BookingCalendarApi.IntegrationTests"
+ },
+ {
+  "file": "BookingCalendarApi/Program.cs",
+  "find": "ValidateIssuer = true,",
+  "replace": "ValidateIssuer = false,",
+  "tests": "BookingCalendarApi.IntegrationTests",
+  "project": "tests/BookingCalendarApi.IntegrationTests"
+ },
+ {
+  "file": "BookingCalendarApi/Program.cs",
+  "find": "ValidateLifetime = true,",
+  "replace": "ValidateLifetime = false,",
+  "tests": "BookingCalendarApi.IntegrationTests",
+  "project": "tests/BookingCalendarApi.IntegrationTests"
+ },
+ {
+  "file": "BookingCalendarApi/Program.cs",
+  "find": "ValidIssuer = builder.Configuration[\"JWT:Issuer\"],",
+  "replace": "ValidIssuer = \"x\",",
+  "tests": "BookingCalendarApi.IntegrationTests",
+  "project": "tests/BookingCalendarApi.IntegrationTests"
+ },
+ {
+  "file": "BookingCalendarApi/Program.cs",
+  "find": "context.Response.Headers.Add(\"IS-TOKEN-EXPIRED\", \"true\");",
+  "replace": "",
+  "tests": "BookingCalendarApi.IntegrationTests",
+  "project": "tests/BookingCalendarApi.IntegrationTests"
+ },
+ {
+  "file": "BookingCalendarApi/Program.cs",
+  "find": ".WithOrigins(builder.Configuration.GetValue<string>(\"FrontendUrl\"))",
+  "replace": ".AllowAnyOrigin()",
+  "tests": "BookingCalendarApi.IntegrationTests",
+  "project": "tests/BookingCalendarApi.IntegrationTests"
+ },
+ {
+  "file": "BookingCalendarApi/Program.cs",
+  "find": "options.Filters.Add<ExceptionFilter>();",
+  "replace": "",
+  "tests": "BookingCalendarApi.IntegrationTests",
+  "project": "tests/BookingCalendarApi.IntegrationTests"
+ },
+ {
+  "file": "BookingCalendarApi/Program.cs",
+  "find": "System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingNull",
+  "replace": "System.Text.Json.Serialization.JsonIgnoreCondition.Never",
+  "tests": "BookingCalendarApi.IntegrationTests",
+  "project": "tests/BookingCalendarApi.IntegrationTests"
+ },
+ {
+  "file": "BookingCalendarApi/Program.cs",
+  "find": "QueryWrapperFactory.Current = new EFCore6QueryWrapperFactory();",
+  "replace": "",
+  "tests": "BookingCalendarApi.IntegrationTests",
+  "project": "tests/BookingCalendarApi.IntegrationTests",
+  "skip": "trivially fatal: every repository query would throw, kept only to document it is covered by every test"
+ },
+ {
+  "file": "BookingCalendarApi/Program.cs",
+  "find": "client.BaseAddress = new Uri(builder.Configuration[\"Iperbooking:BaseUrl\"] ?? Iperbooking.DEFAULT_BASE_URL);",
+  "replace": "client.BaseAddress = new Uri(Iperbooking.DEFAULT_BASE_URL);",
+  "tests": "BookingCalendarApi.IntegrationTests",
+  "project": "tests/BookingCalendarApi.IntegrationTests"
+ },
+ {
+  "file": "BookingCalendarApi/Program.cs",
+  "find": "builder.Services.AddScoped<DataContext>();",
+  "replace": "builder.Services.AddTransient<DataContext>();",
+  "tests": "BookingCalendarApi.IntegrationTests",
+  "project": "tests/BookingCalendarApi.IntegrationTests"
+ },
+ {
+  "file": "BookingCalendarApi/Program.cs",
+  "find": "builder.Services.AddScoped<IUserClaimsProvider, UserClaimsProvider>();",
+  "replace": "builder.Services.AddScoped<IUserClaimsProvider>(_ => new UserClaimsProvider(new HttpContextAccessor()));",
+  "tests": "BookingCalendarApi.IntegrationTests",
+  "project": "tests/BookingCalendarApi.IntegrationTests",
+  "skip": "equivalent: HttpContextAccessor keeps the context in a static AsyncLocal, a new instance sees it too"
+ },
+ {
+  "file": "BookingCalendarApi/Program.cs",
+  "find": "app.UseCors(\"CorsPolicy\");",
+  "replace": "",
+  "tests": "BookingCalendarApi.IntegrationTests",
+  "project": "tests/BookingCalendarApi.IntegrationTests"
+ },
+ {
+  "file": "BookingCalendarApi/Program.cs",
+  "find": "app.UseAuthentication();",
+  "replace": "",
+  "tests": "BookingCalendarApi.IntegrationTests",
+  "project": "tests/BookingCalendarApi.IntegrationTests"
+ },
+ {
+  "file": "BookingCalendarApi.Repository.NETCore/Migrations/20230915191919_AddMasterUser.cs",
+  "find": "                .AddEnvironmentVariables()\n",
+  "replace": "",
+  "tests": "BookingCalendarApi.IntegrationTests",
+  "project": "tests/BookingCalendarApi.IntegrationTests"
+ },
+ {
+  "file": "BookingCalendarApi.Services/FloorsService.cs",
+  "find": ".OrderBy(room => room.Id))",
+  "replace": ".OrderByDescending(room => room.Id))",
+  "tests": "BookingCalendarApi.IntegrationTests",
+  "project": "tests/BookingCalendarApi.IntegrationTests"
+ },
+ {
+  "file": "BookingCalendarApi.Services/AssignmentsService.cs",
+  "find": "assignment.Color = color;",
+  "replace": "",
+  "tests": "BookingCalendarApi.IntegrationTests",
+  "project": "tests/BookingCalendarApi.IntegrationTests"
+ },
+ {
+  "file": "BookingCalendarApi/Controllers/AuthController.cs",
+  "find": "            catch (Exception)\n            {\n                return Unauthorized();\n            }\n        }\n    }",
+  "replace": "            catch (ArgumentException)\n            {\n                return Unauthorized();\n            }\n        }\n    }",
+  "tests": "BookingCalendarApi.IntegrationTests",
+  "project": "tests/BookingCalendarApi.IntegrationTests"
+ },
+ {
+  "file": "BookingCalendarApi/Controllers/UsersController.cs",
+  "find": "[HttpPost]\n        [Authorize(Roles = Repository.User.ADMIN_ROLE)]",
+  "replace": "[HttpPost]",
+  "tests": "BookingCalendarApi.IntegrationTests",
+  "project": "tests/BookingCalendarApi.IntegrationTests"
+ },
+ {
+  "file": "BookingCalendarApi/Controllers/UsersController.cs",
+  "find": "[HttpGet(\"{id}\")]\n        [Authorize(Roles = Repository.User.ADMIN_ROLE)]",
+  "replace": "[HttpGet(\"{id}\")]",
+  "tests": "BookingCalendarApi.IntegrationTests",
+  "project": "tests/BookingCalendarApi.IntegrationTests"
+ },
+ {
+  "file": "BookingCalendarApi/Controllers/UsersController.cs",
+  "find": "return CreatedAtAction(nameof(Get), new { id = result.Id }, result);",
+  "replace": "return Ok(result);",
+  "tests": "BookingCalendarApi.IntegrationTests",
+  "project": "tests/BookingCalendarApi.IntegrationTests"
+ },
+ {
+  "file": "BookingCalendarApi/Controllers/FloorsController.cs",
+  "find": "[Authorize]",
+  "replace": "",
+  "tests": "BookingCalendarApi.IntegrationTests",
+  "project": "tests/BookingCalendarApi.IntegrationTests"
+ },
+ {
+  "file": "BookingCalendarApi/Controllers/FloorsController.cs",
+  "find": "return CreatedAtAction(\"Get\", new { id = result.Id }, result);",
+  "replace": "return Ok(result);",
+  "tests": "BookingCalendarApi.IntegrationTests",
+  "project": "tests/BookingCalendarApi.IntegrationTests"
+ },
+ {
+  "file": "BookingCalendarApi/Controllers/PoliceController.cs",
+  "find": "return File(result.Pdf, \"application/pdf\", result.FileName);",
+  "replace": "return File(result.Pdf, \"application/octet-stream\", result.FileName);",
+  "tests": "BookingCalendarApi.IntegrationTests",
+  "project": "tests/BookingCalendarApi.IntegrationTests"
+ },
+ {
+  "file": "BookingCalendarApi/Controllers/PoliceController.cs",
+  "find": "return File(result.Pdf, \"application/pdf\", result.FileName);",
+  "replace": "return File(result.Pdf, \"application/pdf\");",
+  "tests": "BookingCalendarApi.IntegrationTests",
+  "project": "tests/BookingCalendarApi.IntegrationTests"
+ },
+ {
+  "file": "BookingCalendarApi/Controllers/RoomsController.cs",
+  "find": "    [Authorize]\n",
+  "replace": "",
+  "tests": "BookingCalendarApi.IntegrationTests",
+  "project": "tests/BookingCalendarApi.IntegrationTests"
+ },
+ {
+  "file": "BookingCalendarApi/Controllers/AssignmentsController.cs",
+  "find": "    [Authorize]\n",
+  "replace": "",
+  "tests": "BookingCalendarApi.IntegrationTests",
+  "project": "tests/BookingCalendarApi.IntegrationTests"
+ },
+ {
+  "file": "BookingCalendarApi/Controllers/BookingsController.cs",
+  "find": "    [Authorize]\n",
+  "replace": "",
+  "tests": "BookingCalendarApi.IntegrationTests",
+  "project": "tests/BookingCalendarApi.IntegrationTests"
+ },
+ {
+  "file": "BookingCalendarApi/Controllers/ClientsController.cs",
+  "find": "    [Authorize]\n",
+  "replace": "",
+  "tests": "BookingCalendarApi.IntegrationTests",
+  "project": "tests/BookingCalendarApi.IntegrationTests"
+ },
+ {
+  "file": "BookingCalendarApi/Controllers/CityTaxController.cs",
+  "find": "    [Authorize]\n",
+  "replace": "",
+  "tests": "BookingCalendarApi.IntegrationTests",
+  "project": "tests/BookingCalendarApi.IntegrationTests"
+ },
+ {
+  "file": "BookingCalendarApi/Controllers/IstatController.cs",
+  "find": "    [Authorize]\n",
+  "replace": "",
+  "tests": "BookingCalendarApi.IntegrationTests",
+  "project": "tests/BookingCalendarApi.IntegrationTests"
+ },
+ {
+  "file": "BookingCalendarApi/Controllers/PoliceController.cs",
+  "find": "    [Authorize]\n",
+  "replace": "",
+  "tests": "BookingCalendarApi.IntegrationTests",
+  "project": "tests/BookingCalendarApi.IntegrationTests"
+ },
+ {
+  "file": "BookingCalendarApi/Controllers/StructuresController.cs",
+  "find": "    [Authorize]\n",
+  "replace": "",
+  "tests": "BookingCalendarApi.IntegrationTests",
+  "project": "tests/BookingCalendarApi.IntegrationTests"
+ },
+ {
+  "file": "BookingCalendarApi/Controllers/UsersController.cs",
+  "find": "    [Authorize]\n",
+  "replace": "",
+  "tests": "BookingCalendarApi.IntegrationTests",
+  "project": "tests/BookingCalendarApi.IntegrationTests"
+ },
+ {
+  "file": "BookingCalendarApi.Repository.NETCore/Repository.cs",
+  "find": "if (typeof(IStructureData).IsAssignableFrom(typeof(TEntity)))\n            {\n                query",
+  "replace": "if (true)\n            {\n                query",
+  "tests": "BookingCalendarApi.IntegrationTests",
+  "project": "tests/BookingCalendarApi.IntegrationTests"
+ },
+ {
+  "file": "BookingCalendarApi.Repository.NETCore/EFCore6QueryWrapper.cs",
+  "find": "return await _query.AnyAsync();",
+  "replace": "return true;",
+  "tests": "BookingCalendarApi.IntegrationTests",
+  "project": "tests/BookingCalendarApi.IntegrationTests"
+ },
+ {
+  "file": "BookingCalendarApi.Repository.NETCore/EFCore6QueryWrapper.cs",
+  "find": "return await _query.SingleAsync();",
+  "replace": "return await _query.FirstAsync();",
+  "tests": "BookingCalendarApi.IntegrationTests",
+  "project": "tests/BookingCalendarApi.IntegrationTests"
+ },
+ {
+  "file": "BookingCalendarApi.Repository.NETCore/EFCore6QueryWrapper.cs",
+  "find": "return await _query.SingleOrDefaultAsync();",
+  "replace": "return await _query.FirstAsync();",
+  "tests": "BookingCalendarApi.IntegrationTests",
+  "project": "tests/BookingCalendarApi.IntegrationTests"
+ }
+]

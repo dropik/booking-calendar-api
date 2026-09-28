@@ -26,7 +26,7 @@ namespace BookingCalendarApi.UnitTests.Services
         {
             var act = () => Converter().GetCodeByIso("XX");
 
-            act.Should().Throw<BookingCalendarException>().Which.ErrorCode.Should().Be(BCError.MISSING_NATION);
+            act.Should().Throw<BookingCalendarException>().WithMessage("Cannot find nation by ISO code").Which.ErrorCode.Should().Be(BCError.MISSING_NATION);
         }
     }
 

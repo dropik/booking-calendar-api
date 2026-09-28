@@ -130,7 +130,7 @@ namespace BookingCalendarApi.UnitTests.Services
 
             var act = () => Service().GetMovements();
 
-            (await act.Should().ThrowAsync<BookingCalendarException>()).Which.ErrorCode.Should().Be(BCError.CONNECTION_ERROR);
+            (await act.Should().ThrowAsync<BookingCalendarException>()).WithMessage("*offline*").Which.ErrorCode.Should().Be(BCError.CONNECTION_ERROR);
         }
 
         [Fact]
@@ -177,19 +177,21 @@ namespace BookingCalendarApi.UnitTests.Services
         }
 
         [Theory]
-        [InlineData("RM", 1, 0, "RM", 0, 1)]
-        [InlineData("RM", -1, 2, "MI", 1, 0)]
-        [InlineData("RM", 1, -1, "MI", 1, 0)]
-        [InlineData("RM", 0, 0, "MI", 1, 0)]
-        public async Task SendMovements_rejects_invalid_movements(string targa1, long arrivals1, long departures1, string targa2, long arrivals2, long departures2)
+        [InlineData("RM", 1, 0, "RM", 0, 1, "Duplicated entries found.")]
+        [InlineData("RM", -1, 2, "MI", 1, 0, "Arrivals can not be negative.")]
+        [InlineData("RM", 1, -1, "MI", 1, 0, "Departures can not be negative.")]
+        [InlineData("RM", 0, 0, "MI", 1, 0, "Either arrivals or departures must be set.")]
+        public async Task SendMovements_rejects_invalid_movements(
+            string targa1, long arrivals1, long departures1, string targa2, long arrivals2, long departures2, string message)
         {
             var act = () => Service().SendMovements(new IstatMovementsDTO
             {
                 Date = "2023-06-10",
-                Movements = { Movement(targa1, arrivals1, departures1), Movement(targa2, arrivals2, departures2) },
+                Movements = { Movement("AG", 1, 1), Movement(targa1, arrivals1, departures1), Movement(targa2, arrivals2, departures2) },
             });
 
-            (await act.Should().ThrowAsync<BookingCalendarException>()).Which.ErrorCode.Should().Be(BCError.INVALID_ISTAT_MOVEMENTS);
+            (await act.Should().ThrowAsync<BookingCalendarException>()).WithMessage(message)
+                .Which.ErrorCode.Should().Be(BCError.INVALID_ISTAT_MOVEMENTS);
             await _c59.DidNotReceiveWithAnyArgs().InviaC59FullAsync(default!);
         }
 
@@ -210,7 +212,7 @@ namespace BookingCalendarApi.UnitTests.Services
 
             var act = () => Service().SendMovements(new IstatMovementsDTO { Date = "2023-06-10", Movements = { Movement("RM", 1, 0) } });
 
-            (await act.Should().ThrowAsync<BookingCalendarException>()).Which.ErrorCode.Should().Be(BCError.ISTAT_ERROR);
+            (await act.Should().ThrowAsync<BookingCalendarException>()).WithMessage("*rejected*").Which.ErrorCode.Should().Be(BCError.ISTAT_ERROR);
         }
 
         [Fact]
@@ -220,7 +222,7 @@ namespace BookingCalendarApi.UnitTests.Services
 
             var act = () => Service().SendMovements(new IstatMovementsDTO { Date = "2023-06-10", Movements = { Movement("RM", 1, 0) } });
 
-            (await act.Should().ThrowAsync<BookingCalendarException>()).Which.ErrorCode.Should().Be(BCError.CONNECTION_ERROR);
+            (await act.Should().ThrowAsync<BookingCalendarException>()).WithMessage("*offline*").Which.ErrorCode.Should().Be(BCError.CONNECTION_ERROR);
         }
 
         [Fact]

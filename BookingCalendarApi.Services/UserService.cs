@@ -69,6 +69,7 @@ namespace BookingCalendarApi.Services
         {
             var result = new UserResponse();
 
+            // Stryker disable once String : any fallback name that is not a user leads to the same NOT_FOUND
             var username = _userClaimsProvider.User.Identity?.Name ?? "";
             var user = await _repository.Users.SingleOrDefaultAsync(u => u.Username == username)
                 ?? throw new BookingCalendarException(BCError.NOT_FOUND, "Unable to find current user");
@@ -76,6 +77,7 @@ namespace BookingCalendarApi.Services
             result.Username = user.Username;
             result.VisibleName = user.VisibleName;
 
+            // Stryker disable once String : a missing claim matches no structure, whatever the fallback
             var structureId = long.Parse(_userClaimsProvider.User.Claims.FirstOrDefault(c => c.Type == JWT.STRUCTURE_CLAIM)?.Value ?? "0");
             var structure = await _repository.Structures.SingleAsync(s => s.Id == structureId);
             result.Structure = structure.Name;
@@ -122,12 +124,14 @@ namespace BookingCalendarApi.Services
 
         public async Task UpdateVisibleName(UpdateVisibleNameRequest request)
         {
+            // Stryker disable once String : any fallback name that is not a user leads to the same NOT_FOUND
             var username = _userClaimsProvider.User.Identity?.Name ?? "";
             var user = await _repository.Users.SingleOrDefaultAsync(u => u.Username == username)
                 ?? throw new BookingCalendarException(BCError.NOT_FOUND, "Unable to find current user");
 
             user.VisibleName = request.VisibleName;
 
+            // Stryker disable once Statement : the user is tracked, its changes are saved anyway
             _repository.Update(user);
             await _repository.SaveChangesAsync();
         }
@@ -139,6 +143,7 @@ namespace BookingCalendarApi.Services
                 throw new ArgumentNullException(nameof(request));
             }
 
+            // Stryker disable once String : any fallback name that is not a user leads to the same NOT_FOUND
             var username = _userClaimsProvider.User.Identity?.Name ?? "";
             var user = await _repository.Users.SingleOrDefaultAsync(u => u.Username == username)
                 ?? throw new BookingCalendarException(BCError.NOT_FOUND, "Unable to find current user");
@@ -156,6 +161,7 @@ namespace BookingCalendarApi.Services
             }
 
             user.PasswordHash = passwordHasher.HashPassword(username, request.NewPassword);
+            // Stryker disable once Statement : the user is tracked, its changes are saved anyway
             _repository.Update(user);
             await _repository.SaveChangesAsync();
         }

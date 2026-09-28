@@ -31,7 +31,7 @@ namespace BookingCalendarApi.UnitTests.Models
         {
             var act = () => ReadGuest("\"guestId\":true");
 
-            act.Should().Throw<JsonException>();
+            act.Should().Throw<JsonException>().WithMessage("Unable to read value as string*");
         }
 
         [Theory]
@@ -70,7 +70,7 @@ namespace BookingCalendarApi.UnitTests.Models
 
             var act = () => JsonSerializer.Deserialize<Guest.Sex>("1", options);
 
-            act.Should().Throw<JsonException>();
+            act.Should().Throw<JsonException>().WithMessage("Was expecting string token*");
         }
 
         [Fact]

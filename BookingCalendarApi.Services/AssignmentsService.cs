@@ -29,10 +29,12 @@ namespace BookingCalendarApi.Services
                 return;
             }
 
+            // Stryker disable once Block : AddColors returns early on null colors as well
             if (request.Colors == null)
             {
                 request.Colors = new Dictionary<string, string>();
             }
+            // Stryker disable once Block : AddRooms returns early on null rooms as well
             if (request.Rooms == null)
             {
                 request.Rooms = new Dictionary<string, long?>();
@@ -46,6 +48,7 @@ namespace BookingCalendarApi.Services
 
         private async Task AddColors(IDictionary<string, string> colors)
         {
+            // Stryker disable once Logical,Statement,Block : looping over no colors does nothing either
             if (colors == null || colors.Count == 0)
             {
                 return;
@@ -174,6 +177,7 @@ namespace BookingCalendarApi.Services
                     else
                     {
                         assignment.RoomId = roomId.Value;
+                        // Stryker disable once Statement : the assignment is tracked, its change is saved anyway
                         _repository.Update(assignment);
                     }
                 }

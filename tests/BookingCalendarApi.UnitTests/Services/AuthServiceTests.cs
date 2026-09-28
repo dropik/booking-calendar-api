@@ -75,7 +75,7 @@ namespace BookingCalendarApi.UnitTests.Services
             }));
         }
 
-        private UserRefreshToken SeedRefreshToken(string username = "mario@hotel.it", string token = "refresh-token", DateTime? expiresAt = null)
+        private UserRefreshToken SeedRefreshToken(string? username = "mario@hotel.it", string token = "refresh-token", DateTime? expiresAt = null)
         {
             return _repository.Seed(new UserRefreshToken
             {
@@ -247,7 +247,8 @@ namespace BookingCalendarApi.UnitTests.Services
         [Fact]
         public async Task Refresh_of_an_access_token_without_user_name_returns_null()
         {
-            var refreshToken = SeedRefreshToken();
+            // even when the refresh token has no user name either
+            var refreshToken = SeedRefreshToken(username: null);
 
             var response = await _service.GetToken(new RefreshTokenRequest
             {

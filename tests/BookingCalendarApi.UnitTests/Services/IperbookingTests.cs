@@ -105,7 +105,9 @@ namespace BookingCalendarApi.UnitTests.Services
         [MemberData(nameof(AllCalls))]
         public async Task Unsuccessful_responses_are_iperbooking_errors(Func<Iperbooking, Task> call)
         {
-            _handler.Respond = _ => StubHttpMessageHandler.Json("[]", HttpStatusCode.InternalServerError);
+            // the body would be valid: only the status tells the call failed
+            _handler.Respond = request => StubHttpMessageHandler.Json(
+                request.RequestUri!.AbsolutePath.EndsWith("GetGuests.cfm") ? "{}" : "[]", HttpStatusCode.InternalServerError);
 
             var act = () => call(_iperbooking);
 

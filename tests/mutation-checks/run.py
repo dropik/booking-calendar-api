@@ -69,7 +69,8 @@ def list_tests(project, test_filters):
     result = subprocess.run(["dotnet", "test", project, "--nologo", "--list-tests"],
                             cwd=ROOT, capture_output=True, text=True, check=True)
     names = [line.strip() for line in result.stdout.splitlines() if line.startswith("    ")]
-    return {method_of(n) for n in names if any(f"{f}." in n or n.endswith(f) for f in test_filters)}
+    # same "contains" semantics as the FullyQualifiedName~ filter used to run them
+    return {method_of(n) for n in names if any(f in n for f in test_filters)}
 
 
 def main():

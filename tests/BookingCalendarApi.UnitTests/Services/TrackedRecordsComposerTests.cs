@@ -108,6 +108,23 @@ namespace BookingCalendarApi.UnitTests.Services
         }
 
         [Fact]
+        public void Foreign_guest_born_in_a_known_italian_city_name_still_has_blank_place()
+        {
+            var guest = German();
+            guest.BirthCity = "Roma";
+
+            Compose(Block("20230610", "20230611", guest)).Single().Substring(105, 9).Should().Be(new string(' ', 9));
+        }
+
+        [Fact]
+        public void Document_city_is_not_looked_up_when_missing()
+        {
+            Compose(Block("20230610", "20230611", German()));
+
+            _places.DidNotReceive().GetPlaceCodeByDescription(null!);
+        }
+
+        [Fact]
         public void Document_city_that_is_not_a_known_place_falls_back_to_document_country()
         {
             var guest = German();
@@ -285,6 +302,22 @@ namespace BookingCalendarApi.UnitTests.Services
             var records = Compose(Block("20230610", "20230611", Italian(), Italian("Verdi", "Luigi"), Minor("Neri")));
 
             records.Select(TypeOf).Should().Equal("17", "19", "19");
+        }
+
+        [Fact]
+        public void Five_guests_with_a_minor_are_a_family()
+        {
+            var records = Compose(Block("20230610", "20230611", Italian("A"), Italian("B"), Italian("C"), Italian("D"), Minor("E")));
+
+            records.Select(TypeOf).Should().Equal("17", "19", "19", "19", "19");
+        }
+
+        [Fact]
+        public void Guest_turning_eighteen_on_arrival_counts_as_adult_when_looking_for_families()
+        {
+            var records = Compose(Block("20230610", "20230611", Italian("A"), Italian("B"), Italian("C", birthDate: "20050610")));
+
+            records.Select(TypeOf).Should().Equal("18", "20", "20");
         }
 
         [Fact]

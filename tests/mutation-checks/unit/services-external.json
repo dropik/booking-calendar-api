@@ -564,7 +564,7 @@
  {
   "file": "BookingCalendarApi.Services/IstatService.cs",
   "find": ".GroupBy(guest => guest.Targa)",
-  "replace": ".GroupBy(guest => guest.IsItaly)",
+  "replace": ".GroupBy(guest => guest.Targa.ToUpperInvariant())",
   "tests": "IstatServiceTests"
  },
  {
@@ -910,7 +910,8 @@
   "file": "BookingCalendarApi.Services/PoliceService.cs",
   "find": ".Distinct()\n",
   "replace": "",
-  "tests": "PoliceServiceTests"
+  "tests": "PoliceServiceTests",
+  "skip": "equivalent: Except already removes duplicates"
  },
  {
   "file": "BookingCalendarApi.Services/PoliceService.cs",

@@ -91,6 +91,7 @@ namespace BookingCalendarApi.Services
             return recordBlocksWithCorrectPlaceOfBirth
                 .Where(block => block
                     .Where(record =>
+                    // Stryker disable once Logical : GuessType assigns SingleGuest only to blocks of one record
                         record.Type == AccomodatedType.SingleGuest && block.Count == 1 ||
                         record.Type == AccomodatedType.FamilyHead ||
                         record.Type == AccomodatedType.GroupHead
@@ -105,6 +106,7 @@ namespace BookingCalendarApi.Services
 
         private static void GuessType(TrackedRecord recordToSolve, IEnumerable<TrackedRecord> recordsBlock)
         {
+            // Stryker disable once Block : SingleGuest is the default type
             if (recordsBlock.Count() == 1)
             {
                 recordToSolve.Type = AccomodatedType.SingleGuest;
@@ -156,6 +158,7 @@ namespace BookingCalendarApi.Services
             $"{(record.ProvinceOfBirth != null && record.ProvinceOfBirth.Length == 2 ? record.ProvinceOfBirth : new string(' ', 2))}" +
             $"{record.StateOfBirth}" +
             $"{record.Citizenship}" +
+            // Stryker disable once Conditional : the composer always maps a document type
             $"{(record.DocType != null ? record.DocType.ToString()?.ToUpper() : new string(' ', 5))}" +
             $"{(record.DocNumber != null ? record.DocNumber.PadRight(20, ' ') : new string(' ', 20))}" +
             $"{(record.DocIssuer != null ? record.DocIssuer.ToString() : new string(' ', 9))}";
@@ -169,6 +172,7 @@ namespace BookingCalendarApi.Services
                 case AccomodatedType.GroupHead: return "18";
                 case AccomodatedType.FamilyMember: return "19";
                 case AccomodatedType.GroupMember: return "20";
+                // Stryker disable once String : every accommodated type is handled above
                 default: return "20";
             }
         }
@@ -179,6 +183,7 @@ namespace BookingCalendarApi.Services
             {
                 case Gender.Male: return "1";
                 case Gender.Female: return "2";
+                // Stryker disable once String : every gender is handled above
                 default: return "1";
             }
         }

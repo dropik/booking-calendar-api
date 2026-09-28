@@ -61,6 +61,7 @@ namespace BookingCalendarApi.Services
             CurrentStructure.C59Username = request.C59Username;
             CurrentStructure.C59Password = request.C59Password;
 
+            // Stryker disable once Statement : the structure is tracked, its changes are saved anyway
             _repository.Update(CurrentStructure);
             await _repository.SaveChangesAsync();
         }

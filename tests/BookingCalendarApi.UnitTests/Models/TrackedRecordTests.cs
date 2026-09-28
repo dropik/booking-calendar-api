@@ -17,6 +17,15 @@ namespace BookingCalendarApi.UnitTests.Models
         }
 
         [Fact]
+        public void Names_default_to_empty()
+        {
+            var record = new TrackedRecord();
+
+            record.Surname.Should().BeEmpty();
+            record.Name.Should().BeEmpty();
+        }
+
+        [Fact]
         public void Nights_up_to_thirty_are_accepted()
         {
             new TrackedRecord { Nights = 30 }.Nights.Should().Be(30);
@@ -27,7 +36,8 @@ namespace BookingCalendarApi.UnitTests.Models
         {
             var act = () => new TrackedRecord { Nights = 31 };
 
-            act.Should().Throw<BookingCalendarException>().Which.ErrorCode.Should().Be(BCError.MAX_STAY_EXCEEDED);
+            act.Should().Throw<BookingCalendarException>().WithMessage("Exceeded maximum stay of 30 nights")
+                .Which.ErrorCode.Should().Be(BCError.MAX_STAY_EXCEEDED);
         }
 
         [Theory]

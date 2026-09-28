@@ -76,16 +76,30 @@ namespace BookingCalendarApi.UnitTests.Services
             _repository.Stored<Structure>().Single(s => s.Id == 1).IperbookingHotel.Should().Be("x");
         }
 
-        [Fact]
-        public async Task Credentials_are_mapped_for_every_service()
-        {
-            var iperbooking = await _service.GetIperbookingCredentials();
-            var police = await _service.GetAlloggiatiServiceCredentials();
-            var istat = await _service.GetC59Credentials();
+        private StructureService FreshService() => new(TestPrincipals.Provider("mario@hotel.it", 2), _repository);
 
-            (iperbooking.IdHotel, iperbooking.Username, iperbooking.Password).Should().Be(("123", "ib-user", "ib-pwd"));
-            (police.Utente, police.Password, police.WsKey).Should().Be(("as-user", "as-pwd", "as-key"));
-            (istat.Struttura, istat.Username, istat.Password).Should().Be((555L, "c59-user", "c59-pwd"));
+        [Fact]
+        public async Task Iperbooking_credentials_are_those_of_the_current_structure()
+        {
+            var credentials = await FreshService().GetIperbookingCredentials();
+
+            (credentials.IdHotel, credentials.Username, credentials.Password).Should().Be(("123", "ib-user", "ib-pwd"));
+        }
+
+        [Fact]
+        public async Task Alloggiati_credentials_are_those_of_the_current_structure()
+        {
+            var credentials = await FreshService().GetAlloggiatiServiceCredentials();
+
+            (credentials.Utente, credentials.Password, credentials.WsKey).Should().Be(("as-user", "as-pwd", "as-key"));
+        }
+
+        [Fact]
+        public async Task C59_credentials_are_those_of_the_current_structure()
+        {
+            var credentials = await FreshService().GetC59Credentials();
+
+            (credentials.Struttura, credentials.Username, credentials.Password).Should().Be((555L, "c59-user", "c59-pwd"));
         }
 
         [Fact]

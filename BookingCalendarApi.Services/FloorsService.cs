@@ -19,6 +19,7 @@ namespace BookingCalendarApi.Services
 
         public async Task<List<Floor>> GetAll()
         {
+            // Stryker disable once Linq : Include is a database concern, the room order is covered by the integration tests
             return await _repository.Floors
                 .Include(floor => floor.Rooms
                     .OrderBy(room => room.Id))

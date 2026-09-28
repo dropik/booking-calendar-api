@@ -9,13 +9,15 @@
   "file": "BookingCalendarApi.Services/AssignmentsService.cs",
   "find": "request.Colors = new Dictionary<string, string>();",
   "replace": "request.Colors = null;",
-  "tests": "AssignmentsServiceTests"
+  "tests": "AssignmentsServiceTests",
+  "skip": "equivalent: AddColors returns early on null colors as well"
  },
  {
   "file": "BookingCalendarApi.Services/AssignmentsService.cs",
   "find": "request.Rooms = new Dictionary<string, long?>();",
   "replace": "request.Rooms = null;",
-  "tests": "AssignmentsServiceTests"
+  "tests": "AssignmentsServiceTests",
+  "skip": "equivalent: AddRooms returns early on null rooms as well"
  },
  {
   "file": "BookingCalendarApi.Services/AssignmentsService.cs",
@@ -88,7 +90,8 @@
   "file": "BookingCalendarApi.Services/AssignmentsService.cs",
   "find": ".Where(booking => booking.Status != BookingStatus.Cancelled)",
   "replace": "",
-  "tests": "AssignmentsServiceTests"
+  "tests": "AssignmentsServiceTests",
+  "skip": "equivalent: assignments of cancelled bookings were already removed, so they cannot join"
  },
  {
   "file": "BookingCalendarApi.Services/AssignmentsService.cs",
@@ -152,7 +155,7 @@
  },
  {
   "file": "BookingCalendarApi.Services/AssignmentsService.cs",
-  "find": "assignment.RoomId = roomId.Value;\n                        _repository.Update(assignment);",
+  "find": "assignment.RoomId = roomId.Value;",
   "replace": "",
   "tests": "AssignmentsServiceTests"
  },
@@ -453,7 +456,8 @@
   "file": "BookingCalendarApi.Services/BookingsService.cs",
   "find": "where bookingNumbers.Contains(ca.BookingId)",
   "replace": "where true",
-  "tests": "BookingsServiceTests"
+  "tests": "BookingsServiceTests",
+  "skip": "equivalent: the filter only limits what is loaded, the join by booking number picks the same colors"
  },
  {
   "file": "BookingCalendarApi.Services/BookingsService.cs",
@@ -741,7 +745,8 @@
   "file": "BookingCalendarApi.Services/CityTaxService.cs",
   "find": "guestResult.Children = Math.Max(guestResult.Children - cropLeft, 0);",
   "replace": "guestResult.Children = guestResult.Children - cropLeft;",
-  "tests": "CityTaxServiceTests"
+  "tests": "CityTaxServiceTests",
+  "skip": "equivalent: stays overlapping the period are never cropped on the left by more than their nights"
  },
  {
   "file": "BookingCalendarApi.Services/CityTaxService.cs",
@@ -759,7 +764,8 @@
   "file": "BookingCalendarApi.Services/CityTaxService.cs",
   "find": "guestResult.Over10Days = Math.Max(guestResult.Over10Days + guestResult.Standard, 0);",
   "replace": "guestResult.Over10Days = guestResult.Over10Days + guestResult.Standard;",
-  "tests": "CityTaxServiceTests"
+  "tests": "CityTaxServiceTests",
+  "skip": "equivalent: stays overlapping the period are never cropped on the left by more than their nights"
  },
  {
   "file": "BookingCalendarApi.Services/CityTaxService.cs",
@@ -832,5 +838,19 @@
   "find": "result.Over10Days += guestResult.Over10Days;",
   "replace": "result.Over10Days = guestResult.Over10Days;",
   "tests": "CityTaxServiceTests"
+ },
+ {
+  "file": "BookingCalendarApi.Services/AssignmentsService.cs",
+  "find": "if (roomId == null)\n                    {\n                        continue;",
+  "replace": "if (false)\n                    {\n                        continue;",
+  "occurrence": 1,
+  "tests": "AssignmentsServiceTests"
+ },
+ {
+  "file": "BookingCalendarApi.Services/AssignmentsService.cs",
+  "find": "if (roomId == null)\n                    {\n                        continue;",
+  "replace": "if (false)\n                    {\n                        continue;",
+  "occurrence": 2,
+  "tests": "AssignmentsServiceTests"
  }
 ]

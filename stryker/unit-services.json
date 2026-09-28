@@ -1,0 +1,28 @@
+{
+  "stryker-config": {
+    "project": "BookingCalendarApi.Services.csproj",
+    "test-projects": [
+      "../tests/BookingCalendarApi.UnitTests/BookingCalendarApi.UnitTests.csproj"
+    ],
+    "coverage-analysis": "perTest",
+    "reporters": [
+      "html",
+      "json",
+      "progress",
+      "cleartext"
+    ],
+    "thresholds": {
+      "high": 90,
+      "low": 80,
+      "break": 80
+    },
+    "mutate": [
+      "**/*.cs",
+      "!**/ColorizedBooking.cs"
+    ],
+    "ignore-mutations": [
+      "linq.First",
+      "linq.FirstOrDefault"
+    ]
+  }
+}

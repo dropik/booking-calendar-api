@@ -84,6 +84,14 @@ namespace BookingCalendarApi.UnitTests.Services
         }
 
         [Fact]
+        public async Task Before_opening_the_session_the_token_is_empty()
+        {
+            await _session.SendData(new List<string> { "r1" }, test: true);
+
+            await _client.Received(1).TestAsync(Arg.Is<TestRequest>(r => r.Body.Token == ""));
+        }
+
+        [Fact]
         public async Task SendData_sends_the_records_with_the_session_token()
         {
             await _session.Open();
@@ -143,7 +151,9 @@ namespace BookingCalendarApi.UnitTests.Services
             _client.TestAsync(Arg.Any<TestRequest>()).Returns<TestResponse>(_ => throw new CommunicationException("offline"));
             _client.SendAsync(Arg.Any<SendRequest>()).Returns<SendResponse>(_ => throw new CommunicationException("offline"));
 
-            (await Thrown(() => _session.SendData(new List<string> { "r1" }, test))).ErrorCode.Should().Be(BCError.CONNECTION_ERROR);
+            var exception = await Thrown(() => _session.SendData(new List<string> { "r1" }, test));
+
+            (exception.ErrorCode, exception.Message).Should().Be((BCError.CONNECTION_ERROR, "Failed establish connection to police service: offline"));
         }
 
         [Fact]
@@ -175,7 +185,9 @@ namespace BookingCalendarApi.UnitTests.Services
         {
             _client.RicevutaAsync(Arg.Any<RicevutaRequest>()).Returns<RicevutaResponse>(_ => throw new CommunicationException("offline"));
 
-            (await Thrown(() => _session.GetRicevuta(DateTime.Today))).ErrorCode.Should().Be(BCError.CONNECTION_ERROR);
+            var exception = await Thrown(() => _session.GetRicevuta(DateTime.Today));
+
+            (exception.ErrorCode, exception.Message).Should().Be((BCError.CONNECTION_ERROR, "Failed establish connection to police service: offline"));
         }
 
         [Fact]
@@ -213,7 +225,9 @@ namespace BookingCalendarApi.UnitTests.Services
         {
             _client.TabellaAsync(Arg.Any<TabellaRequest>()).Returns<TabellaResponse>(_ => throw new CommunicationException("offline"));
 
-            (await Thrown(() => _session.GetPlaces())).ErrorCode.Should().Be(BCError.CONNECTION_ERROR);
+            var exception = await Thrown(() => _session.GetPlaces());
+
+            (exception.ErrorCode, exception.Message).Should().Be((BCError.CONNECTION_ERROR, "Failed establish connection to police service: offline"));
         }
     }
 }
