@@ -1,6 +1,18 @@
 [
  {
   "file": "BookingCalendarApi.Models/AlloggiatiService/TrackedRecord.cs",
+  "find": "private string _surname = \"\";",
+  "replace": "private string _surname = \" \";",
+  "tests": "TrackedRecordTests"
+ },
+ {
+  "file": "BookingCalendarApi.Models/AlloggiatiService/TrackedRecord.cs",
+  "find": "private string _name = \"\";",
+  "replace": "private string _name = \" \";",
+  "tests": "TrackedRecordTests"
+ },
+ {
+  "file": "BookingCalendarApi.Models/AlloggiatiService/TrackedRecord.cs",
   "find": "if (value > 30)",
   "replace": "if (value >= 30)",
   "tests": "TrackedRecordTests"

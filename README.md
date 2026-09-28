@@ -88,7 +88,10 @@ dotnet stryker --config-file integration-repository.json    # slow, uses the int
 ```
 
 The HTML reports end up in `stryker/StrykerOutput`. Mutants that cannot be killed because they do not change the
-behaviour are disabled in the code with a `// Stryker disable once <mutator> : <reason>` comment.
+behaviour are disabled in the code with a `// Stryker disable once <mutator> : <reason>` comment. The configurations
+also skip what cannot hold behaviour: plain request/response models (only their logic is mutated), swaps between
+`First()` and `FirstOrDefault()` (used only on sequences that cannot be empty) and code only reachable through other
+test suites (e.g. the host plumbing is mutated with the integration tests).
 
 On top of that, `tests/mutation-checks` contains hand written mutations of the production code together with the
 tests that must catch them. The script applies each mutation to a copy of the repository and checks that it makes a

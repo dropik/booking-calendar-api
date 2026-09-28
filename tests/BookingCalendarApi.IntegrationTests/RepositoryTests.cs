@@ -136,6 +136,11 @@ namespace BookingCalendarApi.IntegrationTests
             (await repository.Floors.AnyAsync()).Should().BeTrue();
             (await empty.Floors.SingleOrDefaultAsync()).Should().BeNull();
             (await empty.Floors.AnyAsync()).Should().BeFalse();
+
+            repository.Add(new Floor { Name = "Second" });
+            await repository.SaveChangesAsync();
+            await repository.Floors.Invoking(floors => floors.SingleAsync()).Should().ThrowAsync<InvalidOperationException>();
+            await repository.Floors.Invoking(floors => floors.SingleOrDefaultAsync()).Should().ThrowAsync<InvalidOperationException>();
         }
 
         [Fact]
